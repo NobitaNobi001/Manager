@@ -17,5 +17,6 @@ public class connectionTest {
         DataSource dataSource = atc.getBean(DataSource.class);
         System.out.println(dataSource.getConnection());
         System.out.println("helloWorld!");
+        System.out.println("helloWorld2!");
     }
 }
