@@ -21,5 +21,6 @@ public class connectionTest {
         System.out.println("dev");
         System.out.println("master");
         System.out.println("master dev");
+        System.out.println("update");
     }
 }
