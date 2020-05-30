@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+
+    <!--由于网页跳转是交由springmvc完成的因此可以进行取消-->
+    <context:component-scan base-package="com.controller">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+    <!--引入数据库的配置文件-->
+    <context:property-placeholder location="classpath:dbconf.properties"/>
+
+    <!--数据库相关配置-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>
+        <property name="driverClass" value="${jdbc.driverClass}"/>
+        <property name="user" value="${jdbc.user}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--配置mybatis整合-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--指定mybatis的全局配置文件的位置-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <!--数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--指定mybatis配置文件的位置-->
+        <!--<property name="mapperLocations" value="classpath:mappers/*.xml"/>-->
+
+        <!--开启redis缓存-->
+        <property name="configurationProperties">
+            <props>
+                <!--全局映射器启动缓存-->
+                <prop key="cacheEnabled">true</prop>
+                <!--查询时关闭关联对象即时加载以提高性能-->
+                <prop key="lazyLoadingEnabled">false</prop>
+                <!--设置关联对象的形态，此处为按需加载字段-->
+                <prop key="aggressiveLazyLoading">true</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!--配置可以进行批量操作的sqlSession-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+        <constructor-arg name="executorType" value="BATCH"/>
+    </bean>
+
+    <!--事务控制-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--控制数据源-->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--扫描所有mapper接口的实现，让这些mapper可以自动注入-->
+    <!--<com-spring:scan base-package="com.dao"/>-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.dao"/>
+    </bean>
+</beans>
