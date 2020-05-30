@@ -19,5 +19,6 @@ public class connectionTest {
         System.out.println("helloWorld!");
         System.out.println("helloWorld2!");
         System.out.println("dev");
+        System.out.println("master");
     }
 }
