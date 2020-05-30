@@ -12,15 +12,10 @@ public class connectionTest {
         atc = new ClassPathXmlApplicationContext("applicationContext.xml");
     }
 
+    //测试数据库连接是否成功
     @Test
     public void testConnection() throws SQLException {
         DataSource dataSource = atc.getBean(DataSource.class);
         System.out.println(dataSource.getConnection());
-        System.out.println("helloWorld!");
-        System.out.println("helloWorld2!");
-        System.out.println("dev");
-        System.out.println("master");
-        System.out.println("master dev");
-        System.out.println("update");
     }
 }
