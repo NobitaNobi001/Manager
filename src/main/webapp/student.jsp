@@ -1,8 +1,11 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>湖北文理学院创新学分系统</title>
+
     <%
         //        获取webapp的项目路径
         pageContext.setAttribute("APP_PATH", request.getContextPath());
@@ -10,7 +13,7 @@
 
     <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/student.css"/>
 </head>
 <body>
 <header>
@@ -22,18 +25,15 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="profile.html">admin@qq.com</a>
-                    <a href="login.html">退出</a>
+                    <a href="profile.jsp">admin@qq.com</a>
+                    <a href="login.jsp">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
-                    <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="index.jsp">首页</a></li>
+                    <li class="title"><a href="javascript:;">学生中心</a></li>
+                    <li><a href="student.jsp">首页</a></li>
                     <li><a href="profile.jsp">个人信息</a></li>
-                    <li><a href="student.jsp">学生</a></li>
-                    <li><a href="teacher.jsp">教师</a></li>
-                    <li><a href="manager.jsp">管理</a></li>
                 </ul>
             </div>
         </div>
@@ -44,12 +44,9 @@
         <div class="main clear">
             <div class="main-left left">
                 <ul>
-                    <li class="headline"><a href="javascript:;">学生中心</a></li>
+                    <li class="headline"><a href="javascript:;">控制中心</a></li>
                     <li><a href="credit.jsp">学分列表</a></li>
                     <li><a href="declare.jsp">学分申报</a></li>
-                    <li class="headline"><a href="javascript:;">教师中心</a></li>
-                    <li><a href="trainee.jsp">学生列表</a></li>
-                    <li><a href="report.jsp">申报管理</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="profile.jsp">个人信息</a></li>
                     <li><a href="password.jsp">修改密码</a></li>
@@ -59,7 +56,7 @@
             <div class="main-right right">
                 <div class="userinfo">
                     <div class="avatar">
-                        <div class="head"><img src="${APP_PATH}/static/images/kenan.jpg" width="100%"/></div>
+                        <div class="head"><img src="images/kenan.jpg" width="100%"/></div>
                     </div>
                     <div class="info">
                         <div class="username">杨歆舞云</div>
@@ -129,5 +126,3 @@
 </footer>
 </body>
 </html>
-
-

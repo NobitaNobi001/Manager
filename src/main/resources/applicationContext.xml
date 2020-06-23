@@ -116,8 +116,8 @@
         <!--配置哪些页面需要受保护 以及需要的权限-->
         <property name="filterChainDefinitions">
             <value>
-                /login.jsp = anon
-                /** = authc
+
+
             </value>
         </property>
     </bean>
