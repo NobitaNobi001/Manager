@@ -2,8 +2,10 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd ">
 
     <!--由于网页跳转是交由springmvc完成的因此可以进行取消-->
     <context:component-scan base-package="com.controller">
@@ -29,18 +31,6 @@
         <property name="dataSource" ref="dataSource"/>
         <!--指定mybatis配置文件的位置-->
         <!--<property name="mapperLocations" value="classpath:mappers/*.xml"/>-->
-
-        <!--开启redis缓存-->
-        <property name="configurationProperties">
-            <props>
-                <!--全局映射器启动缓存-->
-                <prop key="cacheEnabled">true</prop>
-                <!--查询时关闭关联对象即时加载以提高性能-->
-                <prop key="lazyLoadingEnabled">false</prop>
-                <!--设置关联对象的形态，此处为按需加载字段-->
-                <prop key="aggressiveLazyLoading">true</prop>
-            </props>
-        </property>
     </bean>
 
     <!--配置可以进行批量操作的sqlSession-->
@@ -60,4 +50,76 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.dao"/>
     </bean>
+
+    <!--
+           1、配置SecurityManager
+       -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="authenticator" ref="authenticator"/>
+        <property name="realms">
+            <list>
+                <ref bean="jdbcRealm"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--
+        2、配置CacheManager
+    -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <bean id="authenticator" class="org.apache.shiro.authc.pam.ModularRealmAuthenticator">
+        <property name="authenticationStrategy">
+            <bean class="org.apache.shiro.authc.pam.AtLeastOneSuccessfulStrategy"/>
+        </property>
+    </bean>
+
+    <!--
+        3、配置Realm
+    -->
+    <bean id="jdbcRealm" class="com.shrio.realms.ShrioRealm">
+        <!--<property name="credentialsMatcher">-->
+            <!--<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">-->
+                <!--<property name="hashAlgorithmName" value="MD5"></property>-->
+                <!--<property name="hashIterations" value="1024"></property>-->
+            <!--</bean>-->
+        <!--</property>-->
+    </bean>
+
+    <!--
+        4、配置 LifecycleBeanPostProcessor
+        可以自动的来调用配置在 Spring IOC 容器中 shiro bean 的生命周期方法
+    -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+
+    <!--
+        5、 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用.
+    -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!--
+        6、配置ShrioFilter 和DelegatingFilterProxy中保持一致
+    -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login.jsp"/>
+        <property name="successUrl" value="/list.jps"/>
+        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+
+        <!--配置哪些页面需要受保护 以及需要的权限-->
+        <property name="filterChainDefinitions">
+            <value>
+                /login.jsp = anon
+                /** = authc
+            </value>
+        </property>
+    </bean>
+
 </beans>
