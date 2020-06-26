@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.RecordMapper" >
+  <resultMap id="BaseResultMap" type="com.bean.Record" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="stu_number" property="stuNumber" jdbcType="INTEGER" />
+    <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
+    <result column="date" property="date" jdbcType="CHAR" />
+    <result column="sort" property="sort" jdbcType="VARCHAR" />
+    <result column="apply_credit" property="applyCredit" jdbcType="DOUBLE" />
+    <result column="audit_credit" property="auditCredit" jdbcType="DOUBLE" />
+    <result column="audit_tea" property="auditTea" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.bean.RecordWithBLOBs" extends="BaseResultMap" >
+    <result column="picture" property="picture" jdbcType="LONGVARBINARY" />
+    <result column="words" property="words" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, stu_number, stu_name, date, sort, apply_credit, audit_credit, audit_tea
+  </sql>
+  <sql id="Blob_Column_List" >
+    picture, words
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.bean.RecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from credit_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.RecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from credit_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from credit_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from credit_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bean.RecordExample" >
+    delete from credit_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bean.RecordWithBLOBs" >
+    insert into credit_record (id, stu_number, stu_name, 
+      date, sort, apply_credit, 
+      audit_credit, audit_tea, picture, 
+      words)
+    values (#{id,jdbcType=INTEGER}, #{stuNumber,jdbcType=INTEGER}, #{stuName,jdbcType=VARCHAR}, 
+      #{date,jdbcType=CHAR}, #{sort,jdbcType=VARCHAR}, #{applyCredit,jdbcType=DOUBLE}, 
+      #{auditCredit,jdbcType=DOUBLE}, #{auditTea,jdbcType=VARCHAR}, #{picture,jdbcType=LONGVARBINARY}, 
+      #{words,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bean.RecordWithBLOBs" >
+    insert into credit_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="stuNumber != null" >
+        stu_number,
+      </if>
+      <if test="stuName != null" >
+        stu_name,
+      </if>
+      <if test="date != null" >
+        date,
+      </if>
+      <if test="sort != null" >
+        sort,
+      </if>
+      <if test="applyCredit != null" >
+        apply_credit,
+      </if>
+      <if test="auditCredit != null" >
+        audit_credit,
+      </if>
+      <if test="auditTea != null" >
+        audit_tea,
+      </if>
+      <if test="picture != null" >
+        picture,
+      </if>
+      <if test="words != null" >
+        words,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="stuNumber != null" >
+        #{stuNumber,jdbcType=INTEGER},
+      </if>
+      <if test="stuName != null" >
+        #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        #{date,jdbcType=CHAR},
+      </if>
+      <if test="sort != null" >
+        #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCredit != null" >
+        #{applyCredit,jdbcType=DOUBLE},
+      </if>
+      <if test="auditCredit != null" >
+        #{auditCredit,jdbcType=DOUBLE},
+      </if>
+      <if test="auditTea != null" >
+        #{auditTea,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="words != null" >
+        #{words,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bean.RecordExample" resultType="java.lang.Integer" >
+    select count(*) from credit_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update credit_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuNumber != null" >
+        stu_number = #{record.stuNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.stuName != null" >
+        stu_name = #{record.stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.date != null" >
+        date = #{record.date,jdbcType=CHAR},
+      </if>
+      <if test="record.sort != null" >
+        sort = #{record.sort,jdbcType=VARCHAR},
+      </if>
+      <if test="record.applyCredit != null" >
+        apply_credit = #{record.applyCredit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.auditCredit != null" >
+        audit_credit = #{record.auditCredit,jdbcType=DOUBLE},
+      </if>
+      <if test="record.auditTea != null" >
+        audit_tea = #{record.auditTea,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picture != null" >
+        picture = #{record.picture,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="record.words != null" >
+        words = #{record.words,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update credit_record
+    set id = #{record.id,jdbcType=INTEGER},
+      stu_number = #{record.stuNumber,jdbcType=INTEGER},
+      stu_name = #{record.stuName,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=CHAR},
+      sort = #{record.sort,jdbcType=VARCHAR},
+      apply_credit = #{record.applyCredit,jdbcType=DOUBLE},
+      audit_credit = #{record.auditCredit,jdbcType=DOUBLE},
+      audit_tea = #{record.auditTea,jdbcType=VARCHAR},
+      picture = #{record.picture,jdbcType=LONGVARBINARY},
+      words = #{record.words,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update credit_record
+    set id = #{record.id,jdbcType=INTEGER},
+      stu_number = #{record.stuNumber,jdbcType=INTEGER},
+      stu_name = #{record.stuName,jdbcType=VARCHAR},
+      date = #{record.date,jdbcType=CHAR},
+      sort = #{record.sort,jdbcType=VARCHAR},
+      apply_credit = #{record.applyCredit,jdbcType=DOUBLE},
+      audit_credit = #{record.auditCredit,jdbcType=DOUBLE},
+      audit_tea = #{record.auditTea,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bean.RecordWithBLOBs" >
+    update credit_record
+    <set >
+      <if test="stuNumber != null" >
+        stu_number = #{stuNumber,jdbcType=INTEGER},
+      </if>
+      <if test="stuName != null" >
+        stu_name = #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="date != null" >
+        date = #{date,jdbcType=CHAR},
+      </if>
+      <if test="sort != null" >
+        sort = #{sort,jdbcType=VARCHAR},
+      </if>
+      <if test="applyCredit != null" >
+        apply_credit = #{applyCredit,jdbcType=DOUBLE},
+      </if>
+      <if test="auditCredit != null" >
+        audit_credit = #{auditCredit,jdbcType=DOUBLE},
+      </if>
+      <if test="auditTea != null" >
+        audit_tea = #{auditTea,jdbcType=VARCHAR},
+      </if>
+      <if test="picture != null" >
+        picture = #{picture,jdbcType=LONGVARBINARY},
+      </if>
+      <if test="words != null" >
+        words = #{words,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bean.RecordWithBLOBs" >
+    update credit_record
+    set stu_number = #{stuNumber,jdbcType=INTEGER},
+      stu_name = #{stuName,jdbcType=VARCHAR},
+      date = #{date,jdbcType=CHAR},
+      sort = #{sort,jdbcType=VARCHAR},
+      apply_credit = #{applyCredit,jdbcType=DOUBLE},
+      audit_credit = #{auditCredit,jdbcType=DOUBLE},
+      audit_tea = #{auditTea,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=LONGVARBINARY},
+      words = #{words,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bean.Record" >
+    update credit_record
+    set stu_number = #{stuNumber,jdbcType=INTEGER},
+      stu_name = #{stuName,jdbcType=VARCHAR},
+      date = #{date,jdbcType=CHAR},
+      sort = #{sort,jdbcType=VARCHAR},
+      apply_credit = #{applyCredit,jdbcType=DOUBLE},
+      audit_credit = #{auditCredit,jdbcType=DOUBLE},
+      audit_tea = #{auditTea,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

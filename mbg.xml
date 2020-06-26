@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+
+        <commentGenerator>
+            <!--生成无注释-->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+        <!--配置数据库连接-->
+        <jdbcConnection
+                driverClass="com.mysql.jdbc.Driver"
+                connectionURL="jdbc:mysql://localhost:3306/manager?useSSL=false"
+                userId="root" password="YuZe0703">
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!--指定javaBean生成的位置-->
+        <javaModelGenerator
+                targetPackage="com.bean"
+                targetProject="src\main\java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!--指定sql映射文件生成的位置-->
+        <sqlMapGenerator
+                targetPackage="mapper"
+                targetProject="src\main\resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!--指定dao接口生成的位置-->
+        <javaClientGenerator
+                type="XMLMAPPER"
+                targetPackage="com.dao"
+                targetProject="src\main\java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--指定每个表的生成策略-->
+
+        <!--身份信息表-->
+        <table tableName="admin_info" domainObjectName="Admin"></table>
+        <table tableName="stu_info" domainObjectName="Student"></table>
+        <table tableName="tea_info" domainObjectName="Teacher"></table>
+        <table tableName="watcher_info" domainObjectName="Watcher"></table>
+
+        <!--学院表-->
+        <table tableName="college" domainObjectName="College"></table>
+
+        <!--申报信息表-->
+        <table tableName="credit_record" domainObjectName="Record"></table>
+
+        <!--学分表-->
+        <table tableName="credit" domainObjectName="Credit"></table>
+
+        <!--学院学生表-->
+        <table tableName="college_stu_01" domainObjectName="College_mks"></table>
+        <!--<table tableName="college_stu_02" domainObjectName="College_zf"></table>-->
+        <!--<table tableName="college_stu_03" domainObjectName="College_jy"></table>-->
+        <!--<table tableName="college_stu_04" domainObjectName="College_ty"></table>-->
+        <!--<table tableName="college_stu_05" domainObjectName="College_wc"></table>-->
+        <!--<table tableName="college_stu_06" domainObjectName="College_wy"></table>-->
+        <!--<table tableName="college_stu_07" domainObjectName="College_st"></table>-->
+        <!--<table tableName="college_stu_08" domainObjectName="College_wd"></table>-->
+        <!--<table tableName="college_stu_09" domainObjectName="College_jsj"></table>-->
+        <!--<table tableName="college_stu_10" domainObjectName="College_qg"></table>-->
+        <!--<table tableName="college_stu_11" domainObjectName="College_jx"></table>-->
+        <!--<table tableName="college_stu_12" domainObjectName="College_tm"></table>-->
+        <!--<table tableName="college_stu_13" domainObjectName="College_sh"></table>-->
+        <!--<table tableName="college_stu_14" domainObjectName="College_yxy"></table>-->
+        <!--<table tableName="college_stu_15" domainObjectName="College_zh"></table>-->
+        <!--<table tableName="college_stu_16" domainObjectName="College_jg"></table>-->
+        <!--<table tableName="college_stu_17" domainObjectName="College_ms"></table>-->
+        <!--<table tableName="college_stu_18" domainObjectName="College_yy"></table>-->
+    </context>
+</generatorConfiguration>
