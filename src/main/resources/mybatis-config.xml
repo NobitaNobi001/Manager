@@ -7,6 +7,8 @@
     <settings>
         <!--开启驼峰命名法-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--<setting name="logImpl" value="STOUT_LOGGING"/>-->
     </settings>
+    
 
 </configuration>

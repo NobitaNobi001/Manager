@@ -24,5 +24,5 @@ public class AdminController {
     public Msg getAdmins(){
         List<Admin> admin = adminService.getAdmins();
         return Msg.success().add("admins",admin);
-    }
+}
 }
