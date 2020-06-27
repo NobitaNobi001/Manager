@@ -13,6 +13,10 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="UserNameAndPassword" type="com.bean.Student">
+    <result column="stu_number" property="stuNumber" jdbcType="INTEGER" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -87,6 +91,9 @@
     <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
+  </select>
+  <select id="selectBase" resultMap="UserNameAndPassword" parameterType="com.bean.Student">
+    select stu_number,password from stu_info
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
