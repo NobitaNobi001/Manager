@@ -11,6 +11,7 @@ import com.service.WatcherService;
 import org.apache.shiro.web.session.HttpServletSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,15 +53,12 @@ public class UserController {
             isSuccess = studentService.check(stuNumber, password);
 
             if (isSuccess) {    //如果用户名和密码成功匹配
-
-                //向session中存放成功信息 前台可以获取到
-                httpServletRequest.getSession().setAttribute("msg", "登陆成功");
-
                 //重定向到学生的首页
                 return "redirect:/student/index";
 
             } else {    //失败就向session中存放失败的信息 前台可以获取到
                 httpServletRequest.getSession().setAttribute("msg", "用户名或密码错误");
+                return "redirect:/login.jsp";
             }
         } else if (type == 2) {     //教师身份
 
