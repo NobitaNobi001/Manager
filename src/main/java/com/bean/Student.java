@@ -1,5 +1,7 @@
 package com.bean;
 
+import sun.security.util.Password;
+
 public class Student {
     private Integer id;
 
@@ -20,6 +22,15 @@ public class Student {
     private String phone;
 
     private String email;
+
+    public Student(){
+
+    }
+
+    public Student(Integer stuNumber, String password) {
+        this.stuNumber = stuNumber;
+        this.password = password;
+    }
 
     public Integer getId() {
         return id;
