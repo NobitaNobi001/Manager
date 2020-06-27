@@ -1,3 +1,21 @@
 # Created by .ignore support plugin (hsz.mobi)
-/src/main/resources/dbconf.properties
+src/main/resources/dbconf.properties
 /mbg.xml
+
+#Package Files #
+*.class
+*.log
+*.jar
+*.war
+*.ear
+target/
+
+#idea#
+.idea
+*.iml
+.classpath
+.project
+.settings/
+bin/
+tep/
+

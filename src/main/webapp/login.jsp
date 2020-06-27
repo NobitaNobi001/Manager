@@ -1,25 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" isELIgnored="false" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="utf-8">
     <title>湖北文理学院创新学分系统</title>
-
-
     <%
-        //获取webapp的项目路径
         pageContext.setAttribute("APP_PATH", request.getContextPath());
     %>
-
     <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/login.css"/>
-
-    <%--引入js--%>
-    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
-    <%--引入bootstrap--%>
-    <script src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <%--引入bootrap的样式文件--%>
-    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
 <div id="login">
@@ -29,12 +18,21 @@
             <div class="title">湖北文理学院创新学分系统</div>
         </div>
         <div class="login-form">
-            <form action="" method="post">
+            <form action="${APP_PATH}/checkuser" method="post" onsubmit="return check()">
                 <h4>登录</h4>
-                <div><input type="text" name="username" id="username" value="" placeholder="姓名 | 手机号 | 邮箱"/></div>
-                <div><input type="password" name="password" id="password" value="" placeholder="密码"/></div>
-                <div><input type="text" name="captcha" id="captcha" value="" placeholder="身份"/></div>
-                <div><button type="button">登录</button></div>
+                <br></br>
+                <div><input type="text" name="stuNumber" id="stuNumber"  placeholder="学号" onchange="checkuser()"/>
+                    <span id="checktext"></span>
+                </div>
+                <div><input type="password" name="password" id="password"  placeholder="密码" onchange="checkpwd()"/></div>
+                <div class="type">
+                    <label><input type="radio" name="type" id="type1" value="1" checked="checked" />学生</label>
+                    <label><input type="radio" name="type" id="type2" value="2" />教师</label>
+                    <label><input type="radio" name="type" id="type3" value="3" />督查</label>
+                    <label><input type="radio" name="type" id="type4" value="4" />管理员</label>
+                </div>
+                <br></br>
+                <div><button type="submit">登录</button></div>
             </form>
         </div>
         <div class="foot">
@@ -44,18 +42,46 @@
 </div>
 </body>
 </html>
-<%--在整篇html文档加载完成之后--%>
+<script src="webjars/jquery/3.1.1/jquery.js"></script>
 <script type="text/javascript">
-    $(function () {
-
-    });
-
-    // 校验表单数据
-    function validate_form() {
-
+    function checkuser() {
+        var check=false;
+        var stuNumber=document.getElementById("stuNumber").value;
+        stuNumber=stuNumber.trim();
+        if(stuNumber==""){
+            check=false;
+        }else{
+            check=true;
+        }
+        return check;
     }
 
-    $("#username").change(function () {
+    function checkpwd() {
+        var check=false;
+        var password=document.getElementById("password").value;
+        if(password==""||password.length==0){
+            check=false;
+        }else {
+            check=true;
+        }
+        return check;
+    }
 
-    })
+    function check() {
+        if(checkuser()==true&&checkpwd()==true){//输入正确
+            document.getElementById("checktext").style.display="none";
+            //后台验证
+            var msg=$${sessionScope.msg};
+            if(msg=='用户名或密码错误'){
+                document.getElementById("checktext").innerText="msg";
+                return false;
+            }
+        }else if(checkuser()==true&&checkpwd()==false){//学号不为空但密码为空
+            document.getElementById("checktext").innerText="请您输入密码";
+        }else if(checkuser()==false&&checkpwd()==false){//学号和密码都为空
+            document.getElementById("checktext").innerText="请您输入学号/密码";
+        }
+        var check=checkuser()&&checkpwd();
+        return check;
+    }
 </script>
