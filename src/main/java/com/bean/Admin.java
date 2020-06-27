@@ -1,28 +1,20 @@
 package com.bean;
 
 public class Admin {
-
     private Integer id;
 
-    //管理员账号
     private Integer adminNumber;
 
-    //管理员密码
     private String password;
 
-    //管理员姓名
     private String name;
 
-    //管理员学院
     private String insititue;
 
-    //是否为超级管理员
     private Integer issuper;
 
-    //联系电话
     private String phone;
 
-    //邮箱
     private String email;
 
     public Integer getId() {

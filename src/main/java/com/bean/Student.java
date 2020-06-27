@@ -73,7 +73,7 @@ public class Student {
         return className;
     }
 
-    public void setClass(String className) {
+    public void setClassName(String className) {
         this.className = className == null ? null : className.trim();
     }
 

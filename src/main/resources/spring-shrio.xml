@@ -32,7 +32,7 @@
     <!--
         3、配置Realm
     -->
-    <bean id="jdbcRealm" class="com.shrio.realms.ShrioRealm">
+    <bean id="jdbcRealm" class="com.shrio.realms.UserRealm">
         <!--<property name="credentialsMatcher">-->
         <!--<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">-->
         <!--<property name="hashAlgorithmName" value="MD5"></property>-->

@@ -45,23 +45,24 @@
 
         <!--指定每个表的生成策略-->
 
-        <!--身份信息表-->
-        <table tableName="admin_info" domainObjectName="Admin"></table>
-        <table tableName="stu_info" domainObjectName="Student"></table>
-        <table tableName="tea_info" domainObjectName="Teacher"></table>
-        <table tableName="watcher_info" domainObjectName="Watcher"></table>
+        <table tableName="user_info" domainObjectName="User"></table>
+        <!--&lt;!&ndash;身份信息表&ndash;&gt;-->
+        <!--<table tableName="admin_info" domainObjectName="Admin"></table>-->
+        <!--<table tableName="stu_info" domainObjectName="Student"></table>-->
+        <!--<table tableName="tea_info" domainObjectName="Teacher"></table>-->
+        <!--<table tableName="watcher_info" domainObjectName="Watcher"></table>-->
 
-        <!--学院表-->
-        <table tableName="college" domainObjectName="College"></table>
+        <!--&lt;!&ndash;学院表&ndash;&gt;-->
+        <!--<table tableName="college" domainObjectName="College"></table>-->
 
-        <!--申报信息表-->
-        <table tableName="credit_record" domainObjectName="Record"></table>
+        <!--&lt;!&ndash;申报信息表&ndash;&gt;-->
+        <!--<table tableName="credit_record" domainObjectName="Record"></table>-->
 
-        <!--学分表-->
-        <table tableName="credit" domainObjectName="Credit"></table>
+        <!--&lt;!&ndash;学分表&ndash;&gt;-->
+        <!--<table tableName="credit" domainObjectName="Credit"></table>-->
 
-        <!--学院学生表-->
-        <table tableName="college_stu_01" domainObjectName="College_mks"></table>
+        <!--&lt;!&ndash;学院学生表&ndash;&gt;-->
+        <!--<table tableName="college_stu_01" domainObjectName="College_mks"></table>-->
         <!--<table tableName="college_stu_02" domainObjectName="College_zf"></table>-->
         <!--<table tableName="college_stu_03" domainObjectName="College_jy"></table>-->
         <!--<table tableName="college_stu_04" domainObjectName="College_ty"></table>-->

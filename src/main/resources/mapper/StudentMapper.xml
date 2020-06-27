@@ -8,7 +8,7 @@
     <result column="name" property="name" jdbcType="VARCHAR" />
     <result column="institute" property="institute" jdbcType="VARCHAR" />
     <result column="major" property="major" jdbcType="VARCHAR" />
-    <result column="className" property="className" jdbcType="VARCHAR" />
+    <result column="class_name" property="className" jdbcType="VARCHAR" />
     <result column="gender" property="gender" jdbcType="CHAR" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
@@ -72,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, stu_number, password, name, institute, major, className, gender, phone, email
+    id, stu_number, password, name, institute, major, class_name, gender, phone, email
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.StudentExample" >
     select
@@ -107,7 +107,7 @@
   <insert id="insert" parameterType="com.bean.Student" >
     insert into stu_info (id, stu_number, password, 
       name, institute, major, 
-      className, gender, phone, 
+      class_name, gender, phone, 
       email)
     values (#{id,jdbcType=INTEGER}, #{stuNumber,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
       #{name,jdbcType=VARCHAR}, #{institute,jdbcType=VARCHAR}, #{major,jdbcType=VARCHAR}, 
@@ -136,7 +136,7 @@
         major,
       </if>
       <if test="className != null" >
-        className,
+        class_name,
       </if>
       <if test="gender != null" >
         gender,
@@ -209,7 +209,7 @@
         major = #{record.major,jdbcType=VARCHAR},
       </if>
       <if test="record.className != null" >
-        className = #{record.className,jdbcType=VARCHAR},
+        class_name = #{record.className,jdbcType=VARCHAR},
       </if>
       <if test="record.gender != null" >
         gender = #{record.gender,jdbcType=CHAR},
@@ -233,7 +233,7 @@
       name = #{record.name,jdbcType=VARCHAR},
       institute = #{record.institute,jdbcType=VARCHAR},
       major = #{record.major,jdbcType=VARCHAR},
-      className = #{record.className,jdbcType=VARCHAR},
+      class_name = #{record.className,jdbcType=VARCHAR},
       gender = #{record.gender,jdbcType=CHAR},
       phone = #{record.phone,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR}
@@ -260,7 +260,7 @@
         major = #{major,jdbcType=VARCHAR},
       </if>
       <if test="className != null" >
-        className = #{className,jdbcType=VARCHAR},
+        class_name = #{className,jdbcType=VARCHAR},
       </if>
       <if test="gender != null" >
         gender = #{gender,jdbcType=CHAR},
@@ -281,7 +281,7 @@
       name = #{name,jdbcType=VARCHAR},
       institute = #{institute,jdbcType=VARCHAR},
       major = #{major,jdbcType=VARCHAR},
-      className = #{className,jdbcType=VARCHAR},
+      class_name = #{className,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=CHAR},
       phone = #{phone,jdbcType=VARCHAR},
       email = #{email,jdbcType=VARCHAR}

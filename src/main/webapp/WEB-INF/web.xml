@@ -2,6 +2,7 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee"
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
          version="2.5">
+
     <display-name>Archetype Created Web Application</display-name>
 
     <!--页面开始界面-->
@@ -23,14 +24,6 @@
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>
         </init-param>
-        <!--<init-param>-->
-        <!--<param-name>forceRequestEncoding</param-name>-->
-        <!--<param-value>true</param-value>-->
-        <!--</init-param>-->
-        <!--<init-param>-->
-        <!--<param-name>forceResponseEncoding</param-name>-->
-        <!--<param-value>ture</param-value>-->
-        <!--</init-param>-->
     </filter>
 
     <!--rest风格的URL，将普通的post请求转为delete或put-->

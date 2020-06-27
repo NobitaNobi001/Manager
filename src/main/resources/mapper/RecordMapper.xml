@@ -7,12 +7,12 @@
     <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
     <result column="date" property="date" jdbcType="CHAR" />
     <result column="sort" property="sort" jdbcType="VARCHAR" />
+    <result column="picture" property="picture" jdbcType="VARCHAR" />
     <result column="apply_credit" property="applyCredit" jdbcType="DOUBLE" />
     <result column="audit_credit" property="auditCredit" jdbcType="DOUBLE" />
     <result column="audit_tea" property="auditTea" jdbcType="VARCHAR" />
   </resultMap>
-  <resultMap id="ResultMapWithBLOBs" type="com.bean.RecordWithBLOBs" extends="BaseResultMap" >
-    <result column="picture" property="picture" jdbcType="LONGVARBINARY" />
+  <resultMap id="ResultMapWithBLOBs" type="com.bean.Record" extends="BaseResultMap" >
     <result column="words" property="words" jdbcType="LONGVARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -74,10 +74,10 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, stu_number, stu_name, date, sort, apply_credit, audit_credit, audit_tea
+    id, stu_number, stu_name, date, sort, picture, apply_credit, audit_credit, audit_tea
   </sql>
   <sql id="Blob_Column_List" >
-    picture, words
+    words
   </sql>
   <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="com.bean.RecordExample" >
     select
@@ -127,17 +127,17 @@
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.bean.RecordWithBLOBs" >
+  <insert id="insert" parameterType="com.bean.Record" >
     insert into credit_record (id, stu_number, stu_name, 
-      date, sort, apply_credit, 
-      audit_credit, audit_tea, picture, 
-      words)
+      date, sort, picture, apply_credit, 
+      audit_credit, audit_tea, words
+      )
     values (#{id,jdbcType=INTEGER}, #{stuNumber,jdbcType=INTEGER}, #{stuName,jdbcType=VARCHAR}, 
-      #{date,jdbcType=CHAR}, #{sort,jdbcType=VARCHAR}, #{applyCredit,jdbcType=DOUBLE}, 
-      #{auditCredit,jdbcType=DOUBLE}, #{auditTea,jdbcType=VARCHAR}, #{picture,jdbcType=LONGVARBINARY}, 
-      #{words,jdbcType=LONGVARCHAR})
+      #{date,jdbcType=CHAR}, #{sort,jdbcType=VARCHAR}, #{picture,jdbcType=VARCHAR}, #{applyCredit,jdbcType=DOUBLE}, 
+      #{auditCredit,jdbcType=DOUBLE}, #{auditTea,jdbcType=VARCHAR}, #{words,jdbcType=LONGVARCHAR}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.bean.RecordWithBLOBs" >
+  <insert id="insertSelective" parameterType="com.bean.Record" >
     insert into credit_record
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -155,6 +155,9 @@
       <if test="sort != null" >
         sort,
       </if>
+      <if test="picture != null" >
+        picture,
+      </if>
       <if test="applyCredit != null" >
         apply_credit,
       </if>
@@ -163,9 +166,6 @@
       </if>
       <if test="auditTea != null" >
         audit_tea,
-      </if>
-      <if test="picture != null" >
-        picture,
       </if>
       <if test="words != null" >
         words,
@@ -187,6 +187,9 @@
       <if test="sort != null" >
         #{sort,jdbcType=VARCHAR},
       </if>
+      <if test="picture != null" >
+        #{picture,jdbcType=VARCHAR},
+      </if>
       <if test="applyCredit != null" >
         #{applyCredit,jdbcType=DOUBLE},
       </if>
@@ -195,9 +198,6 @@
       </if>
       <if test="auditTea != null" >
         #{auditTea,jdbcType=VARCHAR},
-      </if>
-      <if test="picture != null" >
-        #{picture,jdbcType=LONGVARBINARY},
       </if>
       <if test="words != null" >
         #{words,jdbcType=LONGVARCHAR},
@@ -228,6 +228,9 @@
       <if test="record.sort != null" >
         sort = #{record.sort,jdbcType=VARCHAR},
       </if>
+      <if test="record.picture != null" >
+        picture = #{record.picture,jdbcType=VARCHAR},
+      </if>
       <if test="record.applyCredit != null" >
         apply_credit = #{record.applyCredit,jdbcType=DOUBLE},
       </if>
@@ -236,9 +239,6 @@
       </if>
       <if test="record.auditTea != null" >
         audit_tea = #{record.auditTea,jdbcType=VARCHAR},
-      </if>
-      <if test="record.picture != null" >
-        picture = #{record.picture,jdbcType=LONGVARBINARY},
       </if>
       <if test="record.words != null" >
         words = #{record.words,jdbcType=LONGVARCHAR},
@@ -255,10 +255,10 @@
       stu_name = #{record.stuName,jdbcType=VARCHAR},
       date = #{record.date,jdbcType=CHAR},
       sort = #{record.sort,jdbcType=VARCHAR},
+      picture = #{record.picture,jdbcType=VARCHAR},
       apply_credit = #{record.applyCredit,jdbcType=DOUBLE},
       audit_credit = #{record.auditCredit,jdbcType=DOUBLE},
       audit_tea = #{record.auditTea,jdbcType=VARCHAR},
-      picture = #{record.picture,jdbcType=LONGVARBINARY},
       words = #{record.words,jdbcType=LONGVARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -271,6 +271,7 @@
       stu_name = #{record.stuName,jdbcType=VARCHAR},
       date = #{record.date,jdbcType=CHAR},
       sort = #{record.sort,jdbcType=VARCHAR},
+      picture = #{record.picture,jdbcType=VARCHAR},
       apply_credit = #{record.applyCredit,jdbcType=DOUBLE},
       audit_credit = #{record.auditCredit,jdbcType=DOUBLE},
       audit_tea = #{record.auditTea,jdbcType=VARCHAR}
@@ -278,7 +279,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.bean.RecordWithBLOBs" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.bean.Record" >
     update credit_record
     <set >
       <if test="stuNumber != null" >
@@ -293,6 +294,9 @@
       <if test="sort != null" >
         sort = #{sort,jdbcType=VARCHAR},
       </if>
+      <if test="picture != null" >
+        picture = #{picture,jdbcType=VARCHAR},
+      </if>
       <if test="applyCredit != null" >
         apply_credit = #{applyCredit,jdbcType=DOUBLE},
       </if>
@@ -302,25 +306,22 @@
       <if test="auditTea != null" >
         audit_tea = #{auditTea,jdbcType=VARCHAR},
       </if>
-      <if test="picture != null" >
-        picture = #{picture,jdbcType=LONGVARBINARY},
-      </if>
       <if test="words != null" >
         words = #{words,jdbcType=LONGVARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bean.RecordWithBLOBs" >
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.bean.Record" >
     update credit_record
     set stu_number = #{stuNumber,jdbcType=INTEGER},
       stu_name = #{stuName,jdbcType=VARCHAR},
       date = #{date,jdbcType=CHAR},
       sort = #{sort,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
       apply_credit = #{applyCredit,jdbcType=DOUBLE},
       audit_credit = #{auditCredit,jdbcType=DOUBLE},
       audit_tea = #{auditTea,jdbcType=VARCHAR},
-      picture = #{picture,jdbcType=LONGVARBINARY},
       words = #{words,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -330,6 +331,7 @@
       stu_name = #{stuName,jdbcType=VARCHAR},
       date = #{date,jdbcType=CHAR},
       sort = #{sort,jdbcType=VARCHAR},
+      picture = #{picture,jdbcType=VARCHAR},
       apply_credit = #{applyCredit,jdbcType=DOUBLE},
       audit_credit = #{auditCredit,jdbcType=DOUBLE},
       audit_tea = #{auditTea,jdbcType=VARCHAR}

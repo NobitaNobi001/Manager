@@ -504,73 +504,73 @@ public class StudentExample {
             return (Criteria) this;
         }
 
-        public Criteria andClassIsNull() {
-            addCriterion("class is null");
+        public Criteria andClassNameIsNull() {
+            addCriterion("class_name is null");
             return (Criteria) this;
         }
 
-        public Criteria andClassIsNotNull() {
-            addCriterion("class is not null");
+        public Criteria andClassNameIsNotNull() {
+            addCriterion("class_name is not null");
             return (Criteria) this;
         }
 
-        public Criteria andClassEqualTo(String value) {
-            addCriterion("class =", value, "class");
+        public Criteria andClassNameEqualTo(String value) {
+            addCriterion("class_name =", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNotEqualTo(String value) {
-            addCriterion("class <>", value, "class");
+        public Criteria andClassNameNotEqualTo(String value) {
+            addCriterion("class_name <>", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassGreaterThan(String value) {
-            addCriterion("class >", value, "class");
+        public Criteria andClassNameGreaterThan(String value) {
+            addCriterion("class_name >", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassGreaterThanOrEqualTo(String value) {
-            addCriterion("class >=", value, "class");
+        public Criteria andClassNameGreaterThanOrEqualTo(String value) {
+            addCriterion("class_name >=", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassLessThan(String value) {
-            addCriterion("class <", value, "class");
+        public Criteria andClassNameLessThan(String value) {
+            addCriterion("class_name <", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassLessThanOrEqualTo(String value) {
-            addCriterion("class <=", value, "class");
+        public Criteria andClassNameLessThanOrEqualTo(String value) {
+            addCriterion("class_name <=", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassLike(String value) {
-            addCriterion("class like", value, "class");
+        public Criteria andClassNameLike(String value) {
+            addCriterion("class_name like", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNotLike(String value) {
-            addCriterion("class not like", value, "class");
+        public Criteria andClassNameNotLike(String value) {
+            addCriterion("class_name not like", value, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassIn(List<String> values) {
-            addCriterion("class in", values, "class");
+        public Criteria andClassNameIn(List<String> values) {
+            addCriterion("class_name in", values, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNotIn(List<String> values) {
-            addCriterion("class not in", values, "class");
+        public Criteria andClassNameNotIn(List<String> values) {
+            addCriterion("class_name not in", values, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassBetween(String value1, String value2) {
-            addCriterion("class between", value1, value2, "class");
+        public Criteria andClassNameBetween(String value1, String value2) {
+            addCriterion("class_name between", value1, value2, "className");
             return (Criteria) this;
         }
 
-        public Criteria andClassNotBetween(String value1, String value2) {
-            addCriterion("class not between", value1, value2, "class");
+        public Criteria andClassNameNotBetween(String value1, String value2) {
+            addCriterion("class_name not between", value1, value2, "className");
             return (Criteria) this;
         }
 
