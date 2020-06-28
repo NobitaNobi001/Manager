@@ -21,7 +21,7 @@
             <form action="${APP_PATH}/checkuser" method="post" onsubmit="return check()">
                 <h4>登录</h4>
                 <br>
-                <div><input type="text" name="Number" id="stuNumber" placeholder="用户名" onchange="checkuser()"/>
+                <div><input type="text" name="Number" id="Number" placeholder="用户名" onchange="checkuser()"/>
                     <span id="checktext">${msg}</span>
                 </div>
                 <div><input type="password" name="password" id="password" placeholder="密码" onchange="checkpwd()"/></div>

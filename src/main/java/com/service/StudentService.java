@@ -35,4 +35,8 @@ public class StudentService {
         return student;
 
     }
+    public Student selectByPrimaryKey(Integer id){
+        Student student = studentMapper.selectByPrimaryKey(id);
+        return student;
+    }
 }
