@@ -45,7 +45,7 @@ public class UserController {
      * @param type      身份类型
      */
     @RequestMapping(value = "/checkuser", method = RequestMethod.POST)
-    public String checkUser(@RequestParam("stuNumber") Integer stuNumber, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest request) {
+    public String checkUser(@RequestParam("stuNumber") Integer stuNumber, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest request,Model model) {
 
         //学生身份
         if (type == 1) {
@@ -54,11 +54,13 @@ public class UserController {
             isSuccess = studentService.check(stuNumber, password);
 
             if (isSuccess) {    //如果用户名和密码成功匹配
+                //session里面存储学生的学号信息
+                request.getSession().setAttribute("stu_number", stuNumber);
                 //重定向到学生的首页
                 return "redirect:/student/index";
             } else {    //失败就向session中存放失败的信息 前台可以获取到
                 request.getSession().setAttribute("msg", "用户名或密码错误");
-                return "redirect:/login.jsp";
+                return "redirect:login.jsp";
             }
         } else if (type == 2) {     //教师身份
 

@@ -99,7 +99,6 @@ form.form .item .value .notice{padding: 5px 0;font-size: 12px;line-height: 27px;
 .btn-danger {background-image: -webkit-linear-gradient(top,#d9534f 0,#c12e2a 100%);background-image: -o-linear-gradient(top,#d9534f 0,#c12e2a 100%);background-image: -webkit-gradient(linear,left top,left bottom,from(#d9534f),to(#c12e2a));background-image: linear-gradient(to bottom,#d9534f 0,#c12e2a 100%);background-repeat: repeat-x;border-color: #b92c28;}
 .btn-link{background-color: transparent;-webkit-box-shadow: none;box-shadow: none;}
 
-
 /* btn focus hover */
 .btn:focus, .btn:hover{color: #333;text-decoration: none;}
 /* btn active */

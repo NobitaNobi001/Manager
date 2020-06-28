@@ -29,4 +29,8 @@ public class StudentService {
         }
         return false;
     }
+    public Student selectByPrimaryKey(Integer id){
+        Student student = studentMapper.selectByPrimaryKey(id);
+        return student;
+    }
 }
