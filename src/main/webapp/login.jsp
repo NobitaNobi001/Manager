@@ -20,23 +20,27 @@
         <div class="login-form">
             <form action="${APP_PATH}/checkuser" method="post" onsubmit="return check()">
                 <h4>登录</h4>
-                <br></br>
-                <div><input type="text" name="stuNumber" id="stuNumber"  placeholder="学号" onchange="checkuser()"/>
-                    <span id="checktext"></span>
+                <br>
+                <div><input type="text" name="stuNumber" id="stuNumber" placeholder="用户名" onchange="checkuser()"/>
+                    <span id="checktext">${msg}</span>
                 </div>
-                <div><input type="password" name="password" id="password"  placeholder="密码" onchange="checkpwd()"/></div>
+                <div><input type="password" name="password" id="password" placeholder="密码" onchange="checkpwd()"/></div>
                 <div class="type">
-                    <label><input type="radio" name="type" id="type1" value="1" checked="checked" />学生</label>
-                    <label><input type="radio" name="type" id="type2" value="2" />教师</label>
-                    <label><input type="radio" name="type" id="type3" value="3" />督查</label>
-                    <label><input type="radio" name="type" id="type4" value="4" />管理员</label>
+                    <label><input type="radio" name="type" id="type1" value="1" checked="checked"/>学生</label>
+                    <label><input type="radio" name="type" id="type2" value="2"/>教师</label>
+                    <label><input type="radio" name="type" id="type3" value="3"/>督查</label>
+                    <label><input type="radio" name="type" id="type4" value="4"/>管理员</label>
                 </div>
-                <br></br>
-                <div><button type="submit">登录</button></div>
+                <br>
+                <div>
+                    <button type="submit">登录</button>
+                </div>
             </form>
         </div>
         <div class="foot">
-            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院 版权所有</div>
+            <div class="copyright">Copyright  2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+                版权所有
+            </div>
         </div>
     </div>
 </div>
@@ -48,10 +52,17 @@
         var check=false;
         var stuNumber=document.getElementById("stuNumber").value;
         stuNumber=stuNumber.trim();
-        if(stuNumber==""){
+        if(stuNumber==""){//学号为空
+            document.getElementById("checktext").innerText="请您输入学号";
             check=false;
         }else{
-            check=true;
+            var reg = /^\d+$|^\d+[.]?\d+$/;
+            if(reg.test(stuNumber)){//学号不为空，正则表达式也正常
+                check=true;
+            }else{//学号不为空但输入格式错误,只能输入数字
+                document.getElementById("checktext").innerText="用户名格式有误";
+                check=false;
+            }
         }
         return check;
     }
@@ -59,7 +70,9 @@
     function checkpwd() {
         var check=false;
         var password=document.getElementById("password").value;
-        if(password==""||password.length==0){
+        password=password.trim();
+        if(password==""||password.length==0){//密码为空
+            document.getElementById("checktext").innerText="请您输入密码";
             check=false;
         }else {
             check=true;
@@ -68,18 +81,6 @@
     }
 
     function check() {
-        if(checkuser()==true&&checkpwd()==true){//输入正确
-            //后台验证
-            var msg=${pageContext.session.getAttribute(msg)};
-            if(msg=="用户名或密码错误"){
-                document.getElementById("checktext").innerText="用户名或密码错误";
-                return false;
-            }
-        }else if(checkuser()==true&&checkpwd()==false){//学号不为空但密码为空
-            document.getElementById("checktext").innerText="请您输入密码";
-        }else if(checkuser()==false&&checkpwd()==false){//学号和密码都为空
-            document.getElementById("checktext").innerText="请您输入学号/密码";
-        }
         var check=checkuser()&&checkpwd();
         return check;
     }

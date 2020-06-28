@@ -8,13 +8,14 @@ import com.service.StudentService;
 import com.service.TeacherService;
 import com.service.WatcherService;
 
-import org.apache.shiro.web.session.HttpServletSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -44,7 +45,7 @@ public class UserController {
      * @param type      身份类型
      */
     @RequestMapping(value = "/checkuser", method = RequestMethod.POST)
-    public String checkUser(@RequestParam("stuNumber") Integer stuNumber, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest httpServletRequest) {
+    public String checkUser(@RequestParam("stuNumber") Integer stuNumber, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest request) {
 
         //学生身份
         if (type == 1) {
@@ -55,9 +56,8 @@ public class UserController {
             if (isSuccess) {    //如果用户名和密码成功匹配
                 //重定向到学生的首页
                 return "redirect:/student/index";
-
             } else {    //失败就向session中存放失败的信息 前台可以获取到
-                httpServletRequest.getSession().setAttribute("msg", "用户名或密码错误");
+                request.getSession().setAttribute("msg", "用户名或密码错误");
                 return "redirect:/login.jsp";
             }
         } else if (type == 2) {     //教师身份
@@ -67,7 +67,6 @@ public class UserController {
         } else if (type == 4) {     //督察身份
 
         }
-
         return "";
     }
 
