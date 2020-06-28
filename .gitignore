@@ -19,3 +19,4 @@ target/
 bin/
 tep/
 
+/src/main/resources/dbconf.properties

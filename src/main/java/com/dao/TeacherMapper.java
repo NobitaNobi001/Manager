@@ -27,4 +27,11 @@ public interface TeacherMapper {
     int updateByPrimaryKeySelective(Teacher record);
 
     int updateByPrimaryKey(Teacher record);
+
+    /**
+     * 查找教师账密
+     * @param teaNumber 教工号
+     * @return
+     */
+    Teacher selectUPByTeaNumber(Integer teaNumber);
 }

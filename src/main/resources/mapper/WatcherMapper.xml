@@ -10,6 +10,10 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="UserNameAndPassword" type="com.bean.Watcher">
+    <result column="watcher_number" property="watcherNumber" jdbcType="INTEGER"/>
+    <result column="password" property="password" jdbcType="VARCHAR"/>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -85,6 +89,12 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <!--根据督察帐号查找督察的用户名和密码信息-->
+  <select id="selectUPByWatcherNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
+    select watcher_number,password from watcher_info where watcher_number = #{watcher_number,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

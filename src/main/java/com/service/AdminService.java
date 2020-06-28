@@ -13,8 +13,12 @@ public class AdminService {
     @Autowired
     private AdminMapper adminMapper;
 
-    public List<Admin> getAdmins(){
-        return adminMapper.selectByExample(null);
+    public Admin selectUPByAdminNumber(Integer adminNumber){
+
+        //通过dao层将数据进行查出
+        Admin admin = adminMapper.selectUPByAdminNumber(adminNumber);
+
+        return admin;
     }
 
 }

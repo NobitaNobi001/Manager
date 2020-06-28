@@ -23,15 +23,6 @@ public class Student {
 
     private String email;
 
-    public Student(){
-
-    }
-
-    public Student(Integer stuNumber, String password) {
-        this.stuNumber = stuNumber;
-        this.password = password;
-    }
-
     public Integer getId() {
         return id;
     }
