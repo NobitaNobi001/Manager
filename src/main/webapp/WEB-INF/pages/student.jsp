@@ -5,5 +5,6 @@
 </head>
 <body>
     <h1>Page Index</h1>
+    <h2>${number }</h2>
 </body>
 </html>

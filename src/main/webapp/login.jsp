@@ -21,15 +21,15 @@
             <form action="${APP_PATH}/checkuser" method="post" onsubmit="return check()">
                 <h4>登录</h4>
                 <br>
-                <div><input type="text" name="stuNumber" id="stuNumber" placeholder="用户名" onchange="checkuser()"/>
+                <div><input type="text" name="Number" id="stuNumber" placeholder="用户名" onchange="checkuser()"/>
                     <span id="checktext">${msg}</span>
                 </div>
                 <div><input type="password" name="password" id="password" placeholder="密码" onchange="checkpwd()"/></div>
                 <div class="type">
-                    <label><input type="radio" name="type" id="type1" value="1" checked="checked"/>学生</label>
-                    <label><input type="radio" name="type" id="type2" value="2"/>教师</label>
-                    <label><input type="radio" name="type" id="type3" value="3"/>督查</label>
-                    <label><input type="radio" name="type" id="type4" value="4"/>管理员</label>
+                    <label><input type="radio" name="type" id="type1" value="Student" checked="checked"/>学生</label>
+                    <label><input type="radio" name="type" id="type2" value="Teacher"/>教师</label>
+                    <label><input type="radio" name="type" id="type3" value="Watcher"/>督查</label>
+                    <label><input type="radio" name="type" id="type4" value="Admin"/>管理员</label>
                 </div>
                 <br>
                 <div>
@@ -48,16 +48,17 @@
 </html>
 <script src="webjars/jquery/3.1.1/jquery.js"></script>
 <script type="text/javascript">
+
     function checkuser() {
         var check = false;
-        var stuNumber = document.getElementById("stuNumber").value;
-        stuNumber = stuNumber.trim();
-        if (stuNumber == "") {//学号为空
+        var Number = document.getElementById("Number").value;
+        Number = Number.trim();
+        if (Number == "") {//学号为空
             document.getElementById("checktext").innerText = "请您输入学号";
             check = false;
         } else {
             var reg = /^\d+$|^\d+[.]?\d+$/;
-            if (reg.test(stuNumber)) {//学号不为空，正则表达式也正常
+            if (reg.test(Number)) {//学号不为空，正则表达式也正常
                 check = true;
             } else {//学号不为空但输入格式错误,只能输入数字
                 document.getElementById("checktext").innerText = "用户名格式有误";

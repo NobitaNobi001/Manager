@@ -11,6 +11,10 @@
     <result column="phone" property="phone" jdbcType="VARCHAR" />
     <result column="email" property="email" jdbcType="VARCHAR" />
   </resultMap>
+  <resultMap id="UserNameAndPassword" type="com.bean.Teacher">
+    <result column="tea_number" property="teaNumber" jdbcType="INTEGER"/>
+    <result column="password" property="password" jdbcType="VARCHAR"/>
+  </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -86,6 +90,12 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <!--根据教工帐号查找教师的用户名和密码信息-->
+  <select id="selectUPByTeaNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
+    select tea_number,password from tea_info where tea_number = #{tea_number,jdbcType=INTEGER}
+  </select>
+
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />

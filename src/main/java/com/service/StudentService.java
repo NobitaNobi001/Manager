@@ -14,19 +14,25 @@ public class StudentService {
     @Autowired
     private StudentMapper studentMapper;
 
-    Student student = null;
 
-    public boolean check(Integer stuNumber, String password) {
+    /**
+     *
+     * @param stuNumber 学生学号
+     * @return 查询到的学生
+     */
+    public Student selectUPByStuNumber(Integer stuNumber) {
 
-        student = new Student(stuNumber, password);
+        //通过dao层将数据进行查出
+        Student student = studentMapper.selectUPByStuNumber(stuNumber);
 
-        List<Student> students = studentMapper.selectBase(student);
+        return student;
+    }
 
-        for (Student student : students) {
-            if (student.getStuNumber().equals(stuNumber) && student.getPassword().equals(password)) {
-                return true;
-            }
-        }
-        return false;
+    public Student selectStudentByStuNumber(Integer stuNumber){
+
+        Student student = studentMapper.selectStudentByStuNumber(stuNumber);
+
+        return student;
+
     }
 }
