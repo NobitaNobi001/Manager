@@ -38,7 +38,7 @@
             </form>
         </div>
         <div class="foot">
-            <div class="copyright">Copyright  2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+            <div class="copyright">Copyright 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
                 版权所有
             </div>
         </div>
@@ -49,39 +49,39 @@
 <script src="webjars/jquery/3.1.1/jquery.js"></script>
 <script type="text/javascript">
     function checkuser() {
-        var check=false;
-        var stuNumber=document.getElementById("stuNumber").value;
-        stuNumber=stuNumber.trim();
-        if(stuNumber==""){//学号为空
-            document.getElementById("checktext").innerText="请您输入学号";
-            check=false;
-        }else{
+        var check = false;
+        var stuNumber = document.getElementById("stuNumber").value;
+        stuNumber = stuNumber.trim();
+        if (stuNumber == "") {//学号为空
+            document.getElementById("checktext").innerText = "请您输入学号";
+            check = false;
+        } else {
             var reg = /^\d+$|^\d+[.]?\d+$/;
-            if(reg.test(stuNumber)){//学号不为空，正则表达式也正常
-                check=true;
-            }else{//学号不为空但输入格式错误,只能输入数字
-                document.getElementById("checktext").innerText="用户名格式有误";
-                check=false;
+            if (reg.test(stuNumber)) {//学号不为空，正则表达式也正常
+                check = true;
+            } else {//学号不为空但输入格式错误,只能输入数字
+                document.getElementById("checktext").innerText = "用户名格式有误";
+                check = false;
             }
         }
         return check;
     }
 
     function checkpwd() {
-        var check=false;
-        var password=document.getElementById("password").value;
-        password=password.trim();
-        if(password==""||password.length==0){//密码为空
-            document.getElementById("checktext").innerText="请您输入密码";
-            check=false;
-        }else {
-            check=true;
+        var check = false;
+        var password = document.getElementById("password").value;
+        password = password.trim();
+        if (password == "" || password.length == 0) {//密码为空
+            document.getElementById("checktext").innerText = "请您输入密码";
+            check = false;
+        } else {
+            check = true;
         }
         return check;
     }
 
     function check() {
-        var check=checkuser()&&checkpwd();
+        var check = checkuser() && checkpwd();
         return check;
     }
 </script>
