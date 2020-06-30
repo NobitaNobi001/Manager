@@ -45,4 +45,15 @@ public class StudentService {
     public boolean updataStuByNullInfo(Student student){
         return  studentMapper.updataStuByNullInfo(student);
     }
+
+    //判断输入的密码和原有密码是否相同，相同的话更新密码
+    public boolean updateStuPwd(int stuNumber,String oldPwd,String newPwd){
+        String password = studentMapper.selectUPByStuNumber(stuNumber).getPassword();
+        if(password.equals(oldPwd)){
+            studentMapper.updateStuPwdByStuNumber(stuNumber, newPwd);
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

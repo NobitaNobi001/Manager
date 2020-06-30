@@ -107,7 +107,7 @@
         <include refid="Base_Column_List"/>
         from stu_info where stu_number= #{stu_number,jdbcType=INTEGER}
     </select>
-
+    <!--根据主键来查询学生-->
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
@@ -307,7 +307,6 @@
       email = #{email,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
     <update id="updataStuByNullInfo">
         update stu_info
         <set>
@@ -324,5 +323,9 @@
         <where>
             id=#{id}
         </where>
+    </update>
+
+    <update id="updateStuPwdByStuNumber">
+        update stu_info set password=#{password} where stu_number=#{stuNumber}
     </update>
 </mapper>

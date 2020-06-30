@@ -19,7 +19,7 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="profile.jsp">湖北文理学院&nbsp;&nbsp;${student.name}(${student.stuNumber})</a>
+                    <a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.name}(${student.stuNumber})</a>
                     <a href="/login.jsp">退出</a>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                 <ul>
                     <li class="title"><a href="javascript:;">个人中心</a></li>
                     <li><a href="${APP_PATH}/student/stuIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/student/stuInfo/${student.id}">个人信息</a></li>
+                    <li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -39,14 +39,14 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:void (0);">账号管理</a></li>
-                    <li><a href="${APP_PATH}/student/stuInfo/${student.id}">完善信息</a></li>
-                    <li><a href="password.html">修改密码</a></li>
+                    <li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">完善信息</a></li>
+                    <li><a href="${APP_PATH}/student/toupdatepwd/${student.id}">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
                 <div class="credit">
                     <h4>个人信息</h4>
-                    <form action="${APP_PATH}/student/Index" method="post" class="form" onsubmit="return check()">
+                    <form action="${APP_PATH}/student/updateInfo" method="post" class="form" onsubmit="return check()">
                         <input type="hidden" value="${student.id}" name="id">
                         <div class="row item">
                             <div class="col col-2 name">姓名</div>
@@ -127,14 +127,14 @@
            var regExp=/^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/
            if(!regExp.test(phone)){//不合法
                document.getElementById("phonemsg").innerText="手机号码格式有误";
-               document.getElementById("phonemsg").style.backgroundColor='red';
+               document.getElementById("phonemsg").style.color='red';
                return false;
            }else{
                document.getElementById("phonemsg").innerText="";
-               document.getElementById("phonemsg").style.backgroundColor='white';
                return true;
            }
        }else {
+           document.getElementById("phonemsg").innerText="";
            return true;
        }
    }
@@ -144,19 +144,22 @@
             var regExp=/^[A-Za-z0-9-._]+@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,6})$/;
             if(!regExp.test(email)){//不合法
                 document.getElementById("emailmsg").innerText="邮箱地址格式错误";
-                document.getElementById("emailmsg").style.backgroundColor='red';
+                document.getElementById("emailmsg").style.color='red';
                 return false;
             }else {
                 document.getElementById("emailmsg").innerText="";
-                document.getElementById("emailmsg").style.backgroundColor='white';
                 return true;
             }
         }else {
+            document.getElementById("emailmsg").innerText="";
             return true;
         }
    }
    function check() {
        var flag=checkEmail(document.getElementById("email"))&&checkPhone(document.getElementById("phone"));
+       if(flag){
+           alert("修改信息成功");
+       }
        return flag;
    }
 </script>
