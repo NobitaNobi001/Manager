@@ -1,0 +1,26 @@
+body{background: url(../images/login-background.jpg) center center/cover no-repeat;}
+#login{height: 100%;width: 100%;background: rgba(0, 0, 0, .2);}
+#login .login{background: rgba(255, 255, 255, 1);height: 100px;box-shadow: 0 0 5px rgba(0, 153, 0, .6);}
+#login .login .top{width: 1200px;margin: 0 auto;display: flex;align-items: center;line-height: 100px;height: 100px;user-select: none;}
+#login .login .top>div{display: inline-block;}
+#login .login .top img{height: 60px;cursor: pointer;}
+#login .login .top .title{font-size: 20px;font-weight: bold;margin-left: 20px;}
+
+#login .login .login-form{width: 1200px;margin: 0 auto;position: relative;padding: 120px 0;height: 400px;}
+#login .login .login-form form{background: #fff;width: 350px;height: 420px;position: absolute;right: 0;}
+#login .login .login-form form h4{padding: 24px 20px;box-sizing: border-box;font-size: 16px;border-bottom: 1px solid #090;margin-bottom: 15px;}
+#login .login .login-form form div{padding: 10px 20px;box-sizing: border-box;}
+#login .login .login-form form div input[type=text],
+#login .login .login-form form div input[type=password]{padding: 12px 15px;box-sizing: border-box;width: 100%;outline: none;border: 1px solid #ddd;}
+#login .login .login-form form div input:focus{border: 1px solid #090;}
+#login .login .login-form form div button{width: 100%;padding: 10px 0;color: #fff;font-weight: bold;background: #090;border: 1px solid #090;outline: none;cursor: pointer;font-size: 14px;}
+#login .login .login-form form div.type{display: flex;justify-content: space-between;align-items: center;padding: 10px 40px;}
+#login .login .foot{text-align: center;font-size: 13px;color: #122b40;}
+#checktext{
+    color: red;
+    font-size: 14px;
+    line-height:20px;
+}
+#Number{
+    line-height:20px;
+}

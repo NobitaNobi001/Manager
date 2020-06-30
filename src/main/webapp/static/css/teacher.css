@@ -1,0 +1,17 @@
+.userinfo{background: rgba(51, 153, 102, .02);border: 1px solid rgba(51, 153, 102, .1);padding: 45px 0;box-sizing: border-box;display: flex;align-items: center;}
+.userinfo>div{float: left;width: 25%;font-size: 17px;}
+.userinfo .avatar{display: flex;justify-content: center;align-items: center;overflow: hidden;width: 70px;height: 70px;border-radius: 50%;box-shadow: 0 1px 5px rgba(0, 0, 0, .2);margin: 0 auto;background-color: rgba(255, 153, 0, .3);}
+.userinfo .avatar .head{font-size: 20px;font-weight: bold;}
+
+.userinfo div{line-height: 24px;}
+
+.declare{margin-top: 20px;}
+.declare h4{padding: 20px;border-bottom: 1px solid rgba(51, 153, 102, .1);background: rgba(51, 153, 102, .02);font-size: 15px;}
+.declare ul{margin-top: 20px;}
+.declare ul li{display: flex;justify-content: space-between;box-sizing: border-box;padding: 10px 30px;font-size: 15px;line-height: 30px;}
+.declare ul li:hover{background: rgba(51, 153, 102, .1);}
+.declare ul li div.title{width: 65%;}
+.declare ul li div.username{width: 10%;text-align: center;}
+.declare ul li div.datetime{width: 15%;text-align: center;}
+.declare ul li div:last-child{width: 10%;text-align: center;}
+.declare ul li div:last-child a{font-size: 12px;}

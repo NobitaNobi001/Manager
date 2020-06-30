@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+         1、配置SecurityManager
+     -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--将缓存管理器交给安全管理器-->
+        <property name="cacheManager" ref="cacheManager"/>
+
+        <!--设置自定义的Realm-->
+        <property name="authenticator" ref="authenticator"/>
+        <property name="realms">
+            <list>
+                <ref bean="studentRealm"/>
+                <ref bean="teacherRealm"/>
+                <ref bean="adminRealm"/>
+                <ref bean="watcherRealm"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--
+        2、配置CacheManager
+    -->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
+
+
+    <!--
+        配置使用自定义认证器，可以实现多Realm认证，并且可以指定特定Realm处理特定类型的验证
+     -->
+    <bean id="authenticator" class="com.shrio.authenticator.RolesRealmAuthenticator">
+        <property name="definedRealms">
+            <map>
+                <entry key="student" value-ref="studentRealm"/>
+                <entry key="teacher" value-ref="teacherRealm"/>
+                <entry key="admin" value-ref="adminRealm"/>
+                <entry key="watcher" value-ref="watcherRealm"/>
+            </map>
+        </property>
+
+        <!--配置认证策略，只要有一个Realm认证成功即可，并返回所有认证成功的信息-->
+        <property name="authenticationStrategy">
+            <bean class="org.apache.shiro.authc.pam.FirstSuccessfulStrategy"/>
+        </property>
+    </bean>
+
+
+    <!--
+        3、配置Realm
+    -->
+    <bean id="studentRealm" class="com.shrio.realms.StudentRealm">
+        <!--配置密码匹配器-->
+        <!--<property name="credentialsMatcher">-->
+            <!--<bean class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">-->
+                <!--&lt;!&ndash; 加密算法为MD5 &ndash;&gt;-->
+                <!--<property name="hashAlgorithmName" value="MD5"></property>-->
+                <!--&lt;!&ndash; 加密次数 &ndash;&gt;-->
+                <!--<property name="hashIterations" value="1024"></property>-->
+            <!--</bean>-->
+        <!--</property>-->
+    </bean>
+    <bean id="teacherRealm" class="com.shrio.realms.TeacherRealm">
+
+    </bean>
+    <bean id="adminRealm" class="com.shrio.realms.AdminRealm">
+
+    </bean>
+    <bean id="watcherRealm" class="com.shrio.realms.WatcherRealm">
+
+    </bean>
+
+
+    <!--
+        4、配置 LifecycleBeanPostProcessor
+        可以自动的来调用配置在 Spring IOC 容器中 shiro bean 的生命周期方法
+    -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+
+    <!--
+        5、 启用 IOC 容器中使用 shiro 的注解. 但必须在配置了 LifecycleBeanPostProcessor 之后才可以使用.
+    -->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+          depends-on="lifecycleBeanPostProcessor"/>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <!--
+        6、配置ShrioFilter 和DelegatingFilterProxy中保持一致
+    -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="/login.jsp"/>
+        <property name="successUrl" value="/list.jps"/>
+        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+
+        <!--配置哪些页面需要受保护 以及需要的权限-->
+        <!--
+			配置哪些页面需要保护
+			以及访问页面的权限
+			拦截器：（这里的url支持Ant风格模式）
+			1）.anon 可以被匿名访问
+			2) .authc 需要认证才能访问
+			3) .logout 登出过滤器
+			这里的url优先匹配
+		 -->
+        <property name="filterChainDefinitions">
+            <value>
+                <!--可以匿名访问-->
+                /login.jsp = anon
+                /static/css/** = anon
+                /static/js/** = anon
+
+                <!--需要认证才可以访问-->
+                /student/** = authc
+                /teacher/** = authc
+                /admin/** = authc
+                /watcher/** = authc
+
+            </value>
+        </property>
+    </bean>
+
+
+</beans>
