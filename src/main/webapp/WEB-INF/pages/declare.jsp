@@ -19,7 +19,7 @@
 							<div class="title">湖北文理学院创新学分系统</div>
 						</div>
 						<div class="top-right right">
-							<a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.name}(${student.stuNumber})</a>
+							<a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.stuName}(${student.stuNumber})</a>
 							<a href="/login.jsp">退出</a>
 						</div>
 					</div>
@@ -27,7 +27,7 @@
 						<ul>
 							<li class="title"><a href="javascript:;">学生中心</a></li>
 							<li><a href="${APP_PATH}/student/stuIndex">首页</a></li>
-							<li><a href="${APP_PATH}/student/toupdataInfo/${student.id}">个人信息</a></li>
+							<li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">个人信息</a></li>
 						</ul>
 					</div>
 				</div>
@@ -39,10 +39,10 @@
 					<div class="main-left left">
 						<ul>
 							<li class="headline"><a href="javascript:;">控制中心</a></li>
-							<li><a href="credit.jsp">学分列表</a></li>
-							<li><a href="declare.jsp">学分申报</a></li>
+							<li><a href="${APP_PATH}/student/toViewCredit/${student.id}">学分列表</a></li>
+							<li><a href="${APP_PATH}/student/toApply/${student.id}">学分申报</a></li>
 							<li class="headline"><a href="javascript:;">账号管理</a></li>
-							<li><a href="${APP_PATH}/student/toupdataInfo/${student.id}">完善信息</a></li>
+							<li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">完善信息</a></li>
 							<li><a href="${APP_PATH}/student/toupdatepwd/${student.id}">修改密码</a></li>
 						</ul>
 					</div>

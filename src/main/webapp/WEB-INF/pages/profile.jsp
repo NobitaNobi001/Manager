@@ -19,7 +19,7 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.name}(${student.stuNumber})</a>
+                    <a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.stuName}(${student.stuNumber})</a>
                     <a href="/login.jsp">退出</a>
                 </div>
             </div>
@@ -38,6 +38,9 @@
         <div class="main clear">
             <div class="main-left left">
                 <ul>
+                    <li class="headline"><a href="javascript:;">控制中心</a></li>
+                    <li><a href="${APP_PATH}/student/toViewCredit/${student.id}">学分列表</a></li>
+                    <li><a href="${APP_PATH}/student/toApply/${student.id}">学分申报</a></li>
                     <li class="headline"><a href="javascript:void (0);">账号管理</a></li>
                     <li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">完善信息</a></li>
                     <li><a href="${APP_PATH}/student/toupdatepwd/${student.id}">修改密码</a></li>
@@ -51,13 +54,13 @@
                         <div class="row item">
                             <div class="col col-2 name">姓名</div>
                             <div class="col col-7 value">
-                                <input type="text"  value="${student.name}" readonly>
+                                <input type="text"  value="${student.stuName}" readonly>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">院系</div>
                             <div class="col col-7 value">
-                                    <input type="text"  value="${student.institute}" readonly>
+                                <input type="text"  value="${student.college.name}" readonly>
                             </div>
                         </div>
                         <div class="row item">
@@ -147,11 +150,11 @@
                 document.getElementById("emailmsg").style.color='red';
                 return false;
             }else {
-                document.getElementById("emailmsg").innerText="";
+                document.getElementById("emailmsg").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;";
                 return true;
             }
         }else {
-            document.getElementById("emailmsg").innerText="";
+            document.getElementById("emailmsg").innerText="&nbsp;&nbsp;&nbsp;&nbsp;";
             return true;
         }
    }
@@ -159,7 +162,9 @@
        var flag=checkEmail(document.getElementById("email"))&&checkPhone(document.getElementById("phone"));
        if(flag){
            alert("修改信息成功");
+       }else{
+           alert("请填写正确的信息")
+           return flag;
        }
-       return flag;
    }
 </script>

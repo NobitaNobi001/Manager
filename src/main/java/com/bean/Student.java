@@ -11,9 +11,9 @@ public class Student implements Serializable {
 
     private String password;
 
-    private String name;
+    private String stuName;
 
-    private String institute;
+    private int collegeId ;
 
     private String major;
 
@@ -24,6 +24,16 @@ public class Student implements Serializable {
     private String phone;
 
     private String email;
+
+    private College college;
+
+    public College getCollege() {
+        return college;
+    }
+
+    public void setCollege(College college) {
+        this.college = college;
+    }
 
     public Student() {
     }
@@ -59,20 +69,20 @@ public class Student implements Serializable {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getStuName() {
+        return stuName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setStuName(String stuName) {
+        this.stuName = stuName;
     }
 
-    public String getInstitute() {
-        return institute;
+    public int getCollegeId() {
+        return collegeId;
     }
 
-    public void setInstitute(String institute) {
-        this.institute = institute == null ? null : institute.trim();
+    public void setCollegeId(int collegeId) {
+        this.collegeId = collegeId;
     }
 
     public String getMajor() {

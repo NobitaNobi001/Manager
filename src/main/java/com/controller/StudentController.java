@@ -18,13 +18,10 @@ public class StudentController {
     //学生首页
     @RequestMapping("/stuIndex")
     public String stuIndex(HttpServletRequest request, Model model){
-
+        //从session中获取学生学号
         Integer stuNumber = (Integer) request.getSession().getAttribute("number");
-
         Student student = studentService.selectStudentByStuNumber(stuNumber);
-
         model.addAttribute("student", student);
-
         return "student";
     }
 
@@ -36,10 +33,10 @@ public class StudentController {
         return "profile";
     }
 
-    //完善信息之后回到首页
+    //将完善信息封装为学生对象 修改数据 之后回到学生首页
     @RequestMapping("/updateInfo")
-    public String updataStuNullInfo(Student student,Model model){
-        boolean flag = studentService.updataStuByNullInfo(student);
+    public String updateStuNullInfo(Student student,Model model){
+        boolean flag = studentService.updateStuInfoById(student);
         Student student1 = studentService.selectByPrimaryKey(student.getId());
         model.addAttribute("student", student1);
         return "redirect:/student/stuIndex";
@@ -51,14 +48,29 @@ public class StudentController {
         model.addAttribute("student",student);
         return "password";
     }
-    //修改密码后去登录页面
-    @ResponseBody
+    //修改密码
+    @ResponseBody//ajax请求
     @RequestMapping(value = "/updatepwd", method = {RequestMethod.POST,RequestMethod.GET})
     public String updatepwd(@RequestParam("stuNumber")int stuNumber,@RequestParam("password")String oldPwd,@RequestParam("pass")String newPwd){
-        if(studentService.updateStuPwd(stuNumber, oldPwd, newPwd)){//修改密码成功
+        if(oldPwd.equals(newPwd)){//新旧密码一致的话
+            return "您输入的新密码和原密码一致，请重新输入!";
+        }else if(studentService.updateStuPwd(stuNumber, oldPwd, newPwd)){//修改密码成功
             return "修改密码成功，将返回登录页面";
         }else{
             return "输入的原密码错误";
         }
+    }
+
+    @RequestMapping("/toViewCredit/{stuID}")
+    public String credit(@PathVariable("stuID")int stuId,Model model){
+        Student student = studentService.selectByPrimaryKey(stuId);
+        model.addAttribute("student",student );
+        return "credit";
+    }
+    @RequestMapping("/toApply/{stuID}")
+    public String declare(@PathVariable("stuID")int stuId,Model model){
+        Student student = studentService.selectByPrimaryKey(stuId);
+        model.addAttribute("student",student );
+        return "declare";
     }
 }

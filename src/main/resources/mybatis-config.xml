@@ -10,8 +10,6 @@
         <!--懒加载-->
         <setting name="lazyLoadingEnabled" value="true"/>
         <setting name="aggressiveLazyLoading" value="false"/>
-        <!--二级缓存-->
-        <setting name="cacheEnabled" value="true"/>
         <!--开启日志-->
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>

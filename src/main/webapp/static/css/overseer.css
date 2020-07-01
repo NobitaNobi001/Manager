@@ -1,0 +1,6 @@
+.userinfo{background: rgba(51, 153, 102, .02);border: 1px solid rgba(51, 153, 102, .1);padding: 45px 0;box-sizing: border-box;display: flex;align-items: center;}
+.userinfo>div{float: left;width: 25%;font-size: 17px;}
+.userinfo .avatar{display: flex;justify-content: center;align-items: center;overflow: hidden;width: 70px;height: 70px;border-radius: 50%;box-shadow: 0 1px 5px rgba(0, 0, 0, .2);margin: 0 auto;background-color: rgba(255, 153, 0, .3);}
+.userinfo .avatar .head{font-size: 20px;font-weight: bold;}
+
+.userinfo div{line-height: 24px;}

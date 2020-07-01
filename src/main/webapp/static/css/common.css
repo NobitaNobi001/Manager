@@ -23,12 +23,18 @@ img{vertical-align: middle;}
 .main{padding: 30px 0;width: 1200px;margin: 0 auto;}
 .main .main-left{width: 120px;text-align: left;line-height: 32px;}
 .main .main-left ul{padding: 0;}
-.main .main-left ul li{font-size: 14px;color: #222;}
+.main .main-left ul li{font-size: 14px;color: #222;padding: 0 15px;}
 .main .main-left ul li.headline{font-size: 15px;font-weight: bold;margin-top: 10px;}
 .main .main-left ul li.headline:first-child{margin-top: 0;}
-.main .main-left ul li a{color: inherit;}
+.main .main-left ul li:hover{background: rgba(0, 0, 0, .1);}
+.main .main-left ul li.headline:hover{background: transparent;}
+.main .main-left ul li a{color: inherit;display: block;}
 .main .main-right{width: 1080px;}
 .main .main-right h4{padding: 20px;border-bottom: 1px solid rgba(51, 153, 102, .1);background: rgba(51, 153, 102, .02);font-size: 15px;color: #090;}
+.main .main-right .action{text-align:right;margin: 10px 0;padding: 10px 0;}
+.main .main-right .action>div{display: inline-block;}
+.main .main-right .action select{padding: 0 1em;height: 33px;border: 1px solid #ddd;outline: none;}
+.main .main-right .action input{padding: 0 1em;height: 33px;border: 1px solid #ddd;outline: none;}
 
 table.table{width: 100%;}
 table.table tr th{padding: 20px 0;text-align: center;font-size: 13px;border-bottom: 1px solid rgba(51, 153, 102, .1);}
@@ -50,7 +56,7 @@ form.form .item .value .notice{padding: 5px 0;font-size: 12px;line-height: 27px;
 
 .row{padding: 0;}
 .row::after{content: '';display: block;clear: both;}
-.col{float: left;padding:auto;}
+.col{float: left;padding: auto;}
 .col-1{width: 8.3333333%;}
 .col-2{width: 16.66666666%;}
 .col-3{width: 25%;}
@@ -98,6 +104,7 @@ form.form .item .value .notice{padding: 5px 0;font-size: 12px;line-height: 27px;
 .btn-warning {background-image: -webkit-linear-gradient(top,#f0ad4e 0,#eb9316 100%);background-image: -o-linear-gradient(top,#f0ad4e 0,#eb9316 100%);background-image: -webkit-gradient(linear,left top,left bottom,from(#f0ad4e),to(#eb9316));background-image: linear-gradient(to bottom,#f0ad4e 0,#eb9316 100%);background-repeat: repeat-x;border-color: #e38d13;}
 .btn-danger {background-image: -webkit-linear-gradient(top,#d9534f 0,#c12e2a 100%);background-image: -o-linear-gradient(top,#d9534f 0,#c12e2a 100%);background-image: -webkit-gradient(linear,left top,left bottom,from(#d9534f),to(#c12e2a));background-image: linear-gradient(to bottom,#d9534f 0,#c12e2a 100%);background-repeat: repeat-x;border-color: #b92c28;}
 .btn-link{background-color: transparent;-webkit-box-shadow: none;box-shadow: none;}
+
 
 /* btn focus hover */
 .btn:focus, .btn:hover{color: #333;text-decoration: none;}
