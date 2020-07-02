@@ -82,42 +82,37 @@ public class StudentController {
         model.addAttribute("student",student );
         return "declare";
     }
+
     @RequestMapping("/credit")
     //提交数据 学号 姓名 申请日期 申请类型 申请材料  申请学分 申请描述(可以为null) 审核学分(教师出处理)  审核老师(教师处理)
     public String apply(@RequestParam("stuNumber")Integer stuNumber,@RequestParam("stuName")String name,@RequestParam("sort")String number,@RequestParam("applyCredit") Double applyCredit,@RequestParam("words")String words,@RequestParam("file") CommonsMultipartFile file,HttpServletRequest request,Model model) throws IOException {
+        StringBuilder path=new StringBuilder(request.getServletContext().getRealPath("/WEB-INF/apply"));
         Date d=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         //获取申请日期
         String date = sdf.format(d);
         //获取文件名：file.getOriginalFilename()
         String uploadFileName=file.getOriginalFilename();
-        //如果文件名为空，直接返回到首页
-        if("".equals(uploadFileName)){
-            return "declare";
-        }
-        System.out.println("上传文件名为:"+uploadFileName);
         //上传路径保存设置 (保存在WEB-INF下面的apply文件夹)
-        String path = request.getServletContext().getRealPath("/WEB-INF/apply");
         //创建3级目录
         Calendar now = Calendar.getInstance();
         //获取年月日
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONDAY) + 1;//0~11
         int day=now.get(Calendar.DAY_OF_MONTH);
-        path=path+"/"+year+"/"+month+"/"+day;
+        path=path.append("/").append(year).append("/").append(month).append("/").append(day);
         //如果路径不保存，创建一个
-        File realPath=new File(path);
+        File realPath=new File(path.toString());
         if(!realPath.exists()){
             realPath.mkdirs();
         }
-        System.out.println("上传文件的保存地址:"+realPath);
         //获取文件输入流
         InputStream is=file.getInputStream();
         //获取文件输出流
         FileOutputStream os = new FileOutputStream(new File(realPath,uploadFileName));
         //读取写出
         int len=0;
-        byte[]buffer=new byte[1024];
+        byte[]buffer=new byte[10240];
         while((len=is.read(buffer))!=-1){
             os.write(buffer, 0, len);
             os.flush();
@@ -138,7 +133,7 @@ public class StudentController {
             case 9:sort="学生工作与社团活动";break;
             case 10:sort="专业认定的其他创新实践活动";break;
         }
-        studentService.addCreditRecord(new Record(stuNumber,name,date,sort,path,applyCredit,words));
+        studentService.addCreditRecord(new Record(stuNumber,name,date,sort,path.append("/").append(uploadFileName).toString(),applyCredit,words));
         Student student = studentService.selectStudentByStuNumber(stuNumber);
         model.addAttribute("student",student );
         return "credit";
