@@ -21,6 +21,19 @@ public class Record {
 
     private String words;
 
+    public Record() {
+    }
+
+    public Record(Integer stuNumber, String stuName, String date, String sort, String picture, Double applyCredit,String words) {
+        this.stuNumber = stuNumber;
+        this.stuName = stuName;
+        this.date = date;
+        this.sort = sort;
+        this.picture = picture;
+        this.applyCredit = applyCredit;
+        this.words=words;
+    }
+
     public Integer getId() {
         return id;
     }

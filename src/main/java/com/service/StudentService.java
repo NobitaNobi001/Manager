@@ -1,7 +1,9 @@
 package com.service;
 
 
+import com.bean.Record;
 import com.bean.Student;
+import com.dao.RecordMapper;
 import com.dao.StudentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,9 @@ public class StudentService {
 
     @Autowired
     private StudentMapper studentMapper;
+
+    @Autowired
+    private RecordMapper recordMapper;
     //通过学号查询密码
     public Student selectUPByStuNumber(Integer stuNumber) {
         Student student = studentMapper.selectUPByStuNumber(stuNumber);
@@ -43,6 +48,16 @@ public class StudentService {
             studentMapper.updateStuPwdByStuNumber(stuNumber, newPwd);
             return true;
         }else{
+            return false;
+        }
+    }
+
+    //新增创建学分申报记录
+    public boolean addCreditRecord(Record record){
+        if(record!=null){
+            recordMapper.insertSelective(record);
+            return true;
+        }else {
             return false;
         }
     }

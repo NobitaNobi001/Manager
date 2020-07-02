@@ -1,9 +1,11 @@
 package com.dao;
 
+import com.bean.Record;
 import com.bean.Student;
 import com.bean.StudentExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 public interface StudentMapper {
     //根据学号查询密码

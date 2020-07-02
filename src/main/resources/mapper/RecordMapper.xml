@@ -137,7 +137,7 @@
       #{auditCredit,jdbcType=DOUBLE}, #{auditTea,jdbcType=VARCHAR}, #{words,jdbcType=LONGVARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.bean.Record" >
+  <insert id="insertSelective" parameterType="com.bean.Record">
     insert into credit_record
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -200,7 +200,7 @@
         #{auditTea,jdbcType=VARCHAR},
       </if>
       <if test="words != null" >
-        #{words,jdbcType=LONGVARCHAR},
+        #{words,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

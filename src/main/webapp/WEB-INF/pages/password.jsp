@@ -50,7 +50,7 @@
                 <!-- 修改密码 start -->
                 <div class="credit">
                     <h4>修改密码</h4>
-                    <form action=""  class="form">
+                    <form  class="form">
                         <div class="row item">
                             <div class="col col-2 name">原密码</div>
                             <div class="col col-7 value">

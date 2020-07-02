@@ -49,7 +49,7 @@
             <div class="main-right right">
                 <div class="credit">
                     <h4>个人信息</h4>
-                    <form action="${APP_PATH}/student/updateInfo" method="post" class="form" onsubmit="return check()">
+                    <form action="${APP_PATH}/student/updateInfo" method="post" class="form">
                         <input type="hidden" value="${student.id}" name="id">
                         <div class="row item">
                             <div class="col col-2 name">姓名</div>
@@ -95,7 +95,7 @@
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">&nbsp;</div>
-                            <div class="col value"><button type="submit" class="btn btn-primary btn-6x">提交保存</button></div>
+                            <div class="col value"><button type="button" class="btn btn-primary btn-6x" onclick="check()">提交保存</button></div>
                         </div>
                     </form>
                 </div>
@@ -114,7 +114,6 @@
 <script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
 <script src="${APP_PATH}/webjars/bootstrap/3.3.5/js/bootstrap.js"></script>
 <script type="text/javascript">
-   //左侧的颜色改变 鼠标悬停效果
    $(function () {//性别的checked选中
        var gender='${student.gender}';
        if($("#male").val()==gender){
@@ -133,11 +132,11 @@
                document.getElementById("phonemsg").style.color='red';
                return false;
            }else{
-               document.getElementById("phonemsg").innerText="";
+               document.getElementById("phonemsg").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;";
                return true;
            }
        }else {
-           document.getElementById("phonemsg").innerText="";
+           document.getElementById("phonemsg").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;";
            return true;
        }
    }
@@ -154,17 +153,21 @@
                 return true;
             }
         }else {
-            document.getElementById("emailmsg").innerText="&nbsp;&nbsp;&nbsp;&nbsp;";
+            document.getElementById("emailmsg").innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;";
             return true;
         }
    }
    function check() {
        var flag=checkEmail(document.getElementById("email"))&&checkPhone(document.getElementById("phone"));
        if(flag){
-           alert("修改信息成功");
+           if($("input[name='gender']:checked").val()=='${student.gender}'&&$("#email").val()=='${student.email}'&&$("#phone").val()=='${student.phone}'){
+               alert("您没有修改信息");
+           }else{
+               alert("修改信息成功");
+               document.forms[0].submit();
+           }
        }else{
            alert("请填写正确的信息")
-           return flag;
        }
    }
 </script>

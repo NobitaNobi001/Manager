@@ -64,4 +64,5 @@
         update stu_info set password=#{password} where stu_number=#{stuNumber}
     </update>
 
+
 </mapper>
