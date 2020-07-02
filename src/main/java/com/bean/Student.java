@@ -1,7 +1,5 @@
 package com.bean;
 
-import sun.security.util.Password;
-
 public class Student {
     private Integer id;
 
@@ -9,9 +7,9 @@ public class Student {
 
     private String password;
 
-    private String name;
+    private String stuName;
 
-    private String institute;
+    private Integer collegeId;
 
     private String major;
 
@@ -22,6 +20,9 @@ public class Student {
     private String phone;
 
     private String email;
+
+    public Student() {
+    }
 
     public Integer getId() {
         return id;
@@ -47,20 +48,20 @@ public class Student {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getStuName() {
+        return stuName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setStuName(String stuName) {
+        this.stuName = stuName == null ? null : stuName.trim();
     }
 
-    public String getInstitute() {
-        return institute;
+    public Integer getCollegeId() {
+        return collegeId;
     }
 
-    public void setInstitute(String institute) {
-        this.institute = institute == null ? null : institute.trim();
+    public void setCollegeId(Integer collegeId) {
+        this.collegeId = collegeId;
     }
 
     public String getMajor() {

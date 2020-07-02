@@ -28,10 +28,5 @@ public interface WatcherMapper {
 
     int updateByPrimaryKey(Watcher record);
 
-    /**
-     * 查找督察账密
-     * @param watcherNumber 督察号
-     * @return
-     */
-    Watcher selectUPByWatcherNumber(Integer watcherNumber);
+    Watcher selectUPByWatcherNumber(Integer adminNumber);
 }

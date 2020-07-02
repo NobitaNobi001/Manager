@@ -1,9 +1,14 @@
+import com.bean.Admin;
+import com.bean.Teacher;
+import com.dao.AdminMapper;
+import com.dao.TeacherMapper;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.DefaultShellCallback;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -19,7 +24,7 @@ public class Test {
     private ApplicationContext atc = null;
 
     {
-        atc = new ClassPathXmlApplicationContext("applicationContext.xml");
+        atc = new ClassPathXmlApplicationContext("spring-dao.xml");
     }
 
     //测试数据库连接
@@ -40,5 +45,15 @@ public class Test {
         DefaultShellCallback callback = new DefaultShellCallback(overwrite);
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration, callback, warnings);
         myBatisGenerator.generate(null);
+    }
+
+    @Autowired
+    private TeacherMapper teacherMapper;
+
+    @org.junit.Test
+    public void selectTeacherUp(){
+        Teacher teacher = new Teacher();
+        teacher.setTeaNumber(2018117111);
+        System.out.println(teacherMapper.insertSelective(teacher));
     }
 }

@@ -364,6 +364,76 @@ public class College_mksExample {
             return (Criteria) this;
         }
 
+        public Criteria andStuClassIsNull() {
+            addCriterion("stu_class is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassIsNotNull() {
+            addCriterion("stu_class is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassEqualTo(String value) {
+            addCriterion("stu_class =", value, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassNotEqualTo(String value) {
+            addCriterion("stu_class <>", value, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassGreaterThan(String value) {
+            addCriterion("stu_class >", value, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassGreaterThanOrEqualTo(String value) {
+            addCriterion("stu_class >=", value, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassLessThan(String value) {
+            addCriterion("stu_class <", value, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassLessThanOrEqualTo(String value) {
+            addCriterion("stu_class <=", value, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassLike(String value) {
+            addCriterion("stu_class like", value, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassNotLike(String value) {
+            addCriterion("stu_class not like", value, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassIn(List<String> values) {
+            addCriterion("stu_class in", values, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassNotIn(List<String> values) {
+            addCriterion("stu_class not in", values, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassBetween(String value1, String value2) {
+            addCriterion("stu_class between", value1, value2, "stuClass");
+            return (Criteria) this;
+        }
+
+        public Criteria andStuClassNotBetween(String value1, String value2) {
+            addCriterion("stu_class not between", value1, value2, "stuClass");
+            return (Criteria) this;
+        }
+
         public Criteria andStuGradeIsNull() {
             addCriterion("stu_grade is null");
             return (Criteria) this;

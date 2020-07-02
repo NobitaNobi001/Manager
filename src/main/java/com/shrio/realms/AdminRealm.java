@@ -1,7 +1,6 @@
 package com.shrio.realms;
 
 import com.bean.Admin;
-import com.bean.Watcher;
 import com.service.AdminService;
 import com.shrio.token.LoginToken;
 import org.apache.shiro.authc.*;

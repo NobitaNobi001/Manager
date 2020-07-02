@@ -1,6 +1,5 @@
 package com.service;
 
-import com.bean.Teacher;
 import com.bean.Watcher;
 import com.dao.WatcherMapper;
 import org.springframework.beans.factory.annotation.Autowired;

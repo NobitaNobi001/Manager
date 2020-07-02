@@ -1,7 +1,7 @@
 package com.shrio.realms;
 
 import com.bean.Student;
-import com.dao.StudentMapper;
+import com.service.StudentService;
 import com.shrio.token.LoginToken;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class StudentRealm extends AuthorizingRealm {
 
     @Autowired
-    private StudentMapper studentService;
+    private StudentService studentService;
 
     //权限管理
     @Override

@@ -54,13 +54,13 @@
         <!--学院表-->
         <table tableName="college" domainObjectName="College"></table>
 
-        <!--申报信息表-->
+        <!--&lt;!&ndash;申报信息表&ndash;&gt;-->
         <table tableName="credit_record" domainObjectName="Record"></table>
 
-        <!--学分表-->
+        <!--&lt;!&ndash;学分表&ndash;&gt;-->
         <table tableName="credit" domainObjectName="Credit"></table>
 
-        <!--学院学生表-->
+        <!--&lt;!&ndash;学院学生表&ndash;&gt;-->
         <table tableName="college_stu_01" domainObjectName="College_mks"></table>
         <!--<table tableName="college_stu_02" domainObjectName="College_zf"></table>-->
         <!--<table tableName="college_stu_03" domainObjectName="College_jy"></table>-->

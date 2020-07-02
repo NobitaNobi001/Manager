@@ -28,15 +28,9 @@ public class StudentService {
         return student;
     }
 
+    //根据学号来查找学生
     public Student selectStudentByStuNumber(Integer stuNumber){
-
         Student student = studentMapper.selectStudentByStuNumber(stuNumber);
-
-        return student;
-
-    }
-    public Student selectByPrimaryKey(Integer id){
-        Student student = studentMapper.selectByPrimaryKey(id);
         return student;
     }
 }

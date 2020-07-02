@@ -16,21 +16,15 @@ public interface RecordMapper {
 
     int insertSelective(Record record);
 
-    List<Record> selectByExampleWithBLOBs(RecordExample example);
-
     List<Record> selectByExample(RecordExample example);
 
     Record selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Record record, @Param("example") RecordExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") Record record, @Param("example") RecordExample example);
-
     int updateByExample(@Param("record") Record record, @Param("example") RecordExample example);
 
     int updateByPrimaryKeySelective(Record record);
-
-    int updateByPrimaryKeyWithBLOBs(Record record);
 
     int updateByPrimaryKey(Record record);
 }

@@ -20,18 +20,21 @@
         <div class="login-form">
             <form action="${APP_PATH}/checkuser" method="post" onsubmit="return check()">
                 <h4>登录</h4>
-                <br>
-                <div><input type="text" name="Number" id="Number" placeholder="用户名" onchange="checkuser()"/>
-                    <span id="checktext">${msg}</span>
+                <div>
+                    <input type="text" name="Number" id="Number" placeholder="用户名" onchange="checkuser()"/>
+                    <div class="notice">${msg }</div>
                 </div>
-                <div><input type="password" name="password" id="password" placeholder="密码" onchange="checkpwd()"/></div>
+                <div>
+                    <input type="password" name="password" id="password" placeholder="密码" onchange="checkpwd()"/>
+                    <div class="notice"></div>
+                </div>
+
                 <div class="type">
-                    <label><input type="radio" name="type" id="type1" value="Student" checked="checked"/>学生</label>
-                    <label><input type="radio" name="type" id="type2" value="Teacher"/>教师</label>
-                    <label><input type="radio" name="type" id="type3" value="Watcher"/>督查</label>
-                    <label><input type="radio" name="type" id="type4" value="Admin"/>管理员</label>
+                    <label><input type="radio" name="type" id="type1" value="Student" checked="checked"/><span>学生</span></label>
+                    <label><input type="radio" name="type" id="type2" value="Teacher"/><span>教师</span></label>
+                    <label><input type="radio" name="type" id="type3" value="Watcher"/><span>督察</span></label>
+                    <label><input type="radio" name="type" id="type4" value="Admin"/><span>管理员</span></label>
                 </div>
-                <br>
                 <div>
                     <button type="submit">登录</button>
                 </div>
@@ -54,14 +57,14 @@
         var Number = document.getElementById("Number").value;
         Number = Number.trim();
         if (Number == "") {//学号为空
-            document.getElementById("checktext").innerText = "请您输入学号";
+            document.getElementsByClassName("notice")[0].innerText = "请您输入学号";
             check = false;
         } else {
             var reg = /^\d+$|^\d+[.]?\d+$/;
             if (reg.test(Number)) {//学号不为空，正则表达式也正常
                 check = true;
             } else {//学号不为空但输入格式错误,只能输入数字
-                document.getElementById("checktext").innerText = "用户名格式有误";
+                document.getElementsByClassName("notice")[0].innerText = "用户名格式有误";
                 check = false;
             }
         }
@@ -73,7 +76,7 @@
         var password = document.getElementById("password").value;
         password = password.trim();
         if (password == "" || password.length == 0) {//密码为空
-            document.getElementById("checktext").innerText = "请您输入密码";
+            document.getElementsByClassName("notice")[1].innerText = "请您输入密码";
             check = false;
         } else {
             check = true;

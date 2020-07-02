@@ -6,6 +6,7 @@
     <result column="college_name" property="collegeName" jdbcType="VARCHAR" />
     <result column="stu_number" property="stuNumber" jdbcType="INTEGER" />
     <result column="stu_name" property="stuName" jdbcType="VARCHAR" />
+    <result column="stu_class" property="stuClass" jdbcType="VARCHAR" />
     <result column="stu_grade" property="stuGrade" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
@@ -67,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, college_name, stu_number, stu_name, stu_grade
+    id, college_name, stu_number, stu_name, stu_class, stu_grade
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.College_mksExample" >
     select
@@ -101,9 +102,11 @@
   </delete>
   <insert id="insert" parameterType="com.bean.College_mks" >
     insert into college_stu_01 (id, college_name, stu_number, 
-      stu_name, stu_grade)
+      stu_name, stu_class, stu_grade
+      )
     values (#{id,jdbcType=INTEGER}, #{collegeName,jdbcType=VARCHAR}, #{stuNumber,jdbcType=INTEGER}, 
-      #{stuName,jdbcType=VARCHAR}, #{stuGrade,jdbcType=VARCHAR})
+      #{stuName,jdbcType=VARCHAR}, #{stuClass,jdbcType=VARCHAR}, #{stuGrade,jdbcType=VARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.bean.College_mks" >
     insert into college_stu_01
@@ -119,6 +122,9 @@
       </if>
       <if test="stuName != null" >
         stu_name,
+      </if>
+      <if test="stuClass != null" >
+        stu_class,
       </if>
       <if test="stuGrade != null" >
         stu_grade,
@@ -136,6 +142,9 @@
       </if>
       <if test="stuName != null" >
         #{stuName,jdbcType=VARCHAR},
+      </if>
+      <if test="stuClass != null" >
+        #{stuClass,jdbcType=VARCHAR},
       </if>
       <if test="stuGrade != null" >
         #{stuGrade,jdbcType=VARCHAR},
@@ -163,6 +172,9 @@
       <if test="record.stuName != null" >
         stu_name = #{record.stuName,jdbcType=VARCHAR},
       </if>
+      <if test="record.stuClass != null" >
+        stu_class = #{record.stuClass,jdbcType=VARCHAR},
+      </if>
       <if test="record.stuGrade != null" >
         stu_grade = #{record.stuGrade,jdbcType=VARCHAR},
       </if>
@@ -177,6 +189,7 @@
       college_name = #{record.collegeName,jdbcType=VARCHAR},
       stu_number = #{record.stuNumber,jdbcType=INTEGER},
       stu_name = #{record.stuName,jdbcType=VARCHAR},
+      stu_class = #{record.stuClass,jdbcType=VARCHAR},
       stu_grade = #{record.stuGrade,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -194,6 +207,9 @@
       <if test="stuName != null" >
         stu_name = #{stuName,jdbcType=VARCHAR},
       </if>
+      <if test="stuClass != null" >
+        stu_class = #{stuClass,jdbcType=VARCHAR},
+      </if>
       <if test="stuGrade != null" >
         stu_grade = #{stuGrade,jdbcType=VARCHAR},
       </if>
@@ -205,6 +221,7 @@
     set college_name = #{collegeName,jdbcType=VARCHAR},
       stu_number = #{stuNumber,jdbcType=INTEGER},
       stu_name = #{stuName,jdbcType=VARCHAR},
+      stu_class = #{stuClass,jdbcType=VARCHAR},
       stu_grade = #{stuGrade,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>

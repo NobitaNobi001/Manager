@@ -97,7 +97,7 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <property name="loginUrl" value="/login.jsp"/>
-        <property name="successUrl" value="/list.jps"/>
+        <property name="successUrl" value="/list.jsp"/>
         <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
 
         <!--配置哪些页面需要受保护 以及需要的权限-->
@@ -118,10 +118,10 @@
                 /static/js/** = anon
 
                 <!--需要认证才可以访问-->
-                /student/stuIndex = authc
-                /teacher/teaIndex = authc
-                /admin/admIndex = authc
-                /watcher/watIndex = authc
+                /student/** = authc
+                /teacher/** = authc
+                /admin/** = authc
+                /watcher/** = authc
 
             </value>
         </property>

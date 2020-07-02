@@ -7,9 +7,11 @@ public class Watcher {
 
     private String password;
 
-    private String name;
+    private String watcherName;
 
-    private String insititue;
+    private Integer collegeId;
+
+    private String gender;
 
     private String phone;
 
@@ -39,20 +41,28 @@ public class Watcher {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getWatcherName() {
+        return watcherName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setWatcherName(String watcherName) {
+        this.watcherName = watcherName == null ? null : watcherName.trim();
     }
 
-    public String getInsititue() {
-        return insititue;
+    public Integer getCollegeId() {
+        return collegeId;
     }
 
-    public void setInsititue(String insititue) {
-        this.insititue = insititue == null ? null : insititue.trim();
+    public void setCollegeId(Integer collegeId) {
+        this.collegeId = collegeId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender == null ? null : gender.trim();
     }
 
     public String getPhone() {

@@ -15,11 +15,11 @@ public class Record {
 
     private Double applyCredit;
 
+    private String words;
+
     private Double auditCredit;
 
     private String auditTea;
-
-    private String words;
 
     public Integer getId() {
         return id;
@@ -77,6 +77,14 @@ public class Record {
         this.applyCredit = applyCredit;
     }
 
+    public String getWords() {
+        return words;
+    }
+
+    public void setWords(String words) {
+        this.words = words == null ? null : words.trim();
+    }
+
     public Double getAuditCredit() {
         return auditCredit;
     }
@@ -91,13 +99,5 @@ public class Record {
 
     public void setAuditTea(String auditTea) {
         this.auditTea = auditTea == null ? null : auditTea.trim();
-    }
-
-    public String getWords() {
-        return words;
-    }
-
-    public void setWords(String words) {
-        this.words = words == null ? null : words.trim();
     }
 }

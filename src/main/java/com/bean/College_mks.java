@@ -9,6 +9,8 @@ public class College_mks {
 
     private String stuName;
 
+    private String stuClass;
+
     private String stuGrade;
 
     public Integer getId() {
@@ -41,6 +43,14 @@ public class College_mks {
 
     public void setStuName(String stuName) {
         this.stuName = stuName == null ? null : stuName.trim();
+    }
+
+    public String getStuClass() {
+        return stuClass;
+    }
+
+    public void setStuClass(String stuClass) {
+        this.stuClass = stuClass == null ? null : stuClass.trim();
     }
 
     public String getStuGrade() {

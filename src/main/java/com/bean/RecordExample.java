@@ -564,6 +564,76 @@ public class RecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andWordsIsNull() {
+            addCriterion("words is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsIsNotNull() {
+            addCriterion("words is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsEqualTo(String value) {
+            addCriterion("words =", value, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsNotEqualTo(String value) {
+            addCriterion("words <>", value, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsGreaterThan(String value) {
+            addCriterion("words >", value, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsGreaterThanOrEqualTo(String value) {
+            addCriterion("words >=", value, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsLessThan(String value) {
+            addCriterion("words <", value, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsLessThanOrEqualTo(String value) {
+            addCriterion("words <=", value, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsLike(String value) {
+            addCriterion("words like", value, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsNotLike(String value) {
+            addCriterion("words not like", value, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsIn(List<String> values) {
+            addCriterion("words in", values, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsNotIn(List<String> values) {
+            addCriterion("words not in", values, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsBetween(String value1, String value2) {
+            addCriterion("words between", value1, value2, "words");
+            return (Criteria) this;
+        }
+
+        public Criteria andWordsNotBetween(String value1, String value2) {
+            addCriterion("words not between", value1, value2, "words");
+            return (Criteria) this;
+        }
+
         public Criteria andAuditCreditIsNull() {
             addCriterion("audit_credit is null");
             return (Criteria) this;
