@@ -23,7 +23,8 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/teacher/teaProfile" style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
+                    <a href="${APP_PATH}/teacher/teaProfile"
+                       style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
                     <a href="${APP_PATH}/login.jsp" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
@@ -58,7 +59,7 @@
                         <div class="row item">
                             <div class="col col-2 name">姓名</div>
                             <div class="col col-7 value">
-                                <input type="text" name="username">
+                                <input type="text" name="username" value="${teacher.teaName }" readonly>
                             </div>
                         </div>
                         <div class="row item">
@@ -73,22 +74,21 @@
                         <div class="row item">
                             <div class="col col-2 name">手机号码</div>
                             <div class="col col-7 value">
-                                <input type="text" name="telephone"/>
+                                <input type="text" name="telephone" value="${teacher.phone }"/>
                                 <div class="notice">请填写联系电话</div>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">邮箱</div>
                             <div class="col col-7 value">
-                                <input type="text" name="email"/>
+                                <input type="text" name="email" value="${teacher.email }"/>
                                 <div class="notice">请填写邮箱</div>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">院系</div>
                             <div class="col col-5 value">
-                                <select name="department">
-                                </select>
+                                <input type="text" name="college" value="${teacher.college.name }" readonly/>
                             </div>
                         </div>
                         <div class="row item">
@@ -116,25 +116,32 @@
 </html>
 <script type="text/javascript">
 
-    //获取用户名文本框
-    var username = $("input[name='username']");
 
     //获取手机号文本框
     var phone = $("input[name='telephone']");
     //获取邮箱文本框
     var email = $("input[name='email']");
-    //获取院系的下拉框
-    var department = $("select[name='department']");
 
     //页面加载完成后就调用
     $(function () {
-        //回显个人信息
-        personInfo();
+        //性别文本框设置性别
+        //获取性别文本框
+        $("input[type='radio'][name='gender'][value='${teacher.gender }']").attr("checked", true);
 
     });
 
     //更新个人信息
     $("button").click(function () {
+
+        //校验电话号码的输入
+        if (!phone.trigger("input propertychange.validate_phone")) {
+            return false;
+        }
+
+        //校验邮箱的输入
+        if (!email.trigger("input propertychange.validate_email")) {
+            return false;
+        }
 
         $.ajax({
             url: "${APP_PATH}/teacher/updateInfo/" +${teacher.id },
@@ -146,6 +153,7 @@
             },
             success: function (result) {
                 alert("修改成功");
+                window.location.reload();
             },
             error: function (result) {
                 alert("修改失败");
@@ -154,49 +162,15 @@
 
     });
 
-    //个人信息回显
-    function personInfo() {
-
-        //用户名文本框设置姓名
-        username.val("${teacher.teaName }");
-        //用户名文本框设置为不可更改
-        username.attr("disabled", "disabled");
-
-        //性别文本框设置性别
-        //获取性别文本框
-        $("input[type='radio'][name='gender'][value='${teacher.gender }']").attr("checked", true);
-
-
-        //手机号文本框值的回显
-        if (phone.val() == null) {
-            phone.val("");
-        } else {
-            phone.val("${teacher.phone }");
-        }
-
-        //邮箱文本框值的回显
-        if (email.val() == null) {
-            email.val("");
-        } else {
-            email.val("${teacher.email }");
-        }
-
-        //将院系加入到下拉框内
-        department.append("<option>${teacher.college.name }</option>");
-        //设置下拉框为不可更改
-        department.attr("disabled", false);
-    }
-
-
     //给手机号文本框绑定输入值改变事件
-    phone.bind("input propertychange", function () {
+    phone.bind("input propertychange.validate_phone", function () {
 
         //定义验证手机号的正则表达式
         var regPhone = /^[1][0-9]{10}/;
 
         //如果输入值满足正则表达式
         if (regPhone.test($(this).val())) {
-            $(this).next().html("<p style='color:black;'>格式正确</p>");
+            $(this).next().html("&nbsp;");
             return true;
         } else {  //反之
             $(this).next().html("<p style='color: red;'>电话号码格式错误</p>");
@@ -205,14 +179,14 @@
     });
 
     //给邮箱文本框绑定输入值改变事件
-    email.bind("input propertychange", function () {
+    email.bind("input propertychange.validate_email", function () {
 
         //定义验证邮箱的正则表达式
         var regEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
         //如果输入值满足正则表达式
         if (regEmail.test($(this).val())) {
-            $(this).next().html("<p style='color:black;'>格式正确</p>");
+            $(this).next().html("&nbsp;");
             return true;
         } else {  //反之
             $(this).next().html("<p style='color: red;'>邮箱格式错误</p>");

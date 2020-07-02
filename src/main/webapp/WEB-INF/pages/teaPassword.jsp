@@ -25,7 +25,8 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/teacher/teaProfile" style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
+                    <a href="${APP_PATH}/teacher/teaProfile"
+                       style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
                     <a href="${APP_PATH}/login.jsp" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
@@ -113,72 +114,82 @@
     //更新密码
     $("button").click(function () {
 
-        // //校验原密码输入
-        // if (!validate_password()) {
-        //
-        //     return false;
-        // }
-        //
-        // //校验新密码的输入
-        // if (!validate_pass()) {
-        //     return false;
-        // }
+        //校验原密码输入
+        if (!password.trigger("input propertychange.validate_password")) {
+            return false;
+        }
+        //校验新密码的输入
+        if (!pass.trigger("input propertychange.validate_pass")) {
+            return false;
+        }
+        //校验新密码的重复输入
+        if(!respass.trigger("input propertychange.validate_respass")){
+            return false;
+        }
 
         //向后台发送请求更新用户密码
         $.ajax({
             url: "${APP_PATH}/teacher/updatePassword/" +${teacher.id },
             type: "POST",
             data: {
-                "password": $("input[name='respass']").val()
+                "password": respass.val()
             },
             dataType: 'json',
             success: function (result) {
                 //如果新密码和原密码不一致
                 if (result.code == 100) {
                     alert("密码修改成功!")
-                } else {
-                    alert("密码更新失败!");
                     //刷新当前页面
                     window.location.reload();
+                } else {
+                    alert("密码更新失败!");
                 }
             }
         });
     });
 
     //校验原密码
-    function validate_password() {
-
+    password.bind("input propertychange.validate_password", function () {
         //判断密码框的而输入是否为空
-        if (password.val().trim() == "") {
-            password.next().html("<p style='color: red;'>请输入当前用户密码</p>");
+        if ($(this).val().trim() == "") {
+            $(this).next().html("<p style='color: red;'>请输入当前用户密码</p>");
         } else {  //密码输入不为空 就和数据库中查出的密码进行比对
 
             //如果和数据库中密码相同就返回true
-            if (password.val() == "${teacher.password }") {
+            if ($(this).val() == "${teacher.password }") {
+                $(this).next().html("&nbsp;");
                 return true;
             } else {
-                password.next().html("<p style='color: red;'>密码输入错误</p>");
+                $(this).next().html("<p style='color: red;'>密码输入错误</p>");
             }
         }
         return false;
-    }
+    });
 
     //校验新密码和重复输入的密码
-    function validate_pass() {
-
+    pass.bind("input propertychange.validate_pass",function () {
         //判断新密码的格式
-        if (pass.val().trim() == "" || pass.val().trim().length > 16 || pass.val().trim().length < 8) {
-            pass.next().html("<p style='color: red;'>新密码应为8-16位的字母和数字组合</p>");
+        if ($(this).val().trim() == "" || $(this).val().trim().length > 16 || $(this).val().trim().length < 8) {
+            $(this).next().html("<p style='color: red;'>新密码应为8-16位的字母和数字组合</p>");
         } else {
-            pass.next().html("<p>格式正确</p>");
-            if (respass.val().trim() == pass.val().trim()) {
-                return true;
-            } else if (respass.val().trim() != pass.val().trim()) {
-                respass.next().html("<p style='color: red;'>两次密码输入不一致</p>");
-            }
+            $(this).next().html("&nbsp;");
+            return true;
         }
         return false;
-    }
+    });
+
+    respass.bind("input propertychange.validate_respass",function () {
+
+        if ($(this).val().trim() == pass.val().trim()) {
+            $(this).next().html("&nbsp;");
+            return true;
+        } else if ($(this).val().trim() != pass.val().trim()) {
+            $(this).next().html("<p style='color: red;'>两次密码输入不一致</p>");
+        }
+        return false;
+    });
+
+
 
 
 </script>
