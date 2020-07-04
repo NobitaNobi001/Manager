@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 	<head>
@@ -7,8 +8,8 @@
 			pageContext.setAttribute("APP_PATH", request.getContextPath());
 		%>
 		<link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-		<link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css" />
 	</head>
 	<body>
 		<header>
@@ -21,14 +22,14 @@
 						</div>
 						<div class="top-right right">
 							<a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.stuName}(${student.stuNumber})</a>
-							<a href="/login.jsp">退出</a>
+							<a href="${APP_PATH}/student/logout">退出</a>
 						</div>
 					</div>
 					<div class="menu">
 						<ul>
 							<li class="title"><a href="javascript:;">学生中心</a></li>
 							<li><a href="${APP_PATH}/student/stuIndex">首页</a></li>
-							<li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">个人信息</a></li>
+							<li><a href="${APP_PATH}/student/updateInfo/${student.id}">个人信息</a></li>
 						</ul>
 					</div>
 				</div>
@@ -40,11 +41,11 @@
 					<div class="main-left left">
 						<ul>
 							<li class="headline"><a href="javascript:;">控制中心</a></li>
-							<li><a href="${APP_PATH}/student/toViewCredit/${student.id}">学分列表</a></li>
-							<li><a href="${APP_PATH}/student/toApply/${student.id}">学分申报</a></li>
+							<li><a href="${APP_PATH}/student/viewCredit">学分列表</a></li>
+							<li><a href="${APP_PATH}/student/applyCredit/${student.id}">学分申报</a></li>
 							<li class="headline"><a href="javascript:;">账号管理</a></li>
-							<li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">完善信息</a></li>
-							<li><a href="${APP_PATH}/student/toupdatepwd/${student.id}">修改密码</a></li>
+							<li><a href="${APP_PATH}/student/updateInfo/${student.id}">完善信息</a></li>
+							<li><a href="${APP_PATH}/student/updatepwd/${student.id}">修改密码</a></li>
 						</ul>
 					</div>
 					<div class="main-right right">
@@ -52,95 +53,80 @@
 						<div class="credit">
 							<h4>我的学分</h4>
 							<div class="action" style="text-align: right;margin: 10px 0;padding: 10px 0;">
-								<a href="javascript:;" class="btn btn-danger">学分汇总</a>
+								<a href="javascript:;" class="btn btn-danger">总学分:${sumCredit}</a>
 							</div>
 							<table class="table" border="0" cellspacing="0" cellpadding="0">
 								<tr>
 									<th>序号</th>
-									<th style="text-align: left;">名称</th>
+									<th style="text-align: center;">类别</th>
+									<th>名称</th>
 									<th>学分</th>
 									<th>操作</th>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td style="text-align: left;">大学生学科竞赛活动（含大学生创新创业训练项目）</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-primary btn-2x">审核中</a></td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td style="text-align: left;">大学生文体竞赛活动</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-primary btn-2x">审核中</a></td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td style="text-align: left;">创新创业实践训练（课程）</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-success btn-2x">已完成</a></td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td style="text-align: left;">论文、专利、作品发表</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-primary btn-2x">审核中</a></td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td style="text-align: left;">职业（等级）证书</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-primary btn-2x">审核中</a></td>
-								</tr>
-								<tr>
-									<td>6</td>
-									<td style="text-align: left;">职业（等级）证书</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-success btn-2x">已完成</a></td>
-								</tr>
-								<tr>
-									<td>7</td>
-									<td style="text-align: left;">职业（等级）证书</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-warning btn-2x">未成功</a></td>
-								</tr>
-								<tr>
-									<td>8</td>
-									<td style="text-align: left;">职业（等级）证书</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-success btn-2x">已完成</a></td>
-								</tr>
-								<tr>
-									<td>9</td>
-									<td style="text-align: left;">职业（等级）证书</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-success btn-2x">已完成</a></td>
-								</tr>
-								<tr>
-									<td>10</td>
-									<td style="text-align: left;">职业（等级）证书</td>
-									<td>2</td>
-									<td><a href="javascript:;" class="btn btn-default btn-2x">已取消</a></td>
-								</tr>
+								<c:forEach var="record" items="${info.list}" varStatus="s">
+									<tr>
+										<td>${s.count}</td>
+										<td style="text-align: center;">${record.sort}</td>
+										<td>${record.applyName}</td>
+										<td>${record.auditCredit}</td>
+										<td><a href="javascript:;" class="btn btn-2x" name="state">${record.auditState}</a></td>
+									</tr>
+								</c:forEach>
 							</table>
+                            <center>
 							<nav aria-label="Page navigation">
 								<ul class="pagination">
-									<li>
-										<a href="#" aria-label="Previous">
+									<li><a href="${APP_PATH}/student/viewCredit?page=1">首页</a></li>
+									<c:if test="${info.pageNum==1}">
+										<li class="disabled">
+											<a href="javascript:void(0)" aria-label="Previous">
 											<span aria-hidden="true">&laquo;</span>
-										</a>
-									</li>
-									<li><a href="#">1</a></li>
-									<li><a href="#">2</a></li>
-									<li><a href="#">3</a></li>
-									<li><a href="#">4</a></li>
-									<li><a href="#">5</a></li>
-									<li>
-										<a href="#" aria-label="Next">
-											<span aria-hidden="true">&raquo;</span>
-										</a>
-									</li>
+											</a>
+										</li>
+									</c:if>
+
+									<c:if test="${info.pageNum!=1}">
+										<li>
+											<a href="${APP_PATH}/student/viewCredit?page=${info.pageNum-1}" aria-label="Previous">
+											<span aria-hidden="true">&laquo;</span>
+										    </a>
+										</li>
+									</c:if>
+
+
+									<c:forEach begin="1" end="5" var="i">
+										<c:if test="${info.pageNum==i}">
+											<li class="active"><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+										</c:if>
+										<c:if test="${info.pageNum!=i}">
+											<li><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+										</c:if>
+									</c:forEach>
+
+
+									<c:if test="${info.pageNum==info.pages}">
+										<li class="disabled">
+											<a href="javascript:void(0)" aria-label="Next">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</c:if>
+
+									<c:if test="${info.pageNum!=info.pages}">
+										<li>
+											<a href="${APP_PATH}/student/viewCredit?page=${info.pageNum+1}" aria-label="Next">
+												<span aria-hidden="true">&raquo;</span>
+											</a>
+										</li>
+									</c:if>
+
+									<li><a href="${APP_PATH}/student/viewCredit?page=${info.pages}">末页</a></li>
+									<span style="font-size:15px;margin-left: 5px;line-height: 34px">
+										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
+									</span>
 								</ul>
 							</nav>
+							</center>
 						</div>
 						<!-- 学分列表 end -->
 					</div>
@@ -157,3 +143,15 @@
 	</body>
 </html>
 <script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
+<script>
+    var arr = document.getElementsByName("state");
+    $.each(arr,function () {
+        if($(this).text()=="已成功"){
+        	$(this).addClass("btn-success");
+		}else if($(this).text()=="未审核"){
+			$(this).addClass("btn-primary");
+		}else{
+			$(this).addClass("btn-warning");
+		}
+	})
+</script>

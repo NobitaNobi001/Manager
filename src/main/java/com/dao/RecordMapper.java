@@ -13,10 +13,8 @@ public interface RecordMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Record record);
-
+    //有选择性的插入非空数据
     int insertSelective(Record record);
-
-    List<Record> selectByExampleWithBLOBs(RecordExample example);
 
     List<Record> selectByExample(RecordExample example);
 
@@ -24,13 +22,12 @@ public interface RecordMapper {
 
     int updateByExampleSelective(@Param("record") Record record, @Param("example") RecordExample example);
 
-    int updateByExampleWithBLOBs(@Param("record") Record record, @Param("example") RecordExample example);
-
     int updateByExample(@Param("record") Record record, @Param("example") RecordExample example);
 
     int updateByPrimaryKeySelective(Record record);
 
-    int updateByPrimaryKeyWithBLOBs(Record record);
-
     int updateByPrimaryKey(Record record);
+
+    List<Record> findAllBystuNumber(@Param("stuNumber") int stuNumber);
+
 }

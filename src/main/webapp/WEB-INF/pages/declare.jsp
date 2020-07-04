@@ -20,14 +20,14 @@
 						</div>
 						<div class="top-right right">
 							<a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.stuName}(${student.stuNumber})</a>
-							<a href="/login.jsp">退出</a>
+							<a href="${APP_PATH}/student/logout">退出</a>
 						</div>
 					</div>
 					<div class="menu">
 						<ul>
 							<li class="title"><a href="javascript:;">学生中心</a></li>
 							<li><a href="${APP_PATH}/student/stuIndex">首页</a></li>
-							<li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">个人信息</a></li>
+							<li><a href="${APP_PATH}/student/updateInfo/${student.id}">个人信息</a></li>
 						</ul>
 					</div>
 				</div>
@@ -39,22 +39,22 @@
 					<div class="main-left left">
 						<ul>
 							<li class="headline"><a href="javascript:;">控制中心</a></li>
-							<li><a href="${APP_PATH}/student/toViewCredit/${student.id}">学分列表</a></li>
-							<li><a href="${APP_PATH}/student/toApply/${student.id}">学分申报</a></li>
+							<li><a href="${APP_PATH}/student/viewCredit">学分列表</a></li>
+							<li><a href="${APP_PATH}/student/applyCredit/${student.id}">学分申报</a></li>
 							<li class="headline"><a href="javascript:;">账号管理</a></li>
-							<li><a href="${APP_PATH}/student/toupdateInfo/${student.id}">完善信息</a></li>
-							<li><a href="${APP_PATH}/student/toupdatepwd/${student.id}">修改密码</a></li>
+							<li><a href="${APP_PATH}/student/updateInfo/${student.id}">修改信息</a></li>
+							<li><a href="${APP_PATH}/student/updatepwd/${student.id}">修改密码</a></li>
 						</ul>
 					</div>
 					<div class="main-right right">
 						<!-- 学分申报 start -->
 						<div class="credit">
 							<h4>学分申报</h4>
-							<form action="${APP_PATH}/student/credit" method="post" class="form" enctype="multipart/form-data">
+							<form action="${APP_PATH}/student/apply" method="post" class="form" enctype="multipart/form-data">
 								<input type="hidden" value="${student.stuNumber}" name="stuNumber">
 								<input type="hidden" value="${student.stuName}" name="stuName">
 								<div class="row item">
-									<div class="col col-2 name">申报项</div>
+									<div class="col col-2 name">申报类别</div>
 									<div class="col col-6 value">
 										<select name="sort">
 											<option value="1">大学生学科竞赛活动（含大学生创新创业训练项目）</option>
@@ -68,7 +68,14 @@
 											<option value="9">学生工作与社团活动</option>
 											<option value="10">专业认定的其他创新实践活动</option>
 										</select>
-										<div class="notice">请选择要申报的项目</div>
+										<div class="notice">请选择要申报的活动类别</div>
+									</div>
+								</div>
+								<div class="row item">
+									<div class="col col-2 name">申报活动名称</div>
+									<div class="col col-4 value">
+										<input type="text" name="applyName" id="applyName" onchange="checkApplyName()"/>
+										<div class="notice">请填写申报的活动名称</div>
 									</div>
 								</div>
 								<div class="row item">
@@ -114,6 +121,32 @@
 </html>
 <script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
 <script type="text/javascript">
+	function checkApplyName() {
+        //申报名称不能为空
+		if($("#applyName").val()==""||$("#applyName").val().length==0){
+			alert("申报活动名称不能为空");
+			return false;
+		}else {
+			return true;
+		}
+	}
+
+	function checkCredit() {
+		var credit=$("#applyCredit").val();
+		if(credit>8){
+			alert("申报的创新学分不能超过8");
+			return false;
+		}else if(credit==0){
+			alert("申报的创新学分不能为0");
+			return false;
+		}else if(credit<0){
+			alert("请输入正确的申报创建学分");
+			return false;
+		}else {
+			return true;
+		}
+	}
+
     function checkFile(file){
 		var fileTypes = [".jpg", ".png",".jpeg",".gif",".svg"];//图片类型
 		var filePath = file.value;//文件名
@@ -140,24 +173,10 @@
 		}
     }
 
-    function checkCredit() {
-       var credit=$("#applyCredit").val();
-       if(credit>8){
-			alert("申报的创新学分不能超过8");
-		   return false;
-	   }else if(credit==0){
-       	    alert("申报的创新学分不能为0");
-		    return false;
-	   }else if(credit<0){
-		   alert("请输入正确的申报创建学分");
-		   return false;
-	   }else {
-       	   return true;
-	   }
-	}
+
 
 	function  check() {
-       var flag=checkCredit()&&checkFile(document.getElementById("file"));
+       var flag=checkApplyName()&&checkCredit()&&checkFile(document.getElementById("file"));
        if(flag) {
        	   alert("申报成功！");
 		   document.forms[0].submit();

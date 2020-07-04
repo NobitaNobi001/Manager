@@ -13,4 +13,8 @@
         <!--开启日志-->
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
+    <!--分页插件-->
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+    </plugins>
 </configuration>

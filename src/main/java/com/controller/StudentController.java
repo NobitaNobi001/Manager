@@ -1,8 +1,9 @@
 package com.controller;
 
-import com.bean.Credit;
 import com.bean.Record;
 import com.bean.Student;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,19 +12,29 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.*;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
+import java.util.List;
 
 @Controller
 @RequestMapping("/student")
 public class StudentController {
     @Autowired
     private StudentService studentService;
+
+    @RequestMapping("/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response){
+        request.getSession().invalidate();
+        try{
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
     //学生首页
     @RequestMapping("/stuIndex")
     public String stuIndex(HttpServletRequest request, Model model){
@@ -34,33 +45,33 @@ public class StudentController {
         return "student";
     }
 
-    //去完善信息页面
-    @RequestMapping("/toupdateInfo/{stuID}")
-    public String selectByPrimaryKey(@PathVariable("stuID")int stuID,Model model){
-        Student student = studentService.selectByPrimaryKey(stuID);
+    //去修改信息页面
+    @RequestMapping("/updateInfo/{stuID}")
+    public String updateInfo(@PathVariable("stuID")int id, Model model){
+        Student student = studentService.selectByPrimaryKey(id);
         model.addAttribute("student", student);
         return "profile";
     }
 
     //将完善信息封装为学生对象 修改数据 之后回到学生首页
-    @RequestMapping("/updateInfo")
+    @RequestMapping("/updateStuNullInfo")
     public String updateStuNullInfo(Student student,Model model){
         boolean flag = studentService.updateStuInfoById(student);
-        Student student1 = studentService.selectByPrimaryKey(student.getId());
-        model.addAttribute("student", student1);
         return "redirect:/student/stuIndex";
     }
+
     //去修改密码页面
-    @RequestMapping("/toupdatepwd/{stuID}")
-    public String updatepwd(@PathVariable("stuID")int stuId,Model model){
-        Student student = studentService.selectByPrimaryKey(stuId);
+    @RequestMapping("/updatepwd/{stuID}")
+    public String updatepwd(Model model,@PathVariable("stuID")int id){
+        Student student = studentService.selectByPrimaryKey(id);
         model.addAttribute("student",student);
         return "password";
     }
+
     //修改密码
-    @ResponseBody//ajax请求
-    @RequestMapping(value = "/updatepwd", method = {RequestMethod.POST,RequestMethod.GET})
-    public String updatepwd(@RequestParam("stuNumber")int stuNumber,@RequestParam("password")String oldPwd,@RequestParam("pass")String newPwd){
+    @ResponseBody
+    @RequestMapping(value = "/updateStupwd", method = {RequestMethod.POST,RequestMethod.GET})
+    public String updateStupwd(@RequestParam("stuNumber")int stuNumber,@RequestParam("password")String oldPwd,@RequestParam("pass")String newPwd){
         if(oldPwd.equals(newPwd)){//新旧密码一致的话
             return "您输入的新密码和原密码一致，请重新输入!";
         }else if(studentService.updateStuPwd(stuNumber, oldPwd, newPwd)){//修改密码成功
@@ -70,29 +81,24 @@ public class StudentController {
         }
     }
 
-    @RequestMapping("/toViewCredit/{stuID}")
-    public String toViewCredit(@PathVariable("stuID")int stuId,Model model){
-        Student student = studentService.selectByPrimaryKey(stuId);
-        model.addAttribute("student",student );
-        return "credit";
-    }
-    @RequestMapping("/toApply/{stuID}")
-    public String toApply(@PathVariable("stuID")int stuId,Model model){
-        Student student = studentService.selectByPrimaryKey(stuId);
+    //去申请学分页面
+    @RequestMapping("/applyCredit/{stuID}")
+    public String applyCredit(Model model,@PathVariable("stuID")int id){
+        Student student = studentService.selectByPrimaryKey(id);
         model.addAttribute("student",student );
         return "declare";
     }
 
-    @RequestMapping("/credit")
-    //提交数据 学号 姓名 申请日期 申请类型 申请材料  申请学分 申请描述(可以为null) 审核学分(教师出处理)  审核老师(教师处理)
-    public String apply(@RequestParam("stuNumber")Integer stuNumber,@RequestParam("stuName")String name,@RequestParam("sort")String number,@RequestParam("applyCredit") Double applyCredit,@RequestParam("words")String words,@RequestParam("file") CommonsMultipartFile file,HttpServletRequest request,Model model) throws IOException {
+    //提交申请
+    @RequestMapping("/apply")
+    public String apply(@RequestParam("stuNumber")Integer stuNumber,@RequestParam("stuName")String name,@RequestParam("sort")String number,@RequestParam("applyName")String applyName,@RequestParam("applyCredit") Double applyCredit,@RequestParam("words")String words,@RequestParam("file") CommonsMultipartFile file,HttpServletRequest request,Model model) throws IOException {
         StringBuilder path=new StringBuilder(request.getServletContext().getRealPath("/WEB-INF/apply"));
         Date d=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         //获取申请日期
         String date = sdf.format(d);
         //获取文件名：file.getOriginalFilename()
-        String uploadFileName=file.getOriginalFilename();
+        String uploadFileName=System.currentTimeMillis()+file.getOriginalFilename();
         //上传路径保存设置 (保存在WEB-INF下面的apply文件夹)
         //创建3级目录
         Calendar now = Calendar.getInstance();
@@ -133,9 +139,36 @@ public class StudentController {
             case 9:sort="学生工作与社团活动";break;
             case 10:sort="专业认定的其他创新实践活动";break;
         }
-        studentService.addCreditRecord(new Record(stuNumber,name,date,sort,path.append("/").append(uploadFileName).toString(),applyCredit,words));
+        studentService.addCreditRecord(new Record(stuNumber,name,date,sort,path.append("/").append(uploadFileName).toString(),applyName,applyCredit,words));
         Student student = studentService.selectStudentByStuNumber(stuNumber);
         model.addAttribute("student",student );
+        return "redirect:/student/viewCredit";
+    }
+
+    //学分列表
+    @RequestMapping("/viewCredit")
+    public String viewCredit(@RequestParam(name="page",defaultValue = "1")int page, Model model,HttpServletRequest request) throws Exception {
+        Integer stuNumber = (Integer) request.getSession().getAttribute("number");
+        Student student = studentService.selectStudentByStuNumber(stuNumber);
+        if(page<0){
+            page=1;
+        }
+        List<Record> list = studentService.findAllBystuNumber(stuNumber, page, 5);
+        PageInfo<Record> info=new PageInfo(list);
+        System.out.println("当前页码:"+info.getPageNum());
+        System.out.println("总页码:"+info.getPages());
+        System.out.println("总记录数:"+info.getTotal());
+        System.out.println("当前页有几条记录:"+info.getSize());
+        System.out.println("当前页的pageSize:"+info.getPageSize());
+        System.out.println("前一页:"+info.getPrePage());
+        System.out.println("后一页:"+info.getNextPage());
+        System.out.println("查询结果:"+info.getList());
+
+        //查询总学分
+        int sumCredit = studentService.selectSumCreditBystuNumber(stuNumber);
+        model.addAttribute("sumCredit", sumCredit);
+        model.addAttribute("student",student );
+        model.addAttribute("info",info);
         return "credit";
     }
 }

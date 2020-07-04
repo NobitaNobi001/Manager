@@ -6,6 +6,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TeacherMapper {
+    Teacher selectUPByTeaNumber(Integer teaNumber);
+
+    Teacher selectTeacherByTeaNumber(Integer teaNumber);
+
     int countByExample(TeacherExample example);
 
     int deleteByExample(TeacherExample example);
@@ -27,18 +31,4 @@ public interface TeacherMapper {
     int updateByPrimaryKeySelective(Teacher record);
 
     int updateByPrimaryKey(Teacher record);
-
-    /**
-     * 查找教师账密
-     * @param teaNumber 教工号
-     * @return
-     */
-    Teacher selectUPByTeaNumber(Integer teaNumber);
-
-    /**
-     * 根据教工号查找信息
-     * @param teaNumber 教工号
-     * @return
-     */
-    Teacher selectTeacherByTeaNumber(Integer teaNumber);
 }

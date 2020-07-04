@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.StudentMapper">
-    <resultMap id="BaseResultMap" type="com.bean.Student">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
-        <result column="college_id" property="collegeId"/>
-        <result column="major" property="major" jdbcType="VARCHAR"/>
-        <result column="class_name" property="className" jdbcType="VARCHAR"/>
-        <result column="gender" property="gender" jdbcType="CHAR"/>
-        <result column="phone" property="phone" jdbcType="VARCHAR"/>
-        <result column="email" property="email" jdbcType="VARCHAR"/>
-        <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey" column="college_id"></association>
-    </resultMap>
-    <resultMap id="UserNameAndPassword" type="com.bean.Student">
-        <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-    </resultMap>
-    <!--学生表全部字段-->
-    <sql id="Base_Column_List">
+  <resultMap id="BaseResultMap" type="com.bean.Student">
+    <id column="id" property="id" jdbcType="INTEGER"/>
+    <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
+    <result column="password" property="password" jdbcType="VARCHAR"/>
+    <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
+    <result column="college_id" property="collegeId"/>
+    <result column="major" property="major" jdbcType="VARCHAR"/>
+    <result column="class_name" property="className" jdbcType="VARCHAR"/>
+    <result column="gender" property="gender" jdbcType="CHAR"/>
+    <result column="phone" property="phone" jdbcType="VARCHAR"/>
+    <result column="email" property="email" jdbcType="VARCHAR"/>
+    <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey" column="college_id"></association>
+  </resultMap>
+  <resultMap id="UserNameAndPassword" type="com.bean.Student">
+    <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
+    <result column="password" property="password" jdbcType="VARCHAR"/>
+  </resultMap>
+  <!--学生表全部字段-->
+  <sql id="Base_Column_List">
     id, stu_number, password, stu_name, college_id, major, class_name, gender, phone, email
   </sql>
 
-    <!--根据学号查找学生的用户名和密码信息-->
-    <select id="selectUPByStuNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
+  <!--根据学号查找学生的用户名和密码信息-->
+  <select id="selectUPByStuNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
     select stu_number,password from stu_info where stu_number = #{stu_number,jdbcType=INTEGER}
   </select>
-    <!--根据学号查找学生的信息-->
-    <select id="selectStudentByStuNumber" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from stu_info where stu_number= #{stu_number,jdbcType=INTEGER}
-    </select>
-    <!--根据主键来查询学生-->
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
-        from stu_info
-        where id = #{id,jdbcType=INTEGER}
-    </select>
-    <!--通过主键删除学生-->
-    <!--完善学生信息-->
-    <update id="updateStuInfoById">
+  <!--根据学号查找学生的信息-->
+  <select id="selectStudentByStuNumber" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from stu_info where stu_number= #{stu_number,jdbcType=INTEGER}
+  </select>
+  <!--根据主键来查询学生-->
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select
+    <include refid="Base_Column_List"/>
+    from stu_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!--通过主键删除学生-->
+  <!--完善学生信息-->
+  <update id="updateStuInfoById">
     update stu_info
     <set>
-        <if test="gender!=null">
-            gender=#{gender},
-        </if>
-        <if test="phone!=null">
-            phone=#{phone},
-        </if>
-        <if test="email!=null">
-            email=#{email},
-        </if>
+      <if test="gender!=null">
+        gender=#{gender},
+      </if>
+      <if test="phone!=null">
+        phone=#{phone},
+      </if>
+      <if test="email!=null">
+        email=#{email},
+      </if>
     </set>
     <where>
-        id=#{id}
+      id=#{id}
     </where>
-</update>
-    <!--根据学号修改密码-->
-    <update id="updateStuPwdByStuNumber">
+  </update>
+  <!--根据学号修改密码-->
+  <update id="updateStuPwdByStuNumber">
         update stu_info set password=#{password} where stu_number=#{stuNumber}
     </update>
 

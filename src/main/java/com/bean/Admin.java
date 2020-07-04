@@ -7,11 +7,11 @@ public class Admin {
 
     private String password;
 
-    private String name;
+    private String adminName;
 
-    private String insititue;
+    private Integer collegeId;
 
-    private Integer issuper;
+    private String gender;
 
     private String phone;
 
@@ -41,28 +41,28 @@ public class Admin {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getAdminName() {
+        return adminName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setAdminName(String adminName) {
+        this.adminName = adminName == null ? null : adminName.trim();
     }
 
-    public String getInsititue() {
-        return insititue;
+    public Integer getCollegeId() {
+        return collegeId;
     }
 
-    public void setInsititue(String insititue) {
-        this.insititue = insititue == null ? null : insititue.trim();
+    public void setCollegeId(Integer collegeId) {
+        this.collegeId = collegeId;
     }
 
-    public Integer getIssuper() {
-        return issuper;
+    public String getGender() {
+        return gender;
     }
 
-    public void setIssuper(Integer issuper) {
-        this.issuper = issuper;
+    public void setGender(String gender) {
+        this.gender = gender == null ? null : gender.trim();
     }
 
     public String getPhone() {

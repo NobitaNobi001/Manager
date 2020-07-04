@@ -3,8 +3,10 @@ package com.service;
 
 import com.bean.Record;
 import com.bean.Student;
+import com.dao.CreditMapper;
 import com.dao.RecordMapper;
 import com.dao.StudentMapper;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,9 @@ public class StudentService {
 
     @Autowired
     private RecordMapper recordMapper;
+
+    @Autowired
+    private CreditMapper creditMapper;
     //通过学号查询密码
     public Student selectUPByStuNumber(Integer stuNumber) {
         Student student = studentMapper.selectUPByStuNumber(stuNumber);
@@ -60,5 +65,16 @@ public class StudentService {
         }else {
             return false;
         }
+    }
+
+    //分页查询申报记录
+    public List<Record>findAllBystuNumber(int stuNumber,int page,int size)throws Exception{
+        PageHelper.startPage(page, size);
+        return recordMapper.findAllBystuNumber(stuNumber);
+    }
+
+    //查询学生的总分
+    public int selectSumCreditBystuNumber(int stuNumber){
+        return creditMapper.selectBystuNumber(stuNumber);
     }
 }

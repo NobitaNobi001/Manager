@@ -104,7 +104,7 @@
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from tea_info
     where id = #{id,jdbcType=INTEGER}
@@ -120,11 +120,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.bean.Teacher" >
-    insert into tea_info (id, tea_number, password, 
-      name, institute, tea_positon, 
+    insert into tea_info (id, tea_number, password,
+      name, institute, tea_positon,
       phone, email)
-    values (#{id,jdbcType=INTEGER}, #{teaNumber,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{institute,jdbcType=VARCHAR}, #{teaPositon,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{teaNumber,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{institute,jdbcType=VARCHAR}, #{teaPositon,jdbcType=VARCHAR},
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bean.Teacher" >
@@ -223,13 +223,13 @@
   <update id="updateByExample" parameterType="map" >
     update tea_info
     set id = #{record.id,jdbcType=INTEGER},
-      tea_number = #{record.teaNumber,jdbcType=INTEGER},
-      password = #{record.password,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
-      institute = #{record.institute,jdbcType=VARCHAR},
-      tea_positon = #{record.teaPositon,jdbcType=VARCHAR},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR}
+    tea_number = #{record.teaNumber,jdbcType=INTEGER},
+    password = #{record.password,jdbcType=VARCHAR},
+    name = #{record.name,jdbcType=VARCHAR},
+    institute = #{record.institute,jdbcType=VARCHAR},
+    tea_positon = #{record.teaPositon,jdbcType=VARCHAR},
+    phone = #{record.phone,jdbcType=VARCHAR},
+    email = #{record.email,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

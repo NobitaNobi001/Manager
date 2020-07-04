@@ -1,5 +1,7 @@
 package com.bean;
 
+import java.text.DecimalFormat;
+
 public class Credit {
     private Integer id;
 

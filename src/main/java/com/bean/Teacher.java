@@ -7,9 +7,11 @@ public class Teacher {
 
     private String password;
 
-    private String name;
+    private String teaName;
 
-    private String institute;
+    private Integer collegeId;
+
+    private String gender;
 
     private String teaPositon;
 
@@ -41,20 +43,28 @@ public class Teacher {
         this.password = password == null ? null : password.trim();
     }
 
-    public String getName() {
-        return name;
+    public String getTeaName() {
+        return teaName;
     }
 
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setTeaName(String teaName) {
+        this.teaName = teaName == null ? null : teaName.trim();
     }
 
-    public String getInstitute() {
-        return institute;
+    public Integer getCollegeId() {
+        return collegeId;
     }
 
-    public void setInstitute(String institute) {
-        this.institute = institute == null ? null : institute.trim();
+    public void setCollegeId(Integer collegeId) {
+        this.collegeId = collegeId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender == null ? null : gender.trim();
     }
 
     public String getTeaPositon() {

@@ -17,7 +17,7 @@ public interface CollegeMapper {
     int insertSelective(College record);
 
     List<College> selectByExample(CollegeExample example);
-    //根据id来获取学院
+
     College selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") College record, @Param("example") CollegeExample example);

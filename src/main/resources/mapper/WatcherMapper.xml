@@ -96,7 +96,7 @@
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from watcher_info
     where id = #{id,jdbcType=INTEGER}
@@ -112,11 +112,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.bean.Watcher" >
-    insert into watcher_info (id, watcher_number, password, 
-      name, insititue, phone, 
+    insert into watcher_info (id, watcher_number, password,
+      name, insititue, phone,
       email)
-    values (#{id,jdbcType=INTEGER}, #{watcherNumber,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{insititue,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{watcherNumber,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
+      #{name,jdbcType=VARCHAR}, #{insititue,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
       #{email,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.bean.Watcher" >
@@ -206,12 +206,12 @@
   <update id="updateByExample" parameterType="map" >
     update watcher_info
     set id = #{record.id,jdbcType=INTEGER},
-      watcher_number = #{record.watcherNumber,jdbcType=INTEGER},
-      password = #{record.password,jdbcType=VARCHAR},
-      name = #{record.name,jdbcType=VARCHAR},
-      insititue = #{record.insititue,jdbcType=VARCHAR},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR}
+    watcher_number = #{record.watcherNumber,jdbcType=INTEGER},
+    password = #{record.password,jdbcType=VARCHAR},
+    name = #{record.name,jdbcType=VARCHAR},
+    insititue = #{record.insititue,jdbcType=VARCHAR},
+    phone = #{record.phone,jdbcType=VARCHAR},
+    email = #{record.email,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>

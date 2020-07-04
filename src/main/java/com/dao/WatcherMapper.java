@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface WatcherMapper {
+    Watcher selectUPByWatcherNumber(Integer watcherNumber);
+
     int countByExample(WatcherExample example);
 
     int deleteByExample(WatcherExample example);
@@ -27,11 +29,4 @@ public interface WatcherMapper {
     int updateByPrimaryKeySelective(Watcher record);
 
     int updateByPrimaryKey(Watcher record);
-
-    /**
-     * 查找督察账密
-     * @param watcherNumber 督察号
-     * @return
-     */
-    Watcher selectUPByWatcherNumber(Integer watcherNumber);
 }
