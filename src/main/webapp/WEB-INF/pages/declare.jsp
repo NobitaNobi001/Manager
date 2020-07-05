@@ -7,6 +7,7 @@
 			pageContext.setAttribute("APP_PATH", request.getContextPath());
 		%>
 		<link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
+		<link rel="stylesheet" type="text/css" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.css" />
 		<link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css" />
 	</head>
 	<body>
@@ -49,7 +50,7 @@
 					<div class="main-right right">
 						<!-- 学分申报 start -->
 						<div class="credit">
-							<h4>学分申报</h4>
+							<h4>学分申报</h4><%--<img src="${APP_PATH}/static/images/help.jpg" style="float: right" alt="申报帮助" data-toggle="modal" data-target="#myModal">--%>
 							<form action="${APP_PATH}/student/apply" method="post" class="form" enctype="multipart/form-data">
 								<input type="hidden" value="${student.stuNumber}" name="stuNumber">
 								<input type="hidden" value="${student.stuName}" name="stuName">
@@ -101,7 +102,9 @@
 								</div>
 								<div class="row item">
 									<div class="col col-2 name">&nbsp;</div>
-									<div class="col value"><button type="button" class="btn btn-primary btn-6x" onclick="check()">提交申报</button></div>
+									<div class="col value">
+										<button type="button" class="btn btn-primary btn-6x" onclick="check()">提交申报</button>
+
 								</div>
 							</form>
 						<!-- 学分申报 end -->
@@ -117,6 +120,24 @@
 				</div>
 			</div>
 		</footer>
+	<!--model-->
+		<%--<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+					</div>
+					<div class="modal-body">
+						...
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save changes</button>
+					</div>
+				</div>
+			</div>
+		</div>--%>
 	</body>
 </html>
 <script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
