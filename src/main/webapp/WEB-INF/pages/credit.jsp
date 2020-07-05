@@ -60,14 +60,16 @@
 									<th>序号</th>
 									<th style="text-align: center;">类别</th>
 									<th>名称</th>
-									<th>学分</th>
+									<th>申请学分</th>
+									<th>审核学分</th>
 									<th>操作</th>
 								</tr>
 								<c:forEach var="record" items="${info.list}" varStatus="s">
 									<tr>
-										<td>${s.count}</td>
+										<td>${s.count+(info.pageNum-1)*5}</td>
 										<td style="text-align: center;">${record.sort}</td>
 										<td>${record.applyName}</td>
+										<td>${record.applyCredit}</td>
 										<td>${record.auditCredit}</td>
 										<td><a href="javascript:;" class="btn btn-2x" name="state">${record.auditState}</a></td>
 									</tr>

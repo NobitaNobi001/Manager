@@ -165,7 +165,7 @@ public class StudentController {
         System.out.println("查询结果:"+info.getList());
 
         //查询总学分
-        int sumCredit = studentService.selectSumCreditBystuNumber(stuNumber);
+        Double sumCredit = studentService.selectSumCreditBystuNumber(stuNumber);
         model.addAttribute("sumCredit", sumCredit);
         model.addAttribute("student",student );
         model.addAttribute("info",info);

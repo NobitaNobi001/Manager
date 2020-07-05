@@ -180,7 +180,7 @@
   </update>
 
   <!--根据学号查询总学分-->
-  <select id="selectBystuNumber" resultType="java.lang.Integer">
+  <select id="selectBystuNumber" resultType="java.lang.Double">
     select sum_credit from credit where stu_number=#{stu_number}
   </select>
 </mapper>

@@ -74,7 +74,7 @@ public class StudentService {
     }
 
     //查询学生的总分
-    public int selectSumCreditBystuNumber(int stuNumber){
+    public Double selectSumCreditBystuNumber(int stuNumber){
         return creditMapper.selectBystuNumber(stuNumber);
     }
 }

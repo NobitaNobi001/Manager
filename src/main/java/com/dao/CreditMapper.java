@@ -28,5 +28,5 @@ public interface CreditMapper {
 
     int updateByPrimaryKey(Credit record);
 
-    int selectBystuNumber(Integer stuNumber);
+    Double selectBystuNumber(Integer stuNumber);
 }

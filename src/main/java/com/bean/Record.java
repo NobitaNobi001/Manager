@@ -28,10 +28,11 @@ public class Record {
     public Record() {
     }
 
-    public Record(Integer stuNumber, String sort, String applyName, Double auditCredit, String auditState) {
+    public Record(Integer stuNumber, String sort, String applyName, Double applyCredit,Double auditCredit, String auditState) {
         this.stuNumber = stuNumber;
         this.sort = sort;
         this.applyName = applyName;
+        this.applyCredit=applyCredit;
         this.auditCredit = auditCredit;
         this.auditState = auditState;
     }
