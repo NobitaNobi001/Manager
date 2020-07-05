@@ -19,7 +19,7 @@
 
 </head>
 <body>
-<%--员工修改的模态框--%>
+<%--导出数据时的模态框--%>
 <div class="modal fade" id="stuWithCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -46,7 +46,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">排序方式</label>
+                        <label class="col-sm-2 control-label">学分排序</label>
                         <div class="col-sm-10">
                             <label class="radio-inline">
                                 <input type="radio" name="order" id="order_stuList1" value="1"
@@ -77,7 +77,7 @@
                 </div>
                 <div class="top-right right">
                     <a href="${APP_PATH}/teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/login.jsp">退出</a>
+                    <a href="${APP_PATH}/logout">退出</a>
                 </div>
             </div>
             <div class="menu">
@@ -126,7 +126,6 @@
                     </table>
                     <div style="text-align: center;">
                         <div class="col-md-6" id="page_nav_area">
-
                         </div>
                     </div>
                 </div>
