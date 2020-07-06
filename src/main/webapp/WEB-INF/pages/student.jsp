@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -65,43 +65,53 @@
                     <ul>
                         <li>
                             <div>大学生学科竞赛活动（含大学生创新创业训练项目）</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-danger btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-danger btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>大学生文体竞赛活动</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>创新创业实践训练（课程）</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>论文、专利、作品发表</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>职业（等级）证书</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>参与教师科研（或实验室工作）</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>社会实践（调查）</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>读书活动</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>学生工作与社团活动）</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                         <li>
                             <div>专业认定的其他创新实践活动</div>
-                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a></div>
+                            <div><a href="${APP_PATH}/student/applyCredit/${student.id}" class="btn btn-success btn-2x">立即申报</a>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -113,7 +123,9 @@
 <footer>
     <div id="footer">
         <div class="footer">
-            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院 版权所有</div>
+            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+                版权所有
+            </div>
         </div>
     </div>
 </footer>
@@ -122,7 +134,7 @@
 <script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
 <script type="text/javascript">
     $(function () {
-       var stuName='${student.stuName}';
-       $('.avatar .head').append(stuName.substr(stuName.length-1,1));
+        var stuName = '${student.stuName}';
+        $('.avatar .head').append(stuName.substr(stuName.length - 1, 1));
     })
 </script>

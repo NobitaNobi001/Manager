@@ -22,9 +22,7 @@
                 <h4>登录</h4>
                 <br>
                 <div><input type="text" name="Number" id="Number" placeholder="用户名" onchange="checkuser()"/>
-                    <br>
-                    <span id="checktext">${msg}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                    <br>
+                    <div id="checktext" class="notice" style="margin-bottom: 10px;">${msg}&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 </div>
                 <div><input type="password" name="password" id="password" placeholder="密码" onchange="checkpwd()"/></div>
                 <div class="type">

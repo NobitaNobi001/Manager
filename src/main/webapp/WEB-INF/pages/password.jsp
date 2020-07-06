@@ -7,7 +7,7 @@
         pageContext.setAttribute("APP_PATH", request.getContextPath());
     %>
     <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
 </head>
 <body>
 <header>
@@ -15,7 +15,7 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70" /></div>
+                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
@@ -50,7 +50,7 @@
                 <!-- 修改密码 start -->
                 <div class="credit">
                     <h4>修改密码</h4>
-                    <form  class="form">
+                    <form class="form">
                         <div class="row item">
                             <div class="col col-2 name">原密码</div>
                             <div class="col col-7 value">
@@ -74,7 +74,9 @@
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">&nbsp;</div>
-                            <div class="col value"><button type="button" class="btn btn-primary btn-6x" onclick="check()">提交修改</button></div>
+                            <div class="col value">
+                                <button type="button" class="btn btn-primary btn-6x" onclick="check()">提交修改</button>
+                            </div>
                         </div>
                     </form>
                     <!-- 修改密码 end -->
@@ -85,7 +87,9 @@
 <footer>
     <div id="footer">
         <div class="footer">
-            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院 版权所有</div>
+            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+                版权所有
+            </div>
         </div>
     </div>
 </footer>
@@ -93,66 +97,68 @@
 </html>
 <script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
 <script>
-    var password=document.getElementById("password");
-    var pass=document.getElementById("pass");
-    var repass=document.getElementById("repass");
+    var password = document.getElementById("password");
+    var pass = document.getElementById("pass");
+    var repass = document.getElementById("repass");
 
-    var pwdmsg=document.getElementById("passwordmsg");
-    var passmsg=document.getElementById("passmsg");
-    var repassmsg=document.getElementById("repassmsg");
+    var pwdmsg = document.getElementById("passwordmsg");
+    var passmsg = document.getElementById("passmsg");
+    var repassmsg = document.getElementById("repassmsg");
 
     function checkoldpwd() {
-        if(password.value==""){//输入的旧密码为空
+        if (password.value == "") {//输入的旧密码为空
             //提示信息  请输入当前用户密码
-            pwdmsg.innerText="密码不能为空";
-            pwdmsg.style.color='red';
+            pwdmsg.innerText = "密码不能为空";
+            pwdmsg.style.color = 'red';
             return false;
-        }else{
-            pwdmsg.innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;";
+        } else {
+            pwdmsg.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
             return true;
         }
     }
 
     function checknewpwd() {
-        if(pass.value.length>16||pass.value.length<8){
-            passmsg.innerText="新密码必须大于8位小于16位";
-            passmsg.style.color='red';
+        if (pass.value.length > 16 || pass.value.length < 8) {
+            passmsg.innerText = "新密码必须大于8位小于16位";
+            passmsg.style.color = 'red';
             return false;
-        }else{
-            passmsg.innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;";
+        } else {
+            passmsg.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
             return true;
         }
     }
+
     function checkrepwd() {
-        if(pass.value!=repass.value){
-            repassmsg.innerText="确认密码和新密码不一致";
-            repassmsg.style.color='red';
+        if (pass.value != repass.value) {
+            repassmsg.innerText = "确认密码和新密码不一致";
+            repassmsg.style.color = 'red';
             return false;
-        }else{
-            repassmsg.innerHTML="&nbsp;&nbsp;&nbsp;&nbsp;";
+        } else {
+            repassmsg.innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
             return true;
         }
     }
+
     function check() {
-        if(checkoldpwd()&&checknewpwd()&&checkrepwd()){
+        if (checkoldpwd() && checknewpwd() && checkrepwd()) {
             $.ajax({
-               url:"${pageContext.request.contextPath}/student/updateStupwd",
-               data:{"stuNumber":${student.stuNumber},"password":password.value,"pass":pass.value},
-               type:"post",
-               dataType:"text",
-               success:function (data) {
-                   if(data=="修改密码成功，将返回登录页面"){
-                       alert(data);
-                       window.location.href="/login.jsp";
-                   }else{
-                       alert(data);
-                   }
+                url: "${pageContext.request.contextPath}/student/updateStupwd",
+                data: {"stuNumber":${student.stuNumber}, "password": password.value, "pass": pass.value},
+                type: "post",
+                dataType: "text",
+                success: function (data) {
+                    if (data == "修改密码成功，将返回登录页面") {
+                        alert(data);
+                        window.location.href = "/login.jsp";
+                    } else {
+                        alert(data);
+                    }
                 },
-                error:function () {
-                     alert("服务器繁忙");
+                error: function () {
+                    alert("服务器繁忙");
                 }
             });
-        }else {
+        } else {
             alert("请填写正确的信息");
         }
     }
