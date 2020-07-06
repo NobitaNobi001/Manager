@@ -62,7 +62,7 @@
 									<th>名称</th>
 									<th>申请学分</th>
 									<th>审核学分</th>
-									<th>操作</th>
+									<th>申报状态</th>
 								</tr>
 								<c:forEach var="record" items="${info.list}" varStatus="s">
 									<tr>

@@ -321,6 +321,6 @@
 
   <!--根据学号查询学生的所有申报记录-->
   <select id="findAllBystuNumber" resultType="com.bean.Record">
-    select apply_name,sort,apply_credit,audit_credit,audit_state from credit_record where stu_number=#{stuNumber}
+    select apply_name,sort,apply_credit,audit_credit,audit_state from credit_record where stu_number=#{stuNumber} order by audit_state desc
   </select>
 </mapper>
