@@ -19,6 +19,85 @@
 
 </head>
 <body>
+<%--审核数据时的模态框--%>
+<div class="modal fade" id="stuWithAudit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">审核学分</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="stu_name" class="col-sm-2 control-label">姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="stu_name" class="form-control" id="stu_name" readonly/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="sort" class="col-sm-2 control-label">申报类别</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="sort" class="form-control" id="sort" readonly/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="picture" class="col-sm-2 control-label">申报材料</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="picture" class="form-control" id="picture" readonly/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apply_name" class="col-sm-2 control-label">申报名称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="apply_name" class="form-control" id="apply_name" readonly/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apply_credit" class="col-sm-2 control-label">申报学分</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="apply_credit" class="form-control" id="apply_credit" readonly/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apply_words" class="col-sm-2 control-label">申报描述</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="apply_words" class="form-control" id="apply_words" readonly/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="audit_credit" class="col-sm-2 control-label">审核学分</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="audit_credit" class="form-control" id="audit_credit" />
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审核状态</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="audit_state">
+                                <option checked="checked">未审核</option>
+                                <option>已审核</option>
+                                <option>未成功</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="stu_audit_btn">导出</button>
+            </div>
+        </div>
+    </div>
+</div>
 <header>
     <div id="header">
         <div class="header">
@@ -85,7 +164,7 @@
                             <td style="text-align: left;">大学生学科竞赛活动（含大学生创新创业训练项目）</td>
                             <td>2</td>
                             <td><a href="javascript:;" class="btn btn-danger btn-2x">待审核</a></td>
-                            <td><a href="javascript:;" class="btn btn-primary btn-2x">审核</a></td>
+                            <td><a href="javascript:;" class="btn btn-primary btn-2x" id="audit">审核</a></td>
                         </tr>
 
                     </table>
@@ -127,3 +206,15 @@
 </footer>
 </body>
 </html>
+<script type="text/javascript">
+
+    $("#audit").click(function () {
+
+        $("#stuWithAudit").modal({
+
+            //设置点击背景模态框不会消失
+            backdrop: "static"
+        });
+
+    });
+</script>
