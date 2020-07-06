@@ -1,5 +1,6 @@
 package com.service;
 
+
 import com.bean.Teacher;
 import com.dao.TeacherMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ public class TeacherService {
 
         //通过dao层将数据进行查出
         Teacher teacher = teacherMapper.selectUPByTeaNumber(teaNumber);
+
         return teacher;
     }
 
@@ -49,6 +51,5 @@ public class TeacherService {
 
        return teacherMapper.selectByPrimaryKey(id);
     }
-
 
 }

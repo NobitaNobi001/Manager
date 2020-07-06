@@ -1,306 +1,306 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.TeacherMapper" >
-  <resultMap id="BaseResultMap" type="com.bean.Teacher" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="tea_number" property="teaNumber" jdbcType="INTEGER" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="tea_name" property="teaName" jdbcType="VARCHAR" />
-    <result column="college_id" property="collegeId" jdbcType="INTEGER" />
-    <result column="gender" property="gender" jdbcType="CHAR" />
-    <result column="tea_positon" property="teaPositon" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-  </resultMap>
-  <resultMap id="UserNameAndPassword" type="com.bean.Teacher">
-    <result column="tea_number" property="teaNumber" jdbcType="INTEGER"/>
-    <result column="password" property="password" jdbcType="VARCHAR"/>
-  </resultMap>
-  <resultMap id="teacherWithCollege" type="com.bean.Teacher">
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="tea_number" property="teaNumber" jdbcType="INTEGER" />
-    <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="tea_name" property="teaName" jdbcType="VARCHAR" />
-    <result column="college_id" property="collegeId" jdbcType="INTEGER" />
-    <result column="gender" property="gender" jdbcType="CHAR" />
-    <result column="tea_positon" property="teaPositon" jdbcType="VARCHAR" />
-    <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="email" property="email" jdbcType="VARCHAR" />
-    <!--指定联合查询出的学院字段的封装-->
-    <association property="college" javaType="com.bean.College">
-      <id column="id" property="id" jdbcType="INTEGER"/>
-      <result column="name" property="name" jdbcType="VARCHAR"/>
-    </association>
-  </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+    <resultMap id="BaseResultMap" type="com.bean.Teacher" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="tea_number" property="teaNumber" jdbcType="INTEGER" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="tea_name" property="teaName" jdbcType="VARCHAR" />
+        <result column="college_id" property="collegeId" jdbcType="INTEGER" />
+        <result column="gender" property="gender" jdbcType="CHAR" />
+        <result column="tea_positon" property="teaPositon" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap id="UserNameAndPassword" type="com.bean.Teacher">
+        <result column="tea_number" property="teaNumber" jdbcType="INTEGER"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="teacherWithCollege" type="com.bean.Teacher">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="tea_number" property="teaNumber" jdbcType="INTEGER" />
+        <result column="password" property="password" jdbcType="VARCHAR" />
+        <result column="tea_name" property="teaName" jdbcType="VARCHAR" />
+        <result column="college_id" property="collegeId" jdbcType="INTEGER" />
+        <result column="gender" property="gender" jdbcType="CHAR" />
+        <result column="tea_positon" property="teaPositon" jdbcType="VARCHAR" />
+        <result column="phone" property="phone" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <!--指定联合查询出的学院字段的封装-->
+        <association property="college" javaType="com.bean.College">
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <sql id="Example_Where_Clause" >
+        <where >
+            <foreach collection="oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue" >
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue" >
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue" >
-                  and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause" >
+        <where >
+            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+                <if test="criteria.valid" >
+                    <trim prefix="(" suffix=")" prefixOverrides="and" >
+                        <foreach collection="criteria.criteria" item="criterion" >
+                            <choose >
+                                <when test="criterion.noValue" >
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue" >
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue" >
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue" >
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List" >
+        </where>
+    </sql>
+    <sql id="Base_Column_List" >
     id, tea_number, password, tea_name, college_id, gender, tea_positon, phone, email
   </sql>
-  <sql id="WithCollege_Column_List" >
+    <sql id="WithCollege_Column_List" >
     t.id, tea_number, password, tea_name, t.college_id, gender, tea_positon, phone, email,c.id,c.name
   </sql>
 
 
-  <!--根据教工帐号查找教师的用户名和密码信息-->
-  <select id="selectUPByTeaNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
+    <!--根据教工帐号查找教师的用户名和密码信息-->
+    <select id="selectUPByTeaNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
     select tea_number,password from tea_info where tea_number = #{tea_number,jdbcType=INTEGER}
   </select>
 
-  <!--根据教工账号查找教工的信息-->
-  <select id="selectTeacherByTeaNumber" resultMap="teacherWithCollege" parameterType="java.lang.Integer">
-    select
-    <include refid="WithCollege_Column_List"/>
-    from tea_info t
-    left join college c on t.`college_id`=c.`id`
-    where tea_number= #{tea_number,jdbcType=INTEGER}
-  </select>
+    <!--根据教工账号查找教工的信息-->
+    <select id="selectTeacherByTeaNumber" resultMap="teacherWithCollege" parameterType="java.lang.Integer">
+        select
+        <include refid="WithCollege_Column_List"/>
+        from tea_info t
+        left join college c on t.`college_id`=c.`id`
+        where tea_number= #{tea_number,jdbcType=INTEGER}
+    </select>
 
 
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.TeacherExample" >
-    select
-    <if test="distinct" >
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from tea_info
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null" >
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from tea_info
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.TeacherExample" >
+        select
+        <if test="distinct" >
+            distinct
+        </if>
+        <include refid="Base_Column_List" />
+        from tea_info
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+        <if test="orderByClause != null" >
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from tea_info
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tea_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.bean.TeacherExample" >
-    delete from tea_info
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.bean.Teacher" >
-    insert into tea_info (id, tea_number, password, 
-      tea_name, college_id, gender, 
+    <delete id="deleteByExample" parameterType="com.bean.TeacherExample" >
+        delete from tea_info
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.bean.Teacher" >
+    insert into tea_info (id, tea_number, password,
+      tea_name, college_id, gender,
       tea_positon, phone, email
       )
-    values (#{id,jdbcType=INTEGER}, #{teaNumber,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, 
-      #{teaName,jdbcType=VARCHAR}, #{collegeId,jdbcType=INTEGER}, #{gender,jdbcType=CHAR}, 
+    values (#{id,jdbcType=INTEGER}, #{teaNumber,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
+      #{teaName,jdbcType=VARCHAR}, #{collegeId,jdbcType=INTEGER}, #{gender,jdbcType=CHAR},
       #{teaPositon,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.bean.Teacher" >
-    insert into tea_info
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="teaNumber != null" >
-        tea_number,
-      </if>
-      <if test="password != null" >
-        password,
-      </if>
-      <if test="teaName != null" >
-        tea_name,
-      </if>
-      <if test="collegeId != null" >
-        college_id,
-      </if>
-      <if test="gender != null" >
-        gender,
-      </if>
-      <if test="teaPositon != null" >
-        tea_positon,
-      </if>
-      <if test="phone != null" >
-        phone,
-      </if>
-      <if test="email != null" >
-        email,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="teaNumber != null" >
-        #{teaNumber,jdbcType=INTEGER},
-      </if>
-      <if test="password != null" >
-        #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="teaName != null" >
-        #{teaName,jdbcType=VARCHAR},
-      </if>
-      <if test="collegeId != null" >
-        #{collegeId,jdbcType=INTEGER},
-      </if>
-      <if test="gender != null" >
-        #{gender,jdbcType=CHAR},
-      </if>
-      <if test="teaPositon != null" >
-        #{teaPositon,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
-        #{email,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.bean.TeacherExample" resultType="java.lang.Integer" >
-    select count(*) from tea_info
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update tea_info
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.teaNumber != null" >
+    <insert id="insertSelective" parameterType="com.bean.Teacher" >
+        insert into tea_info
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="teaNumber != null" >
+                tea_number,
+            </if>
+            <if test="password != null" >
+                password,
+            </if>
+            <if test="teaName != null" >
+                tea_name,
+            </if>
+            <if test="collegeId != null" >
+                college_id,
+            </if>
+            <if test="gender != null" >
+                gender,
+            </if>
+            <if test="teaPositon != null" >
+                tea_positon,
+            </if>
+            <if test="phone != null" >
+                phone,
+            </if>
+            <if test="email != null" >
+                email,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="teaNumber != null" >
+                #{teaNumber,jdbcType=INTEGER},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="teaName != null" >
+                #{teaName,jdbcType=VARCHAR},
+            </if>
+            <if test="collegeId != null" >
+                #{collegeId,jdbcType=INTEGER},
+            </if>
+            <if test="gender != null" >
+                #{gender,jdbcType=CHAR},
+            </if>
+            <if test="teaPositon != null" >
+                #{teaPositon,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null" >
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.bean.TeacherExample" resultType="java.lang.Integer" >
+        select count(*) from tea_info
+        <if test="_parameter != null" >
+            <include refid="Example_Where_Clause" />
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map" >
+        update tea_info
+        <set >
+            <if test="record.id != null" >
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.teaNumber != null" >
+                tea_number = #{record.teaNumber,jdbcType=INTEGER},
+            </if>
+            <if test="record.password != null" >
+                password = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.teaName != null" >
+                tea_name = #{record.teaName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.collegeId != null" >
+                college_id = #{record.collegeId,jdbcType=INTEGER},
+            </if>
+            <if test="record.gender != null" >
+                gender = #{record.gender,jdbcType=CHAR},
+            </if>
+            <if test="record.teaPositon != null" >
+                tea_positon = #{record.teaPositon,jdbcType=VARCHAR},
+            </if>
+            <if test="record.phone != null" >
+                phone = #{record.phone,jdbcType=VARCHAR},
+            </if>
+            <if test="record.email != null" >
+                email = #{record.email,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map" >
+        update tea_info
+        set id = #{record.id,jdbcType=INTEGER},
         tea_number = #{record.teaNumber,jdbcType=INTEGER},
-      </if>
-      <if test="record.password != null" >
         password = #{record.password,jdbcType=VARCHAR},
-      </if>
-      <if test="record.teaName != null" >
         tea_name = #{record.teaName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.collegeId != null" >
         college_id = #{record.collegeId,jdbcType=INTEGER},
-      </if>
-      <if test="record.gender != null" >
         gender = #{record.gender,jdbcType=CHAR},
-      </if>
-      <if test="record.teaPositon != null" >
         tea_positon = #{record.teaPositon,jdbcType=VARCHAR},
-      </if>
-      <if test="record.phone != null" >
         phone = #{record.phone,jdbcType=VARCHAR},
-      </if>
-      <if test="record.email != null" >
-        email = #{record.email,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update tea_info
-    set id = #{record.id,jdbcType=INTEGER},
-      tea_number = #{record.teaNumber,jdbcType=INTEGER},
-      password = #{record.password,jdbcType=VARCHAR},
-      tea_name = #{record.teaName,jdbcType=VARCHAR},
-      college_id = #{record.collegeId,jdbcType=INTEGER},
-      gender = #{record.gender,jdbcType=CHAR},
-      tea_positon = #{record.teaPositon,jdbcType=VARCHAR},
-      phone = #{record.phone,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.bean.Teacher" >
-    update tea_info
-    <set >
-      <if test="teaNumber != null" >
-        tea_number = #{teaNumber,jdbcType=INTEGER},
-      </if>
-      <if test="password != null" >
-        password = #{password,jdbcType=VARCHAR},
-      </if>
-      <if test="teaName != null" >
-        tea_name = #{teaName,jdbcType=VARCHAR},
-      </if>
-      <if test="collegeId != null" >
-        college_id = #{collegeId,jdbcType=INTEGER},
-      </if>
-      <if test="gender != null" >
-        gender = #{gender,jdbcType=CHAR},
-      </if>
-      <if test="teaPositon != null" >
-        tea_positon = #{teaPositon,jdbcType=VARCHAR},
-      </if>
-      <if test="phone != null" >
-        phone = #{phone,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null" >
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.bean.Teacher" >
+        email = #{record.email,jdbcType=VARCHAR}
+        <if test="_parameter != null" >
+            <include refid="Update_By_Example_Where_Clause" />
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.bean.Teacher" >
+        update tea_info
+        <set >
+            <if test="teaNumber != null" >
+                tea_number = #{teaNumber,jdbcType=INTEGER},
+            </if>
+            <if test="password != null" >
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="teaName != null" >
+                tea_name = #{teaName,jdbcType=VARCHAR},
+            </if>
+            <if test="collegeId != null" >
+                college_id = #{collegeId,jdbcType=INTEGER},
+            </if>
+            <if test="gender != null" >
+                gender = #{gender,jdbcType=CHAR},
+            </if>
+            <if test="teaPositon != null" >
+                tea_positon = #{teaPositon,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null" >
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.bean.Teacher" >
     update tea_info
     set tea_number = #{teaNumber,jdbcType=INTEGER},
       password = #{password,jdbcType=VARCHAR},

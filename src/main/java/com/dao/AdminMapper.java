@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface AdminMapper {
+
     int countByExample(AdminExample example);
 
     int deleteByExample(AdminExample example);
@@ -29,4 +30,5 @@ public interface AdminMapper {
     int updateByPrimaryKey(Admin record);
 
     Admin selectUPByAdminNumber(Integer adminNumber);
+
 }

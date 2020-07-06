@@ -55,5 +55,4 @@ public class StudentRealm extends AuthorizingRealm {
 
         return info;
     }
-
 }

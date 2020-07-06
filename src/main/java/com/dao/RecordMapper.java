@@ -13,7 +13,7 @@ public interface RecordMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Record record);
-
+    //有选择性的插入非空数据
     int insertSelective(Record record);
 
     List<Record> selectByExample(RecordExample example);
@@ -27,4 +27,7 @@ public interface RecordMapper {
     int updateByPrimaryKeySelective(Record record);
 
     int updateByPrimaryKey(Record record);
+
+    List<Record> findAllBystuNumber(@Param("stuNumber") int stuNumber);
+
 }

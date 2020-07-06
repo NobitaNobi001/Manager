@@ -1,8 +1,12 @@
 package com.service;
 
 
+import com.bean.Record;
 import com.bean.Student;
+import com.dao.CreditMapper;
+import com.dao.RecordMapper;
 import com.dao.StudentMapper;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,17 +18,14 @@ public class StudentService {
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private RecordMapper recordMapper;
 
-    /**
-     *
-     * @param stuNumber 学生学号
-     * @return 查询到的学生
-     */
+    @Autowired
+    private CreditMapper creditMapper;
+    //通过学号查询密码
     public Student selectUPByStuNumber(Integer stuNumber) {
-
-        //通过dao层将数据进行查出
         Student student = studentMapper.selectUPByStuNumber(stuNumber);
-
         return student;
     }
 
@@ -32,5 +33,48 @@ public class StudentService {
     public Student selectStudentByStuNumber(Integer stuNumber){
         Student student = studentMapper.selectStudentByStuNumber(stuNumber);
         return student;
+    }
+
+    //根据主键查找学生
+    public Student selectByPrimaryKey(Integer id){
+        Student student = studentMapper.selectByPrimaryKey(id);
+        return student;
+    }
+
+    //更新学生表中为null的数据
+    public boolean updateStuInfoById(Student student){
+        return  studentMapper.updateStuInfoById(student);
+    }
+
+    //判断输入的密码和原有密码是否相同，相同的话更新密码
+    public boolean updateStuPwd(int stuNumber,String oldPwd,String newPwd){
+        String password = studentMapper.selectUPByStuNumber(stuNumber).getPassword();
+        if(password.equals(oldPwd)){
+            studentMapper.updateStuPwdByStuNumber(stuNumber, newPwd);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //新增创建学分申报记录
+    public boolean addCreditRecord(Record record){
+        if(record!=null){
+            recordMapper.insertSelective(record);
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    //分页查询申报记录
+    public List<Record>findAllBystuNumber(int stuNumber,int page,int size)throws Exception{
+        PageHelper.startPage(page, size);
+        return recordMapper.findAllBystuNumber(stuNumber);
+    }
+
+    //查询学生的总分
+    public Double selectSumCreditBystuNumber(int stuNumber){
+        return creditMapper.selectBystuNumber(stuNumber);
     }
 }

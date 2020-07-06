@@ -24,7 +24,7 @@ public class WatcherRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         LoginToken token = (LoginToken) authenticationToken;
 
-        //根据用户名进行查询stuNumber对应的记录
+        //根据用户名进行查询watcherNumber对应的记录
         Watcher watcher = watcherService.selectUPByWatcherNumber(Integer.valueOf(token.getUsername()));
 
         //用户不存在

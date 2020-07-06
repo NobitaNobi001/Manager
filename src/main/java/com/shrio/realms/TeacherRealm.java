@@ -1,5 +1,6 @@
 package com.shrio.realms;
 
+
 import com.bean.Teacher;
 import com.service.TeacherService;
 import com.shrio.token.LoginToken;
@@ -26,6 +27,7 @@ public class TeacherRealm extends AuthorizingRealm {
         LoginToken token = (LoginToken) authenticationToken;
 
         //根据用户名进行查询teaNumber对应的记录
+
         Teacher teacher = teacherService.selectUPByTeaNumber(Integer.valueOf(token.getUsername()));
 
         //用户不存在

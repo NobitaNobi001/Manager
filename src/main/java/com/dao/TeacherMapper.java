@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface TeacherMapper {
+
     int countByExample(TeacherExample example);
 
     int deleteByExample(TeacherExample example);
@@ -31,4 +32,5 @@ public interface TeacherMapper {
     Teacher selectUPByTeaNumber(Integer teaNumber);
 
     Teacher selectTeacherByTeaNumber(Integer teaNumber);
+
 }

@@ -68,6 +68,7 @@
                     </div>
                     <div class="department"><span>${teacher.college.name }</span></div>
                     <div class="major"><span>${teacher.teaPositon }</span></div>
+
                 </div>
 
                 <!-- 学分申请 start -->
@@ -109,7 +110,5 @@
 
     });
 
-
 </script>
-
 

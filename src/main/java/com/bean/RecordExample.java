@@ -504,6 +504,76 @@ public class RecordExample {
             return (Criteria) this;
         }
 
+        public Criteria andApplyNameIsNull() {
+            addCriterion("apply_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameIsNotNull() {
+            addCriterion("apply_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameEqualTo(String value) {
+            addCriterion("apply_name =", value, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameNotEqualTo(String value) {
+            addCriterion("apply_name <>", value, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameGreaterThan(String value) {
+            addCriterion("apply_name >", value, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameGreaterThanOrEqualTo(String value) {
+            addCriterion("apply_name >=", value, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameLessThan(String value) {
+            addCriterion("apply_name <", value, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameLessThanOrEqualTo(String value) {
+            addCriterion("apply_name <=", value, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameLike(String value) {
+            addCriterion("apply_name like", value, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameNotLike(String value) {
+            addCriterion("apply_name not like", value, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameIn(List<String> values) {
+            addCriterion("apply_name in", values, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameNotIn(List<String> values) {
+            addCriterion("apply_name not in", values, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameBetween(String value1, String value2) {
+            addCriterion("apply_name between", value1, value2, "applyName");
+            return (Criteria) this;
+        }
+
+        public Criteria andApplyNameNotBetween(String value1, String value2) {
+            addCriterion("apply_name not between", value1, value2, "applyName");
+            return (Criteria) this;
+        }
+
         public Criteria andApplyCreditIsNull() {
             addCriterion("apply_credit is null");
             return (Criteria) this;
@@ -761,6 +831,76 @@ public class RecordExample {
 
         public Criteria andAuditTeaNotBetween(String value1, String value2) {
             addCriterion("audit_tea not between", value1, value2, "auditTea");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateIsNull() {
+            addCriterion("audit_state is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateIsNotNull() {
+            addCriterion("audit_state is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateEqualTo(String value) {
+            addCriterion("audit_state =", value, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateNotEqualTo(String value) {
+            addCriterion("audit_state <>", value, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateGreaterThan(String value) {
+            addCriterion("audit_state >", value, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateGreaterThanOrEqualTo(String value) {
+            addCriterion("audit_state >=", value, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateLessThan(String value) {
+            addCriterion("audit_state <", value, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateLessThanOrEqualTo(String value) {
+            addCriterion("audit_state <=", value, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateLike(String value) {
+            addCriterion("audit_state like", value, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateNotLike(String value) {
+            addCriterion("audit_state not like", value, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateIn(List<String> values) {
+            addCriterion("audit_state in", values, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateNotIn(List<String> values) {
+            addCriterion("audit_state not in", values, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateBetween(String value1, String value2) {
+            addCriterion("audit_state between", value1, value2, "auditState");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditStateNotBetween(String value1, String value2) {
+            addCriterion("audit_state not between", value1, value2, "auditState");
             return (Criteria) this;
         }
     }

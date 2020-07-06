@@ -103,4 +103,5 @@ public class Teacher {
     public void setCollege(College college) {
         this.college = college;
     }
+
 }

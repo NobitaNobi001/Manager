@@ -20,4 +20,3 @@ bin/
 tep/
 
 /src/main/resources/dbconf.properties
-/dbconf.properties
