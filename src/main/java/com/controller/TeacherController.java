@@ -1,8 +1,12 @@
 package com.controller;
 
 import com.bean.Msg;
+import com.bean.Record;
+import com.bean.Student;
 import com.bean.Teacher;
+import com.github.pagehelper.PageInfo;
 import com.service.TeacherService;
+import com.utils.CollegeName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/teacher")
@@ -88,14 +94,43 @@ public class TeacherController {
     }
 
     @RequestMapping("/stuList")
-    public String stuList(HttpServletRequest request, Model model) {
+    public String stuList(@RequestParam(name = "page", defaultValue = "1") int page,HttpServletRequest request, Model model) {
+        //获取登陆成功的教工号
+        Integer teaNumber = (Integer) request.getSession().getAttribute("number");
 
-        teaSelect(request, model);
+        //根据教工号查找教师信息
+        Teacher teacher = teacherService.selectTeacherByTeaNumber(teaNumber);
+
+        //将查找的教工信息添加到model中
+        model.addAttribute("teacher", teacher);
+
+        //查询教师的学院id得到学院表名称
+        String tableName = CollegeName.getTableName(teacher.getCollegeId());
+        List<Student> students = teacherService.selectStuByCollegeName(tableName,page,5);
+        PageInfo<Record> info = new PageInfo(students);
+        model.addAttribute("info", info);
+
 
         //跳转到stuList页面
         return "stuList";
     }
 
+    @RequestMapping("/queryStu")
+    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page,@RequestParam("stuNumber")Integer stuNumber,@RequestParam("stuName")String stuName,@RequestParam("stuClass")String stuClass,Model model,HttpServletRequest  request){
+        //获取登陆成功的教工号
+        Integer teaNumber = (Integer) request.getSession().getAttribute("number");
+
+        //根据教工号查找教师信息
+        Teacher teacher = teacherService.selectTeacherByTeaNumber(teaNumber);
+
+        //将查找的教工信息添加到model中
+        model.addAttribute("teacher", teacher);
+        String tableName = CollegeName.getTableName(teacher.getCollegeId());
+        List<Student> students = teacherService.selectStuByCondition(tableName,stuNumber,stuName,stuClass,page,5);
+        PageInfo<Record> info = new PageInfo(students);
+        model.addAttribute("info", info);
+        return "stuList";
+    }
     @RequestMapping("/declareManager")
     public String stuDeclareManager(HttpServletRequest request, Model model) {
 

@@ -18,4 +18,7 @@ public interface StudentMapper {
 
     //根据id查询到学生 更换密码
     boolean updateStuPwdByStuNumber(@Param("stuNumber") Integer stuNumber, @Param("password") String password);
+
+    //根据id来查询major专业
+    String selectMajorBystuNumber(@Param("stuNumber") Integer stuNumber);
 }

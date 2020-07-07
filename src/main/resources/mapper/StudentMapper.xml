@@ -13,6 +13,7 @@
     <result column="phone" property="phone" jdbcType="VARCHAR"/>
     <result column="email" property="email" jdbcType="VARCHAR"/>
     <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey" column="college_id"></association>
+    <association property="credit" select="com.dao.CreditMapper.selectBystuNumber" column="stu_number"></association>
   </resultMap>
   <resultMap id="UserNameAndPassword" type="com.bean.Student">
     <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
@@ -64,5 +65,8 @@
         update stu_info set password=#{password} where stu_number=#{stuNumber}
     </update>
 
-
+  <!--根据学生的学号去查询所在的major-->
+  <select id="selectMajorBystuNumber" resultType="java.lang.String">
+    select major from stu_info where stu_number=#{stuNumber}
+  </select>
 </mapper>

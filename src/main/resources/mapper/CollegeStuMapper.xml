@@ -1,8 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.CollegeStuMapper">
+    <resultMap id="BaseResultMap" type="com.bean.Student">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
+        <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
+        <result column="college_id" property="collegeId"/>
+        <result column="stu_class" property="className" jdbcType="VARCHAR"/>
+        <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey" column="college_id"></association>
+        <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber" column="stu_number"></association>
+        <association property="major" select="com.dao.StudentMapper.selectMajorBystuNumber" column="stu_number"></association>
+    </resultMap>
     <!--根据学院名来查询所有学生-->
-    <select id="selectAllStuByCollegeName" resultType="com.bean.Student">
-        select * from ${tablename}
+    <select id="selectAllStuByCollegeName" resultMap="BaseResultMap">
+        select * from ${tableName}
+    </select>
+
+    <!--条件查询学生列表stuName stuNumber stuClass-->
+    <select id="selectStuByCondition" resultMap="BaseResultMap">
+        select * from ${tableName}
+        <bind name="_stuName" value=" '%'+stuName+'%' "/>
+        <where>
+           <if test="stuNumber!=null">
+              stu_number=#{stuNumber}
+           </if>
+           <if test="stuName!=null and stuName!=&quot;&quot;">
+              and stu_name like #{_stuName}
+           </if>
+           <if test="stuClass!=null and stuClass!=&quot;&quot;">
+              and stu_class=#{stuClass}
+           </if>
+        </where>
     </select>
 </mapper>

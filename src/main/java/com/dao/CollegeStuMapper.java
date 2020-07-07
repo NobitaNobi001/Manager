@@ -12,4 +12,6 @@ import java.util.List;
 public interface CollegeStuMapper {
     //根据学院名查询所有学生
     List<Student> selectAllStuByCollegeName(@Param("tableName") String tableName);
+    //条件查询学生列表
+    List<Student> selectStuByCondition(@Param("tableName") String tableName,@Param("stuNumber")Integer stuNumber,@Param("stuName")String stuName,@Param("stuClass")String stuClass);
 }
