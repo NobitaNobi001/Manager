@@ -89,6 +89,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </main>
 <footer>
     <div id="footer">
@@ -130,7 +131,7 @@
         //向后台发送请求更新用户密码
         $.ajax({
             url: "${APP_PATH}/teacher/updatePassword/" +${teacher.id },
-            type: "POST",
+            type: "PUT",
             data: {
                 "password": respass.val()
             },

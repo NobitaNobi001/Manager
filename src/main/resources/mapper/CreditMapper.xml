@@ -184,4 +184,9 @@
     select sum_credit from credit where stu_number=#{stu_number}
   </select>
 
+  <!--根据学号更新学生学分-->
+  <update id="updateByStuNumber" parameterType="com.bean.Credit">
+    update credit set sum_credit = #{sumCredit,jdbcType=DOUBLE} where stu_number = #{stuNumber,jdbcType=INTEGER}
+  </update>
+
 </mapper>

@@ -131,6 +131,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </main>
 <footer>
     <div id="footer">
@@ -144,110 +145,6 @@
 </body>
 </html>
 <script type="text/javascript">
-    <%--$(function () {--%>
-        <%--//去首页--%>
-        <%--to_page(1);--%>
-    <%--});--%>
-
-    <%--function to_page(pn) {--%>
-        <%--$.ajax({--%>
-            <%--url: "${APP_PATH}/teacher/stus",--%>
-            <%--data: "pn" + pn,--%>
-            <%--type: "GET",--%>
-            <%--success: function (result) {--%>
-                <%--//1.解析显示学生信息--%>
-                <%--build_stu_table(result);--%>
-                <%--//2.解析并显示分页条信息--%>
-                <%--build_page_nav(result);--%>
-
-            <%--}--%>
-        <%--})--%>
-    <%--}--%>
-
-    <%--//解析显示学生信息--%>
-    <%--function build_stu_table(result) {--%>
-        <%--//清空table表格--%>
-        <%--$("#stus_table tbody").empty();--%>
-        <%--var stus = result.extend.pageInfo.list;--%>
-        <%--$.each(stus, function (index, item) {--%>
-            <%--var stuNumber = $("<td></td>").append(item.stuNumber);--%>
-            <%--// <th>学号</th>--%>
-            <%--//     <th>姓名</th>--%>
-            <%--//     <th>院系</th>--%>
-            <%--//     <th>专业</th>--%>
-            <%--//     <th>班级</th>--%>
-            <%--//     <th>学分</th>--%>
-            <%--var stuName = $("<td></td>").append(item.stuName);--%>
-            <%--var collegeName = $("<td></td>").append(item.college.name);--%>
-            <%--var majorName = $("<td></td>").append(item.major);--%>
-            <%--var className = $("<td></td>").append(item.className);--%>
-            <%--// var sumCredit--%>
-        <%--})--%>
-    <%--}--%>
-
-    <%--//解析显示分页条信息--%>
-    <%--function build_page_nav(result) {--%>
-        <%--$("#page_nav_area").empty();--%>
-
-        <%--//构建首页和上一页元素--%>
-        <%--var firstPageLi = $("<li></li>").append($("<a></a>").append("首页").attr("href", "#"));--%>
-        <%--var prePageLi = $("<li></li>").append($("<a></a>").append("&laquo;"));--%>
-
-
-        <%--if (result.extend.pageInfo.hasPreviousPage == false) {--%>
-            <%--firstPageLi.addClass("disabled");--%>
-            <%--prePageLi.addClass("disabled");--%>
-        <%--} else {--%>
-            <%--//为元素添加简单翻页事件--%>
-            <%--firstPageLi.click(function () {--%>
-                <%--to_page(1);--%>
-            <%--});--%>
-            <%--prePageLi.click(function () {--%>
-                <%--to_page(result.extend.pageInfo.pageNum - 1);--%>
-            <%--});--%>
-        <%--}--%>
-
-        <%--//构建下一页和末页元素--%>
-        <%--var nextPageLi = $("<li></li>").append($("<a></a>").append("&raquo;"));--%>
-        <%--var lastPageLi = $("<li></li>").append($("<a></a>").append("末页").attr("href", "#"));--%>
-
-        <%--if (result.extend.pageInfo.hasNextPage == false) {--%>
-            <%--nextPageLi.addClass("disabled");--%>
-            <%--lastPageLi.addClass("disabled");--%>
-        <%--} else {--%>
-            <%--lastPageLi.click(function () {--%>
-                <%--to_page(result.extend.pageInfo.pages);--%>
-            <%--});--%>
-
-            <%--nextPageLi.click(function () {--%>
-                <%--to_page(result.extend.pageInfo.pageNum + 1);--%>
-            <%--});--%>
-        <%--}--%>
-
-        <%--//首页和前一页的提示--%>
-        <%--ul.append(firstPageLi).append(prePageLi);--%>
-
-        <%--//添加页码提示--%>
-        <%--$.each(result.extend.pageInfo.navigatepageNums, function (index, item) {--%>
-            <%--var numLi = $("<li></li>").append($("<a></a>").append(item));--%>
-            <%--if (result.extend.pageInfo.pageNum == item) {--%>
-                <%--numLi.addClass("active");--%>
-            <%--}--%>
-            <%--numLi.click(function () {--%>
-                <%--to_page(item);--%>
-            <%--});--%>
-
-            <%--ul.append(numLi);--%>
-        <%--});--%>
-
-        <%--//下一页和末页的提示--%>
-        <%--ul.append(nextPageLi).append(lastPageLi);--%>
-
-        <%--//把ul加到nav元素--%>
-        <%--var navEle = $("<nav></nav>").append(ul);--%>
-        <%--navEle.appendTo("#page_nav_area");--%>
-
-    <%--}--%>
 
     //点击导出按钮弹出模态框
     $("#btn_stuExport").click(function () {

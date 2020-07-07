@@ -7,6 +7,11 @@ public class Credit {
 
     private Double sumCredit;
 
+    public Credit(Integer stuNumber, Double auditCredit) {
+        this.stuNumber = stuNumber;
+        this.sumCredit = auditCredit;
+    }
+
     public Integer getId() {
         return id;
     }
