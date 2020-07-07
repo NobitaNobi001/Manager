@@ -27,6 +27,16 @@ public class Student implements Serializable {
 
     private College college;
 
+    private Double sumCredit;
+
+    public Double getSumCredit() {
+        return sumCredit;
+    }
+
+    public void setSumCredit(Double sumCredit) {
+        this.sumCredit = sumCredit;
+    }
+
     public College getCollege() {
         return college;
     }

@@ -1,13 +1,7 @@
 package com.controller;
 
 import com.bean.Msg;
-import com.bean.Record;
 import com.bean.Teacher;
-import com.dao.RecordMapper;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.service.CollegeStuService;
-import com.service.RecordService;
 import com.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,25 +10,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/teacher")
 public class TeacherController {
 
 
+
     @Autowired
     private TeacherService teacherService;
-
-    @Autowired
-    private CollegeStuService collegeStuService;
-
-    @Autowired
-    private RecordService recordService;
-
 
     /**
      * 教工信息查询并存放到model中
@@ -126,7 +111,7 @@ public class TeacherController {
      * @param teacher
      * @return
      */
-    @RequestMapping(value = "/updatePassword/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updatePassword/{id}", method = RequestMethod.POST)
     @ResponseBody
     public Msg updatePassword(Teacher teacher) {
 
@@ -154,32 +139,21 @@ public class TeacherController {
         return Msg.success();
     }
 
-    /**
-     * 获取学生的申报信息
-     *
-     * @param pn        页码
-     * @param collegeId 学院id
-     * @return
-     */
-    @RequestMapping(value = "/declare",method = RequestMethod.GET)
-    @ResponseBody
-    public Msg declareInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId) {
-
-        System.out.println(collegeId);
-        //将对应学院的学生学号进行查出
-        List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeId(collegeId);
-
-        //设置起始页码以及每页的记录条数
-        PageHelper.startPage(pn, 5);
-
-        //根据学号进行申报记录的查出
-        List<Record> stuRecords = recordService.getAllRecords(stuNumbers);
-
-        //使用pageInfo包装查询后的结果
-        PageInfo page = new PageInfo(stuRecords, 5);
-
-        return Msg.success().add("pageInfo", page);
-    }
+//    @RequestMapping("/stus")
+//    @ResponseBody
+//    public Msg getStuInfoWithJson(@RequestParam(value = "pn", defaultValue = "1") Integer pn){
+//
+//        //设置起始页码以及每页的记录条数
+//        PageHelper.startPage(pn,5);
+//
+//        List<Student> students = studentService.getAll();
+//
+//        //使用pageinfo包装查询后的结果
+//        //封装了详细的分页信息，包括查询出来的数据 传入连续显示的页数
+//        PageInfo page = new PageInfo(students, 5);
+//
+//        return Msg.success().add("pageInfo", page);
+//    }
 
 
 }

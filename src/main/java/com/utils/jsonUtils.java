@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
  * @date 2020/6/24
  **/
 public class jsonUtils {
-
     public static String getJson(Object o) {
         return getJson(o, "yyyy-MM-dd");
     }
