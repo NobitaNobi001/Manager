@@ -2,10 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.CollegeStuMapper">
 
-    <!--根据学院名来查找学生的学号-->
-    <select id="selectStuNumberWithCollegeName" resultType="java.lang.Integer">
-        select stu_number from ${tableName}
-    </select>
 
     <resultMap id="BaseResultMap" type="com.bean.Student">
         <id column="id" property="id" jdbcType="INTEGER"/>
@@ -17,6 +13,12 @@
         <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber" column="stu_number"></association>
         <association property="major" select="com.dao.StudentMapper.selectMajorBystuNumber" column="stu_number"></association>
     </resultMap>
+
+    <!--根据学院名来查找学生的学号-->
+    <select id="selectStuNumberWithCollegeName" resultType="java.lang.Integer">
+        select stu_number from ${tableName}
+    </select>
+
     <!--根据学院名来查询所有学生-->
     <select id="selectAllStuByCollegeName" resultMap="BaseResultMap">
         select * from ${tableName}
@@ -38,5 +40,7 @@
            </if>
         </where>
     </select>
+
+
 
 </mapper>

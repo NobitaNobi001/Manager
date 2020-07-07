@@ -108,24 +108,30 @@
                 <!-- 学分列表 start -->
                 <div class="student">
                     <h4>学生列表</h4>
-                    <form class="form-inline" action="${APP_PATH}/teacher/queryStu" method="post">
-                        <div class="form-group">
-                            <label for="exampleInputNumber">学号</label>
-                            <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber" placeholder="如:2018111111">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputName">姓名</label>
-                            <input type="text" class="form-control" id="exampleInputName" name="stuName" placeholder="如:张三">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputClass">班级</label>
-                            <input type="text" class="form-control" id="exampleInputClass" name="stuClass" placeholder="如:软工1811">
-                        </div>
-                        <button type="submit" class="btn btn-default">查询</button>
-                        <div class="action form-group" style="text-align: right;margin: 10px 0;padding: 10px 0; float: right">
-                            <a href="javascript:;" class="btn btn-danger" id="btn_stuExport">导出数据</a>
-                        </div>
-                    </form>
+                    <div style="line-height: 72.8px;">
+                        <form class="form-inline" action="${APP_PATH}/teacher/queryStu" method="post">
+                            <div class="form-group">
+                                <label for="exampleInputNumber">学号</label>
+                                <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber"
+                                       placeholder="如:2018111111">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputName">姓名</label>
+                                <input type="text" class="form-control" id="exampleInputName" name="stuName"
+                                       placeholder="如:张三">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputClass">班级</label>
+                                <input type="text" class="form-control" id="exampleInputClass" name="stuClass"
+                                       placeholder="如:软工1811">
+                            </div>
+                            <button type="submit" class="btn btn-default">查询</button>
+                            <div class="action form-group"
+                                 style="text-align: right;margin: 10px 0;padding: 10px 0; float: right">
+                                <a href="javascript:;" class="btn btn-danger" id="btn_stuExport">导出数据</a>
+                            </div>
+                        </form>
+                    </div>
                     <table class="table" border="0" cellspacing="0" cellpadding="0" id="stus_table">
                         <thead>
                         <tr>
@@ -152,60 +158,61 @@
                         </c:forEach>
                         </tbody>
                     </table>
-                            <center>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <li><a href="${APP_PATH}/teacher/stuList?page=1">首页</a></li>
-                                    <c:if test="${info.pageNum==1}">
-                                        <li class="disabled">
-                                            <a href="javascript:void(0)" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
+                    <center>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li><a href="${APP_PATH}/teacher/stuList?page=1">首页</a></li>
+                                <c:if test="${info.pageNum==1}">
+                                    <li class="disabled">
+                                        <a href="javascript:void(0)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+
+                                <c:if test="${info.pageNum!=1}">
+                                    <li>
+                                        <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum-1}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+
+
+                                <c:forEach begin="1" end="5" var="i">
+                                    <c:if test="${info.pageNum==i}">
+                                        <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
                                     </c:if>
-
-                                    <c:if test="${info.pageNum!=1}">
-                                        <li>
-                                            <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum-1}" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
+                                    <c:if test="${info.pageNum!=i}">
+                                        <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
                                     </c:if>
+                                </c:forEach>
 
 
-                                    <c:forEach begin="1" end="5" var="i">
-                                        <c:if test="${info.pageNum==i}">
-                                            <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
-                                        </c:if>
-                                        <c:if test="${info.pageNum!=i}">
-                                            <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
-                                        </c:if>
-                                    </c:forEach>
+                                <c:if test="${info.pageNum==info.pages}">
+                                    <li class="disabled">
+                                        <a href="javascript:void(0)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
 
+                                <c:if test="${info.pageNum!=info.pages}">
+                                    <li>
+                                        <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
 
-                                    <c:if test="${info.pageNum==info.pages}">
-                                        <li class="disabled">
-                                            <a href="javascript:void(0)" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
-
-                                    <c:if test="${info.pageNum!=info.pages}">
-                                        <li>
-                                            <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
-
-                                    <li><a href="${APP_PATH}/teacher/stuList?page=${info.pages}">末页</a></li>
-                                    <span style="font-size:15px;margin-left: 5px;line-height: 34px">
+                                <li><a href="${APP_PATH}/teacher/stuList?page=${info.pages}">末页</a></li>
+                                <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
 									</span>
-                                </ul>
-                            </nav>
-                            </center>
+                            </ul>
+                        </nav>
+                    </center>
                 </div>
             </div>
         </div>

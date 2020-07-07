@@ -1,16 +1,23 @@
 package com.service;
 
 
+import com.bean.Student;
 import com.bean.Teacher;
+import com.dao.CollegeStuMapper;
 import com.dao.TeacherMapper;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class TeacherService {
 
     @Autowired
     private TeacherMapper teacherMapper;
+    @Autowired
+    private CollegeStuMapper collegeStuMapper;
 
     /**
      *
@@ -50,6 +57,18 @@ public class TeacherService {
     public Teacher selectByPrimaryKey(Integer id){
 
        return teacherMapper.selectByPrimaryKey(id);
+    }
+
+    //查询所在学院的学生列表
+    public List<Student> selectStuByCollegeName(String tableName, int page, int size){
+        PageHelper.startPage(page, size);
+        return collegeStuMapper.selectAllStuByCollegeName(tableName);
+    }
+
+    //条件查询学生列表
+    public List<Student> selectStuByCondition(String tableName,Integer stuNumber,String stuName,String stuClass,int page,int size){
+        PageHelper.startPage(page, size);
+        return collegeStuMapper.selectStuByCondition(tableName,stuNumber, stuName, stuClass);
     }
 
 }
