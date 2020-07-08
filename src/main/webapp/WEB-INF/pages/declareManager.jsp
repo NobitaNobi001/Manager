@@ -85,9 +85,8 @@
                         <label class="col-sm-2 control-label">审核状态</label>
                         <div class="col-sm-4">
                             <select class="form-control" name="audit_state" id="audit_state">
-                                <option>未审核</option>
-                                <option>已成功</option>
-                                <option>未成功</option>
+                                <option value="未审核">未审核</option>
+                                <option value="已审核">已审核</option>
                             </select>
                         </div>
                     </div>
@@ -253,12 +252,10 @@
 
             //根据审核状态给审核按钮赋予不同的颜色
             var state_a = $("<a></a>");
-            if (item.auditState == "已成功") {
+            if (item.auditState == "已审核") {     //已审核
                 state_a.addClass("btn btn-success btn-2x");
-            } else if (item.auditState == "未审核") {
+            } else {    //未审核
                 state_a.addClass("btn btn-danger btn-2x");
-            } else {
-                state_a.addClass("btn btn-warning btn-2x");
             }
 
             //审核状态
@@ -293,8 +290,21 @@
         });
     });
 
+    //校验审核状态
+    function validate_audit_state(){
+        if($("#audit_state option:selected").val()=="已审核"){
+            return true;
+        }
+        return false;
+    }
+
     //模态框的确定按钮
     $("#stu_audit_btn").click(function () {
+
+        if(!validate_audit_state()){
+            alert("请修改审核状态");
+            return false;
+        }
 
         //发送ajax请求更新审核的信息
         $.ajax({
@@ -307,17 +317,24 @@
                 "auditState": $("#audit_state option:selected").val()
             },
             success: function (result) {
-                //关闭模态框
-                $("#stuWithAudit").modal("hide");
-                //回到本页面
-                to_page(currentPage);
+
+                if (result.code == 100) {   //成功更新审核信息和总学分
+                    //关闭模态框
+                    $("#stuWithAudit").modal("hide");
+                    //回到本页面
+                    to_page(currentPage);
+                }
+                if (result.code == 200) {   //失败
+                    alert("此条申报记录已经审核，请不要重复操作!");
+                }
 
             }, error: function (result) {
-                alert(result);
+                alert("服务器繁忙");
             }
         });
     });
 
+    //根据申报记录的id获取对应的学生的申报记录
     function getStuRecord(id) {
         $.ajax({
             url: "${APP_PATH}/record/stuRecord/" + id,
@@ -346,8 +363,13 @@
                 $("#apply_credit").val(stuRecordData.applyCredit);
                 //申报描述
                 $("#apply_words").val(stuRecordData.words.trim() == "" ? "无" : stuRecordData.words);
-                //审核状态
-                $("#audit_state").find("option[value='stuRecordData.auditState']").attr("selected", true);
+                //审核学分
+                $("#audit_credit").val(stuRecordData.auditCredit == 0 ? "" : stuRecordData.auditCredit);
+
+                //取消原先的选中状态
+                $("#audit_state").find("option:selected").attr("selected",false);
+                //审核状态 根据后台传来的状态修改模态框内部的选择状态
+                $("#audit_state").find("option[value='" + stuRecordData.auditState + "']").attr("selected", true);
 
             },
             error: function () {

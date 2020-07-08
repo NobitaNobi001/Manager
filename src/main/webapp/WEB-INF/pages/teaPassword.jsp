@@ -61,21 +61,21 @@
                         <div class="row item">
                             <div class="col col-2 name">原密码</div>
                             <div class="col col-7 value">
-                                <input type="password" name="password">
+                                <input type="password" name="password" onchange="validate_password()"/>
                                 <div class="notice">请输入当前用户密码</div>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">新密码</div>
                             <div class="col col-7 value">
-                                <input type="password" name="pass">
+                                <input type="password" name="pass" onchange="validate_pass()"/>
                                 <div class="notice">请填写新密码</div>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">重复密码</div>
                             <div class="col col-7 value">
-                                <input type="password" name="respass">
+                                <input type="password" name="respass" onchange="validate_respass()"/>
                                 <div class="notice">请再次填写新密码</div>
                             </div>
                         </div>
@@ -116,15 +116,15 @@
     $("button").click(function () {
 
         //校验原密码输入
-        if (!password.trigger("input propertychange.validate_password")) {
+        if (!validate_password()) {
             return false;
         }
         //校验新密码的输入
-        if (!pass.trigger("input propertychange.validate_pass")) {
+        if (!validate_pass()) {
             return false;
         }
         //校验新密码的重复输入
-        if(!respass.trigger("input propertychange.validate_respass")){
+        if (!validate_respass()) {
             return false;
         }
 
@@ -139,58 +139,61 @@
             success: function (result) {
                 //如果新密码和原密码不一致
                 if (result.code == 100) {
-                    alert("密码修改成功!")
+                    alert("密码修改成功!");
                     //刷新当前页面
                     window.location.reload();
-                } else {
-                    alert("密码更新失败!");
+                }else {
+                    alert("原密码和新密码一致!");
                 }
+            },
+            error:function () {
+                alert("服务器繁忙!")
             }
         });
     });
 
-    //校验原密码
-    password.bind("input propertychange.validate_password", function () {
+    function validate_password() {
+
         //判断密码框的而输入是否为空
-        if ($(this).val().trim() == "") {
-            $(this).next().html("<p style='color: red;'>请输入当前用户密码</p>");
+        if (password.val().trim() == "") {
+            password.next().html("<p style='color: red;'>请输入当前用户密码</p>");
         } else {  //密码输入不为空 就和数据库中查出的密码进行比对
 
             //如果和数据库中密码相同就返回true
-            if ($(this).val() == "${teacher.password }") {
-                $(this).next().html("&nbsp;");
+            if (password.val() == "${teacher.password }") {
+                password.next().html("&nbsp;");
                 return true;
             } else {
-                $(this).next().html("<p style='color: red;'>密码输入错误</p>");
+                password.next().html("<p style='color: red;'>密码输入错误</p>");
             }
         }
         return false;
-    });
+    }
+
 
     //校验新密码和重复输入的密码
-    pass.bind("input propertychange.validate_pass",function () {
+    function validate_pass() {
         //判断新密码的格式
-        if ($(this).val().trim() == "" || $(this).val().trim().length > 16 || $(this).val().trim().length < 8) {
-            $(this).next().html("<p style='color: red;'>新密码应为8-16位的字母和数字组合</p>");
+        if (pass.val().trim() == "" || pass.val().trim().length > 16 || pass.val().trim().length < 8) {
+            pass.next().html("<p style='color: red;'>新密码应为8-16位的字母和数字组合</p>");
         } else {
-            $(this).next().html("&nbsp;");
+            pass.next().html("&nbsp;");
             return true;
         }
         return false;
-    });
+    }
 
-    respass.bind("input propertychange.validate_respass",function () {
 
-        if ($(this).val().trim() == pass.val().trim()) {
-            $(this).next().html("&nbsp;");
+    //校验重复输入的密码
+    function validate_respass() {
+        if (respass.val().trim() == pass.val().trim()) {
+            respass.next().html("&nbsp;");
             return true;
-        } else if ($(this).val().trim() != pass.val().trim()) {
-            $(this).next().html("<p style='color: red;'>两次密码输入不一致</p>");
+        } else if (respass.val().trim() != pass.val().trim()) {
+            respass.next().html("<p style='color: red;'>两次密码输入不一致</p>");
         }
         return false;
-    });
-
-
+    }
 
 
 </script>

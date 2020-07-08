@@ -154,7 +154,7 @@ public class TeacherController {
      * @param teacher
      * @return
      */
-    @RequestMapping(value = "/updatePassword/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePassword/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Msg updatePassword(Teacher teacher) {
 
@@ -173,13 +173,21 @@ public class TeacherController {
      * @param teacher
      * @return
      */
-    @RequestMapping(value = "/updateInfo/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateInfo/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Msg updateInfo(Teacher teacher) {
 
-        teacherService.updateTeacher(teacher);
+        Teacher teacher1 = teacherService.selectByPrimaryKey(teacher.getId());
 
-        return Msg.success();
+        //如果要修改的电话号码和邮箱都是相同的
+        if (teacher1.getEmail().equals(teacher.getEmail()) && teacher1.getPhone().equals(teacher.getPhone()) && teacher1.getGender().equals(teacher.getGender())) {
+            return Msg.fail();
+        } else {
+            //否则更新信息
+            teacherService.updateTeacher(teacher);
+
+            return Msg.success();
+        }
     }
 
     /**
@@ -189,7 +197,7 @@ public class TeacherController {
      * @param collegeId 学院id
      * @return
      */
-    @RequestMapping(value = "/declare",method = RequestMethod.GET)
+    @RequestMapping(value = "/declare", method = RequestMethod.GET)
     @ResponseBody
     public Msg declareInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId) {
 
@@ -208,7 +216,6 @@ public class TeacherController {
 
         return Msg.success().add("pageInfo", page);
     }
-
 
 
 }
