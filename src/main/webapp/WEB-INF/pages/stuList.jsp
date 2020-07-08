@@ -111,7 +111,7 @@
                     <form class="form-inline" action="${APP_PATH}/teacher/queryStu" method="post">
                         <div class="form-group">
                             <label for="exampleInputNumber">学号</label>
-                            <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber" placeholder="如:2018111111">
+                            <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber" placeholder="如:2018111111" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputName">姓名</label>
@@ -172,8 +172,8 @@
                                         </li>
                                     </c:if>
 
-
-                                    <c:forEach begin="1" end="5" var="i">
+                                    <c:if test="${info.pages<=5}">
+                                    <c:forEach begin="1" end="${info.pageNum}" var="i">
                                         <c:if test="${info.pageNum==i}">
                                             <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
                                         </c:if>
@@ -181,6 +181,18 @@
                                             <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
                                         </c:if>
                                     </c:forEach>
+                                    </c:if>
+
+                                    <c:if test="${info.pages>5}">
+                                        <c:forEach begin="1" end="5" var="i">
+                                            <c:if test="${info.pageNum==i}">
+                                                <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
+                                            </c:if>
+                                            <c:if test="${info.pageNum!=i}">
+                                                <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:if>
 
 
                                     <c:if test="${info.pageNum==info.pages}">

@@ -44,7 +44,7 @@
 							<li><a href="${APP_PATH}/student/viewCredit">学分列表</a></li>
 							<li><a href="${APP_PATH}/student/applyCredit/${student.id}">学分申报</a></li>
 							<li class="headline"><a href="javascript:;">账号管理</a></li>
-							<li><a href="${APP_PATH}/student/updateInfo/${student.id}">完善信息</a></li>
+							<li><a href="${APP_PATH}/student/updateInfo/${student.id}">修改信息</a></li>
 							<li><a href="${APP_PATH}/student/updatepwd/${student.id}">修改密码</a></li>
 						</ul>
 					</div>
@@ -71,7 +71,17 @@
 										<td>${record.applyName}</td>
 										<td>${record.applyCredit}</td>
 										<td>${record.auditCredit}</td>
-										<td><a href="javascript:;" class="btn btn-2x" name="state">${record.auditState}</a></td>
+										<c:choose>
+											<c:when test="${record.auditState=='已审核' && record.auditCredit>0}">
+												<td><a href="javascript:;" class="btn btn-2x" name="state">已通过</a></td>
+											</c:when>
+											<c:when test="${record.auditState=='未审核'}">
+												<td><a href="javascript:;" class="btn btn-2x" name="state">未审核</a></td>
+											</c:when>
+											<c:when test="${record.auditState=='已审核' && record.auditCredit==0}">
+												<td><a href="javascript:;" class="btn btn-2x" name="state">未通过</a></td>
+											</c:when>
+										</c:choose>
 									</tr>
 								</c:forEach>
 							</table>
@@ -95,7 +105,7 @@
 										</li>
 									</c:if>
 
-
+                                    <c:if test="${info.pages>5}">
 									<c:forEach begin="1" end="5" var="i">
 										<c:if test="${info.pageNum==i}">
 											<li class="active"><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
@@ -104,6 +114,18 @@
 											<li><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
 										</c:if>
 									</c:forEach>
+									</c:if>
+
+									<c:if test="${info.pages<=5}">
+										<c:forEach begin="1" end="${info.pageNum}" var="i">
+											<c:if test="${info.pageNum==i}">
+												<li class="active"><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+											</c:if>
+											<c:if test="${info.pageNum!=i}">
+												<li><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+											</c:if>
+										</c:forEach>
+									</c:if>
 
 
 									<c:if test="${info.pageNum==info.pages}">
@@ -147,8 +169,9 @@
 <script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
 <script>
     var arr = document.getElementsByName("state");
+
     $.each(arr,function () {
-        if($(this).text()=="已成功"){
+        if($(this).text()=="已通过"){
         	$(this).addClass("btn-success");
 		}else if($(this).text()=="未审核"){
 			$(this).addClass("btn-primary");
