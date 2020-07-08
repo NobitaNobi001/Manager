@@ -108,24 +108,30 @@
                 <!-- 学分列表 start -->
                 <div class="student">
                     <h4>学生列表</h4>
-                    <form class="form-inline" action="${APP_PATH}/teacher/queryStu" method="post">
-                        <div class="form-group">
-                            <label for="exampleInputNumber">学号</label>
-                            <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber" placeholder="如:2018111111" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputName">姓名</label>
-                            <input type="text" class="form-control" id="exampleInputName" name="stuName" placeholder="如:张三">
-                        </div>
-                        <div class="form-group">
-                            <label for="exampleInputClass">班级</label>
-                            <input type="text" class="form-control" id="exampleInputClass" name="stuClass" placeholder="如:软工1811">
-                        </div>
-                        <button type="submit" class="btn btn-default">查询</button>
-                        <div class="action form-group" style="text-align: right;margin: 10px 0;padding: 10px 0; float: right">
-                            <a href="javascript:;" class="btn btn-danger" id="btn_stuExport">导出数据</a>
-                        </div>
-                    </form>
+                    <div style="line-height: 72.8px;">
+                        <form class="form-inline" action="${APP_PATH}/teacher/queryStu" method="post">
+                            <div class="form-group">
+                                <label for="exampleInputNumber">学号</label>
+                                <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber"
+                                       placeholder="如:2018111111">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputName">姓名</label>
+                                <input type="text" class="form-control" id="exampleInputName" name="stuName"
+                                       placeholder="如:张三">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputClass">班级</label>
+                                <input type="text" class="form-control" id="exampleInputClass" name="stuClass"
+                                       placeholder="如:软工1811">
+                            </div>
+                            <button type="submit" class="btn btn-default">查询</button>
+                            <div class="action form-group"
+                                 style="text-align: right;margin: 10px 0;padding: 10px 0; float: right">
+                                <a href="javascript:;" class="btn btn-danger" id="btn_stuExport">导出数据</a>
+                            </div>
+                        </form>
+                    </div>
                     <table class="table" border="0" cellspacing="0" cellpadding="0" id="stus_table">
                         <thead>
                         <tr>
@@ -152,72 +158,61 @@
                         </c:forEach>
                         </tbody>
                     </table>
-                            <center>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <li><a href="${APP_PATH}/teacher/stuList?page=1">首页</a></li>
-                                    <c:if test="${info.pageNum==1}">
-                                        <li class="disabled">
-                                            <a href="javascript:void(0)" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
+                    <center>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li><a href="${APP_PATH}/teacher/stuList?page=1">首页</a></li>
+                                <c:if test="${info.pageNum==1}">
+                                    <li class="disabled">
+                                        <a href="javascript:void(0)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+
+                                <c:if test="${info.pageNum!=1}">
+                                    <li>
+                                        <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum-1}"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+
+
+                                <c:forEach begin="1" end="5" var="i">
+                                    <c:if test="${info.pageNum==i}">
+                                        <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
                                     </c:if>
-
-                                    <c:if test="${info.pageNum!=1}">
-                                        <li>
-                                            <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum-1}" aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
+                                    <c:if test="${info.pageNum!=i}">
+                                        <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
                                     </c:if>
-
-                                    <c:if test="${info.pages<=5}">
-                                    <c:forEach begin="1" end="${info.pageNum}" var="i">
-                                        <c:if test="${info.pageNum==i}">
-                                            <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
-                                        </c:if>
-                                        <c:if test="${info.pageNum!=i}">
-                                            <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
-                                        </c:if>
-                                    </c:forEach>
-                                    </c:if>
-
-                                    <c:if test="${info.pages>5}">
-                                        <c:forEach begin="1" end="5" var="i">
-                                            <c:if test="${info.pageNum==i}">
-                                                <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
-                                            </c:if>
-                                            <c:if test="${info.pageNum!=i}">
-                                                <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:if>
+                                </c:forEach>
 
 
-                                    <c:if test="${info.pageNum==info.pages}">
-                                        <li class="disabled">
-                                            <a href="javascript:void(0)" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
+                                <c:if test="${info.pageNum==info.pages}">
+                                    <li class="disabled">
+                                        <a href="javascript:void(0)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
 
-                                    <c:if test="${info.pageNum!=info.pages}">
-                                        <li>
-                                            <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
+                                <c:if test="${info.pageNum!=info.pages}">
+                                    <li>
+                                        <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
 
-                                    <li><a href="${APP_PATH}/teacher/stuList?page=${info.pages}">末页</a></li>
-                                    <span style="font-size:15px;margin-left: 5px;line-height: 34px">
+                                <li><a href="${APP_PATH}/teacher/stuList?page=${info.pages}">末页</a></li>
+                                <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
 									</span>
-                                </ul>
-                            </nav>
-                            </center>
+                            </ul>
+                        </nav>
+                    </center>
                 </div>
             </div>
         </div>
@@ -235,110 +230,6 @@
 </body>
 </html>
 <script type="text/javascript">
-    <%--$(function () {--%>
-        <%--//去首页--%>
-        <%--to_page(1);--%>
-    <%--});--%>
-
-    <%--function to_page(pn) {--%>
-        <%--$.ajax({--%>
-            <%--url: "${APP_PATH}/teacher/stus",--%>
-            <%--data: "pn" + pn,--%>
-            <%--type: "GET",--%>
-            <%--success: function (result) {--%>
-                <%--//1.解析显示学生信息--%>
-                <%--build_stu_table(result);--%>
-                <%--//2.解析并显示分页条信息--%>
-                <%--build_page_nav(result);--%>
-
-            <%--}--%>
-        <%--})--%>
-    <%--}--%>
-
-    <%--//解析显示学生信息--%>
-    <%--function build_stu_table(result) {--%>
-        <%--//清空table表格--%>
-        <%--$("#stus_table tbody").empty();--%>
-        <%--var stus = result.extend.pageInfo.list;--%>
-        <%--$.each(stus, function (index, item) {--%>
-            <%--var stuNumber = $("<td></td>").append(item.stuNumber);--%>
-            <%--// <th>学号</th>--%>
-            <%--//     <th>姓名</th>--%>
-            <%--//     <th>院系</th>--%>
-            <%--//     <th>专业</th>--%>
-            <%--//     <th>班级</th>--%>
-            <%--//     <th>学分</th>--%>
-            <%--var stuName = $("<td></td>").append(item.stuName);--%>
-            <%--var collegeName = $("<td></td>").append(item.college.name);--%>
-            <%--var majorName = $("<td></td>").append(item.major);--%>
-            <%--var className = $("<td></td>").append(item.className);--%>
-            <%--// var sumCredit--%>
-        <%--})--%>
-    <%--}--%>
-
-    <%--//解析显示分页条信息--%>
-    <%--function build_page_nav(result) {--%>
-        <%--$("#page_nav_area").empty();--%>
-
-        <%--//构建首页和上一页元素--%>
-        <%--var firstPageLi = $("<li></li>").append($("<a></a>").append("首页").attr("href", "#"));--%>
-        <%--var prePageLi = $("<li></li>").append($("<a></a>").append("&laquo;"));--%>
-
-
-        <%--if (result.extend.pageInfo.hasPreviousPage == false) {--%>
-            <%--firstPageLi.addClass("disabled");--%>
-            <%--prePageLi.addClass("disabled");--%>
-        <%--} else {--%>
-            <%--//为元素添加简单翻页事件--%>
-            <%--firstPageLi.click(function () {--%>
-                <%--to_page(1);--%>
-            <%--});--%>
-            <%--prePageLi.click(function () {--%>
-                <%--to_page(result.extend.pageInfo.pageNum - 1);--%>
-            <%--});--%>
-        <%--}--%>
-
-        <%--//构建下一页和末页元素--%>
-        <%--var nextPageLi = $("<li></li>").append($("<a></a>").append("&raquo;"));--%>
-        <%--var lastPageLi = $("<li></li>").append($("<a></a>").append("末页").attr("href", "#"));--%>
-
-        <%--if (result.extend.pageInfo.hasNextPage == false) {--%>
-            <%--nextPageLi.addClass("disabled");--%>
-            <%--lastPageLi.addClass("disabled");--%>
-        <%--} else {--%>
-            <%--lastPageLi.click(function () {--%>
-                <%--to_page(result.extend.pageInfo.pages);--%>
-            <%--});--%>
-
-            <%--nextPageLi.click(function () {--%>
-                <%--to_page(result.extend.pageInfo.pageNum + 1);--%>
-            <%--});--%>
-        <%--}--%>
-
-        <%--//首页和前一页的提示--%>
-        <%--ul.append(firstPageLi).append(prePageLi);--%>
-
-        <%--//添加页码提示--%>
-        <%--$.each(result.extend.pageInfo.navigatepageNums, function (index, item) {--%>
-            <%--var numLi = $("<li></li>").append($("<a></a>").append(item));--%>
-            <%--if (result.extend.pageInfo.pageNum == item) {--%>
-                <%--numLi.addClass("active");--%>
-            <%--}--%>
-            <%--numLi.click(function () {--%>
-                <%--to_page(item);--%>
-            <%--});--%>
-
-            <%--ul.append(numLi);--%>
-        <%--});--%>
-
-        <%--//下一页和末页的提示--%>
-        <%--ul.append(nextPageLi).append(lastPageLi);--%>
-
-        <%--//把ul加到nav元素--%>
-        <%--var navEle = $("<nav></nav>").append(ul);--%>
-        <%--navEle.appendTo("#page_nav_area");--%>
-
-    <%--}--%>
 
     //点击导出按钮弹出模态框
     $("#btn_stuExport").click(function () {

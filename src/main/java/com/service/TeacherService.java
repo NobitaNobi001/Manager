@@ -10,14 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class TeacherService {
 
     @Autowired
     private TeacherMapper teacherMapper;
-
     @Autowired
     private CollegeStuMapper collegeStuMapper;
 
@@ -62,9 +60,9 @@ public class TeacherService {
     }
 
     //查询所在学院的学生列表
-    public List<Student> selectStuByCollegeName(String tableName,int page,int size){
+    public List<Student> selectStuByCollegeName(String tableName, int page, int size){
         PageHelper.startPage(page, size);
-        return  collegeStuMapper.selectAllStuByCollegeName(tableName);
+        return collegeStuMapper.selectAllStuByCollegeName(tableName);
     }
 
     //条件查询学生列表
@@ -72,4 +70,5 @@ public class TeacherService {
         PageHelper.startPage(page, size);
         return collegeStuMapper.selectStuByCondition(tableName,stuNumber, stuName, stuClass);
     }
+
 }

@@ -4,7 +4,10 @@ import com.bean.Msg;
 import com.bean.Record;
 import com.bean.Student;
 import com.bean.Teacher;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.service.CollegeStuService;
+import com.service.RecordService;
 import com.service.TeacherService;
 import com.utils.CollegeName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -23,9 +27,12 @@ import java.util.List;
 public class TeacherController {
 
 
-
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private CollegeStuService collegeStuService;
+    @Autowired
+    private RecordService recordService;
 
     /**
      * 教工信息查询并存放到model中
@@ -94,7 +101,7 @@ public class TeacherController {
     }
 
     @RequestMapping("/stuList")
-    public String stuList(@RequestParam(name = "page", defaultValue = "1") int page,HttpServletRequest request, Model model) {
+    public String stuList(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
         //获取登陆成功的教工号
         Integer teaNumber = (Integer) request.getSession().getAttribute("number");
 
@@ -106,7 +113,7 @@ public class TeacherController {
 
         //查询教师的学院id得到学院表名称
         String tableName = CollegeName.getTableName(teacher.getCollegeId());
-        List<Student> students = teacherService.selectStuByCollegeName(tableName,page,5);
+        List<Student> students = teacherService.selectStuByCollegeName(tableName, page, 5);
         PageInfo<Record> info = new PageInfo(students);
         model.addAttribute("info", info);
 
@@ -116,7 +123,7 @@ public class TeacherController {
     }
 
     @RequestMapping("/queryStu")
-    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page,@RequestParam("stuNumber")Integer stuNumber,@RequestParam("stuName")String stuName,@RequestParam("stuClass")String stuClass,Model model,HttpServletRequest  request){
+    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String stuName, @RequestParam("stuClass") String stuClass, Model model, HttpServletRequest request) {
         //获取登陆成功的教工号
         Integer teaNumber = (Integer) request.getSession().getAttribute("number");
 
@@ -126,11 +133,12 @@ public class TeacherController {
         //将查找的教工信息添加到model中
         model.addAttribute("teacher", teacher);
         String tableName = CollegeName.getTableName(teacher.getCollegeId());
-        List<Student> students = teacherService.selectStuByCondition(tableName,stuNumber,stuName,stuClass,page,5);
+        List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber, stuName, stuClass, page, 5);
         PageInfo<Record> info = new PageInfo(students);
         model.addAttribute("info", info);
         return "stuList";
     }
+
     @RequestMapping("/declareManager")
     public String stuDeclareManager(HttpServletRequest request, Model model) {
 
@@ -146,7 +154,7 @@ public class TeacherController {
      * @param teacher
      * @return
      */
-    @RequestMapping(value = "/updatePassword/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/updatePassword/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Msg updatePassword(Teacher teacher) {
 
@@ -165,30 +173,49 @@ public class TeacherController {
      * @param teacher
      * @return
      */
-    @RequestMapping(value = "/updateInfo/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/updateInfo/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Msg updateInfo(Teacher teacher) {
 
-        teacherService.updateTeacher(teacher);
+        Teacher teacher1 = teacherService.selectByPrimaryKey(teacher.getId());
 
-        return Msg.success();
+        //如果要修改的电话号码和邮箱都是相同的
+        if (teacher1.getEmail().equals(teacher.getEmail()) && teacher1.getPhone().equals(teacher.getPhone()) && teacher1.getGender().equals(teacher.getGender())) {
+            return Msg.fail();
+        } else {
+            //否则更新信息
+            teacherService.updateTeacher(teacher);
+
+            return Msg.success();
+        }
     }
 
-//    @RequestMapping("/stus")
-//    @ResponseBody
-//    public Msg getStuInfoWithJson(@RequestParam(value = "pn", defaultValue = "1") Integer pn){
-//
-//        //设置起始页码以及每页的记录条数
-//        PageHelper.startPage(pn,5);
-//
-//        List<Student> students = studentService.getAll();
-//
-//        //使用pageinfo包装查询后的结果
-//        //封装了详细的分页信息，包括查询出来的数据 传入连续显示的页数
-//        PageInfo page = new PageInfo(students, 5);
-//
-//        return Msg.success().add("pageInfo", page);
-//    }
+    /**
+     * 获取学生的申报信息
+     *
+     * @param pn        页码
+     * @param collegeId 学院id
+     * @return
+     */
+    @RequestMapping(value = "/declare", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg declareInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId) {
+
+        System.out.println(collegeId);
+        //将对应学院的学生学号进行查出
+        List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeId(collegeId);
+
+        //设置起始页码以及每页的记录条数
+        PageHelper.startPage(pn, 5);
+
+        //根据学号进行申报记录的查出
+        List<Record> stuRecords = recordService.getAllRecords(stuNumbers);
+
+        //使用pageInfo包装查询后的结果
+        PageInfo page = new PageInfo(stuRecords, 5);
+
+        return Msg.success().add("pageInfo", page);
+    }
 
 
 }

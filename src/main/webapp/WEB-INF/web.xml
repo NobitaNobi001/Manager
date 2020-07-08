@@ -32,6 +32,12 @@
         <filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
     </filter>
 
+    <filter>
+        <filter-name>HttpPutFormContentFilter</filter-name>
+        <filter-class>org.springframework.web.filter.HttpPutFormContentFilter</filter-class>
+    </filter>
+
+
     <!--shrio的filter-->
     <filter>
         <filter-name>shiroFilter</filter-name>
@@ -51,6 +57,11 @@
 
     <filter-mapping>
         <filter-name>HiddenHttpMethodFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter-mapping>
+        <filter-name>HttpPutFormContentFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 

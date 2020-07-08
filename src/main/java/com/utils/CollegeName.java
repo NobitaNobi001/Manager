@@ -5,6 +5,12 @@ package com.utils;
  * @date 2020/7/6
  **/
 public class CollegeName {
+
+    /**
+     * 获取学院的表名
+     * @param id 学院id
+     * @return
+     */
     public static String getTableName(int id) {
         String tableName = "";
         switch (id) {

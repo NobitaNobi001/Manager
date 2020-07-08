@@ -74,14 +74,15 @@
                         <div class="row item">
                             <div class="col col-2 name">手机号码</div>
                             <div class="col col-7 value">
-                                <input type="text" name="telephone" value="${teacher.phone }"/>
+                                <input type="text" name="telephone" value="${teacher.phone }"
+                                       onchange="validate_phone()"/>
                                 <div class="notice">请填写联系电话</div>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">邮箱</div>
                             <div class="col col-7 value">
-                                <input type="text" name="email" value="${teacher.email }"/>
+                                <input type="text" name="email" value="${teacher.email }" onchange="validate_email()"/>
                                 <div class="notice">请填写邮箱</div>
                             </div>
                         </div>
@@ -102,6 +103,7 @@
                 </div>
             </div>
         </div>
+    </div>
 </main>
 <footer>
     <div id="footer">
@@ -134,64 +136,70 @@
     $("button").click(function () {
 
         //校验电话号码的输入
-        if (!phone.trigger("input propertychange.validate_phone")) {
+        if (!validate_phone()) {
             return false;
         }
 
         //校验邮箱的输入
-        if (!email.trigger("input propertychange.validate_email")) {
+        if (!validate_email()) {
             return false;
         }
 
         $.ajax({
             url: "${APP_PATH}/teacher/updateInfo/" +${teacher.id },
-            type: "POST",
+            type: "PUT",
             data: {
                 "gender": $("input[type='radio']:checked").val(),
                 "phone": phone.val(),
                 "email": email.val()
             },
             success: function (result) {
-                alert("修改成功");
-                window.location.reload();
+                if (result.code == 100) {
+                    alert("修改成功");
+                    window.location.reload();
+                } else {
+                    alert("修改的信息和原信息相同!");
+                    window.location.reload();
+                }
             },
-            error: function (result) {
-                alert("修改失败");
+            error: function () {
+                alert("服务器繁忙");
             }
         });
 
     });
 
-    //给手机号文本框绑定输入值改变事件
-    phone.bind("input propertychange.validate_phone", function () {
+    //校验手机号格式
+    function validate_phone() {
 
         //定义验证手机号的正则表达式
         var regPhone = /^[1][0-9]{10}/;
 
         //如果输入值满足正则表达式
-        if (regPhone.test($(this).val())) {
-            $(this).next().html("&nbsp;");
+        if (regPhone.test(phone.val())) {
+            phone.next().html("&nbsp;");
             return true;
         } else {  //反之
-            $(this).next().html("<p style='color: red;'>电话号码格式错误</p>");
+            phone.next().html("<p style='color: red;'>格式错误</p>");
         }
         return false;
-    });
+    }
 
-    //给邮箱文本框绑定输入值改变事件
-    email.bind("input propertychange.validate_email", function () {
+    //校验邮箱格式
+    function validate_email() {
 
         //定义验证邮箱的正则表达式
         var regEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
 
         //如果输入值满足正则表达式
-        if (regEmail.test($(this).val())) {
-            $(this).next().html("&nbsp;");
+        if (regEmail.test(email.val())) {
+            email.next().html("&nbsp;");
             return true;
         } else {  //反之
-            $(this).next().html("<p style='color: red;'>邮箱格式错误</p>");
+            email.next().html("<p style='color: red;'>邮箱格式错误</p>");
         }
         return false;
-    });
+    }
+
 
 </script>

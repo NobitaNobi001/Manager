@@ -29,4 +29,8 @@ public interface CreditMapper {
     int updateByPrimaryKey(Credit record);
 
     Double selectBystuNumber(Integer stuNumber);
+
+    //根据学号更新学生的总学分
+    int updateByStuNumber(Credit credit);
+
 }
