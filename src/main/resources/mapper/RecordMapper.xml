@@ -336,5 +336,11 @@
                 #{stuNumber}
             </foreach>
         </where>
+        order by audit_state desc
+    </select>
+
+    <!--根据学生姓名查询学生的申报记录-->
+    <select id="selectByStuName" resultType="com.bean.Record">
+        select * from credit_record where stu_name = #{stuName,jdbcType=VARCHAR}
     </select>
 </mapper>

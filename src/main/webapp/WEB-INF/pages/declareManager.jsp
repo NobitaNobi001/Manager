@@ -45,10 +45,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="picture" class="col-sm-2 control-label">申报材料</label>
+                        <label for="picture_btn" class="col-sm-2 control-label">申报材料</label>
                         <div class="col-sm-10">
                             <%--<img name="picture" class="form-control" id="picture"/>--%>
-                            <input type="button" name="picture" id="picture" class="btn btn-default" value="查看图片"
+                            <input type="button" name="picture_btn" id="picture_btn" class="btn btn-default"
+                                   value="查看图片"
                                    style="padding-top: 5px;"/>
                             <span class="help-block"></span>
                         </div>
@@ -99,13 +100,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-
-        </div>
-    </div>
-</div>
+<img alt="申报图片" id="picture" style="display: none; width: 400px; height: 200px; text-align: center;"/>
 <header>
     <div id="header">
         <div class="header">
@@ -153,8 +148,8 @@
                             </select>
                         </div>
                         <div>
-                            <input type="text" name="keywords" id="keywords" placeholder="请输入搜索关键字" value=""/>
-                            <a href="javascript:;" class="btn btn-primary">搜索</a>
+                            <input type="text" name="keywords" id="keywords" placeholder="请输入姓名"/>
+                            <a href="javascript:;" class="btn btn-primary" id="search">搜索</a>
                         </div>
                     </div>
                     <table class="table" border="0" cellspacing="0" cellpadding="0" id="declare_table">
@@ -205,8 +200,45 @@
     //去第一页
     $(function () {
         to_page(1);
-
     });
+
+    //单击搜索按钮后
+    $("#search").click(function () {
+
+        //正则校验搜索框的输入
+        var regKey = /[\u4E00-\u9FA5]/;
+        if (!regKey.test($("#keywords").val().trim())) {
+            alert("请输入姓名!");
+            return false;
+        }
+
+        $.ajax({
+            url: "${APP_PATH}/record/stuRecord",
+            type: "GET",
+            data: {
+                "stuName": $("#keywords").val(),
+                "collegeId": "${teacher.collegeId }"
+            },
+            success: function (result) {
+                if (result.code == 100) {
+                    //1.构建申报管理表格
+                    build_declare_table(result);
+                    //2.解析分页条信息
+                    build_page_nav(result);
+                    //3.解析分页信息
+                    build_page_info(result);
+                }
+                if (result.code == 200) {
+                    alert("查无此人!");
+                    $("#keywords").val("");
+                }
+            },
+            error: function () {
+                alert("服务器繁忙!");
+            }
+        });
+
+    })
 
     function to_page(pn) {
 
@@ -291,8 +323,16 @@
     });
 
     //校验审核状态
-    function validate_audit_state(){
-        if($("#audit_state option:selected").val()=="已审核"){
+    function validate_audit_state() {
+        if ($("#audit_state option:selected").val() == "已审核") {
+            return true;
+        }
+        return false;
+    }
+
+    //校验审核学分
+    function validate_audit_credit() {
+        if ($("#audit_credit").val().trim() != "" && $("#audit_credit").val() >= 0) {
             return true;
         }
         return false;
@@ -301,10 +341,16 @@
     //模态框的确定按钮
     $("#stu_audit_btn").click(function () {
 
-        if(!validate_audit_state()){
+        if (!validate_audit_state()) {
             alert("请修改审核状态");
             return false;
         }
+
+        if (!validate_audit_credit()) {
+            alert("请填写正确的审核学分!");
+            return false;
+        }
+
 
         //发送ajax请求更新审核的信息
         $.ajax({
@@ -328,7 +374,7 @@
                     alert("此条申报记录已经审核，请不要重复操作!");
                 }
 
-            }, error: function (result) {
+            }, error: function () {
                 alert("服务器繁忙");
             }
         });
@@ -357,6 +403,11 @@
                 // var dataURL = windowURL.createObjectURL(url);
                 // $("#picture").attr("src", dataURL);
 
+                // var fr = new FileReader();
+                var picture = $("#picture");
+                // var url = fr.readAsDataURL(new Blob(['@ViewBag.stuRecordData.picture'],{type:"text/plain"}));
+                picture.attr("src", stuRecordData.picture);
+
                 //申报名称
                 $("#apply_name").val(stuRecordData.applyName);
                 //申报学分
@@ -364,10 +415,10 @@
                 //申报描述
                 $("#apply_words").val(stuRecordData.words.trim() == "" ? "无" : stuRecordData.words);
                 //审核学分
-                $("#audit_credit").val(stuRecordData.auditCredit == 0 ? "" : stuRecordData.auditCredit);
+                $("#audit_credit").val(stuRecordData.auditCredit);
 
                 //取消原先的选中状态
-                $("#audit_state").find("option:selected").attr("selected",false);
+                $("#audit_state").find("option:selected").attr("selected", false);
                 //审核状态 根据后台传来的状态修改模态框内部的选择状态
                 $("#audit_state").find("option[value='" + stuRecordData.auditState + "']").attr("selected", true);
 
@@ -377,6 +428,10 @@
             }
         });
     }
+
+    $("#picture_btn").click(function () {
+        $("#picture").show();
+    });
 
     //解析分页条信息
     function build_page_nav(result) {

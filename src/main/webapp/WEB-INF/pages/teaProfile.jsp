@@ -180,6 +180,11 @@
             phone.next().html("&nbsp;");
             return true;
         } else {  //反之
+
+            if(phone.val().trim()==""){
+                return true;
+            }
+
             phone.next().html("<p style='color: red;'>格式错误</p>");
         }
         return false;
@@ -196,6 +201,10 @@
             email.next().html("&nbsp;");
             return true;
         } else {  //反之
+
+            if(email.val().trim()==""){
+                return true;
+            }
             email.next().html("<p style='color: red;'>邮箱格式错误</p>");
         }
         return false;

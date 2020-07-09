@@ -32,4 +32,6 @@ public interface RecordMapper {
 
     List<Record> findAllBystuNumbers(@Param("stuNumbers") List<Integer> stuNumbers);
 
+    List<Record> selectByStuName(String stuName);
+
 }

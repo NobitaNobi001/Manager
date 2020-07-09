@@ -21,4 +21,5 @@ public interface CollegeStuMapper {
 
     List<Student> selectAllStuByCollegeName(@Param("tableName") String tableName);
 
+    List<String> selectStuNameWithCollegeId(@Param("tableName") String tableName);
 }

@@ -28,4 +28,12 @@ public class CollegeStuService {
         return stuNumbers;
 
     }
+
+    public List<String> selectStuNameWithCollegeId(int collegeId){
+
+        //获取表名
+        String tableName = CollegeName.getTableName(collegeId);
+
+        return collegeStuMapper.selectStuNameWithCollegeId(tableName);
+    }
 }

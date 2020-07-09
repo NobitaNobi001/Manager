@@ -37,8 +37,22 @@ public class RecordService {
     }
 
 
+    /**
+     * 根据id主键更新记录
+     *
+     * @param record
+     */
     public void updateRecord(Record record) {
 
         recordMapper.updateByPrimaryKeySelective(record);
+    }
+
+    /**
+     * 根据学生姓名进行查询
+     * @param stuName
+     * @return
+     */
+    public List<Record> getRecordsBystuName(String stuName) {
+        return recordMapper.selectByStuName(stuName);
     }
 }

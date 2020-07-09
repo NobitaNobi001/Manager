@@ -19,6 +19,11 @@
         select stu_number from ${tableName}
     </select>
 
+    <!--根据学院名来查找学生姓名-->
+    <select id="selectStuNameWithCollegeId" resultType="java.lang.String">
+        select stu_name from ${tableName}
+    </select>
+
     <!--根据学院名来查询所有学生-->
     <select id="selectAllStuByCollegeName" resultMap="BaseResultMap">
         select * from ${tableName}

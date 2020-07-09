@@ -3,14 +3,14 @@ package com.controller;
 import com.bean.Credit;
 import com.bean.Msg;
 import com.bean.Record;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.service.CollegeStuService;
 import com.service.CreditService;
 import com.service.RecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,8 @@ public class RecordController {
     private RecordService recordService;
     @Autowired
     private CreditService creditService;
+    @Autowired
+    private CollegeStuService collegeStuService;
 
     //存储已经审核并给了审核学分的id 存储上限为2^32-1
     List<Integer> recordHandler = new ArrayList<>();
@@ -57,21 +59,48 @@ public class RecordController {
         //创建一个credit对象
         Credit credit = new Credit(record.getStuNumber(), record.getAuditCredit() + sum_credit);
 
-            //如果这条记录在其中不存在并且给出了审核学分 并且状态修改为了已审核
-            if (!recordHandler.contains(record.getId()) && record.getAuditCredit() >= 0 && record.getAuditState().equals("已审核")) {
+        //如果这条记录在其中不存在并且给出了审核学分 并且状态修改为了已审核
+        if (!recordHandler.contains(record.getId()) && record.getAuditCredit() >= 0 && record.getAuditState().equals("已审核")) {
 
-                //将这条审核记录添加到ArrayList中
-                recordHandler.add(record.getId());
+            //将这条审核记录添加到ArrayList中
+            recordHandler.add(record.getId());
 
-                //更新申报信息
-                recordService.updateRecord(record);
+            //更新申报信息
+            recordService.updateRecord(record);
 
-                //根据学号更新学生信息
-                creditService.updateCreditByStuNumber(credit);
+            //根据学号更新学生信息
+            creditService.updateCreditByStuNumber(credit);
 
-                //返回成功信息
-                return Msg.success();
-            }
+            //返回成功信息
+            return Msg.success();
+        }
+
+        return Msg.fail();
+    }
+
+    /**
+     * 根据学生姓名和学院id获取学生申报记录
+     *
+     * @param stuName
+     * @return
+     */
+    @RequestMapping(value = "/stuRecord", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg selectWithStuNumber(@RequestParam("stuName") String stuName, @RequestParam("collegeId") Integer collegeId) {
+
+        List<String> stuNames = collegeStuService.selectStuNameWithCollegeId(collegeId);
+
+        if (stuNames.contains(stuName)) {
+            //设置起始页码以及每页的记录条数
+            PageHelper.startPage(1, 5);
+
+            List<Record> records = recordService.getRecordsBystuName(stuName);
+
+            //使用pageInfo包装查询后的结果
+            PageInfo page = new PageInfo(records, 5);
+
+            return Msg.success().add("pageInfo", page);
+        }
 
         return Msg.fail();
     }
