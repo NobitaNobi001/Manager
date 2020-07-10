@@ -11,6 +11,10 @@
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="email" property="email" jdbcType="VARCHAR" />
     </resultMap>
+    <resultMap id="UserNameAndPassword" type="com.bean.Watcher">
+        <result column="watcher_number" property="watcherNumber" jdbcType="INTEGER"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+    </resultMap>
     <sql id="Example_Where_Clause" >
         <where >
             <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -255,4 +259,10 @@
       email = #{email,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <select id="selectUPByWatcherNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
+         select watcher_number,password from watcher_info where watcher_number = #{watcherNumber,jdbcType=INTEGER}
+    </select>
+
+
 </mapper>

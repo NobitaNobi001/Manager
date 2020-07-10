@@ -117,7 +117,7 @@
 								</c:if>
 
 								<c:if test="${info.pages<=5}">
-									<c:forEach begin="1" end="${info.pageNum}" var="i">
+									<c:forEach begin="1" end="${info.pages}" var="i">
 										<c:if test="${info.pageNum==i}">
 											<li class="active"><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
 										</c:if>

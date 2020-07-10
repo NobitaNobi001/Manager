@@ -35,7 +35,7 @@ public class RecordController {
      * @param id 学生记录的id
      * @return
      */
-    @RequestMapping(value = "/stuRecord/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/studentRecord/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Msg getStuRecord(@PathVariable("id") Integer id) {
 
@@ -46,10 +46,11 @@ public class RecordController {
 
 
     /**
+     * 根据申报记录的id更新申报记录的审核
      * @param record
      * @return
      */
-    @RequestMapping(value = "/stuRecord/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/updateRecord/{id}", method = RequestMethod.PUT)
     @ResponseBody
     public Msg updateStuRecord(Record record) {
 

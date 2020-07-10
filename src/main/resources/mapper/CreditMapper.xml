@@ -189,4 +189,10 @@
     select apply_name,sort,apply_credit,audit_credit,audit_state from credit_record where stu_number=#{stuNumber} order by date desc
   </select>
 
+  <!--根据学号更新学分-->
+  <update id="updateByStuNumber" parameterType="com.bean.Credit">
+    update credit
+    set sum_credit = #{sumCredit,jdbcType=DOUBLE} where stu_number = #{stuNumber,jdbcType=INTEGER}
+  </update>
+
 </mapper>

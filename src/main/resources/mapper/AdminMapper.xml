@@ -78,7 +78,7 @@
   </sql>
 
     <select id="selectUPByAdminNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
-    select admin_number,password from admin_info where admin_number = #{admin_number,jdbcType=INTEGER}
+    select admin_number,password from admin_info where admin_number = #{adminNumber,jdbcType=INTEGER}
   </select>
 
     <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.AdminExample" >

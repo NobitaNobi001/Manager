@@ -354,7 +354,7 @@
 
         //发送ajax请求更新审核的信息
         $.ajax({
-            url: "${APP_PATH}/record/stuRecord/" + $(this).attr("audit-id"),
+            url: "${APP_PATH}/record/updateRecord/" + $(this).attr("audit-id"),
             type: "PUT",
             data: {
                 "stuNumber": StuNumber,
@@ -365,6 +365,9 @@
             success: function (result) {
 
                 if (result.code == 100) {   //成功更新审核信息和总学分
+
+                    alert("审核成功!");
+
                     //关闭模态框
                     $("#stuWithAudit").modal("hide");
                     //回到本页面
@@ -375,7 +378,7 @@
                 }
 
             }, error: function () {
-                alert("服务器繁忙");
+                alert("服务器繁忙!");
             }
         });
     });
@@ -383,7 +386,7 @@
     //根据申报记录的id获取对应的学生的申报记录
     function getStuRecord(id) {
         $.ajax({
-            url: "${APP_PATH}/record/stuRecord/" + id,
+            url: "${APP_PATH}/record/studentRecord/" + id,
             type: "GET",
             success: function (result) {
                 //解析数据 回显到模态框内
@@ -406,7 +409,7 @@
                 // var fr = new FileReader();
                 var picture = $("#picture");
                 // var url = fr.readAsDataURL(new Blob(['@ViewBag.stuRecordData.picture'],{type:"text/plain"}));
-                picture.attr("src", stuRecordData.picture);
+                // picture.attr("src", stuRecordData.picture);
 
                 //申报名称
                 $("#apply_name").val(stuRecordData.applyName);

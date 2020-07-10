@@ -29,6 +29,6 @@ public interface WatcherMapper {
 
     int updateByPrimaryKey(Watcher record);
 
-    Watcher selectUPByWatcherNumber(Integer adminNumber);
+    Watcher selectUPByWatcherNumber(Integer watcherNumber);
 
 }

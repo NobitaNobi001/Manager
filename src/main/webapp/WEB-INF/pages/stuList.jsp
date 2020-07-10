@@ -108,7 +108,7 @@
                 <!-- 学分列表 start -->
                 <div class="student">
                     <h4>学生列表</h4>
-                    <form class="form-inline" action="${APP_PATH}/teacher/queryStu" method="post">
+                    <form class="form-inline" action="${APP_PATH}/teacher/queryStu" method="post" style="margin-left: 20px; line-height: 72px;">
                         <div class="form-group">
                             <label for="exampleInputNumber">学号</label>
                             <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber" placeholder="如:2018111111" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
@@ -173,7 +173,7 @@
                                 </c:if>
 
                                 <c:if test="${info.pages<=5}">
-                                    <c:forEach begin="1" end="${info.pageNum}" var="i">
+                                    <c:forEach begin="1" end="${info.pages}" var="i">
                                         <c:if test="${info.pageNum==i}">
                                             <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
                                         </c:if>
