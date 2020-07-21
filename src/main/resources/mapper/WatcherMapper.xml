@@ -1,39 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.dao.WatcherMapper" >
-    <resultMap id="BaseResultMap" type="com.bean.Watcher" >
-        <id column="id" property="id" jdbcType="INTEGER" />
-        <result column="watcher_number" property="watcherNumber" jdbcType="INTEGER" />
-        <result column="password" property="password" jdbcType="VARCHAR" />
-        <result column="watcher_name" property="watcherName" jdbcType="VARCHAR" />
-        <result column="college_id" property="collegeId" jdbcType="INTEGER" />
-        <result column="gender" property="gender" jdbcType="CHAR" />
-        <result column="phone" property="phone" jdbcType="VARCHAR" />
-        <result column="email" property="email" jdbcType="VARCHAR" />
+<mapper namespace="com.dao.WatcherMapper">
+    <resultMap id="BaseResultMap" type="com.bean.Watcher">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="watcher_number" property="watcherNumber" jdbcType="INTEGER"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="watcher_name" property="watcherName" jdbcType="VARCHAR"/>
+        <result column="college_id" property="collegeId" jdbcType="INTEGER"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="UserNameAndPassword" type="com.bean.Watcher">
         <result column="watcher_number" property="watcherNumber" jdbcType="INTEGER"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
     </resultMap>
-    <sql id="Example_Where_Clause" >
-        <where >
-            <foreach collection="oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
+    <resultMap id="watcherWithCollege" type="com.bean.Watcher">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="watcher_number" property="watcherNumber" jdbcType="INTEGER"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="watcher_name" property="watcherName" jdbcType="VARCHAR"/>
+        <result column="college_id" property="collegeId" jdbcType="INTEGER"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <!--指定联合查询出的学院字段的封装-->
+        <association property="college" javaType="com.bean.College">
+            <id column="id" property="id" jdbcType="INTEGER"/>
+            <result column="name" property="name" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
                                     and ${criterion.condition}
                                 </when>
-                                <when test="criterion.singleValue" >
+                                <when test="criterion.singleValue">
                                     and ${criterion.condition} #{criterion.value}
                                 </when>
-                                <when test="criterion.betweenValue" >
+                                <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
-                                <when test="criterion.listValue" >
+                                <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -44,25 +60,26 @@
             </foreach>
         </where>
     </sql>
-    <sql id="Update_By_Example_Where_Clause" >
-        <where >
-            <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-                <if test="criteria.valid" >
-                    <trim prefix="(" suffix=")" prefixOverrides="and" >
-                        <foreach collection="criteria.criteria" item="criterion" >
-                            <choose >
-                                <when test="criterion.noValue" >
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
                                     and ${criterion.condition}
                                 </when>
-                                <when test="criterion.singleValue" >
+                                <when test="criterion.singleValue">
                                     and ${criterion.condition} #{criterion.value}
                                 </when>
-                                <when test="criterion.betweenValue" >
+                                <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                                 </when>
-                                <when test="criterion.listValue" >
+                                <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -73,40 +90,47 @@
             </foreach>
         </where>
     </sql>
-    <sql id="Base_Column_List" >
+    <sql id="Base_Column_List">
     id, watcher_number, password, watcher_name, college_id, gender, phone, email
   </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.WatcherExample" >
+    <sql id="Info_With_College">
+        w.id, watcher_number, password, watcher_name, w.college_id, gender, phone, email,c.id,c.name
+    </sql>
+
+    <!--将所有督察进行查出-->
+    <select id="selectByExample" resultMap="watcherWithCollege" parameterType="com.bean.WatcherExample">
         select
-        <if test="distinct" >
+        <if test="distinct">
             distinct
         </if>
-        <include refid="Base_Column_List" />
-        from watcher_info
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <include refid="Info_With_College"/>
+        from watcher_info w
+        left join college c on w.`college_id`=c.`id`
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
-        <if test="orderByClause != null" >
+        <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from watcher_info
         where id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from watcher_info
     where id = #{id,jdbcType=INTEGER}
   </delete>
-    <delete id="deleteByExample" parameterType="com.bean.WatcherExample" >
+    <delete id="deleteByExample" parameterType="com.bean.WatcherExample">
         delete from watcher_info
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
     </delete>
-    <insert id="insert" parameterType="com.bean.Watcher" >
+    <insert id="insert" parameterType="com.bean.Watcher">
     insert into watcher_info (id, watcher_number, password,
       watcher_name, college_id, gender,
       phone, email)
@@ -114,100 +138,102 @@
       #{watcherName,jdbcType=VARCHAR}, #{collegeId,jdbcType=INTEGER}, #{gender,jdbcType=CHAR},
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
   </insert>
-    <insert id="insertSelective" parameterType="com.bean.Watcher" >
+    <insert id="insertSelective" parameterType="com.bean.Watcher">
         insert into watcher_info
-        <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
                 id,
             </if>
-            <if test="watcherNumber != null" >
+            <if test="watcherNumber != null">
                 watcher_number,
             </if>
-            <if test="password != null" >
+            <if test="password != null">
                 password,
             </if>
-            <if test="watcherName != null" >
+            <if test="watcherName != null">
                 watcher_name,
             </if>
-            <if test="collegeId != null" >
+            <if test="collegeId != null">
                 college_id,
             </if>
-            <if test="gender != null" >
+            <if test="gender != null">
                 gender,
             </if>
-            <if test="phone != null" >
+            <if test="phone != null">
                 phone,
             </if>
-            <if test="email != null" >
+            <if test="email != null">
                 email,
             </if>
         </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="id != null" >
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
                 #{id,jdbcType=INTEGER},
             </if>
-            <if test="watcherNumber != null" >
+            <if test="watcherNumber != null">
                 #{watcherNumber,jdbcType=INTEGER},
             </if>
-            <if test="password != null" >
+            <if test="password != null">
                 #{password,jdbcType=VARCHAR},
             </if>
-            <if test="watcherName != null" >
+            <if test="watcherName != null">
                 #{watcherName,jdbcType=VARCHAR},
             </if>
-            <if test="collegeId != null" >
+            <if test="collegeId != null">
                 #{collegeId,jdbcType=INTEGER},
             </if>
-            <if test="gender != null" >
+            <if test="gender != null">
                 #{gender,jdbcType=CHAR},
             </if>
-            <if test="phone != null" >
+            <if test="phone != null">
                 #{phone,jdbcType=VARCHAR},
             </if>
-            <if test="email != null" >
+            <if test="email != null">
                 #{email,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
-    <select id="countByExample" parameterType="com.bean.WatcherExample" resultType="java.lang.Integer" >
+
+    <!--查处督察的记录数-->
+    <select id="countByExample" parameterType="com.bean.WatcherExample" resultType="java.lang.Integer">
         select count(*) from watcher_info
-        <if test="_parameter != null" >
-            <include refid="Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
         </if>
     </select>
-    <update id="updateByExampleSelective" parameterType="map" >
+    <update id="updateByExampleSelective" parameterType="map">
         update watcher_info
-        <set >
-            <if test="record.id != null" >
+        <set>
+            <if test="record.id != null">
                 id = #{record.id,jdbcType=INTEGER},
             </if>
-            <if test="record.watcherNumber != null" >
+            <if test="record.watcherNumber != null">
                 watcher_number = #{record.watcherNumber,jdbcType=INTEGER},
             </if>
-            <if test="record.password != null" >
+            <if test="record.password != null">
                 password = #{record.password,jdbcType=VARCHAR},
             </if>
-            <if test="record.watcherName != null" >
+            <if test="record.watcherName != null">
                 watcher_name = #{record.watcherName,jdbcType=VARCHAR},
             </if>
-            <if test="record.collegeId != null" >
+            <if test="record.collegeId != null">
                 college_id = #{record.collegeId,jdbcType=INTEGER},
             </if>
-            <if test="record.gender != null" >
+            <if test="record.gender != null">
                 gender = #{record.gender,jdbcType=CHAR},
             </if>
-            <if test="record.phone != null" >
+            <if test="record.phone != null">
                 phone = #{record.phone,jdbcType=VARCHAR},
             </if>
-            <if test="record.email != null" >
+            <if test="record.email != null">
                 email = #{record.email,jdbcType=VARCHAR},
             </if>
         </set>
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByExample" parameterType="map" >
+    <update id="updateByExample" parameterType="map">
         update watcher_info
         set id = #{record.id,jdbcType=INTEGER},
         watcher_number = #{record.watcherNumber,jdbcType=INTEGER},
@@ -217,38 +243,38 @@
         gender = #{record.gender,jdbcType=CHAR},
         phone = #{record.phone,jdbcType=VARCHAR},
         email = #{record.email,jdbcType=VARCHAR}
-        <if test="_parameter != null" >
-            <include refid="Update_By_Example_Where_Clause" />
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
-    <update id="updateByPrimaryKeySelective" parameterType="com.bean.Watcher" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.bean.Watcher">
         update watcher_info
-        <set >
-            <if test="watcherNumber != null" >
+        <set>
+            <if test="watcherNumber != null">
                 watcher_number = #{watcherNumber,jdbcType=INTEGER},
             </if>
-            <if test="password != null" >
+            <if test="password != null">
                 password = #{password,jdbcType=VARCHAR},
             </if>
-            <if test="watcherName != null" >
+            <if test="watcherName != null">
                 watcher_name = #{watcherName,jdbcType=VARCHAR},
             </if>
-            <if test="collegeId != null" >
+            <if test="collegeId != null">
                 college_id = #{collegeId,jdbcType=INTEGER},
             </if>
-            <if test="gender != null" >
+            <if test="gender != null">
                 gender = #{gender,jdbcType=CHAR},
             </if>
-            <if test="phone != null" >
+            <if test="phone != null">
                 phone = #{phone,jdbcType=VARCHAR},
             </if>
-            <if test="email != null" >
+            <if test="email != null">
                 email = #{email,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.bean.Watcher" >
+    <update id="updateByPrimaryKey" parameterType="com.bean.Watcher">
     update watcher_info
     set watcher_number = #{watcherNumber,jdbcType=INTEGER},
       password = #{password,jdbcType=VARCHAR},
@@ -260,9 +286,18 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+    <!--根据督察账号查找账密-->
     <select id="selectUPByWatcherNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
          select watcher_number,password from watcher_info where watcher_number = #{watcherNumber,jdbcType=INTEGER}
     </select>
 
+    <!--根据督察账号查找个人信息-->
+    <select id="selectWatcherByWatcherNumber" resultMap="watcherWithCollege" parameterType="java.lang.Integer">
+        select
+        <include refid="Info_With_College"/>
+        from watcher_info w
+        left join college c on w.`college_id` = c.`id`
+        where watcher_number = #{watcherNumber,jdbcType=INTEGER}
+    </select>
 
 </mapper>

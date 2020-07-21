@@ -78,4 +78,8 @@ public class StudentService {
     public Double selectSumCreditBystuNumber(int stuNumber) {
         return creditMapper.selectBystuNumber(stuNumber);
     }
+
+    public Integer selectCountStudent() {
+        return studentMapper.countByExample(null);
+    }
 }

@@ -34,4 +34,6 @@ public interface RecordMapper {
 
     List<Record> selectByStuName(String stuName);
 
+    List<Record> findAllAuditBystuNumbers(@Param("stuNumbers") List<Integer> stuNumbers);
+
 }

@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/student")
@@ -94,21 +95,21 @@ public class StudentController {
     //提交申请
     @RequestMapping("/apply")
     public String apply(@RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String name, @RequestParam("sort") String number, @RequestParam("applyName") String applyName, @RequestParam("applyCredit") Double applyCredit, @RequestParam("words") String words, @RequestParam("file") CommonsMultipartFile file, HttpServletRequest request, Model model) throws IOException {
-        StringBuilder path = new StringBuilder(request.getServletContext().getRealPath("/WEB-INF/apply"));
+        StringBuilder path =new StringBuilder(request.getServletContext().getRealPath("/applyImg"));
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //获取申请日期
         String date = sdf.format(d);
-        //获取文件名：file.getOriginalFilename()
-        String uploadFileName = System.currentTimeMillis() + file.getOriginalFilename();
-        //上传路径保存设置 (保存在WEB-INF下面的apply文件夹)
         //创建3级目录
         Calendar now = Calendar.getInstance();
         //获取年月日
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONDAY) + 1;//0~11
         int day = now.get(Calendar.DAY_OF_MONTH);
+        String uploadingName= UUID.randomUUID().toString() +file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         path = path.append("/").append(year).append("/").append(month).append("/").append(day);
+        System.out.println(path);
+        System.out.println(uploadingName);
         //如果路径不保存，创建一个
         File realPath = new File(path.toString());
         if (!realPath.exists()) {
@@ -117,7 +118,7 @@ public class StudentController {
         //获取文件输入流
         InputStream is = file.getInputStream();
         //获取文件输出流
-        FileOutputStream os = new FileOutputStream(new File(realPath, uploadFileName));
+        FileOutputStream os = new FileOutputStream(new File(realPath, uploadingName));
         //读取写出
         int len = 0;
         byte[] buffer = new byte[10240];
@@ -161,7 +162,7 @@ public class StudentController {
                 sort = "专业认定的其他创新实践活动";
                 break;
         }
-        studentService.addCreditRecord(new Record(stuNumber, name, date, sort, path.append("/").append(uploadFileName).toString(), applyName, applyCredit, words));
+        studentService.addCreditRecord(new Record(stuNumber, name, date, sort, year+"/"+month+"/"+day+"/"+uploadingName, applyName, applyCredit, words));
         Student student = studentService.selectStudentByStuNumber(stuNumber);
         model.addAttribute("student", student);
         return "redirect:/student/viewCredit";

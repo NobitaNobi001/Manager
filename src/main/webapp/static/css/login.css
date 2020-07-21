@@ -18,6 +18,8 @@ body{background: url(../images/login-background.jpg) center center/cover no-repe
 #login .login .login-form form div.type{display: flex;justify-content: space-between;align-items: center;padding: 10px 40px;margin-bottom: 15px;}
 #login .login .login-form form div.type label{cursor: pointer;font-size: 14px;display: flex;align-items: center;font-weight: bold;}
 #login .login .login-form form div.type label span{padding: 0 5px;}
+#login .login .login-form form div.forget{padding: 10px 30px;font-size: 14px;text-align: right;}
+#login .login .login-form form div.forget a{color: #444;}
 #login .login .foot{text-align: center;font-size: 13px;color: #fff;}
 #checktext{
     color: #c9302c;

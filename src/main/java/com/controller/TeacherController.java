@@ -181,7 +181,7 @@ public class TeacherController {
 
         //如果要修改的电话号码和邮箱都是相同的
         if (teacher1.getEmail().equals(teacher.getEmail()) && teacher1.getPhone().equals(teacher.getPhone()) && teacher1.getGender().equals(teacher.getGender())) {
-            return Msg.fail();
+            return Msg.fail().add("msg", "要修改的信息和原信息相同!");
         } else {
             //否则更新信息
             teacherService.updateTeacher(teacher);
@@ -190,32 +190,7 @@ public class TeacherController {
         }
     }
 
-    /**
-     * 获取学生的申报信息
-     *
-     * @param pn        页码
-     * @param collegeId 学院id
-     * @return
-     */
-    @RequestMapping(value = "/declare", method = RequestMethod.GET)
-    @ResponseBody
-    public Msg declareInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId) {
 
-        System.out.println(collegeId);
-        //将对应学院的学生学号进行查出
-        List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeId(collegeId);
-
-        //设置起始页码以及每页的记录条数
-        PageHelper.startPage(pn, 5);
-
-        //根据学号进行申报记录的查出
-        List<Record> stuRecords = recordService.getAllRecords(stuNumbers);
-
-        //使用pageInfo包装查询后的结果
-        PageInfo page = new PageInfo(stuRecords, 5);
-
-        return Msg.success().add("pageInfo", page);
-    }
 
 
 }

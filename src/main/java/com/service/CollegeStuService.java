@@ -15,10 +15,11 @@ public class CollegeStuService {
 
     /**
      * 查询到一个学院所有学生的学号信息
+     *
      * @param collegeId
      * @return
      */
-    public List<Integer> selectStuNumberWithCollegeId(int collegeId){
+    public List<Integer> selectStuNumberWithCollegeId(int collegeId) {
 
         //获取表名
         String tableName = CollegeName.getTableName(collegeId);
@@ -29,7 +30,7 @@ public class CollegeStuService {
 
     }
 
-    public List<String> selectStuNameWithCollegeId(int collegeId){
+    public List<String> selectStuNameWithCollegeId(int collegeId) {
 
         //获取表名
         String tableName = CollegeName.getTableName(collegeId);

@@ -71,4 +71,7 @@ public class TeacherService {
         return collegeStuMapper.selectStuByCondition(tableName,stuNumber, stuName, stuClass);
     }
 
+    public Integer selectCountTeacher() {
+        return teacherMapper.countByExample(null);
+    }
 }

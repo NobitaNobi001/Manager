@@ -5,8 +5,11 @@
     <title>湖北文理学院创新学分系统</title>
 
     <%
+        String path = request.getContextPath();
+        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
         pageContext.setAttribute("APP_PATH", request.getContextPath());
     %>
+    <base href="<%=basePath%>">
 
     <%--引入bootstrap的css样式文件--%>
     <link rel="stylesheet" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -78,17 +81,8 @@
                     <div class="form-group">
                         <label for="audit_credit" class="col-sm-2 control-label">审核学分</label>
                         <div class="col-sm-10">
-                            <input type="text" name="audit_credit" class="form-control" id="audit_credit"/>
+                            <input type="number" name="audit_credit" class="form-control" id="audit_credit" step="0.5" min="0" max="8"/>
                             <span class="help-block"></span>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">审核状态</label>
-                        <div class="col-sm-4">
-                            <select class="form-control" name="audit_state" id="audit_state">
-                                <option value="未审核">未审核</option>
-                                <option value="已审核">已审核</option>
-                            </select>
                         </div>
                     </div>
                 </form>
@@ -100,7 +94,7 @@
         </div>
     </div>
 </div>
-<img alt="申报图片" id="picture" style="display: none; width: 400px; height: 200px; text-align: center;"/>
+<img alt="申报图片" id="picture" style="display: none; width: 600px; height: 400px; position: absolute;" class="modal fade"/>
 <header>
     <div id="header">
         <div class="header">
@@ -169,7 +163,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div style="line-height:74px;margin: 0 auto; width: 540px">
+                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 600px">
                     <%--分页条信息--%>
                     <div id="page_nav_area" style="float:left;"></div>
                     <%--分页文字信息--%>
@@ -220,6 +214,14 @@
                 "collegeId": "${teacher.collegeId }"
             },
             success: function (result) {
+
+                //清空table表格样式
+                $("#declare_table tbody").empty();
+                //清空分页条数据
+                $("#page_nav_area").empty();
+                //清空分页信息
+                $("#page_info_area").empty();
+
                 if (result.code == 100) {
                     //1.构建申报管理表格
                     build_declare_table(result);
@@ -229,8 +231,7 @@
                     build_page_info(result);
                 }
                 if (result.code == 200) {
-                    alert("查无此人!");
-                    $("#keywords").val("");
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align","center").attr("colspan","10")).appendTo("#declare_table tbody");
                 }
             },
             error: function () {
@@ -243,19 +244,32 @@
     function to_page(pn) {
 
         $.ajax({
-            url: "${APP_PATH}/teacher/declare",
+            url: "${APP_PATH}/record/declare",
             type: "GET",
             data: {
                 "pn": pn,
                 "collegeId": ${teacher.collegeId }
             },
             success: function (result) {
-                //1.构建申报管理表格
-                build_declare_table(result);
-                //2.解析分页条信息
-                build_page_nav(result);
-                //3.解析分页信息
-                build_page_info(result);
+
+                //清空table表格样式
+                $("#declare_table tbody").empty();
+                //清空分页条数据
+                $("#page_nav_area").empty();
+                //清空分页信息
+                $("#page_info_area").empty();
+
+                if(result.code==100){
+                    //1.构建申报管理表格
+                    build_declare_table(result);
+                    //2.解析分页条信息
+                    build_page_nav(result);
+                    //3.解析分页信息
+                    build_page_info(result);
+                }else if(result.code==200){
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align","center").attr("colspan","10")).appendTo("#declare_table tbody");
+                }
+
             }
         });
     }
@@ -263,7 +277,7 @@
     //申报管理表格构建
     function build_declare_table(result) {
         //清空table表格
-        $("#declare_table tbody").empty();
+        // $("#declare_table tbody").empty();
         //拿到后台返回的数据
         var stuDeclareInfo = result.extend.pageInfo;
         //遍历返回的数据
@@ -322,14 +336,6 @@
         });
     });
 
-    //校验审核状态
-    function validate_audit_state() {
-        if ($("#audit_state option:selected").val() == "已审核") {
-            return true;
-        }
-        return false;
-    }
-
     //校验审核学分
     function validate_audit_credit() {
         if ($("#audit_credit").val().trim() != "" && $("#audit_credit").val() >= 0) {
@@ -340,11 +346,6 @@
 
     //模态框的确定按钮
     $("#stu_audit_btn").click(function () {
-
-        if (!validate_audit_state()) {
-            alert("请修改审核状态");
-            return false;
-        }
 
         if (!validate_audit_credit()) {
             alert("请填写正确的审核学分!");
@@ -357,10 +358,10 @@
             url: "${APP_PATH}/record/updateRecord/" + $(this).attr("audit-id"),
             type: "PUT",
             data: {
-                "stuNumber": StuNumber,
+                // "stuNumber": StuNumber,
                 "auditCredit": $("#audit_credit").val(),
-                "auditTea": "${teacher.teaName }",
-                "auditState": $("#audit_state option:selected").val()
+                "auditTea": "${teacher.teaName }"
+                // "auditState": $("#audit_state option:selected").val()
             },
             success: function (result) {
 
@@ -374,7 +375,7 @@
                     to_page(currentPage);
                 }
                 if (result.code == 200) {   //失败
-                    alert("此条申报记录已经审核，请不要重复操作!");
+                    alert(result.extend.msg);
                 }
 
             }, error: function () {
@@ -398,18 +399,10 @@
                 //申报类别
                 $("#sort").val(stuRecordData.sort);
 
-                //申报材料
-                // var url = stuRecordData.picture;
-                // //获得一个http格式的url路径
-                // var windowURL = window.URL || window.webkitURL;
-                // //创建一个指向该参数的图片的URL
-                // var dataURL = windowURL.createObjectURL(url);
-                // $("#picture").attr("src", dataURL);
-
-                // var fr = new FileReader();
                 var picture = $("#picture");
-                // var url = fr.readAsDataURL(new Blob(['@ViewBag.stuRecordData.picture'],{type:"text/plain"}));
-                // picture.attr("src", stuRecordData.picture);
+                //申报材料
+                var url = stuRecordData.picture;
+                picture.attr("src","applyImg/"+url);
 
                 //申报名称
                 $("#apply_name").val(stuRecordData.applyName);
@@ -418,12 +411,7 @@
                 //申报描述
                 $("#apply_words").val(stuRecordData.words.trim() == "" ? "无" : stuRecordData.words);
                 //审核学分
-                $("#audit_credit").val(stuRecordData.auditCredit);
-
-                //取消原先的选中状态
-                $("#audit_state").find("option:selected").attr("selected", false);
-                //审核状态 根据后台传来的状态修改模态框内部的选择状态
-                $("#audit_state").find("option[value='" + stuRecordData.auditState + "']").attr("selected", true);
+                $("#audit_credit").val(stuRecordData.auditCredit==0?stuRecordData.applyCredit:stuRecordData.auditCredit);
 
             },
             error: function () {

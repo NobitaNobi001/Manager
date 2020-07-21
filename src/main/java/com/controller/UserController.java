@@ -53,7 +53,12 @@ public class UserController {
 
         //若登陆失败重定向到登录页面
         return "redirect:/login.jsp";
+    }
 
+    @RequestMapping("/forgetPassword")
+    public String forgetPassword(){
+
+        return "forget";
     }
 
 }

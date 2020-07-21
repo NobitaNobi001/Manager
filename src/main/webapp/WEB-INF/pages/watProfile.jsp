@@ -1,10 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
 <head>
     <meta charset="utf-8">
     <title>湖北文理学院创新学分系统</title>
 
-        <%
+    <%
         pageContext.setAttribute("APP_PATH", request.getContextPath());
     %>
 
@@ -13,6 +12,9 @@
 
     <%--引入jQuery外部文件--%>
     <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
+
+</head>
+<html>
 <body>
 <header>
     <div id="header">
@@ -23,16 +25,16 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/teacher/teaProfile"
-                       style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/login.jsp" style="font-size: 14px; color: #337ab7;">退出</a>
+                    <a href="${APP_PATH}/watcher/watProfile"
+                       style="font-size: 14px; color: #337ab7;">${watcher.watcherName }(${watcher.watcherNumber })</a>
+                    <a href="${APP_PATH}/logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
-                    <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
+                    <li class="title"><a href="javascript:;">督查中心</a></li>
+                    <li><a href="${APP_PATH}/watcher/watIndex">首页</a></li>
+                    <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -44,11 +46,11 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/stuList">学生列表</a></li>
-                    <li><a href="${APP_PATH}/teacher/declareManager">申报管理</a></li>
+                    <li><a href="#">学生学分</a></li>
+                    <li><a href="${APP_PATH}/watcher/watAudit">教师审核</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
-                    <li class=""><a href="${APP_PATH}/teacher/teaPassword">修改密码</a></li>
+                    <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
+                    <li><a href="${APP_PATH}/watcher/watPassword">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
@@ -59,7 +61,7 @@
                         <div class="row item">
                             <div class="col col-2 name">姓名</div>
                             <div class="col col-7 value">
-                                <input type="text" name="username" value="${teacher.teaName }" readonly>
+                                <input type="text" name="username" value="${watcher.watcherName }" readonly>
                             </div>
                         </div>
                         <div class="row item">
@@ -74,7 +76,7 @@
                         <div class="row item">
                             <div class="col col-2 name">手机号码</div>
                             <div class="col col-7 value">
-                                <input type="text" name="telephone" value="${teacher.phone }"
+                                <input type="text" name="telephone" value="${watcher.phone }"
                                        onchange="validate_phone()"/>
                                 <div class="notice">请填写联系电话</div>
                             </div>
@@ -82,14 +84,14 @@
                         <div class="row item">
                             <div class="col col-2 name">邮箱</div>
                             <div class="col col-7 value">
-                                <input type="text" name="email" value="${teacher.email }" onchange="validate_email()"/>
+                                <input type="text" name="email" value="${watcher.email }" onchange="validate_email()"/>
                                 <div class="notice">请填写邮箱</div>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">院系</div>
                             <div class="col col-5 value">
-                                <input type="text" name="college" value="${teacher.college.name }" readonly/>
+                                <input type="text" name="college" value="${watcher.college.name }" readonly/>
                             </div>
                         </div>
                         <div class="row item">
@@ -128,7 +130,7 @@
     $(function () {
         //性别文本框设置性别
         //获取性别文本框
-        $("input[type='radio'][name='gender'][value='${teacher.gender }']").attr("checked", true);
+        $("input[type='radio'][name='gender'][value='${watcher.gender }']").attr("checked", true);
 
     });
 
@@ -145,27 +147,32 @@
             return false;
         }
 
-        $.ajax({
-            url: "${APP_PATH}/teacher/updateInfo/" +${teacher.id },
-            type: "PUT",
-            data: {
-                "gender": $("input[type='radio']:checked").val(),
-                "phone": phone.val(),
-                "email": email.val()
-            },
-            success: function (result) {
-                if (result.code == 100) {
-                    alert("修改成功");
-                    window.location.reload();
-                } else {
-                    alert(result.extend.msg);
-                    window.location.reload();
+        //如果要修改的信息和原信息相同
+        if ($("input[type='radio']:checked").val() == "${watcher.gender }" && phone.val() == "${watcher.phone }" && email.val() == "${watcher.email }"){
+
+        }
+
+            $.ajax({
+                url: "${APP_PATH}/watcher/updateInfo/" +${watcher.id },
+                type: "PUT",
+                data: {
+                    "gender": $("input[type='radio']:checked").val(),
+                    "phone": phone.val(),
+                    "email": email.val()
+                },
+                success: function (result) {
+                    if (result.code == 100) {
+                        alert("修改成功");
+                        window.location.reload();
+                    } else {
+                        alert(result.extend.msg);
+                        window.location.reload();
+                    }
+                },
+                error: function (error) {
+                    alert("服务器繁忙");
                 }
-            },
-            error: function () {
-                alert("服务器繁忙");
-            }
-        });
+            });
 
     });
 

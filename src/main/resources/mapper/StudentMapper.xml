@@ -19,6 +19,38 @@
     <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
     <result column="password" property="password" jdbcType="VARCHAR"/>
   </resultMap>
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" suffix=")" prefixOverrides="and">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                           separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
   <!--学生表全部字段-->
   <sql id="Base_Column_List">
     id, stu_number, password, stu_name, college_id, major, class_name, gender, phone, email
@@ -68,5 +100,12 @@
   <!--根据学生的学号去查询所在的major-->
   <select id="selectMajorBystuNumber" resultType="java.lang.String">
     select major from stu_info where stu_number=#{stuNumber}
+  </select>
+
+  <select id="countByExample" parameterType="com.bean.StudentExample" resultType="java.lang.Integer">
+    select count(*) from stu_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
+    </if>
   </select>
 </mapper>

@@ -31,4 +31,5 @@ public interface WatcherMapper {
 
     Watcher selectUPByWatcherNumber(Integer watcherNumber);
 
+    Watcher selectWatcherByWatcherNumber(Integer watcherNumber);
 }

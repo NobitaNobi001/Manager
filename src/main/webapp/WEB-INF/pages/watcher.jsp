@@ -11,6 +11,9 @@
     <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/overseer.css"/>
+
+    <%--引入jQuery的文件--%>
+    <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
 </head>
 <body>
 <header>
@@ -22,15 +25,15 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="profile.html">admin@qq.com</a>
-                    <a href="login.html">退出</a>
+                    <a href="profile.html">${watcher.watcherName }(${watcher.watcherNumber })</a>
+                    <a href="${APP_PATH}/logout">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">督查中心</a></li>
-                    <li><a href="overseer.html">首页</a></li>
-                    <li><a href="profile.html">个人信息</a></li>
+                    <li><a href="${APP_PATH}/watcher/watIndex">首页</a></li>
+                    <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -43,23 +46,22 @@
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
                     <li><a href="fraction.html">学生学分</a></li>
-                    <li><a href="examine.html">教师审核</a></li>
+                    <li><a href="${APP_PATH}/watcher/watAudit">教师审核</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
-                    <li><a href="profile.html">个人信息</a></li>
-                    <li><a href="password.html">修改密码</a></li>
+                    <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
+                    <li><a href="${APP_PATH}/watcher/watPassword">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
                 <div class="userinfo">
                     <div class="avatar">
-                        <div class="head">云</div>
+                        <div class="head"></div>
                     </div>
                     <div class="info">
-                        <div class="username">杨歆舞云</div>
-                        <div class="telephone">13258565780</div>
+                        <div class="username">${watcher.watcherName }</div>
                     </div>
-                    <div class="department"><span>计算机系（学院）</span></div>
-                    <div class="major"><span>计算机信息管理</span></div>
+                    <div class="department"><span>${watcher.college.name }</span></div>
+                    <div class="major"><span></span></div>
                 </div>
 
 
@@ -78,3 +80,12 @@
 </footer>
 </body>
 </html>
+<script type="text/javascript">
+
+    var watcherName = '${watcher.watcherName }';
+
+    //回显名字的最后一个字
+    $(function () {
+        $(".userinfo .avatar .head").append(watcherName.substring(watcherName.length - 1, watcherName.length));
+    });
+</script>

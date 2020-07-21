@@ -26,9 +26,6 @@ public class RecordController {
     @Autowired
     private CollegeStuService collegeStuService;
 
-    //存储已经审核并给了审核学分的id 存储上限为2^32-1
-    List<Integer> recordHandler = new ArrayList<>();
-
     /**
      * 查询学生的申报信息
      *
@@ -47,36 +44,67 @@ public class RecordController {
 
     /**
      * 根据申报记录的id更新申报记录的审核
-     * @param record
+     *
+     * @param auditCredit
+     * @param auditTea
+     * @param id
      * @return
      */
     @RequestMapping(value = "/updateRecord/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public Msg updateStuRecord(Record record) {
+    public Msg updateStuRecord(@RequestParam("auditCredit") double auditCredit, @RequestParam("auditTea") String auditTea, @PathVariable("id") Integer id) {
+
+        //根据主键查找学生的申报记录
+        Record record = recordService.selectByPrimaryKey(id);
 
         //根据学号查询该学生的总学分
         double sum_credit = creditService.selectCreditByStuNumber(record.getStuNumber());
 
-        //创建一个credit对象
-        Credit credit = new Credit(record.getStuNumber(), record.getAuditCredit() + sum_credit);
+        //如果是第一次审核
+        if (record.getAuditState().equals("未审核") && auditCredit >= 0) {
 
-        //如果这条记录在其中不存在并且给出了审核学分 并且状态修改为了已审核
-        if (!recordHandler.contains(record.getId()) && record.getAuditCredit() >= 0 && record.getAuditState().equals("已审核")) {
-
-            //将这条审核记录添加到ArrayList中
-            recordHandler.add(record.getId());
+            //修改审核状态
+            record.setAuditState("已审核");
+            //修改审核学分
+            record.setAuditCredit(auditCredit);
+            //修改审核教师
+            record.setAuditTea(auditTea);
 
             //更新申报信息
             recordService.updateRecord(record);
 
-            //根据学号更新学生信息
-            creditService.updateCreditByStuNumber(credit);
+            //更新总学分表
+            creditService.updateCreditByStuNumber(new Credit(record.getStuNumber(), record.getAuditCredit() + sum_credit));
 
-            //返回成功信息
             return Msg.success();
         }
 
-        return Msg.fail();
+        //如果审核失误，要进行修改
+        if (record.getAuditState().equals("已审核") && auditCredit >= 0) {
+
+            //如果没有做审核学分的变动
+            if (auditCredit == record.getAuditCredit()) {
+
+                return Msg.fail().add("msg", "您没有对审核学分做任何变动");
+            }
+
+            //获取修改前的审核学分
+            double temp = record.getAuditCredit();
+
+            //修改本条记录的审核学分与审核教师
+            record.setAuditCredit(auditCredit);
+            record.setAuditTea(auditTea);
+
+            //更新申报信息
+            recordService.updateRecord(record);
+
+            //更新总学分表
+            creditService.updateCreditByStuNumber(new Credit(record.getStuNumber(), sum_credit - temp + auditCredit));
+
+            return Msg.success();
+        }
+
+        return Msg.fail().add("msg","审核失败");
     }
 
     /**
@@ -88,6 +116,7 @@ public class RecordController {
     @RequestMapping(value = "/stuRecord", method = RequestMethod.GET)
     @ResponseBody
     public Msg selectWithStuNumber(@RequestParam("stuName") String stuName, @RequestParam("collegeId") Integer collegeId) {
+
 
         List<String> stuNames = collegeStuService.selectStuNameWithCollegeId(collegeId);
 
@@ -104,5 +133,67 @@ public class RecordController {
         }
 
         return Msg.fail();
+    }
+
+    /**
+     * 获取学生的申报信息
+     *
+     * @param pn        页码
+     * @param collegeId 学院id
+     * @return
+     */
+    @RequestMapping(value = "/declare", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg declareInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId) {
+
+        //将对应学院的学生学号进行查出
+        List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeId(collegeId);
+
+        //如果学号为空
+        if (stuNumbers.size() == 0) {
+            return Msg.fail();
+        }
+
+        //设置起始页码以及每页的记录条数
+        PageHelper.startPage(pn, 5);
+
+        //根据学号进行申报记录的查出
+        List<Record> stuRecords = recordService.getAllRecords(stuNumbers);
+
+        //使用pageInfo包装查询后的结果
+        PageInfo page = new PageInfo(stuRecords, 5);
+
+        return Msg.success().add("pageInfo", page);
+    }
+
+    /**
+     * 获取学生已审核的申报记录
+     * @param pn
+     * @param collegeId
+     * @return
+     */
+    @RequestMapping(value = "/auditInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg auditInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId){
+
+        //将对应学院的学生学号进行查出
+        List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeId(collegeId);
+
+        //如果学号为空
+        if (stuNumbers.size() == 0) {
+            return Msg.fail();
+        }
+
+        //设置起始页码以及每页的记录条数
+        PageHelper.startPage(pn, 5);
+
+        //根据学号进行申报记录的查出
+        List<Record> stuRecords = recordService.getAllAuditRecords(stuNumbers);
+
+        //使用pageInfo包装查询后的结果
+        PageInfo page = new PageInfo(stuRecords, 5);
+
+        return Msg.success().add("pageInfo", page);
+
     }
 }

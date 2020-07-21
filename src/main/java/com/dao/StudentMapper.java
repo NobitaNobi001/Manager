@@ -1,6 +1,7 @@
 package com.dao;
 
 import com.bean.Student;
+import com.bean.StudentExample;
 import org.apache.ibatis.annotations.Param;
 
 public interface StudentMapper {
@@ -21,4 +22,6 @@ public interface StudentMapper {
 
     //根据id来查询major专业
     String selectMajorBystuNumber(@Param("stuNumber") Integer stuNumber);
+
+    Integer countByExample(StudentExample example);
 }

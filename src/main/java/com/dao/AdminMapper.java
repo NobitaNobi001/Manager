@@ -31,4 +31,6 @@ public interface AdminMapper {
 
     Admin selectUPByAdminNumber(Integer adminNumber);
 
+    Admin selectAdminByAdminNumber(Integer adminNumber);
+
 }

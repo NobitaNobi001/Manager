@@ -1,6 +1,7 @@
 package com.bean;
 
 public class Watcher {
+
     private Integer id;
 
     private Integer watcherNumber;
@@ -16,6 +17,16 @@ public class Watcher {
     private String phone;
 
     private String email;
+
+    private College college;
+
+    public College getCollege() {
+        return college;
+    }
+
+    public void setCollege(College college) {
+        this.college = college;
+    }
 
     public Integer getId() {
         return id;

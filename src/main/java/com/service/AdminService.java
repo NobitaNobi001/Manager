@@ -12,6 +12,11 @@ public class AdminService {
     @Autowired
     private AdminMapper adminMapper;
 
+    /**
+     * 根据管理员账号查询密码
+     * @param adminNumber
+     * @return
+     */
     public Admin selectUPByAdminNumber(Integer adminNumber){
 
         //通过dao层将数据进行查出
@@ -20,4 +25,8 @@ public class AdminService {
         return admin;
     }
 
+    public Admin selectAdminByAdminNumber(Integer adminNumber){
+
+        return adminMapper.selectAdminByAdminNumber(adminNumber);
+    }
 }
