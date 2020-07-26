@@ -123,7 +123,7 @@ public class TeacherController {
     }
 
     @RequestMapping("/queryStu")
-    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String stuName, @RequestParam("stuClass") String stuClass, Model model, HttpServletRequest request) {
+    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String stuName, @RequestParam("stuClass") String stuClass, @RequestParam("major") String major, Model model, HttpServletRequest request) {
         //获取登陆成功的教工号
         Integer teaNumber = (Integer) request.getSession().getAttribute("number");
 
@@ -133,7 +133,7 @@ public class TeacherController {
         //将查找的教工信息添加到model中
         model.addAttribute("teacher", teacher);
         String tableName = CollegeName.getTableName(teacher.getCollegeId());
-        List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber, stuName, stuClass, page, 5);
+        List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber, stuName, stuClass, page, 5, major);
         PageInfo<Record> info = new PageInfo(students);
         model.addAttribute("info", info);
         return "stuList";

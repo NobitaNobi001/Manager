@@ -1,6 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 .properties
-/mbg.xml
 
 #Package Files #
 *.class
@@ -11,7 +10,7 @@
 target/
 
 #idea#
-.idea
+.idea/
 *.iml
 .classpath
 .project

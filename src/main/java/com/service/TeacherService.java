@@ -66,9 +66,9 @@ public class TeacherService {
     }
 
     //条件查询学生列表
-    public List<Student> selectStuByCondition(String tableName,Integer stuNumber,String stuName,String stuClass,int page,int size){
+    public List<Student> selectStuByCondition(String tableName, Integer stuNumber, String stuName, String stuClass, int page, int size, String major) {
         PageHelper.startPage(page, size);
-        return collegeStuMapper.selectStuByCondition(tableName,stuNumber, stuName, stuClass);
+        return collegeStuMapper.selectStuByCondition(tableName, stuNumber, stuName, stuClass, major);
     }
 
     public Integer selectCountTeacher() {

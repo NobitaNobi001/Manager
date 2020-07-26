@@ -11,8 +11,18 @@ public class CollegeStu {
     String stuName;//学生姓名
     String stuClass;//学生班级
     String stuGrade;//学生年级
+    String major;//学生专业
+
 
     public CollegeStu() {
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 
     public int getId() {

@@ -25,7 +25,7 @@
             </div>
             <div class="menu">
                 <ul>
-                    <li class="title"><a href="javascript:;">个人中心</a></li>
+                    <li class="title"><a href="javascript:;">学生中心</a></li>
                     <li><a href="${APP_PATH}/student/stuIndex">首页</a></li>
                     <li><a href="${APP_PATH}/student/updateInfo/${student.id}">个人信息</a></li>
                 </ul>
