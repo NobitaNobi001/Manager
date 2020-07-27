@@ -65,7 +65,7 @@ public class WatcherService {
     }
 
     /**
-     * 查找督察数量
+     * 查找督察人数
      *
      * @return
      */
@@ -73,25 +73,26 @@ public class WatcherService {
         return watcherMapper.countByExample(null);
     }
 
-    /**
-     * 批量查询督察
-     * @return
-     */
     public List<Watcher> selectWatchers() {
         return watcherMapper.selectByExample(null);
     }
 
-    /**
-     * 督查学院映射到学院学生表，模糊查询
-     * @param collegeId 学院id
-     * @param keyword 关键词
-     * @return
-     */
-    public List<Student> selectStuBycondition(int collegeId, String keyword) {
-
+    /*
+     * 根据督查学院名查询所有学生
+     * */
+    public List<Student> selectAllStuByCollegeName(int collegeId, int page, int pagesize) {
         //获取表名
         String tableName = CollegeName.getTableName(collegeId);
+        PageHelper.startPage(page, pagesize);
+        return collegeStuMapper.selectAllStuByCollegeName(tableName);
+    }
 
+    /*
+     * 督查学院映射到学院学生表，模糊查询
+     * */
+    public List<Student> selectStuBycondition(int collegeId, String keyword) {
+        //获取表名
+        String tableName = CollegeName.getTableName(collegeId);
         return collegeStuMapper.selectStuByLikeSearch(tableName, keyword);
     }
 

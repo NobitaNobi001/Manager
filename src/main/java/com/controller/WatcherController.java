@@ -1,11 +1,14 @@
 package com.controller;
 
-import com.bean.*;
+import com.bean.Msg;
+import com.bean.Record;
+import com.bean.Student;
+import com.bean.Watcher;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.service.CollegeService;
 import com.service.CollegeStuService;
 import com.service.WatcherService;
+import com.utils.CollegeName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +28,9 @@ public class WatcherController {
     @Autowired
     private WatcherService watcherService;
 
+    @Autowired
+    private CollegeStuService collegeStuService;
+
     /**
      * 跳转到主页
      *
@@ -43,7 +49,7 @@ public class WatcherController {
 
         model.addAttribute("watcher", watcher);
 
-        return "watcher/watcher";
+        return "watcher";
     }
 
     /**
@@ -64,7 +70,7 @@ public class WatcherController {
 
         model.addAttribute("watcher", watcher);
 
-        return "watcher/profile";
+        return "watProfile";
     }
 
     /**
@@ -85,7 +91,7 @@ public class WatcherController {
 
         model.addAttribute("watcher", watcher);
 
-        return "watcher/password";
+        return "watPassword";
     }
 
     /**
@@ -107,7 +113,7 @@ public class WatcherController {
         model.addAttribute("watcher", watcher);
 
 
-        return "watcher/teacherAudit";
+        return "watAudit";
     }
 
     /**
@@ -175,40 +181,27 @@ public class WatcherController {
 
         return Msg.success().add("pageInfo", pages);
     }
-    
+
     @RequestMapping("/insertWat")
     @ResponseBody
-    public Msg insertWatcher(){
-        
+    public Msg insertWatcher() {
+
         return Msg.success();
     }
 
-    /**
-     * 学生学分
-     * @param page
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping("/stuCredit")
+
+    @RequestMapping("/fraction")
     public String DispliayStuCredit(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
-
         //获取登陆成功的督察账号
-//        Integer watcherNumber = (Integer) request.getSession().getAttribute("number");
-//
-//        //根据督察账号查找督察信息
-//        Watcher watcher = watcherService.selectWatcherByWatcherNumber(watcherNumber);
-//
-//        List<Student> students = collegeStuService.selectAllStuByCollegeName(1, page, 5);
-//
-//        PageInfo<Record> info = new PageInfo(students);
-//
-//        model.addAttribute("info", info);
-//        model.addAttribute("watcher", watcher);
-
-
-        return "watcher/studentCredit";
+        Integer watcherNumber = (Integer) request.getSession().getAttribute("number");
+        //根据督察账号查找督察信息
+        Watcher watcher = watcherService.selectWatcherByWatcherNumber(watcherNumber);
+        List<Student> students = watcherService.selectAllStuByCollegeName(watcher.getCollegeId(), page, 5);
+        PageInfo<Record> info = new PageInfo(students);
+        model.addAttribute("info", info);
+        model.addAttribute("watcher", watcher);
+        return "fraction";
     }
-    
+
 
 }

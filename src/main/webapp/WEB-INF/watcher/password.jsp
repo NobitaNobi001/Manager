@@ -1,11 +1,3 @@
-<%--
-  //修改密码
-  Created by IntelliJ IDEA.
-  User: jihn
-  Date: 20/7/26
-  Time: 10:48
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
     <meta charset="utf-8">
@@ -54,7 +46,7 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/watcher/stuCredit">学生学分</a></li>
+                    <li><a href="${APP_PATH}/watcher/fraction">学生学分</a></li>
                     <li><a href="${APP_PATH}/watcher/watAudit">教师审核</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>

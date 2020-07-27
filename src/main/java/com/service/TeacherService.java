@@ -16,12 +16,11 @@ public class TeacherService {
 
     @Autowired
     private TeacherMapper teacherMapper;
-
     @Autowired
     private CollegeStuMapper collegeStuMapper;
 
     /**
-     * 根据教工号查询账密
+     *
      * @param teaNumber 教工号
      * @return 查询到的教师账密
      */
@@ -34,7 +33,7 @@ public class TeacherService {
     }
 
     /**
-     * 根据教工号查询教师个人信息
+     *
      * @param teaNumber 教工号
      * @return 查询到的教工信息
      */
@@ -55,48 +54,23 @@ public class TeacherService {
         teacherMapper.updateByPrimaryKeySelective(teacher);
     }
 
-    /**
-     * 根据主键查出教师信息
-     * @param id
-     * @return
-     */
     public Teacher selectByPrimaryKey(Integer id){
 
-        return teacherMapper.selectByPrimaryKey(id);
+       return teacherMapper.selectByPrimaryKey(id);
     }
 
-    /**
-     * 查询所在学院的学生列表
-     * @param tableName
-     * @param page
-     * @param size
-     * @return
-     */
+    //查询所在学院的学生列表
     public List<Student> selectStuByCollegeName(String tableName, int page, int size){
         PageHelper.startPage(page, size);
         return collegeStuMapper.selectAllStuByCollegeName(tableName);
     }
 
-    /**
-     * 条件查询学生列表
-     * @param tableName 学院
-     * @param stuNumber 学生学号
-     * @param stuName 学生姓名
-     * @param stuClass 学生班级
-     * @param page 起始页
-     * @param size 一页显示的数据量
-     * @param major 学生专业
-     * @return
-     */
+    //条件查询学生列表
     public List<Student> selectStuByCondition(String tableName, Integer stuNumber, String stuName, String stuClass, int page, int size, String major) {
         PageHelper.startPage(page, size);
         return collegeStuMapper.selectStuByCondition(tableName, stuNumber, stuName, stuClass, major);
     }
 
-    /**
-     * 查询教师数量
-     * @return
-     */
     public Integer selectCountTeacher() {
         return teacherMapper.countByExample(null);
     }

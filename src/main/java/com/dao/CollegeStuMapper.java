@@ -32,5 +32,5 @@ public interface CollegeStuMapper {
 
     List<String> getAllClass(@Param("tableName") String tableName, @Param("major") String major);
 
-    List<Student> conditionSearch(@Param("tableName") String tableName,@Param("major") String major,@Param("stuClass") String stuClass);
+    List<Student> conditionSearch(String tableName, String major, String aClass, String keyword);
 }
