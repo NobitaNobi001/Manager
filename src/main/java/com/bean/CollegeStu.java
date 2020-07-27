@@ -1,29 +1,28 @@
 package com.bean;
 
+/**
+ * @author hbk
+ * @date 2020/7/6
+ **/
 public class CollegeStu {
+    int id;//主键
+    int collegeId;//学院表id
+    int stuNumber;//学生学号
+    String stuName;//学生姓名
+    String stuClass;//学生班级
+    String stuGrade;//学生年级
+    String major;//学生专业
 
-    //主键
-    int id;
-
-    //学院表id
-    int collegeId;
-
-    //学生学号
-    int stuNumber;
-
-    //学生姓名
-    String stuName;
-
-    //学生专业
-    String major;
-
-    //学生班级
-    String stuClass;
-
-    //学生年级
-    String stuGrade;
 
     public CollegeStu() {
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
     }
 
     public int getId() {
@@ -56,14 +55,6 @@ public class CollegeStu {
 
     public void setStuName(String stuName) {
         this.stuName = stuName;
-    }
-
-    public String getMajor() {
-        return major;
-    }
-
-    public void setMajor(String major) {
-        this.major = major;
     }
 
     public String getStuClass() {

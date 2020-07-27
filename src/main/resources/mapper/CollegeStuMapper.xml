@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.CollegeStuMapper">
 
+
     <resultMap id="BaseResultMap" type="com.bean.Student">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
@@ -66,9 +67,4 @@
     <select id="getAllClass" resultType="java.lang.String">
         select distinct stu_class from ${tableName} where major=#{major} order by stu_class asc
     </select>
-
-    <select id="conditionSearch" resultMap="BaseResultMap">
-        select * from ${tableName} where major = #{major,jdbcType=VARCHAR} and stu_class = #{stuClass}
-    </select>
-
 </mapper>

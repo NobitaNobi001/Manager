@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import com.service.CollegeService;
 import com.service.CollegeStuService;
 import com.service.WatcherService;
+import com.utils.CollegeName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,84 +46,39 @@ public class CollegeController {
         return Msg.success().add("colleges", colleges);
     }
 
-    /**
-     * 获取学院的所有专业
-     *
-     * @param collegeId
-     * @return
-     * @throws JsonProcessingException
-     */
+    /*
+     * 得到所有专业
+     * */
     @RequestMapping("/getMajor")
     @ResponseBody
     public String getAllMajor(Integer collegeId) throws JsonProcessingException {
-
         List<String> allMajor = collegeStuService.getAllMajor(collegeId);
-
         ObjectMapper objectMapper = new ObjectMapper();
-
         return objectMapper.writeValueAsString(allMajor);
     }
 
-    /**
-     * 获取所选专业的所有班级
-     *
-     * @param collegeId
-     * @param major
-     * @return
-     * @throws JsonProcessingException
-     */
+    /*
+     * 得到所在专业所有班级
+     * */
     @RequestMapping("/getClass")
     @ResponseBody
     public String getAllMajor(Integer collegeId, String major) throws JsonProcessingException {
-
         List<String> allClass = collegeStuService.getAllClass(collegeId, major);
-
         ObjectMapper objectMapper = new ObjectMapper();
-
         return objectMapper.writeValueAsString(allClass);
     }
 
-    /**
-     * 条件查询
-     *
-     * @param college
-     * @param major
-     * @param stuClass
-     * @param model
-     * @param request
-     * @return
-     */
+    // 模糊查询
     @RequestMapping("/conditionSearch")
-    public Msg conditionSearch(@RequestParam(value = "college", defaultValue = "1") Integer college, @RequestParam("major") String major, @RequestParam("stuClass") String stuClass, Model model, HttpServletRequest request) {
-
-        List<Student> students = collegeStuService.conditionnSearch(college, major, stuClass);
-
+    public String conditionSearch(@RequestParam(value = "college", defaultValue = "1") Integer college, @RequestParam("major") String major, @RequestParam("class") String Class, @RequestParam("keywords") String keyword, Model model, HttpServletRequest request) {
+        List<Student> students = collegeStuService.conditionnSearch(college, major, Class, keyword);
         //获取登陆成功的督察账号
         Integer watcherNumber = (Integer) request.getSession().getAttribute("number");
-
         //根据督察账号查找督察信息
         Watcher watcher = watcherService.selectWatcherByWatcherNumber(watcherNumber);
-
         PageInfo<Record> info = new PageInfo(students);
-
         model.addAttribute("info", info);
         model.addAttribute("watcher", watcher);
-
-        return Msg.success().add("students", students);
-    }
-
-    /**
-     * 根据学院 专业 班级来查询所有学生
-     * @param college
-     * @param major
-     * @param stuClass
-     * @return
-     */
-    @RequestMapping("/selectStudent")
-    public Msg selectStudents(@RequestParam("college") Integer college, @RequestParam("major") String major, @RequestParam("stuClass") String stuClass) {
-
-        List<Student> students = collegeStuService.selectAllStuByCollegeName(college, 1, 5);
-
-        return Msg.success().add("students", students);
+        return "redirect:fraction";
     }
 }

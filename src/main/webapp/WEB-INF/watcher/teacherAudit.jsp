@@ -1,24 +1,12 @@
-<%--
-  教师审核
-  Created by IntelliJ IDEA.
-  User: jihn
-  Date: 20/7/26
-  Time: 10:48
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-    pageContext.setAttribute("APP_PATH", request.getContextPath());
-%>
 <html>
 <head>
-
-    <base href="<%=basePath%>">
-
     <meta charset="utf-8">
     <title>湖北文理学院创新学分系统</title>
+
+    <%
+        pageContext.setAttribute("APP_PATH", request.getContextPath());
+    %>
 
     <%--引入bootstrap的css样式文件--%>
     <link rel="stylesheet" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -59,7 +47,7 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/watcher/stuCredit">学生学分</a></li>
+                    <li><a href="${APP_PATH}/watcher/fraction">学生学分</a></li>
                     <li><a href="${APP_PATH}/watcher/watAudit">教师审核</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
@@ -119,19 +107,46 @@
 </footer>
 </body>
 </html>
-<%--引入构建分页信息和页码控制的js文件--%>
-<script type="text/javascript" src="${APP_PATH}/static/js/tableInfo.js"></script>
 <script type="text/javascript">
+
+    //创建学院数组
+    var arr = new Array(
+        "马克思主义学院",
+        "政法学院",
+        "教育学院",
+        "体育学院",
+        "文学与传媒学院",
+        "外国语学院",
+        "数学与统计学院",
+        "物理与电子工程学院",
+        "计算机工程学院",
+        "汽车与交通工程学院",
+        "机械工程学院",
+        "土木工程与建筑学院",
+        "食品科学技术学院·化学工程学院",
+        "医学院",
+        "资源环境与旅游学院",
+        "经济管理学院",
+        "美术学院",
+        "音乐与舞蹈学院"
+    );
+    var currentPage = 0;
 
     $(function () {
 
         // 若是校级督察就将十八个学院全部添加到下拉框中
         if ("${watcher.collegeId }" == 19) {
-            getColleges("#college");
+
+            for (var i = 0; i < arr.length; i++) {
+                $("select[name='college']").append($("<option></option>").val(i + 1).text(arr[i]));
+            }
+            //设置value值为0的学院为默认选中
+            $("#college").find("option[value='1']").attr("selected", true);
 
         } else {
             $("select[name='college']").append(("<option value='${watcher.collegeId }'>${watcher.college.name }</option>"));
         }
+
 
         //去到查询数据的第一页
         to_page(1);
@@ -163,7 +178,7 @@
                     //3.解析分页信息
                     build_page_info(result);
                 } else if (result.code == 200) {
-                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#stuDeclare tbody");
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align","center").attr("colspan","10")).appendTo("#stuDeclare tbody");
                 }
 
             }
@@ -178,79 +193,123 @@
         //遍历数据
         $.each(stuRecordInfo.list, function (index, item) {
 
-            //序号
-            var stuCount = $("<td></td>").append(index + 1 + (stuRecordInfo.pageNum - 1) * 5);
-            //学号
-            var stuNumber = $("<td></td>").append(item.stuNumber);
-            //姓名
-            var stuName = $("<td></td>").append(item.stuName);
-            //申报类别
-            var applySort = $("<td></td>").append(item.sort);
-            //申报名称
-            var applyName = $("<td></td>").append(item.applyName);
-            //申报学分
-            var applyCredit = $("<td></td>").append(item.applyCredit);
-            //申报材料
-            var applyBtn = $("<td></td>").append($("<a></a>").addClass("btn btn-default").attr("apply-id", item.id).attr("tabindex", 0).attr("role", "button").attr("data-toggle","popover").attr("placement","right").append("查看").attr("url","applyImg/"+item.picture));
-            // var applyBtn = $("<td></td>").append($("<button>查看</button>").addClass("btn btn-default"));
-            //审核学分
-            var auditCredit = $("<td></td>").append(item.auditCredit);
-            //审核教师
-            var auditTea = $("<td></td>").append(item.auditTea);
+                //序号
+                var stuCount = $("<td></td>").append(index + 1 + (stuRecordInfo.pageNum - 1) * 5);
+                //学号
+                var stuNumber = $("<td></td>").append(item.stuNumber);
+                //姓名
+                var stuName = $("<td></td>").append(item.stuName);
+                //申报类别
+                var applySort = $("<td></td>").append(item.sort);
+                //申报名称
+                var applyName = $("<td></td>").append(item.applyName);
+                //申报学分
+                var applyCredit = $("<td></td>").append(item.applyCredit);
+                //申报材料
+                var applyBtn = $("<td></td>").append($("<button>查看</button>").addClass("btn btn-default"));
+                //审核学分
+                var auditCredit = $("<td></td>").append(item.auditCredit);
+                //审核教师
+                var auditTea = $("<td></td>").append(item.auditTea);
 
-            //审核状态
-            var auditState = $("<td></td>").append($("<a></a>").addClass("btn btn-success btn-2x").append(item.auditState));
+                //审核状态
+                var auditState = $("<td></td>").append($("<a></a>").addClass("btn btn-success btn-2x").append(item.auditState));
 
-            $("<tr></tr>").append(stuCount)
-                .append(stuNumber)
-                .append(stuName)
-                .append(applySort)
-                .append(applyName)
-                .append(applyCredit)
-                .append(applyBtn)
-                .append(auditCredit)
-                .append(auditTea)
-                .append(auditState)
-                .appendTo("#stuDeclare tbody");
+                $("<tr></tr>").append(stuCount)
+                    .append(stuNumber)
+                    .append(stuName)
+                    .append(applySort)
+                    .append(applyName)
+                    .append(applyCredit)
+                    .append(applyBtn)
+                    .append(auditCredit)
+                    .append(auditTea)
+                    .append(auditState)
+                    .appendTo("#stuDeclare tbody");
 
         });
     }
 
-    // $("apply-id").popover({
-    //     trigger:'focus',
-    //     html:true,
-    //     content:function () {
-    //         console.log($(this));
-    //         var url = $(this).attr("url");
-    //         var $div = $("<div style='width: 700px; height:500px;'></div>");
-    //         var $img = $("<img style='width: 700px; height:500px;'/>");
-    //         $img.attr("src",url);
-    //         $img.appendTo($div);
-    //         return $div;
-    //     }
-    // });
+    function build_page_nav(result) {
+        //清空原有数据
+        // $("#page_nav_area").empty();
+        var ul = $("<ul></ul>").addClass("pagination");
 
-    //获取学院
-    function getColleges(sel) {
-        //清空下拉框样式及内容
-        $(sel).empty();
-        $.ajax({
-            url: "${APP_PATH}/college/getColleges",
-            type: "GET",
-            success: function (result) {
-                // 显示学院信息在下拉列表中
-                $.each(result.extend.colleges, function () {
+        //构建分页条元素
+        //首页及前一页
+        var firstPageLi = $("<li></li>").append($("<a></a>").append("首页"));
+        var prePageLi = $("<li></li>").append($("<a></a>").append("&laquo;"));
 
-                    if (this.id != 19) {
-                        var option = $("<option></option>").append(this.name).attr("value", this.id);
-                        option.appendTo(sel);
-                    }
+        //如果在首页 那么首页和前一页添加禁用
+        if (result.extend.pageInfo.hasPreviousPage == false) {
+            firstPageLi.addClass("disabled");
+            prePageLi.addClass("disabled");
+        } else {
 
-                });
-            },
-            error: function () {
-                alert("服务器繁忙")
+            //为元素添加翻页事件
+            firstPageLi.click(function () {
+                to_page(1);
+            });
+            prePageLi.click(function () {
+                to_page(result.extend.pageInfo.pageNum - 1);
+            });
+        }
+
+        //构建下一页和末页元素
+        var nextPageLi = $("<li></li>").append($("<a></a>").append("&raquo;"));
+        var lastPageLi = $("<li></li>").append($("<a></a>").append("末页"));
+
+        //如果在末页 那么末页和下一页添加禁用
+        if (result.extend.pageInfo.hasNextPage == false) {
+            nextPageLi.addClass("disabled");
+            lastPageLi.addClass("disabled");
+        } else {
+            //点击末页去到最后一页
+            lastPageLi.click(function () {
+                to_page(result.extend.pageInfo.pages);
+            });
+
+            //点击下一页去到下一页
+            nextPageLi.click(function () {
+                to_page(result.extend.pageInfo.pageNum + 1);
+            });
+        }
+
+        //首页和上一页添加到分页条
+        ul.append(firstPageLi).append(prePageLi);
+
+        //添加页码提示
+        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
+
+            var numLi = $("<li></li>").append($("<a></a>").append(item));
+            if (result.extend.pageInfo.pageNum == item) {
+                numLi.addClass("active");
             }
-        })
+            numLi.click(function () {
+                to_page(item);
+            });
+
+            ul.append(numLi);
+        });
+
+        //下一页和末页的提示
+        ul.append(nextPageLi).append(lastPageLi);
+
+        //把ul添加到nav元素
+        var nav = $("<nav></nav>").append(ul);
+        //把nav添加到页码栏区域
+        nav.appendTo("#page_nav_area");
     }
+
+    function build_page_info(result) {
+        //清空原有数据
+        // $("#page_info_area").empty();
+
+        $("#page_info_area").append("当前" + result.extend.pageInfo.pageNum + "页,总" + result.extend.pageInfo.pages + "页,"
+            + "总" + result.extend.pageInfo.total + "条记录");
+
+        //表示当前页
+        currentPage = result.extend.pageInfo.pageNum;
+    }
+
 </script>
