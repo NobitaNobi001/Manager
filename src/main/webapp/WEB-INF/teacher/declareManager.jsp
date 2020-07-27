@@ -1,20 +1,39 @@
+<%--
+  申报管理
+  Created by IntelliJ IDEA.
+  User: jihn
+  Date: 20/7/26
+  Time: 10:39
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
 <html>
 <head>
     <meta charset="utf-8">
     <title>湖北文理学院创新学分系统</title>
 
-    <%
-        String path = request.getContextPath();
-        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-        pageContext.setAttribute("APP_PATH", request.getContextPath());
-    %>
+
     <base href="<%=basePath%>">
 
     <%--引入bootstrap的css样式文件--%>
     <link rel="stylesheet" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
+
+    <%--修改弹出框的默认宽度--%>
+    <style type="text/css">
+        .popover{
+            width: auto;
+            height: auto;
+            max-height: 800px;
+            max-width: 800px;
+        }
+    </style>
 
     <%--引入jQuery外部文件--%>
     <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
@@ -50,10 +69,10 @@
                     <div class="form-group">
                         <label for="picture_btn" class="col-sm-2 control-label">申报材料</label>
                         <div class="col-sm-10">
-                            <%--<img name="picture" class="form-control" id="picture"/>--%>
-                            <input type="button" name="picture_btn" id="picture_btn" class="btn btn-default"
-                                   value="查看图片"
-                                   style="padding-top: 5px;"/>
+                            <button type="button" class="btn btn-default" data-container="body" data-toggle="popover"
+                                    data-placement="right" name="picture_btn" id="picture_btn">查看图片
+                            </button>
+                                <%--<div class="btn-default"><a tabindex="0" role="button" data-toggle="popover" id="picture_btn">查看图片</a></div>--%>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -81,20 +100,20 @@
                     <div class="form-group">
                         <label for="audit_credit" class="col-sm-2 control-label">审核学分</label>
                         <div class="col-sm-10">
-                            <input type="number" name="audit_credit" class="form-control" id="audit_credit" step="0.5" min="0" max="8"/>
+                            <input type="number" name="audit_credit" class="form-control" id="audit_credit" step="0.5"
+                                   min="0" max="8"/>
                             <span class="help-block"></span>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="stu_close_btn">关闭</button>
                 <button type="button" class="btn btn-primary" id="stu_audit_btn">确认</button>
             </div>
         </div>
     </div>
 </div>
-<img alt="申报图片" id="picture" style="display: none; width: 600px; height: 400px; position: absolute;" class="modal fade"/>
 <header>
     <div id="header">
         <div class="header">
@@ -184,10 +203,10 @@
 </footer>
 </body>
 </html>
+<%--引入构建分页信息和页码控制的js文件--%>
+<script type="text/javascript" src="${APP_PATH}/static/js/tableInfo.js"></script>
 <script type="text/javascript">
 
-    //表示当前页
-    var currentPage = 0;
     //获取学生的学号
     var StuNumber;
 
@@ -231,7 +250,7 @@
                     build_page_info(result);
                 }
                 if (result.code == 200) {
-                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align","center").attr("colspan","10")).appendTo("#declare_table tbody");
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#declare_table tbody");
                 }
             },
             error: function () {
@@ -259,15 +278,15 @@
                 //清空分页信息
                 $("#page_info_area").empty();
 
-                if(result.code==100){
+                if (result.code == 100) {
                     //1.构建申报管理表格
                     build_declare_table(result);
                     //2.解析分页条信息
                     build_page_nav(result);
                     //3.解析分页信息
                     build_page_info(result);
-                }else if(result.code==200){
-                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align","center").attr("colspan","10")).appendTo("#declare_table tbody");
+                } else if (result.code == 200) {
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#declare_table tbody");
                 }
 
             }
@@ -352,7 +371,6 @@
             return false;
         }
 
-
         //发送ajax请求更新审核的信息
         $.ajax({
             url: "${APP_PATH}/record/updateRecord/" + $(this).attr("audit-id"),
@@ -367,8 +385,6 @@
 
                 if (result.code == 100) {   //成功更新审核信息和总学分
 
-                    alert("审核成功!");
-
                     //关闭模态框
                     $("#stuWithAudit").modal("hide");
                     //回到本页面
@@ -378,11 +394,24 @@
                     alert(result.extend.msg);
                 }
 
+                //同时关闭申报图片的显示
+                 $(".popover").popover('hide');
+
             }, error: function () {
                 alert("服务器繁忙!");
             }
         });
     });
+
+    //模态框关闭时
+    $("#stu_close_btn").click(function () {
+
+        //关闭申报图片的显示
+        $(".popover").popover('hide');
+    });
+
+    //定义一个全局变量来表示图片的url
+    var url;
 
     //根据申报记录的id获取对应的学生的申报记录
     function getStuRecord(id) {
@@ -399,10 +428,8 @@
                 //申报类别
                 $("#sort").val(stuRecordData.sort);
 
-                var picture = $("#picture");
-                //申报材料
-                var url = stuRecordData.picture;
-                picture.attr("src","applyImg/"+url);
+                //申报材料的url
+                url = "applyImg/" + stuRecordData.picture;
 
                 //申报名称
                 $("#apply_name").val(stuRecordData.applyName);
@@ -411,7 +438,7 @@
                 //申报描述
                 $("#apply_words").val(stuRecordData.words.trim() == "" ? "无" : stuRecordData.words);
                 //审核学分
-                $("#audit_credit").val(stuRecordData.auditCredit==0?stuRecordData.applyCredit:stuRecordData.auditCredit);
+                $("#audit_credit").val(stuRecordData.auditCredit == 0 ? stuRecordData.applyCredit : stuRecordData.auditCredit);
 
             },
             error: function () {
@@ -420,93 +447,19 @@
         });
     }
 
-    $("#picture_btn").click(function () {
-        $("#picture").show();
+    //显示和关闭申报图片
+    $("#picture_btn").popover({
+        trigger: 'click',
+        html: true,
+        content: function () {
+            var $div = $("<div style='width: 700px; height:500px;'></div>");
+            var $img = $("<img style='width: 700px; height:500px;' id='picture_show'/>");
+            $img.attr("src", url);
+            $img.appendTo($div);
+            return $div;
+        }
     });
 
-    //解析分页条信息
-    function build_page_nav(result) {
-        //清空原有数据
-        $("#page_nav_area").empty();
-        var ul = $("<ul></ul>").addClass("pagination");
-
-        //构建分页条元素
-        //首页及前一页
-        var firstPageLi = $("<li></li>").append($("<a></a>").append("首页"));
-        var prePageLi = $("<li></li>").append($("<a></a>").append("&laquo;"));
-
-        //如果在首页 那么首页和前一页添加禁用
-        if (result.extend.pageInfo.hasPreviousPage == false) {
-            firstPageLi.addClass("disabled");
-            prePageLi.addClass("disabled");
-        } else {
-
-            //为元素添加翻页事件
-            firstPageLi.click(function () {
-                to_page(1);
-            });
-            prePageLi.click(function () {
-                to_page(result.extend.pageInfo.pageNum - 1);
-            });
-        }
-
-        //构建下一页和末页元素
-        var nextPageLi = $("<li></li>").append($("<a></a>").append("&raquo;"));
-        var lastPageLi = $("<li></li>").append($("<a></a>").append("末页"));
-
-        //如果在末页 那么末页和下一页添加禁用
-        if (result.extend.pageInfo.hasNextPage == false) {
-            nextPageLi.addClass("disabled");
-            lastPageLi.addClass("disabled");
-        } else {
-            //点击末页去到最后一页
-            lastPageLi.click(function () {
-                to_page(result.extend.pageInfo.pages);
-            });
-
-            //点击下一页去到下一页
-            nextPageLi.click(function () {
-                to_page(result.extend.pageInfo.pageNum + 1);
-            });
-        }
-
-        //首页和上一页添加到分页条
-        ul.append(firstPageLi).append(prePageLi);
-
-        //添加页码提示
-        $.each(result.extend.pageInfo.navigatepageNums, function (index, item) {
-
-            var numLi = $("<li></li>").append($("<a></a>").append(item));
-            if (result.extend.pageInfo.pageNum == item) {
-                numLi.addClass("active");
-            }
-            numLi.click(function () {
-                to_page(item);
-            });
-
-            ul.append(numLi);
-        });
-
-        //下一页和末页的提示
-        ul.append(nextPageLi).append(lastPageLi);
-
-        //把ul添加到nav元素
-        var nav = $("<nav></nav>").append(ul);
-        //把nav添加到页码栏区域
-        nav.appendTo("#page_nav_area");
-    }
-
-    //解析分页信息
-    function build_page_info(result) {
-        //清空原有数据
-        $("#page_info_area").empty();
-
-        $("#page_info_area").append("当前" + result.extend.pageInfo.pageNum + "页,总" + result.extend.pageInfo.pages + "页,"
-            + "总" + result.extend.pageInfo.total + "条记录");
-
-        //表示当前页
-        currentPage = result.extend.pageInfo.pageNum;
-    }
-
-
 </script>
+
+

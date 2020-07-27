@@ -55,10 +55,14 @@ public class UserController {
         return "redirect:/login.jsp";
     }
 
+    /**
+     * 去到忘记密码页面
+     * @return
+     */
     @RequestMapping("/forgetPassword")
     public String forgetPassword(){
 
-        return "forget";
+        return "common/passwordLost";
     }
 
 }

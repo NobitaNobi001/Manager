@@ -2,16 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.CollegeStuMapper">
 
-
     <resultMap id="BaseResultMap" type="com.bean.Student">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
         <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
         <result column="college_id" property="collegeId"/>
         <result column="stu_class" property="className" jdbcType="VARCHAR"/>
+        <result column="major" property="major"></result>
         <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey" column="college_id"></association>
         <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber" column="stu_number"></association>
-        <association property="major" select="com.dao.StudentMapper.selectMajorBystuNumber" column="stu_number"></association>
     </resultMap>
 
     <!--根据学院名来查找学生的学号-->
@@ -34,18 +33,42 @@
         select * from ${tableName}
         <bind name="_stuName" value=" '%'+stuName+'%' "/>
         <where>
-           <if test="stuNumber!=null">
-              stu_number=#{stuNumber}
-           </if>
-           <if test="stuName!=null and stuName!=&quot;&quot;">
-              and stu_name like #{_stuName}
-           </if>
-           <if test="stuClass!=null and stuClass!=&quot;&quot;">
-              and stu_class=#{stuClass}
-           </if>
+            <if test="stuNumber!=null">
+                stu_number=#{stuNumber}
+            </if>
+            <if test="stuName!=null and stuName!=&quot;&quot;">
+                and stu_name like #{_stuName}
+            </if>
+            <if test="stuClass!=null and stuClass!=&quot;&quot;">
+                and stu_class=#{stuClass}
+            </if>
+            <if test="major!=null and major!=&quot;&quot;">
+                and major=#{major}
+            </if>
         </where>
     </select>
 
+    <!--模糊查询-->
+    <select id="selectStuByLikeSearch" resultMap="BaseResultMap">
+        select * from ${tableName} where
+     stu_number like concat ("%",#{keyword},"%") or
+     stu_name like concat ("%",#{keyword},"%") or
+     major like concat ("%",#{keyword},"%") or
+     stu_class like concat ("%",#{keyword},"%")
+    </select>
 
+    <!--根据表名得到不重复的专业字段-->
+    <select id="getAllMajor" resultType="java.lang.String">
+        select distinct major from ${tableName} order by major asc
+    </select>
+
+    <!--根据专业得到班级名-->
+    <select id="getAllClass" resultType="java.lang.String">
+        select distinct stu_class from ${tableName} where major=#{major} order by stu_class asc
+    </select>
+
+    <select id="conditionSearch" resultMap="BaseResultMap">
+        select * from ${tableName} where major = #{major,jdbcType=VARCHAR} and stu_class = #{stuClass}
+    </select>
 
 </mapper>

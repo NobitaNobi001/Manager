@@ -1,3 +1,11 @@
+<%--
+  //修改密码
+  Created by IntelliJ IDEA.
+  User: jihn
+  Date: 20/7/26
+  Time: 10:48
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
     <meta charset="utf-8">
@@ -25,16 +33,16 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/teacher/teaProfile"
-                       style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/login.jsp" style="font-size: 14px; color: #337ab7;">退出</a>
+                    <a href="${APP_PATH}/watcher/watProfile"
+                       style="font-size: 14px; color: #337ab7;">${watcher.watcherName }(${watcher.watcherNumber })</a>
+                    <a href="${APP_PATH}/logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
-                    <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
+                    <li class="title"><a href="javascript:;">督查中心</a></li>
+                    <li><a href="${APP_PATH}/watcher/watIndex">首页</a></li>
+                    <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -46,11 +54,11 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/stuList">学生列表</a></li>
-                    <li><a href="${APP_PATH}/teacher/declareManager">申报管理</a></li>
+                    <li><a href="${APP_PATH}/watcher/stuCredit">学生学分</a></li>
+                    <li><a href="${APP_PATH}/watcher/watAudit">教师审核</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaPassword">修改密码</a></li>
+                    <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
+                    <li><a href="${APP_PATH}/watcher/watPassword">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
@@ -102,9 +110,7 @@
 </footer>
 </body>
 </html>
-
 <script type="text/javascript">
-
     //拿到原密码的文本框
     var password = $("input[name='password']");
     //拿到新密码的文本框
@@ -130,7 +136,7 @@
 
         //向后台发送请求更新用户密码
         $.ajax({
-            url: "${APP_PATH}/teacher/updatePassword/" +${teacher.id },
+            url: "${APP_PATH}/watcher/updatePassword/" +${watcher.id },
             type: "PUT",
             data: {
                 "password": respass.val()
@@ -142,11 +148,11 @@
                     alert("密码修改成功!");
                     //刷新当前页面
                     window.location.reload();
-                }else {
+                } else {
                     alert("原密码和新密码一致!");
                 }
             },
-            error:function () {
+            error: function () {
                 alert("服务器繁忙!")
             }
         });
@@ -160,7 +166,7 @@
         } else {  //密码输入不为空 就和数据库中查出的密码进行比对
 
             //如果和数据库中密码相同就返回true
-            if (password.val() == "${teacher.password }") {
+            if (password.val() == "${watcher.password }") {
                 password.next().html("&nbsp;");
                 return true;
             } else {
@@ -194,6 +200,4 @@
         }
         return false;
     }
-
-
 </script>

@@ -1,6 +1,4 @@
-import com.bean.Admin;
 import com.bean.Teacher;
-import com.dao.AdminMapper;
 import com.dao.TeacherMapper;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;

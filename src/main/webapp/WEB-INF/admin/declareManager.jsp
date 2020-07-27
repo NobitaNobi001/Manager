@@ -1,3 +1,11 @@
+<%--
+  //申报管理
+  Created by IntelliJ IDEA.
+  User: jihn
+  Date: 20/7/26
+  Time: 10:45
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -21,7 +29,7 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/admProfile">admin@qq.com</a>
+                    <a href="${APP_PATH}/admin/admProfile">admin@qq.com</a>
                     <a href="${APP_PATH}/logout">退出</a>
                 </div>
             </div>
@@ -170,3 +178,4 @@
 </footer>
 </body>
 </html>
+

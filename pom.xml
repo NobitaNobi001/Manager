@@ -113,18 +113,12 @@
             <scope>provided</scope>
         </dependency>
 
+        <!--junit单元测试依赖-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
-        </dependency>
-
-        <!--引入分页插件-->
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>5.0.0</version>
         </dependency>
 
         <!--文件上传和下载-->
@@ -134,14 +128,24 @@
             <version>1.3.3</version>
         </dependency>
 
-        <!--分页查询插件pagehelper-->
+        <!--引入分页插件-->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
             <version>5.1.10</version>
         </dependency>
 
-
+        <!--导入导出excel的poi依赖-->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.9</version>
+        </dependency>
 
         <!-- log4j日志包 -->
         <dependency>
@@ -180,18 +184,20 @@
             <artifactId>ehcache</artifactId>
             <version>3.1.3</version>
         </dependency>
-
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-ehcache</artifactId>
             <version>1.0.0</version>
         </dependency>
 
+        <!--bootstrap相关依赖-->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
             <version>3.3.5</version>
         </dependency>
+
+        <!--jQuery相关依赖-->
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>

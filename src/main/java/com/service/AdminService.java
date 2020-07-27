@@ -14,7 +14,7 @@ public class AdminService {
 
     /**
      * 根据管理员账号查询密码
-     * @param adminNumber
+     * @param adminNumber 教工账号
      * @return
      */
     public Admin selectUPByAdminNumber(Integer adminNumber){
@@ -25,6 +25,11 @@ public class AdminService {
         return admin;
     }
 
+    /**
+     * 根据管理员账号查询个人信息
+     * @param adminNumber 教工账号
+     * @return
+     */
     public Admin selectAdminByAdminNumber(Integer adminNumber){
 
         return adminMapper.selectAdminByAdminNumber(adminNumber);

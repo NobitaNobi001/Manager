@@ -13,6 +13,10 @@ public class CollegeService {
     @Autowired
     private CollegeMapper collegeMapper;
 
+    /**
+     * 获取所有学院
+     * @return
+     */
     public List<College> getColleges(){
         return collegeMapper.selectByExample(null);
     }

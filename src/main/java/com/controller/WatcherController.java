@@ -1,9 +1,10 @@
 package com.controller;
 
-import com.bean.Msg;
-import com.bean.Watcher;
+import com.bean.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.service.CollegeService;
+import com.service.CollegeStuService;
 import com.service.WatcherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,7 +43,7 @@ public class WatcherController {
 
         model.addAttribute("watcher", watcher);
 
-        return "watcher";
+        return "watcher/watcher";
     }
 
     /**
@@ -63,7 +64,7 @@ public class WatcherController {
 
         model.addAttribute("watcher", watcher);
 
-        return "watProfile";
+        return "watcher/profile";
     }
 
     /**
@@ -84,7 +85,7 @@ public class WatcherController {
 
         model.addAttribute("watcher", watcher);
 
-        return "watPassword";
+        return "watcher/password";
     }
 
     /**
@@ -106,7 +107,7 @@ public class WatcherController {
         model.addAttribute("watcher", watcher);
 
 
-        return "watAudit";
+        return "watcher/teacherAudit";
     }
 
     /**
@@ -180,6 +181,33 @@ public class WatcherController {
     public Msg insertWatcher(){
         
         return Msg.success();
+    }
+
+    /**
+     * 学生学分
+     * @param page
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/stuCredit")
+    public String DispliayStuCredit(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
+
+        //获取登陆成功的督察账号
+//        Integer watcherNumber = (Integer) request.getSession().getAttribute("number");
+//
+//        //根据督察账号查找督察信息
+//        Watcher watcher = watcherService.selectWatcherByWatcherNumber(watcherNumber);
+//
+//        List<Student> students = collegeStuService.selectAllStuByCollegeName(1, page, 5);
+//
+//        PageInfo<Record> info = new PageInfo(students);
+//
+//        model.addAttribute("info", info);
+//        model.addAttribute("watcher", watcher);
+
+
+        return "watcher/studentCredit";
     }
     
 

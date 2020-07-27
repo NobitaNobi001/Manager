@@ -1,3 +1,11 @@
+<%--
+  教师管理
+  Created by IntelliJ IDEA.
+  User: jihn
+  Date: 20/7/26
+  Time: 10:46
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -9,6 +17,7 @@
     <%
         pageContext.setAttribute("APP_PATH", request.getContextPath());
     %>
+
 
     <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css" />
@@ -23,7 +32,7 @@
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/admProfile">admin@qq.com</a>
+                    <a href="${APP_PATH}/admin/admProfile">admin@qq.com</a>
                     <a href="${APP_PATH}/logout">退出</a>
                 </div>
             </div>
@@ -47,17 +56,16 @@
                     <li><a href="${APP_PATH}/admin/stuManager">学生管理</a></li>
                     <li><a href="${APP_PATH}/admin/teaManager">教师管理</a></li>
                     <li><a href="${APP_PATH}/admin/watManager">督查管理</a></li>
-
                 </ul>
             </div>
             <div class="main-right right">
                 <!-- 学分列表 start -->
                 <div class="student">
-                    <h4>学生列表</h4>
+                    <h4>教师管理</h4>
                     <div class="action">
                         <div>
-                            <a href="javascript:;" class="btn btn-primary">新增学生</a>
-                            <a href="javascript:;" class="btn btn-danger">导入学生</a>
+                            <a href="javascript:;" class="btn btn-primary">新增教师</a>
+                            <a href="javascript:;" class="btn btn-danger">导入教师</a>
                         </div>
                         <div>
                             <select name="department">
@@ -76,69 +84,63 @@
                     </div>
                     <table class="table" border="0" cellspacing="0" cellpadding="0">
                         <tr>
-                            <th>学号</th>
+                            <th>序号</th>
                             <th>姓名</th>
-                            <th>班级</th>
+                            <th>工号</th>
                             <th>院系</th>
-                            <th>专业</th>
-                            <th>学分</th>
+                            <th>职称</th>
                             <th>操作</th>
                         </tr>
                         <tr>
-                            <td>2020062101</td>
+                            <td>1</td>
                             <td>杨歆</td>
                             <td>13208250630</td>
                             <td>计算机系（学院）</td>
-                            <td>计算机信息管理</td>
-                            <td>2</td>
+                            <td>教授</td>
                             <td>
                                 <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
                                 <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>2020062102</td>
+                            <td>2</td>
                             <td>舞云</td>
                             <td>13508250630</td>
                             <td>计算机系（学院）</td>
-                            <td>计算机信息管理</td>
-                            <td>2</td>
+                            <td>教授</td>
                             <td>
                                 <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
                                 <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>2020062103</td>
+                            <td>3</td>
                             <td>淑云</td>
                             <td>13908250630</td>
                             <td>计算机系（学院）</td>
-                            <td>计算机信息管理</td>
-                            <td>2</td>
+                            <td>教授</td>
                             <td>
                                 <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
                                 <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>2020062104</td>
+                            <td>4</td>
                             <td>杨歆</td>
                             <td>13208250630</td>
                             <td>计算机系（学院）</td>
-                            <td>计算机信息管理</td>
-                            <td>2</td>
+                            <td>教授</td>
                             <td>
                                 <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
                                 <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>2020062105</td>
+                            <td>5</td>
                             <td>杨歆</td>
                             <td>13208250630</td>
                             <td>计算机系（学院）</td>
-                            <td>计算机信息管理</td>
-                            <td>2</td>
+                            <td>教授</td>
                             <td>
                                 <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
                                 <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>

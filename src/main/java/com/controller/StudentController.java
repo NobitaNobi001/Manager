@@ -4,6 +4,7 @@ import com.bean.Record;
 import com.bean.Student;
 import com.github.pagehelper.PageInfo;
 import com.service.StudentService;
+import com.utils.applySort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,55 +26,72 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/student")
 public class StudentController {
+
     @Autowired
     private StudentService studentService;
 
-    @RequestMapping("/logout")
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        request.getSession().invalidate();
-        try {
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    //学生首页
+    /**
+     * 学生首页
+     * @param request
+     * @param model
+     * @return
+     */
     @RequestMapping("/stuIndex")
     public String stuIndex(HttpServletRequest request, Model model) {
         //从session中获取学生学号
         Integer stuNumber = (Integer) request.getSession().getAttribute("number");
         Student student = studentService.selectStudentByStuNumber(stuNumber);
         model.addAttribute("student", student);
-        return "student";
+        return "student/student";
     }
 
-    //去修改信息页面
+    /**
+     * 根据学生id修改信息
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping("/updateInfo/{stuID}")
     public String updateInfo(@PathVariable("stuID") int id, Model model) {
         Student student = studentService.selectByPrimaryKey(id);
         model.addAttribute("student", student);
-        return "profile";
+        return "student/profile";
     }
 
-    //将完善信息封装为学生对象 修改数据 之后回到学生首页
+    /**
+     * 将完善信息封装为学生对象 修改数据 之后回到学生首页
+     * @param student
+     * @param model
+     * @return
+     */
     @RequestMapping("/updateStuNullInfo")
     public String updateStuNullInfo(Student student, Model model) {
         boolean flag = studentService.updateStuInfoById(student);
         return "redirect:/student/stuIndex";
     }
 
-    //去修改密码页面
+    /**
+     * 去修改密码页面
+     * @param model
+     * @param id
+     * @return
+     */
     @RequestMapping("/updatepwd/{stuID}")
     public String updatepwd(Model model, @PathVariable("stuID") int id) {
         Student student = studentService.selectByPrimaryKey(id);
         model.addAttribute("student", student);
-        return "password";
+        return "student/password";
     }
 
-    //修改密码
-    @ResponseBody
+    /**
+     * 修改密码
+     * @param stuNumber
+     * @param oldPwd
+     * @param newPwd
+     * @return
+     */
     @RequestMapping(value = "/updateStupwd", method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
     public String updateStupwd(@RequestParam("stuNumber") int stuNumber, @RequestParam("password") String oldPwd, @RequestParam("pass") String newPwd) {
         if (oldPwd.equals(newPwd)) {//新旧密码一致的话
             return "您输入的新密码和原密码一致，请重新输入!";
@@ -84,15 +102,33 @@ public class StudentController {
         }
     }
 
-    //去申请学分页面
+    /**
+     * 去申请学分页面
+     * @param model
+     * @param id
+     * @return
+     */
     @RequestMapping("/applyCredit/{stuID}")
     public String applyCredit(Model model, @PathVariable("stuID") int id) {
         Student student = studentService.selectByPrimaryKey(id);
         model.addAttribute("student", student);
-        return "declare";
+        return "student/creditDeclare";
     }
 
-    //提交申请
+    /**
+     * 提交学分申请
+     * @param stuNumber
+     * @param name
+     * @param number
+     * @param applyName
+     * @param applyCredit
+     * @param words
+     * @param file
+     * @param request
+     * @param model
+     * @return
+     * @throws IOException
+     */
     @RequestMapping("/apply")
     public String apply(@RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String name, @RequestParam("sort") String number, @RequestParam("applyName") String applyName, @RequestParam("applyCredit") Double applyCredit, @RequestParam("words") String words, @RequestParam("file") CommonsMultipartFile file, HttpServletRequest request, Model model) throws IOException {
         StringBuilder path =new StringBuilder(request.getServletContext().getRealPath("/applyImg"));
@@ -129,69 +165,51 @@ public class StudentController {
         os.close();
         is.close();
         //上传成功之后数据库中增加信息
-        String sort = "";
-        switch (Integer.valueOf(number)) {
-            case 1:
-                sort = "大学生学科竞赛活动（含大学生创新创业训练项目）";
-                break;
-            case 2:
-                sort = "大学生文体竞赛活动";
-                break;
-            case 3:
-                sort = "创新创业实践训练";
-                break;
-            case 4:
-                sort = "论文、专利、作品发表";
-                break;
-            case 5:
-                sort = "职业（等级）证书";
-                break;
-            case 6:
-                sort = "参与教师科研（或实验室工作）";
-                break;
-            case 7:
-                sort = "社会实践（调查）";
-                break;
-            case 8:
-                sort = "读书活动";
-                break;
-            case 9:
-                sort = "学生工作与社团活动";
-                break;
-            case 10:
-                sort = "专业认定的其他创新实践活动";
-                break;
-        }
+        String sort = applySort.getApplyName(number);
+
         studentService.addCreditRecord(new Record(stuNumber, name, date, sort, year+"/"+month+"/"+day+"/"+uploadingName, applyName, applyCredit, words));
         Student student = studentService.selectStudentByStuNumber(stuNumber);
         model.addAttribute("student", student);
         return "redirect:/student/viewCredit";
     }
 
-    //学分列表
+    /**
+     * 学分列表
+     * @param page
+     * @param model
+     * @param request
+     * @return
+     * @throws Exception
+     */
     @RequestMapping("/viewCredit")
     public String viewCredit(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpServletRequest request) throws Exception {
+
         Integer stuNumber = (Integer) request.getSession().getAttribute("number");
+
         Student student = studentService.selectStudentByStuNumber(stuNumber);
         if (page < 0) {
             page = 1;
         }
+
         List<Record> list = studentService.findAllBystuNumber(stuNumber, page, 5);
+
         PageInfo<Record> info = new PageInfo(list);
-        System.out.println("当前页码:" + info.getPageNum());
-        System.out.println("总页码:" + info.getPages());
-        System.out.println("总记录数:" + info.getTotal());
-        System.out.println("当前页有几条记录:" + info.getSize());
-        System.out.println("当前页的pageSize:" + info.getPageSize());
-        System.out.println("前一页:" + info.getPrePage());
-        System.out.println("后一页:" + info.getNextPage());
-        System.out.println("查询结果:" + info.getList());
+
+//        System.out.println("当前页码:" + info.getPageNum());
+//        System.out.println("总页码:" + info.getPages());
+//        System.out.println("总记录数:" + info.getTotal());
+//        System.out.println("当前页有几条记录:" + info.getSize());
+//        System.out.println("当前页的pageSize:" + info.getPageSize());
+//        System.out.println("前一页:" + info.getPrePage());
+//        System.out.println("后一页:" + info.getNextPage());
+//        System.out.println("查询结果:" + info.getList());
 
         //查询总学分
         Double sumCredit = studentService.selectSumCreditBystuNumber(stuNumber);
         model.addAttribute("sumCredit", sumCredit);
         model.addAttribute("student", student);
         model.addAttribute("info", info);
-        return "credit";
+
+        return "student/creditList";
     }
 }

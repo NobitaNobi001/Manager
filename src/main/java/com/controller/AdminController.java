@@ -63,7 +63,7 @@ public class AdminController {
         model.addAttribute("watchers", watchers);
 
 
-        return "admin";
+        return "admin/admin";
     }
 
     /**
@@ -73,7 +73,7 @@ public class AdminController {
     @RequestMapping("/decManager")
     public String declareManager(){
 
-        return "decManager";
+        return "admin/declareManager";
     }
 
     /**
@@ -83,7 +83,7 @@ public class AdminController {
     @RequestMapping("/stuManager")
     public String studentManager(){
 
-        return "studentManager";
+        return "admin/studentManager";
     }
 
     /**
@@ -93,7 +93,7 @@ public class AdminController {
     @RequestMapping("teaManager")
     public String teacherManager(){
 
-        return "teacherManager";
+        return "admin/teacherManager";
     }
 
     /**
@@ -103,12 +103,16 @@ public class AdminController {
     @RequestMapping("/watManager")
     public String watcherManager(){
 
-        return "watcherManager";
+        return "admin/watcherManager";
     }
 
+    /**
+     * 督察个人信息界面
+     * @return
+     */
     @RequestMapping("/admProfile")
     public String adminProdile(){
 
-        return "admProfile";
+        return "admin/profile";
     }
 }

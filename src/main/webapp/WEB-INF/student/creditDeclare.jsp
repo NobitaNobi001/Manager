@@ -1,3 +1,11 @@
+<%--
+  学分申报
+  Created by IntelliJ IDEA.
+  User: jihn
+  Date: 20/7/26
+  Time: 10:37
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -107,8 +115,8 @@
                             <div class="col col-2 name">&nbsp;</div>
                             <div class="col value">
                                 <button type="button" class="btn btn-primary btn-6x" onclick="check()">提交申报</button>
-
                             </div>
+                        </div>
                     </form>
                     <!-- 学分申报 end -->
                 </div>
@@ -208,3 +216,4 @@
         }
     }
 </script>
+
