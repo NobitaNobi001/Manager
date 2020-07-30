@@ -20,14 +20,16 @@
         <div class="login-form">
             <form action="${APP_PATH}/checkuser" method="post" onsubmit="return check()">
                 <h4>登录</h4>
-                <div><input type="text" name="Number" id="Number" placeholder="用户名" onchange="checkuser()"/>
+                <div><input type="text" name="Number" id="Number" placeholder="用户名" value="2018139047"
+                            onchange="checkuser()"/>
                     <%--<br>--%>
                     <%--<span id="checktext">${msg}&nbsp;&nbsp;&nbsp;&nbsp;</span>--%>
                     <%--<br>--%>
                     <div id="checktext" class="notice" style="margin-bottom: 10px;">${msg}&nbsp;&nbsp;&nbsp;&nbsp;</div>
 
                 </div>
-                <div><input type="password" name="password" id="password" placeholder="密码" onchange="checkpwd()"/></div>
+                <div><input type="password" name="password" id="password" placeholder="密码" value="12345678"
+                            onchange="checkpwd()"/></div>
                 <br>
                 <div class="type">
                     <label><input type="radio" name="type" id="type1" value="Student" checked="checked"/>学生</label>

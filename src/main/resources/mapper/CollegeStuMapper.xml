@@ -65,6 +65,34 @@
 
     <!--根据专业得到班级名-->
     <select id="getAllClass" resultType="java.lang.String">
-        select distinct stu_class from ${tableName} where major=#{major} order by stu_class asc
+        select distinct stu_class from ${tableName} where
+        <if test="major!=null and major!=&quot;&quot;">
+            major=#{major}
+        </if>
+        order by stu_class asc
+    </select>
+
+    <select id="selectStuByCollegeAndMajorAndClass" resultType="java.lang.Integer">
+        select stu_number from ${tableName}
+        <trim prefix="where" suffixOverrides="and">
+            <if test="major!=null and major!=&quot;&quot; ">
+                major=#{major} and
+            </if>
+            <if test="stuClass!=null">
+                stu_class like #{stuClass} and
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectStuByCollegeAndMajor" resultType="java.lang.Integer">
+        select stu_number from ${tableName}
+        <where>
+            <if test="major!=null and major!=&quot;&quot; ">
+                major=#{major}
+            </if>
+        </where>
+    </select>
+    <select id="selectStuBycollege" resultType="java.lang.Integer">
+        select stu_nmber from ${tableName}
     </select>
 </mapper>

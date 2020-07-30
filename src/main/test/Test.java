@@ -6,6 +6,8 @@ import org.mybatis.generator.config.xml.ConfigurationParser;
 import org.mybatis.generator.exception.InvalidConfigurationException;
 import org.mybatis.generator.exception.XMLParserException;
 import org.mybatis.generator.internal.DefaultShellCallback;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -20,6 +22,8 @@ import java.util.List;
 public class Test {
 
     private ApplicationContext atc = null;
+
+    private Logger logger = LoggerFactory.getLogger(Test.class);
 
     {
         atc = new ClassPathXmlApplicationContext("spring-dao.xml");
@@ -49,9 +53,14 @@ public class Test {
     private TeacherMapper teacherMapper;
 
     @org.junit.Test
-    public void selectTeacherUp(){
+    public void selectTeacherUp() {
         Teacher teacher = new Teacher();
         teacher.setTeaNumber(2018117111);
         System.out.println(teacherMapper.insertSelective(teacher));
+    }
+
+    @org.junit.Test
+    public void test1() {
+        logger.info("日志");
     }
 }

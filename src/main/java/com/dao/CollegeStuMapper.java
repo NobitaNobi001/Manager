@@ -28,9 +28,18 @@ public interface CollegeStuMapper {
     // 模糊查询
     List<Student> selectStuByLikeSearch(@Param("tableName") String tableName, @Param("keyword") String keyword);
 
+    //根据学院查到专业
     List<String> getAllMajor(@Param("tableName") String tableName);
 
+    // 查询所在学院的班级
     List<String> getAllClass(@Param("tableName") String tableName, @Param("major") String major);
 
-    List<Student> conditionSearch(String tableName, String major, String aClass, String keyword);
+    // 根据学院 专业  班级 查询学生学号
+    List<Integer> selectStuByCollegeAndMajorAndClass(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") Integer stuClass);
+
+    // 根据学院 专业  查询学生学号
+    List<Integer> selectStuByCollegeAndMajor(@Param("tableName") String tableName, @Param("major") String major);
+
+    // 根据学院查询学生学号
+    List<Integer> selectStuBycollege(@Param("tableName") String tableName);
 }

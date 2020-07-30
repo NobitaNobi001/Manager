@@ -2,13 +2,17 @@ package com.controller;
 
 
 import com.bean.Admin;
+import com.bean.Record;
+import com.github.pagehelper.PageInfo;
 import com.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Controller
@@ -108,11 +112,41 @@ public class AdminController {
 
     /**
      * 督察个人信息界面
+     *
      * @return
      */
     @RequestMapping("/admProfile")
-    public String adminProdile(){
+    public String adminProdile() {
 
         return "admin/profile";
+    }
+
+    /**
+     * @Description: 学分记录表默认页面
+     * @return:
+     */
+    @RequestMapping("/toSee/studentRecord.html")
+    public String getAllStudentRecord(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model, HttpServletRequest request) {
+        List<Record> allRecord = recordService.getAllRecordByadmin(page, 5);
+        PageInfo<Record> info = new PageInfo(allRecord);
+        request.setAttribute("direction", "toSee");
+        model.addAttribute("info", info);
+        return "admin/declareManager";
+    }
+
+    /**
+     * @Description: 根据学院专业班级查到学生id后，查询学生的申报记录
+     * @return:
+     */
+    @RequestMapping("/toQuery/studentRecord.html")
+    public String getStudentRecordByFormSelect(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "college", required = false) Integer collegeId, @RequestParam(value = "major", required = false) String major, @RequestParam(value = "stuClass", required = false) Integer stuClass, Model model, HttpServletRequest request) {
+        List<Record> allRecordByadminQuery = recordService.getAllRecordByadminQuery(page, 5, collegeId, major, stuClass);
+        PageInfo<Record> info = new PageInfo(allRecordByadminQuery);
+        request.setAttribute("direction", "toQuery");
+        request.setAttribute("college", collegeId);
+        request.setAttribute("major", major);
+        request.setAttribute("stuClass", stuClass);
+        model.addAttribute("info", info);
+        return "admin/declareManager";
     }
 }

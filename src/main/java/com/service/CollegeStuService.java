@@ -53,10 +53,4 @@ public class CollegeStuService {
         return allClass;
     }
 
-
-    public List<Student> conditionnSearch(Integer college, String major, String Class, String keyword) {
-        String tableName = CollegeName.getTableName(college);
-        List<Student> students = collegeStuMapper.conditionSearch(tableName, major, Class, keyword);
-        return students;
-    }
 }

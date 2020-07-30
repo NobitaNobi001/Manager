@@ -3,27 +3,27 @@ package com.bean;
 public class Record {
     private Integer id;
 
-    private Integer stuNumber;
+    private Integer stuNumber;// 学生学号
 
-    private String stuName;
+    private String stuName;// 学生姓名
 
-    private String date;
+    private String date;// 申请日期
 
-    private String sort;
+    private String sort;// 申请类别
 
-    private String picture;
+    private String picture;// 申请图片
 
-    private String applyName;
+    private String applyName;// 申请活动名称
 
-    private Double applyCredit;
+    private Double applyCredit;// 申请学分
 
-    private String words;
+    private String words;// 申请描述
 
-    private Double auditCredit;
+    private Double auditCredit;// 审核学分
 
-    private String auditTea;
+    private String auditTea;// 审核教室
 
-    private String auditState;
+    private String auditState;// 审核状态
 
     public Record() {
     }

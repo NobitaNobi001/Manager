@@ -1,11 +1,3 @@
-<%--
-  学分列表
-  Created by IntelliJ IDEA.
-  User: jihn
-  Date: 20/7/26
-  Time: 10:35
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -81,13 +73,19 @@
                                 <td>${record.auditCredit}</td>
                                 <c:choose>
                                     <c:when test="${record.auditState=='已审核' && record.auditCredit>0}">
-                                        <td><a href="javascript:;" class="btn btn-2x" name="state">已通过</a></td>
+                                        <td>
+                                            <button class="btn btn-2x" name="state">已通过</button>
+                                        </td>
                                     </c:when>
                                     <c:when test="${record.auditState=='未审核'}">
-                                        <td><a href="javascript:;" class="btn btn-2x" name="state">未审核</a></td>
+                                        <td>
+                                            <button class="btn btn-2x" name="state">未审核</button>
+                                        </td>
                                     </c:when>
                                     <c:when test="${record.auditState=='已审核' && record.auditCredit==0}">
-                                        <td><a href="javascript:;" class="btn btn-2x" name="state">未通过</a></td>
+                                        <td>
+                                            <button class="btn btn-2x" name="state">未通过</button>
+                                        </td>
                                     </c:when>
                                 </c:choose>
                             </tr>
@@ -155,7 +153,7 @@
                                 <li><a href="${APP_PATH}/student/viewCredit?page=${info.pages}">末页</a></li>
                                 <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
-									</span>
+								</span>
                             </ul>
                         </nav>
                     </center>
@@ -176,14 +174,14 @@
 </html>
 <script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
 <script>
-    var arr = document.getElementsByName("state");
+    var arr = $("button [name='state']");
 
-    $.each(arr,function () {
-        if($(this).text()=="已通过"){
+    $.each(arr, function () {
+        if ($(this).text() == "已通过") {
             $(this).addClass("btn-success");
-        }else if($(this).text()=="未审核"){
+        } else if ($(this).text() == "未审核") {
             $(this).addClass("btn-primary");
-        }else{
+        } else {
             $(this).addClass("btn-warning");
         }
     })

@@ -144,8 +144,6 @@ public class StudentController {
         int day = now.get(Calendar.DAY_OF_MONTH);
         String uploadingName= UUID.randomUUID().toString() +file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         path = path.append("/").append(year).append("/").append(month).append("/").append(day);
-        System.out.println(path);
-        System.out.println(uploadingName);
         //如果路径不保存，创建一个
         File realPath = new File(path.toString());
         if (!realPath.exists()) {
@@ -166,7 +164,6 @@ public class StudentController {
         is.close();
         //上传成功之后数据库中增加信息
         String sort = applySort.getApplyName(number);
-
         studentService.addCreditRecord(new Record(stuNumber, name, date, sort, year+"/"+month+"/"+day+"/"+uploadingName, applyName, applyCredit, words));
         Student student = studentService.selectStudentByStuNumber(stuNumber);
         model.addAttribute("student", student);

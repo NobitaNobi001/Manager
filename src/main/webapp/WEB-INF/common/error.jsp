@@ -17,16 +17,6 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <div>
-                <a class="navbar-brand" href="admin/to/login.html" style="font-size: 32px;">众筹网</a>
-            </div>
-        </div>
-    </div>
-</nav>
-
 <div class="container">
     <h3 style="text-align: center;"><font color="red">${requestScope.exception.message}</font></h3>
     <button style="width: 150px;margin: 50px auto 0px auto;" class="btn btn-lg btn-success btn-block">点我返回上一步</button>

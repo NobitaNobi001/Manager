@@ -32,6 +32,9 @@ public class CollegeController {
     @Autowired
     private WatcherService watcherService;
 
+    ObjectMapper objectMapper = new ObjectMapper();
+
+
     /**
      * 获取学院表中的所有学院
      *
@@ -39,37 +42,35 @@ public class CollegeController {
      */
     @RequestMapping(value = "/getColleges", method = RequestMethod.GET)
     @ResponseBody
-    public Msg getColleges() {
+    public String getColleges() throws JsonProcessingException {
 
-        List<College> colleges = collegeService.getColleges();
-
-        return Msg.success().add("colleges", colleges);
+        List<College> Allcolleges = collegeService.getColleges();
+        String colleges = objectMapper.writeValueAsString(Allcolleges);
+        return colleges;
     }
 
     /*
      * 得到所有专业
      * */
-    @RequestMapping("/getMajor")
+    @RequestMapping(value = "/getMajor", method = RequestMethod.GET)
     @ResponseBody
     public String getAllMajor(Integer collegeId) throws JsonProcessingException {
         List<String> allMajor = collegeStuService.getAllMajor(collegeId);
-        ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(allMajor);
     }
 
     /*
      * 得到所在专业所有班级
      * */
-    @RequestMapping("/getClass")
+    @RequestMapping(value = "/getClass", method = RequestMethod.GET)
     @ResponseBody
     public String getAllMajor(Integer collegeId, String major) throws JsonProcessingException {
         List<String> allClass = collegeStuService.getAllClass(collegeId, major);
-        ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(allClass);
     }
 
-    // 模糊查询
-    @RequestMapping("/conditionSearch")
+    // 条件查询
+/*    @RequestMapping("/conditionSearch")
     public String conditionSearch(@RequestParam(value = "college", defaultValue = "1") Integer college, @RequestParam("major") String major, @RequestParam("class") String Class, @RequestParam("keywords") String keyword, Model model, HttpServletRequest request) {
         List<Student> students = collegeStuService.conditionnSearch(college, major, Class, keyword);
         //获取登陆成功的督察账号
@@ -80,5 +81,5 @@ public class CollegeController {
         model.addAttribute("info", info);
         model.addAttribute("watcher", watcher);
         return "redirect:fraction";
-    }
+    }*/
 }
