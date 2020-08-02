@@ -1,9 +1,7 @@
 package com.controller;
 
-import com.bean.Msg;
-import com.bean.Record;
-import com.bean.Student;
-import com.bean.Teacher;
+import com.bean.*;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.service.CollegeStuService;
@@ -98,6 +96,7 @@ public class TeacherController {
 
     /**
      * 学生列表
+     *
      * @param page
      * @param request
      * @param model
@@ -127,6 +126,7 @@ public class TeacherController {
 
     /**
      * 条件查询学生
+     *
      * @param page
      * @param stuNumber
      * @param stuName
@@ -204,7 +204,137 @@ public class TeacherController {
         }
     }
 
+    /**
+     * 查询出所有教师
+     *
+     * @param pn
+     * @return
+     */
+    @RequestMapping(value = "/teachers", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg selectTeachers(@RequestParam(defaultValue = "1", value = "pn") Integer pn) {
 
+        //设置起始页码以及每页的记录条数
+        PageHelper.startPage(pn, 5);
 
+        List<Teacher> teachers = teacherService.selectTeachers();
+
+        //如果没有督察信息
+        if (teachers.size() == 0) {
+            return Msg.fail();
+        }
+
+        //封装为page对象
+        PageInfo pages = new PageInfo(teachers, 5);
+
+        return Msg.success().add("pageInfo", pages);
+    }
+
+    /**
+     * 检查教师账号是否可用
+     *
+     * @param teaNumber
+     * @return
+     */
+    @RequestMapping(value = "/checkTeacher", method = RequestMethod.POST)
+    @ResponseBody
+    public Msg checkTeacher(@RequestParam("teaNumber") Integer teaNumber) {
+
+        boolean flag = teacherService.checkTeacher(teaNumber);
+
+        if (flag) {
+            return Msg.success();
+        } else {
+            return Msg.fail().add("msg", "教师账号已存在");
+        }
+    }
+
+    /**
+     * 新增单个教师
+     *
+     * @param teacher
+     * @return
+     */
+    @RequestMapping(value = "/insertTeacher", method = RequestMethod.POST)
+    @ResponseBody
+    public Msg insertTeacher(Teacher teacher) {
+
+        teacher.setPassword(String.valueOf(teacher.getTeaNumber()));
+        teacherService.insertTeacher(teacher);
+
+        return Msg.success();
+
+    }
+
+    /**
+     * 删除单个教师信息
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/deleteTeacher/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Msg deleteTeacher(@PathVariable("id") Integer id) {
+
+        teacherService.deleteTeacher(id);
+
+        return Msg.success();
+    }
+
+    /**
+     * 根据主键查询单个教师的信息
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/getTeacher/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg getTeacher(@PathVariable("id") Integer id) {
+
+        Teacher teacher = teacherService.selectByPrimaryKey(id);
+
+        return Msg.success().add("teacherInfo", teacher);
+    }
+
+    /**
+     * 根据主键更新教工信息
+     *
+     * @param teacher
+     * @return
+     */
+    @RequestMapping(value = "/updateTeacher/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Msg updateTeacher(Teacher teacher) {
+
+        teacherService.updateTeacher(teacher);
+
+        return Msg.success();
+    }
+
+    /**
+     * 条件查询
+     * @param pn 起始页码
+     * @param collegeId 学院id
+     * @param keywords 关键字
+     * @return
+     */
+    @RequestMapping(value = "/searchTeachers", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg findTeachers(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") Integer collegeId, @RequestParam("keywords") String keywords) {
+
+        //设置起始页码和页面记录数量
+        PageHelper.startPage(pn, 5);
+
+        //根据条件查询出所有教师
+        List<Teacher> teachers = teacherService.selectTeacherWithCondition(collegeId, keywords);
+
+        if (teachers.size() == 0) {
+            return Msg.fail();
+        }
+        //包装数据
+        PageInfo pages = new PageInfo(teachers, 5);
+
+        return Msg.success().add("pageInfo", pages);
+    }
 
 }

@@ -16,19 +16,24 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <!--&lt;!&ndash;开启基于注解的事务或xml配置形式的事务&ndash;&gt;-->
-    <!--<aop:config>-->
-        <!--&lt;!&ndash;切入点表达式&ndash;&gt;-->
-        <!--<aop:pointcut id="txPoint" expression="execution(* com.service..*(..))"/>-->
-        <!--&lt;!&ndash;配置事务增强&ndash;&gt;-->
-        <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>-->
-    <!--</aop:config>-->
+    <!--开启基于注解的事务或xml配置形式的事务-->
+    <aop:config>
+        <!--切入点表达式-->
+        <aop:pointcut id="txPoint" expression="execution(* com.service..*(..))"/>
+        <!--配置事务增强-->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPoint"/>
+    </aop:config>
 
-    <!--&lt;!&ndash;配置事务增强以及如何切入&ndash;&gt;-->
-    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
-        <!--<tx:attributes>-->
-            <!--&lt;!&ndash;所有方法都是事务方法&ndash;&gt;-->
-            <!--<tx:method name="get*" read-only="true"/>-->
-        <!--</tx:attributes>-->
-    <!--</tx:advice>-->
+    <!--配置事务增强以及如何切入-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!--所有方法都是事务方法-->
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="save*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception"></tx:method>
+            <tx:method name="update*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception"></tx:method>
+            <tx:method name="remove*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception"></tx:method>
+            <tx:method name="batch*" propagation="REQUIRES_NEW" rollback-for="java.lang.Exception"></tx:method>
+        </tx:attributes>
+    </tx:advice>
 </beans>

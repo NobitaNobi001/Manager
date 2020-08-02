@@ -28,6 +28,17 @@
     <%--引入jQuery外部文件--%>
     <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="${APP_PATH}/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <%--修改弹出框的默认宽度--%>
+    <style type="text/css">
+        .popover{
+            width: auto;
+            height: auto;
+            max-height: 800px;
+            max-width: 800px;
+        }
+    </style>
+
 </head>
 <body>
 <header>
@@ -59,7 +70,6 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/watcher/stuCredit">学生学分</a></li>
                     <li><a href="${APP_PATH}/watcher/watAudit">教师审核</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
@@ -72,9 +82,7 @@
                     <h4>教师审核列表</h4>
                     <div class="action">
                         <div>
-                            <select name="college" id="college" onchange="to_page(1)">
-
-                            </select>
+                            <select name="college" id="college" onchange="to_page(1)"></select>
                         </div>
                         <div>
                             <a href="javascript:;" class="btn btn-danger">导出数据</a>
@@ -122,7 +130,6 @@
 <%--引入构建分页信息和页码控制的js文件--%>
 <script type="text/javascript" src="${APP_PATH}/static/js/tableInfo.js"></script>
 <script type="text/javascript">
-
     $(function () {
 
         // 若是校级督察就将十八个学院全部添加到下拉框中
@@ -140,21 +147,13 @@
     function to_page(pn) {
 
         $.ajax({
-            url: "${APP_PATH}/record/auditInfo",
+            url: "/record/auditInfo",
             data: {
                 "pn": pn,
-                "collegeId": "${watcher.collegeId }" == 19 ? $('#college option:selected').val() : "${watcher.collegeId }"
+                "collegeId": "${watcher.collegeId }" == 19 ? $('#college').val() : "${watcher.collegeId }"
             },
             type: "GET",
             success: function (result) {
-
-                //清空table表格样式
-                $("#stuDeclare tbody").empty();
-                //清空分页条数据
-                $("#page_nav_area").empty();
-                //清空分页信息
-                $("#page_info_area").empty();
-
                 if (result.code == 100) {   //返回成功
                     //1.构建申报管理表格
                     build_declare_table(result);
@@ -163,16 +162,26 @@
                     //3.解析分页信息
                     build_page_info(result);
                 } else if (result.code == 200) {
+
+                    //清空table表格样式
+                    $("#stuDeclare tbody").empty();
+                    //清空分页条数据
+                    $("#page_nav_area").empty();
+                    //清空分页信息
+                    $("#page_info_area").empty();
+
                     $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#stuDeclare tbody");
                 }
 
+            }, error: function () {
+                alert("服务器繁忙!");
             }
         });
     }
 
     function build_declare_table(result) {
         //清空table表格样式
-        // $("#stuDeclare tbody").empty();
+        $("#stuDeclare tbody").empty();
         //拿到后台返回的数据
         var stuRecordInfo = result.extend.pageInfo;
         //遍历数据
@@ -191,12 +200,13 @@
             //申报学分
             var applyCredit = $("<td></td>").append(item.applyCredit);
             //申报材料
-            var applyBtn = $("<td></td>").append($("<a></a>").addClass("btn btn-default").attr("apply-id", item.id).attr("tabindex", 0).attr("role", "button").attr("data-toggle","popover").attr("placement","right").append("查看").attr("url","applyImg/"+item.picture));
-            // var applyBtn = $("<td></td>").append($("<button>查看</button>").addClass("btn btn-default"));
+            var applyBtn = $("<td></td>").append($("<a></a>").addClass("btn btn-default apply-btn").attr("apply-id", item.id)
+                .attr("tabindex", 0).attr("role", "button").attr("data-toggle", "popover").attr("data-placement", "top")
+                .append("查看").attr("url", "applyImg/" + item.picture));
             //审核学分
             var auditCredit = $("<td></td>").append(item.auditCredit);
             //审核教师
-            var auditTea = $("<td></td>").append(item.auditTea);
+            var auditTea = $("<td></td>").append(item.auditTea == null ? "无" : item.auditTea);
 
             //审核状态
             var auditState = $("<td></td>").append($("<a></a>").addClass("btn btn-success btn-2x").append(item.auditState));
@@ -216,31 +226,33 @@
         });
     }
 
-    // $("apply-id").popover({
-    //     trigger:'focus',
-    //     html:true,
-    //     content:function () {
-    //         console.log($(this));
-    //         var url = $(this).attr("url");
-    //         var $div = $("<div style='width: 700px; height:500px;'></div>");
-    //         var $img = $("<img style='width: 700px; height:500px;'/>");
-    //         $img.attr("src",url);
-    //         $img.appendTo($div);
-    //         return $div;
-    //     }
-    // });
+    //查看图片时弹出图片进行查看 双击打开+单击关闭
+    $(document).on("click", ".apply-btn", function () {
+        $(this).popover({
+            trigger: 'click',
+            html: true,
+            content: function () {
+                var url = $(this).attr("url");
+                var $div = $("<div style='width: 500px; height:300px;'></div>");
+                var $img = $("<img style='width: 500px; height:300px;'/>");
+                $img.attr("src", url);
+                $img.appendTo($div);
+                return $div;
+            }
+        });
+    });
 
     //获取学院
     function getColleges(sel) {
         //清空下拉框样式及内容
         $(sel).empty();
         $.ajax({
-            url: "${APP_PATH}/college/getColleges",
+            url: "/college/getColleges",
             type: "GET",
             success: function (result) {
+                $("<option></option>").append("请选择学院").attr("value", -1).attr("selected", true).appendTo(sel);
                 // 显示学院信息在下拉列表中
                 $.each(result.extend.colleges, function () {
-
                     if (this.id != 19) {
                         var option = $("<option></option>").append(this.name).attr("value", this.id);
                         option.appendTo(sel);

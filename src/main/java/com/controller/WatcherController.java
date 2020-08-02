@@ -9,10 +9,7 @@ import com.service.WatcherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -153,6 +150,7 @@ public class WatcherController {
 
     /**
      * 回显督察信息
+     *
      * @param pn
      * @return
      */
@@ -164,7 +162,6 @@ public class WatcherController {
         PageHelper.startPage(pn, 5);
 
         List<Watcher> watchers = watcherService.selectWatchers();
-
         //如果没有督察信息
         if (watchers.size() == 0) {
             return Msg.fail();
@@ -175,40 +172,100 @@ public class WatcherController {
 
         return Msg.success().add("pageInfo", pages);
     }
-    
-    @RequestMapping("/insertWat")
+
+    /**
+     * 校验督察账号是否可用
+     *
+     * @param watcherNumber
+     * @return
+     */
+    @RequestMapping(value = "/checkWatcher", method = RequestMethod.POST)
     @ResponseBody
-    public Msg insertWatcher(){
-        
+    public Msg checkWatcher(Integer watcherNumber) {
+
+        boolean flag = watcherService.checkWatcher(watcherNumber);
+
+        if (flag) {
+            return Msg.success();
+        } else {
+            return Msg.fail().add("msg", "督察账号已存在");
+        }
+    }
+
+    /**
+     * 新增单个督察
+     *
+     * @param watcher
+     * @return
+     */
+    @RequestMapping(value = "/insertWatcher", method = RequestMethod.POST)
+    @ResponseBody
+    public Msg insertWatcher(Watcher watcher) {
+
+        watcher.setPassword(String.valueOf(watcher.getWatcherNumber()));
+        watcherService.insertWatcher(watcher);
+
         return Msg.success();
     }
 
     /**
-     * 学生学分
-     * @param page
-     * @param request
-     * @param model
+     * 删除督察
+     *
+     * @param id
      * @return
      */
-    @RequestMapping("/stuCredit")
-    public String DispliayStuCredit(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
+    @RequestMapping(value = "/deleteWatcher/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public Msg deleteWatcher(@PathVariable("id") Integer id) {
 
-        //获取登陆成功的督察账号
-//        Integer watcherNumber = (Integer) request.getSession().getAttribute("number");
-//
-//        //根据督察账号查找督察信息
-//        Watcher watcher = watcherService.selectWatcherByWatcherNumber(watcherNumber);
-//
-//        List<Student> students = collegeStuService.selectAllStuByCollegeName(1, page, 5);
-//
-//        PageInfo<Record> info = new PageInfo(students);
-//
-//        model.addAttribute("info", info);
-//        model.addAttribute("watcher", watcher);
+        watcherService.deleteWatcher(id);
 
-
-        return "watcher/studentCredit";
+        return Msg.success();
     }
-    
 
+    /**
+     * 根据主键查找督察信息
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/getWatcher/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg getWatcher(@PathVariable("id") Integer id) {
+
+        Watcher watcher = watcherService.selectByPrimaryKey(id);
+        return Msg.success().add("watcherInfo", watcher);
+    }
+
+    /**
+     * 根据主键更新督察信息
+     *
+     * @param watcher
+     * @return
+     */
+    @RequestMapping(value = "/updateWatcher/{id}", method = RequestMethod.PUT)
+    @ResponseBody
+    public Msg updateWatcher(Watcher watcher) {
+
+        watcherService.updateWatcherByPrimaryKey(watcher);
+
+        return Msg.success();
+    }
+
+    @RequestMapping(value = "/searchWatchers", method = RequestMethod.GET)
+    @ResponseBody
+    public Msg findWatchers(@RequestParam("pn") Integer pn, @RequestParam("collegeId") Integer collegeId, @RequestParam("keywords") String keywords) {
+
+        PageHelper.startPage(pn, 5);
+
+        List<Watcher> watchers = watcherService.findWathcerWithCondition(collegeId, keywords);
+
+        if (watchers == null) {
+            return Msg.fail();
+        }
+
+        PageInfo pages = new PageInfo(watchers, 5);
+
+        return Msg.success().add("pageInfo", pages);
+    }
 }

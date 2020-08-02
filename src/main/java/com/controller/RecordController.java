@@ -104,7 +104,7 @@ public class RecordController {
             return Msg.success();
         }
 
-        return Msg.fail().add("msg","审核失败");
+        return Msg.fail().add("msg", "审核失败");
     }
 
     /**
@@ -166,29 +166,46 @@ public class RecordController {
         return Msg.success().add("pageInfo", page);
     }
 
+    List<Record> stuRecords = new ArrayList<>();
+
     /**
      * 获取学生已审核的申报记录
+     *
      * @param pn
      * @param collegeId
      * @return
      */
     @RequestMapping(value = "/auditInfo", method = RequestMethod.GET)
     @ResponseBody
-    public Msg auditInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId){
+    public Msg auditInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam(value = "collegeId",defaultValue = "-1") int collegeId) {
 
-        //将对应学院的学生学号进行查出
-        List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeId(collegeId);
+        //当选择了查询的学院学生申报记录
+        if (collegeId != -1) {
+            //将对应学院的学生学号进行查出
+            List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeId(collegeId);
 
-        //如果学号为空
-        if (stuNumbers.size() == 0) {
-            return Msg.fail();
+            //如果学号为空
+            if (stuNumbers.size() == 0) {
+                return Msg.fail();
+            }
+
+            //设置起始页码以及每页的记录条数
+            PageHelper.startPage(pn, 5);
+
+            //根据学号进行申报记录的查出
+            stuRecords = recordService.getAllAuditRecords(stuNumbers);
+
+        } else {    //反之则全部查出
+
+            //设置起始页码以及每页的记录条数
+            PageHelper.startPage(pn, 5);
+
+            stuRecords = recordService.selectAllRecords();
         }
 
-        //设置起始页码以及每页的记录条数
-        PageHelper.startPage(pn, 5);
-
-        //根据学号进行申报记录的查出
-        List<Record> stuRecords = recordService.getAllAuditRecords(stuNumbers);
+        if (stuRecords.size() == 0) {
+            return Msg.fail();
+        }
 
         //使用pageInfo包装查询后的结果
         PageInfo page = new PageInfo(stuRecords, 5);

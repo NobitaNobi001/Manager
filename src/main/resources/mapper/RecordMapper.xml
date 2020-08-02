@@ -86,12 +86,16 @@
         </if>
         <include refid="Base_Column_List"/>
         from credit_record
-        <if test="_parameter != null">
-            <include refid="Example_Where_Clause"/>
-        </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
+        <where>
+            <if test="_parameter != null">
+                <include refid="Example_Where_Clause"/>
+            </if>
+            <if test="orderByClause != null">
+                order by ${orderByClause}
+            </if>
+            and audit_state = "已审核"
+        </where>
+        order by date asc
     </select>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -326,7 +330,7 @@
     select apply_name,sort,apply_credit,audit_credit,audit_state from credit_record where stu_number=#{stuNumber} order by date desc
   </select>
 
-    <!--根据学号查询学生的所有申报记录-->
+    <!--根据学号查询学生的所有申报记录 审核状态升序-->
     <select id="findAllBystuNumbers" resultType="com.bean.Record">
         select * from credit_record
         <where>
@@ -350,6 +354,7 @@
             </foreach>
             and audit_state = "已审核"
         </where>
+        order by date asc
     </select>
 
     <!--根据学生姓名查询学生的申报记录-->

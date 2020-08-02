@@ -97,29 +97,15 @@
     t.id, tea_number, password, tea_name, t.college_id, gender, tea_positon, phone, email,c.id,c.name
   </sql>
 
-
-    <!--根据教工帐号查找教师的用户名和密码信息-->
-    <select id="selectUPByTeaNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
-    select tea_number,password from tea_info where tea_number = #{tea_number,jdbcType=INTEGER}
-  </select>
-
-    <!--根据教工账号查找教工的信息-->
-    <select id="selectTeacherByTeaNumber" resultMap="teacherWithCollege" parameterType="java.lang.Integer">
-        select
-        <include refid="WithCollege_Column_List"/>
-        from tea_info t
-        left join college c on t.`college_id`=c.`id`
-        where tea_number= #{tea_number,jdbcType=INTEGER}
-    </select>
-
-
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.TeacherExample" >
+    <!--将所有的教师进行查出-->
+    <select id="selectByExample" resultMap="teacherWithCollege" parameterType="com.bean.TeacherExample" >
         select
         <if test="distinct" >
             distinct
         </if>
-        <include refid="Base_Column_List" />
-        from tea_info
+        <include refid="WithCollege_Column_List" />
+        from tea_info t
+        left join college c on t.`college_id`=c.`id`
         <if test="_parameter != null" >
             <include refid="Example_Where_Clause" />
         </if>
@@ -127,6 +113,7 @@
             order by ${orderByClause}
         </if>
     </select>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select
         <include refid="Base_Column_List" />
@@ -312,4 +299,35 @@
       email = #{email,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <!--根据教工帐号查找教师的用户名和密码信息-->
+    <select id="selectUPByTeaNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
+    select tea_number,password from tea_info where tea_number = #{tea_number,jdbcType=INTEGER}
+  </select>
+
+    <!--根据教工账号查找教工的信息-->
+    <select id="selectTeacherByTeaNumber" resultMap="teacherWithCollege" parameterType="java.lang.Integer">
+        select
+        <include refid="WithCollege_Column_List"/>
+        from tea_info t
+        left join college c on t.`college_id`=c.`id`
+        where tea_number= #{tea_number,jdbcType=INTEGER}
+    </select>
+
+    <!--条件查询-->
+    <select id="selectTeacherWithCondition" resultMap="teacherWithCollege">
+        select
+        <include refid="WithCollege_Column_List"/>
+        from tea_info t
+        left join college c on t.`college_id`=c.`id`
+        <where>
+            <if test="collegeId != -1">
+                and t.`college_id` = #{collegeId}
+            </if>
+            <if test="keywords != null">
+                and tea_name like concat('%',#{keywords},'%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

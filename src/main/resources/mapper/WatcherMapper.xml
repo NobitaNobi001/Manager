@@ -138,6 +138,8 @@
       #{watcherName,jdbcType=VARCHAR}, #{collegeId,jdbcType=INTEGER}, #{gender,jdbcType=CHAR},
       #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
   </insert>
+
+    <!--插入单个督察-->
     <insert id="insertSelective" parameterType="com.bean.Watcher">
         insert into watcher_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -194,13 +196,14 @@
         </trim>
     </insert>
 
-    <!--查处督察的记录数-->
+    <!--查出督察的记录数-->
     <select id="countByExample" parameterType="com.bean.WatcherExample" resultType="java.lang.Integer">
         select count(*) from watcher_info
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
     </select>
+
     <update id="updateByExampleSelective" parameterType="map">
         update watcher_info
         <set>
@@ -300,4 +303,19 @@
         where watcher_number = #{watcherNumber,jdbcType=INTEGER}
     </select>
 
+    <!--条件查询-->
+    <select id="selectWatcherWithCondition" resultMap="watcherWithCollege">
+        select
+        <include refid="Info_With_College"/>
+        from watcher_info w
+        left join college c on w.`college_id`=c.`id`
+        <where>
+            <if test="collegeId != -1">
+                and w.`college_id` = #{collegeId}
+            </if>
+            <if test="keywords != null">
+                and watcher_name like concat('%',#{keywords},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

@@ -1,12 +1,4 @@
-//当前页
-var currentPage = 0;
-//最后一页
-var totalPage = 0;
-//删除时去到的页码
-var afterDeletePage = 0;
-
-//解析分页条信息
-function build_page_nav(result) {
+function build_page_nav_condition(result) {
     //清空原有数据
     $("#page_nav_area").empty();
     var ul = $("<ul></ul>").addClass("pagination");
@@ -24,10 +16,10 @@ function build_page_nav(result) {
 
         //为元素添加翻页事件
         firstPageLi.click(function () {
-            to_page(1);
+            to_page_condition(1);
         });
         prePageLi.click(function () {
-            to_page(result.extend.pageInfo.pageNum - 1);
+            to_page_condition(result.extend.pageInfo.pageNum - 1);
         });
     }
 
@@ -42,12 +34,12 @@ function build_page_nav(result) {
     } else {
         //点击末页去到最后一页
         lastPageLi.click(function () {
-            to_page(result.extend.pageInfo.pages);
+            to_page_condition(result.extend.pageInfo.pages);
         });
 
         //点击下一页去到下一页
         nextPageLi.click(function () {
-            to_page(result.extend.pageInfo.pageNum + 1);
+            to_page_condition(result.extend.pageInfo.pageNum + 1);
         });
     }
 
@@ -62,7 +54,7 @@ function build_page_nav(result) {
             numLi.addClass("active");
         }
         numLi.click(function () {
-            to_page(item);
+            to_page_condition(item);
         });
 
         ul.append(numLi);
@@ -75,26 +67,4 @@ function build_page_nav(result) {
     var nav = $("<nav></nav>").append(ul);
     //把nav添加到页码栏区域
     nav.appendTo("#page_nav_area");
-}
-
-//解析分页信息
-function build_page_info(result) {
-    //清空原有数据
-    $("#page_info_area").empty();
-
-    $("#page_info_area").append("当前" + result.extend.pageInfo.pageNum + "页,总" + result.extend.pageInfo.pages + "页,"
-        + "总" + result.extend.pageInfo.total + "条记录");
-
-    //表示当前页
-    currentPage = result.extend.pageInfo.pageNum;
-
-    totalPage = result.extend.pageInfo.total;
-
-    // //表示最后一页
-    // if (result.extend.pageInfo.size == 5) {     //如果当前页的记录数量是5 那新增后 最后一页就应该+1
-    //     totalPage = result.extend.pageInfo.pages + 1;
-    // } else {    //反之 保持当前页不变
-    //     totalPage =
-    // }
-
 }

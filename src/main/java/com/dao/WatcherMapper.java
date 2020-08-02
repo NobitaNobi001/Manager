@@ -32,4 +32,6 @@ public interface WatcherMapper {
     Watcher selectUPByWatcherNumber(Integer watcherNumber);
 
     Watcher selectWatcherByWatcherNumber(Integer watcherNumber);
+
+    List<Watcher> selectWatcherWithCondition(@Param("collegeId") Integer collegeId,@Param("keywords") String keywords);
 }

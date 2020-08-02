@@ -4,6 +4,7 @@ import com.bean.Teacher;
 import com.bean.TeacherExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
+import org.omg.CORBA.INTERNAL;
 
 public interface TeacherMapper {
 
@@ -32,5 +33,7 @@ public interface TeacherMapper {
     Teacher selectUPByTeaNumber(Integer teaNumber);
 
     Teacher selectTeacherByTeaNumber(Integer teaNumber);
+
+    List<Teacher> selectTeacherWithCondition(@Param("collegeId") Integer collegeId,@Param("keywords") String keywords);
 
 }

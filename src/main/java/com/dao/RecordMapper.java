@@ -13,7 +13,7 @@ public interface RecordMapper {
     int deleteByPrimaryKey(Integer id);
 
     int insert(Record record);
-    //有选择性的插入非空数据
+
     int insertSelective(Record record);
 
     List<Record> selectByExample(RecordExample example);

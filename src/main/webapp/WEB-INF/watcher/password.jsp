@@ -54,7 +54,6 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/watcher/stuCredit">学生学分</a></li>
                     <li><a href="${APP_PATH}/watcher/watAudit">教师审核</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>

@@ -7,28 +7,185 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    pageContext.setAttribute("APP_PATH", request.getContextPath());
+%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <title>湖北文理学院创新学分系统</title>
 
-    <%
-        pageContext.setAttribute("APP_PATH", request.getContextPath());
-    %>
+    <base href="<%=basePath%>">
 
-
+    <link rel="stylesheet" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
+
+    <%--引入jQuery外部文件--%>
+    <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="${APP_PATH}/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
+
+<%--教师修改的的模态框--%>
+<div class="modal fade" id="teacherUpdateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">修改信息</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="teacherNumber_update_input" class="col-sm-2 control-label">工号</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="teaNumber" class="form-control" id="teacherNumber_update_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherName_update_input" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="teaName" class="form-control" id="teacherName_update_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password_update_input" class="col-sm-2 control-label">密码</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="password" class="form-control" id="password_update_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">性别</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="gender1_update_input" value="男"
+                                       checked="checked"/>男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="gender2_update_input" value="女"/>女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherPosition_update_input" class="col-sm-2 control-label">职称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="teaPositon" class="form-control"
+                                   id="teacherPosition_update_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email_update_input" class="col-sm-2 control-label">邮箱</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="email" class="form-control"
+                                   id="email_update_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone_update_input" class="col-sm-2 control-label">手机号</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="phone" class="form-control"
+                                   id="phone_update_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">学院</label>
+                        <div class="col-sm-4">
+                            <%--部门提交id即可--%>
+                            <select class="form-control" name="collegeId">
+
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="teacher_update_btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 教师添加的模态框 -->
+<div class="modal fade" id="teacherAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">新增教师</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="teacherNumber_add_input" class="col-sm-2 control-label">工号</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="teaNumber" class="form-control" id="teacherNumber_add_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherName_add_input" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="teaName" class="form-control" id="teacherName_add_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">性别</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="gender1_add_input" value="男" checked="checked"/>男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" id="gender2_add_input" value="女"/>女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherPosition_add_input" class="col-sm-2 control-label">职称</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="teaPositon" class="form-control"
+                                   id="teacherPosition_add_input">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">学院</label>
+                        <div class="col-sm-4">
+                            <%--部门提交id即可--%>
+                            <select class="form-control" name="collegeId">
+
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="teacher_save_btn">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <header>
     <div id="header">
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70" /></div>
+                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
@@ -62,101 +219,39 @@
                 <!-- 学分列表 start -->
                 <div class="student">
                     <h4>教师管理</h4>
-                    <div class="action">
-                        <div>
-                            <a href="javascript:;" class="btn btn-primary">新增教师</a>
-                            <a href="javascript:;" class="btn btn-danger">导入教师</a>
-                        </div>
-                        <div>
-                            <select name="department">
+                    <div class="action" style="float: left;">
+                        <div style="float: left;">
+                            <select name="college" id="college">
                                 <option value="0">请选择院系</option>
                             </select>
+                                <input type="text" name="keywords" id="keywords" placeholder="请输入搜索关键字" value=""/>
+                                <button onclick="to_page_condition(1)" class="btn btn-primary">搜索</button>
                         </div>
-                        <div>
-                            <select name="classes">
-                                <option value="0">请选择班级</option>
-                            </select>
-                        </div>
-                        <div>
-                            <input type="text" name="keywords" id="keywords" placeholder="请输入搜索关键字" value="" />
-                            <a href="javascript:;" class="btn btn-primary">搜索</a>
+                        <div style="margin-left: 410px;">
+                            <button class="btn btn-primary" id="add_teacher_btn">新增教师</button>
+                            <button class="btn btn-danger" id="batch_add_teacher_btn">导入教师</button>
                         </div>
                     </div>
-                    <table class="table" border="0" cellspacing="0" cellpadding="0">
+                    <table class="table" border="0" cellspacing="0" cellpadding="0" id="teacher_info">
+                        <thead>
                         <tr>
                             <th>序号</th>
-                            <th>姓名</th>
                             <th>工号</th>
+                            <th>姓名</th>
                             <th>院系</th>
                             <th>职称</th>
                             <th>操作</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>杨歆</td>
-                            <td>13208250630</td>
-                            <td>计算机系（学院）</td>
-                            <td>教授</td>
-                            <td>
-                                <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
-                                <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>舞云</td>
-                            <td>13508250630</td>
-                            <td>计算机系（学院）</td>
-                            <td>教授</td>
-                            <td>
-                                <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
-                                <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>淑云</td>
-                            <td>13908250630</td>
-                            <td>计算机系（学院）</td>
-                            <td>教授</td>
-                            <td>
-                                <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
-                                <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>杨歆</td>
-                            <td>13208250630</td>
-                            <td>计算机系（学院）</td>
-                            <td>教授</td>
-                            <td>
-                                <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
-                                <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>杨歆</td>
-                            <td>13208250630</td>
-                            <td>计算机系（学院）</td>
-                            <td>教授</td>
-                            <td>
-                                <a href="javascript:;" class="btn btn-primary btn-2x">编辑</a>
-                                <a href="javascript:;" class="btn btn-danger btn-2x">删除</a>
-                            </td>
-                        </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
-                    <div class="pager">
-                        <a href="javascript:;" class="btn btn-default btn-1x">首页</a>
-                        <a href="javascript:;" class="btn btn-default btn-1x">上一页</a>
-                        <a href="javascript:;" class="btn btn-success btn-1x">1</a>
-                        <a href="javascript:;" class="btn btn-1x">2</a>
-                        <a href="javascript:;" class="btn btn-default btn-1x">下一页</a>
-                        <a href="javascript:;" class="btn btn-default btn-1x">尾页</a>
-                    </div>
                 </div>
-                <!-- 学分列表 end -->
+                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 600px">
+                    <%--分页条信息--%>
+                    <div id="page_nav_area" style="float:left;"></div>
+                    <%--分页文字信息--%>
+                    <div id="page_info_area" style="float:left; margin-left: 10px;"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -164,10 +259,18 @@
 <footer>
     <div id="footer">
         <div class="footer">
-            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院 版权所有</div>
+            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+                版权所有
+            </div>
         </div>
     </div>
 </footer>
 </body>
 </html>
+<%--引入构建分页信息和页码控制的js文件--%>
+<script type="text/javascript" src="${APP_PATH}/static/js/tableInfo.js"></script>
+<script type="text/javascript" src="${APP_PATH}/static/js/tableCondition.js"></script>
+<%--引入一些清空样式的基本操作--%>
+<script type="text/javascript" src="${APP_PATH}/static/js/prompt.js"></script>
+<script type="text/javascript" src="${APP_PATH}/static/js/teacherManager.js"></script>
 
