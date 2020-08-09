@@ -1,36 +1,54 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
     <title>湖北文理学院创新学分系统</title>
-    <%
-        pageContext.setAttribute("APP_PATH", request.getContextPath());
-    %>
-    <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/login.css"/>
+    <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
+    <link rel="icon" type="image/png" href="static/images/logo.png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="static/css/login.css"/>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
+    <script type="text/javascript" src="static/layer/layer.js"></script>
 </head>
 <body>
 <div id="login">
     <div class="login">
         <div class="top">
-            <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="120"/></div>
+            <div class="logo"><img src="static/images/logo.png" height="120"/></div>
             <div class="title">湖北文理学院创新学分系统</div>
         </div>
         <div class="login-form">
-            <form action="${APP_PATH}/checkuser" method="post" onsubmit="return check()">
-                <h4>登录</h4>
-                <div><input type="text" name="Number" id="Number" placeholder="用户名" value="2018139047"
-                            onchange="checkuser()"/>
-                    <%--<br>--%>
-                    <%--<span id="checktext">${msg}&nbsp;&nbsp;&nbsp;&nbsp;</span>--%>
-                    <%--<br>--%>
-                    <div id="checktext" class="notice" style="margin-bottom: 10px;">${msg}&nbsp;&nbsp;&nbsp;&nbsp;</div>
-
+            <form action="checkuser" method="post" onsubmit="return check()" role="form">
+                <h4 style="margin-left: 10px">用户登录</h4>
+                <p><font color="red">${msg}</font></p>
+                <div class="form-group">
+                    <div class="input-group">
+                       <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-user"></span>
+                    </span>
+                        <input type="text" name="Number" class="form-control" id="Number"
+                               placeholder="登录账号" autofocus onchange="checkuser()" value="2018139047">
+                    </div>
                 </div>
-                <div><input type="password" name="password" id="password" placeholder="密码" value="12345678"
-                            onchange="checkpwd()"/></div>
-                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                          <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    </span>
+                        <input type="password" name="password" class="form-control" id="password"
+                               placeholder="登录密码" onchange="checkpwd()" value="12345678"/>
+                    </div>
+                </div>
                 <div class="type">
                     <label><input type="radio" name="type" id="type1" value="Student" checked="checked"/>学生</label>
                     <label><input type="radio" name="type" id="type2" value="Teacher"/>教师</label>
@@ -40,7 +58,7 @@
                 <div>
                     <button type="submit">登录</button>
                 </div>
-                <div class="forget"><a href="${APP_PATH}/forgetPassword">忘记密码？</a></div>
+                <div class="forget"><a href="forgetPassword">忘记密码？</a></div>
             </form>
         </div>
         <div class="foot">
@@ -71,6 +89,7 @@
         }
         return check;
     }
+
     function checkpwd() {
         var check = false;
         var password = document.getElementById("password").value;
@@ -83,6 +102,7 @@
         }
         return check;
     }
+
     function check() {
         var check = checkuser() && checkpwd();
         return check;

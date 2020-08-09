@@ -21,6 +21,3 @@ body{background: url(../images/login-background.jpg) center center/cover no-repe
 #login .login .login-form form div.forget{padding: 10px 30px;font-size: 14px;text-align: right;}
 #login .login .login-form form div.forget a{color: #444;}
 #login .login .foot{text-align: center;font-size: 13px;color: #fff;}
-#checktext{
-    color: #c9302c;
-}

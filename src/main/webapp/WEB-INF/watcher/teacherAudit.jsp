@@ -178,7 +178,7 @@
                     //3.解析分页信息
                     build_page_info(result);
                 } else if (result.code == 200) {
-                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align","center").attr("colspan","10")).appendTo("#stuDeclare tbody");
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#stuDeclare tbody");
                 }
 
             }
@@ -193,39 +193,39 @@
         //遍历数据
         $.each(stuRecordInfo.list, function (index, item) {
 
-                //序号
-                var stuCount = $("<td></td>").append(index + 1 + (stuRecordInfo.pageNum - 1) * 5);
-                //学号
-                var stuNumber = $("<td></td>").append(item.stuNumber);
-                //姓名
-                var stuName = $("<td></td>").append(item.stuName);
-                //申报类别
-                var applySort = $("<td></td>").append(item.sort);
-                //申报名称
-                var applyName = $("<td></td>").append(item.applyName);
-                //申报学分
-                var applyCredit = $("<td></td>").append(item.applyCredit);
-                //申报材料
-                var applyBtn = $("<td></td>").append($("<button>查看</button>").addClass("btn btn-default"));
-                //审核学分
-                var auditCredit = $("<td></td>").append(item.auditCredit);
-                //审核教师
-                var auditTea = $("<td></td>").append(item.auditTea);
+            //序号
+            var stuCount = $("<td></td>").append(index + 1 + (stuRecordInfo.pageNum - 1) * 5);
+            //学号
+            var stuNumber = $("<td></td>").append(item.stuNumber);
+            //姓名
+            var stuName = $("<td></td>").append(item.stuName);
+            //申报类别
+            var applySort = $("<td></td>").append(item.sort);
+            //申报名称
+            var applyName = $("<td></td>").append(item.applyName);
+            //申报学分
+            var applyCredit = $("<td></td>").append(item.applyCredit);
+            //申报材料
+            var applyBtn = $("<td></td>").append($("<button>查看</button>").addClass("btn btn-default"));
+            //审核学分
+            var auditCredit = $("<td></td>").append(item.auditCredit);
+            //审核教师
+            var auditTea = $("<td></td>").append(item.auditTea);
 
-                //审核状态
-                var auditState = $("<td></td>").append($("<a></a>").addClass("btn btn-success btn-2x").append(item.auditState));
+            //审核状态
+            var auditState = $("<td></td>").append($("<a></a>").addClass("btn btn-success btn-2x").append(item.auditState));
 
-                $("<tr></tr>").append(stuCount)
-                    .append(stuNumber)
-                    .append(stuName)
-                    .append(applySort)
-                    .append(applyName)
-                    .append(applyCredit)
-                    .append(applyBtn)
-                    .append(auditCredit)
-                    .append(auditTea)
-                    .append(auditState)
-                    .appendTo("#stuDeclare tbody");
+            $("<tr></tr>").append(stuCount)
+                .append(stuNumber)
+                .append(stuName)
+                .append(applySort)
+                .append(applyName)
+                .append(applyCredit)
+                .append(applyBtn)
+                .append(auditCredit)
+                .append(auditTea)
+                .append(auditState)
+                .appendTo("#stuDeclare tbody");
 
         });
     }

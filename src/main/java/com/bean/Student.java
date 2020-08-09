@@ -1,5 +1,7 @@
 package com.bean;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
 import sun.security.util.Password;
 
 import java.io.Serializable;
@@ -133,5 +135,23 @@ public class Student implements Serializable {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", stuNumber=" + stuNumber +
+                ", password='" + password + '\'' +
+                ", stuName='" + stuName + '\'' +
+                ", collegeId=" + collegeId +
+                ", major='" + major + '\'' +
+                ", className='" + className + '\'' +
+                ", gender='" + gender + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", college=" + college +
+                ", sumCredit=" + sumCredit +
+                '}';
     }
 }

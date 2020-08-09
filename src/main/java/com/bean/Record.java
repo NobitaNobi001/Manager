@@ -1,38 +1,68 @@
 package com.bean;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.*;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+
+@ContentStyle(horizontalAlignment = HorizontalAlignment.CENTER)
+@HeadRowHeight(30)
+@HeadStyle(horizontalAlignment = HorizontalAlignment.CENTER)
+@HeadFontStyle(bold = true)
 public class Record {
+    @ExcelIgnore
     private Integer id;
 
+    @ExcelProperty(value = {"学号"}, index = 0)
+    @ColumnWidth(15)
     private Integer stuNumber;// 学生学号
 
+    @ExcelProperty(value = "姓名", index = 1)
+    @ColumnWidth(10)
     private String stuName;// 学生姓名
 
-    private String date;// 申请日期
+    @ExcelProperty(value = "申报日期", index = 2)
+    @ColumnWidth(15)
+    private String date;// 申报日期
 
+    @ExcelProperty(value = "申报类别", index = 3)
+    @ColumnWidth(50)
     private String sort;// 申请类别
 
+    @ExcelIgnore
     private String picture;// 申请图片
 
+    @ExcelProperty(value = "申报名称", index = 4)
+    @ColumnWidth(20)
     private String applyName;// 申请活动名称
 
+    @ExcelProperty(value = "申报学分", index = 5)
+    @ColumnWidth(15)
     private Double applyCredit;// 申请学分
 
+    @ExcelIgnore
     private String words;// 申请描述
 
+    @ExcelProperty(value = "审核学分", index = 6)
+    @ColumnWidth(15)
     private Double auditCredit;// 审核学分
 
-    private String auditTea;// 审核教室
+    @ExcelProperty(value = "审核教师", index = 7)
+    @ColumnWidth(15)
+    private String auditTea;// 审核教师
 
+    @ExcelProperty(value = "审核状态", index = 8)
+    @ColumnWidth(15)
     private String auditState;// 审核状态
 
     public Record() {
     }
 
-    public Record(Integer stuNumber, String sort, String applyName, Double applyCredit,Double auditCredit, String auditState) {
+    public Record(Integer stuNumber, String sort, String applyName, Double applyCredit, Double auditCredit, String auditState) {
         this.stuNumber = stuNumber;
         this.sort = sort;
         this.applyName = applyName;
-        this.applyCredit=applyCredit;
+        this.applyCredit = applyCredit;
         this.auditCredit = auditCredit;
         this.auditState = auditState;
     }

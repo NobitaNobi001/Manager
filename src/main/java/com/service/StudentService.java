@@ -3,6 +3,7 @@ package com.service;
 
 import com.bean.Record;
 import com.bean.Student;
+import com.bean.StudentExample;
 import com.dao.CreditMapper;
 import com.dao.RecordMapper;
 import com.dao.StudentMapper;
@@ -115,9 +116,29 @@ public class StudentService {
 
     /**
      * 查询学生数量
+     *
      * @return
      */
-    public Integer selectCountStudent() {
+    public long selectCountStudent() {
         return studentMapper.countByExample(null);
     }
+
+
+    /**
+     * @Description: 查看学生学号是否已存在
+     * @return: int
+     */
+    public boolean findStuNumberIsExists(Integer stuNumber) {
+        StudentExample studentExample = new StudentExample();
+        StudentExample.Criteria criteria = studentExample.createCriteria();
+        criteria.andStuNumberEqualTo(stuNumber);
+        List<Student> students = studentMapper.selectByExample(studentExample);
+        if (students.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
 }

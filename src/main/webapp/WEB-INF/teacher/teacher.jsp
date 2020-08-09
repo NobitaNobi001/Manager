@@ -39,7 +39,7 @@
                 </div>
                 <div class="top-right right">
                     <a href="${APP_PATH}/teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/login.jsp">退出</a>
+                    <a href="${APP_PATH}/WEB-INF/watcher/login.jsp">退出</a>
                 </div>
             </div>
             <div class="menu">

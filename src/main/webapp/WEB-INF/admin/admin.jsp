@@ -39,7 +39,7 @@
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
                     <li><a href="admin/toSee/studentRecord.html">申报管理</a></li>
-                    <li><a href="admin/stuManager">学生管理</a></li>
+                    <li><a href="admin/get/student.html">学生管理</a></li>
                     <li><a href="admin/teaManager">教师管理</a></li>
                     <li><a href="admin/watManager">督查管理</a></li>
                 </ul>
@@ -70,7 +70,9 @@
 <footer>
     <div id="footer">
         <div class="footer">
-            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院 版权所有</div>
+            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+                版权所有
+            </div>
         </div>
     </div>
 </footer>

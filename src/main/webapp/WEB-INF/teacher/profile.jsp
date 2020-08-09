@@ -33,7 +33,7 @@
                 <div class="top-right right">
                     <a href="${APP_PATH}/teacher/teaProfile"
                        style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/login.jsp" style="font-size: 14px; color: #337ab7;">退出</a>
+                    <a href="${APP_PATH}/WEB-INF/watcher/login.jsp" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">

@@ -1,15 +1,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
     <title>湖北文理学院创新学分系统</title>
-    <%
-        pageContext.setAttribute("APP_PATH", request.getContextPath());
-    %>
-    <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.css" />
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css" />
+    <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
+    <link rel="icon" type="image/png" href="static/images/logo.png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
+    <script type="text/javascript" src="static/layer/layer.js"></script>
 </head>
 <body>
 <header>
@@ -17,7 +26,7 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70" /></div>
+                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
@@ -105,7 +114,8 @@
 
                                 <c:if test="${info.pageNum!=1}">
                                     <li>
-                                        <a href="${APP_PATH}/student/viewCredit?page=${info.pageNum-1}" aria-label="Previous">
+                                        <a href="${APP_PATH}/student/viewCredit?page=${info.pageNum-1}"
+                                           aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
@@ -114,7 +124,8 @@
                                 <c:if test="${info.pages>5}">
                                     <c:forEach begin="1" end="5" var="i">
                                         <c:if test="${info.pageNum==i}">
-                                            <li class="active"><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+                                            <li class="active"><a
+                                                    href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
                                         </c:if>
                                         <c:if test="${info.pageNum!=i}">
                                             <li><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
@@ -125,7 +136,8 @@
                                 <c:if test="${info.pages<=5}">
                                     <c:forEach begin="1" end="${info.pages}" var="i">
                                         <c:if test="${info.pageNum==i}">
-                                            <li class="active"><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+                                            <li class="active"><a
+                                                    href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
                                         </c:if>
                                         <c:if test="${info.pageNum!=i}">
                                             <li><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
@@ -144,7 +156,8 @@
 
                                 <c:if test="${info.pageNum!=info.pages}">
                                     <li>
-                                        <a href="${APP_PATH}/student/viewCredit?page=${info.pageNum+1}" aria-label="Next">
+                                        <a href="${APP_PATH}/student/viewCredit?page=${info.pageNum+1}"
+                                           aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
@@ -166,13 +179,14 @@
 <footer>
     <div id="footer">
         <div class="footer">
-            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院 版权所有</div>
+            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+                版权所有
+            </div>
         </div>
     </div>
 </footer>
 </body>
 </html>
-<script src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
 <script>
     var arr = $("button [name='state']");
 

@@ -1,7 +1,10 @@
 package com.controller;
 
+import com.bean.Msg;
 import com.bean.Record;
 import com.bean.Student;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.service.StudentService;
 import com.utils.applySort;
@@ -18,10 +21,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/student")
@@ -85,20 +85,14 @@ public class StudentController {
 
     /**
      * 修改密码
-     * @param stuNumber
-     * @param oldPwd
-     * @param newPwd
-     * @return
      */
-    @RequestMapping(value = "/updateStupwd", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/updateStuPassword", method = {RequestMethod.POST})
     @ResponseBody
-    public String updateStupwd(@RequestParam("stuNumber") int stuNumber, @RequestParam("password") String oldPwd, @RequestParam("pass") String newPwd) {
-        if (oldPwd.equals(newPwd)) {//新旧密码一致的话
-            return "您输入的新密码和原密码一致，请重新输入!";
-        } else if (studentService.updateStuPwd(stuNumber, oldPwd, newPwd)) {//修改密码成功
-            return "修改密码成功，将返回登录页面";
+    public String updateStupwd(@RequestParam("stuNumber") int stuNumber, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
+        if (studentService.updateStuPwd(stuNumber, oldPassword, newPassword)) {//修改密码成功
+            return "修改密码成功，您将返回登录页面";
         } else {
-            return "输入的原密码错误";
+            return "输入的原密码错误,请重新输入";
         }
     }
 
@@ -208,5 +202,25 @@ public class StudentController {
         model.addAttribute("info", info);
 
         return "student/creditList";
+    }
+
+    // 根据id查询学生信息
+    @RequestMapping("/toQueryStuInfoById/{stuID}")
+    @ResponseBody
+    public Msg toQueryStuInfoById(@PathVariable("stuID") Integer stuId) {
+        Student student = studentService.selectByPrimaryKey(stuId);
+        return Msg.success().add("student", student);
+    }
+
+    // 查看学号是否存在
+    @RequestMapping("checkStuNumberIsExists")
+    @ResponseBody
+    public String checkStuNumberIsExists(@RequestParam("stuNumber") Integer stuNumber) throws JsonProcessingException {
+        boolean flag = studentService.findStuNumberIsExists(stuNumber);
+        Map map = new HashMap();
+        map.put("valid", flag);
+        ObjectMapper objectMapper = new ObjectMapper();
+        String result = objectMapper.writeValueAsString(map);
+        return result;
     }
 }

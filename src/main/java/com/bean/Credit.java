@@ -7,6 +7,9 @@ public class Credit {
 
     private Double sumCredit;
 
+    public Credit() {
+    }
+
     public Credit(Integer stuNumber, Double auditCredit) {
         this.stuNumber = stuNumber;
         this.sumCredit = auditCredit;

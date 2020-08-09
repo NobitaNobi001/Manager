@@ -1,16 +1,16 @@
 package com.service;
 
-import com.bean.Credit;
-import com.bean.Msg;
-import com.bean.Record;
-import com.bean.RecordExample;
+import com.bean.*;
 import com.dao.CollegeStuMapper;
 import com.dao.RecordMapper;
+import com.dao.StudentMapper;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.utils.CollegeName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +21,9 @@ public class RecordService {
 
     @Autowired
     private CollegeStuMapper collegeStuMapper;
+
+    @Autowired
+    private StudentMapper studentMapper;
 
     /**
      * 根据学号批量查出记录
@@ -95,7 +98,7 @@ public class RecordService {
      * @Description: 管理员查看学分列表，默认记录表里面时间倒序从上到下
      * @return:
      */
-    public List<Record> getAllRecordByadmin(Integer page, Integer size) {
+    public List<Record> getAllRecordByAdmin(Integer page, Integer size) {
         PageHelper.startPage(page, size);
         RecordExample recordExample = new RecordExample();
         recordExample.setOrderByClause("date DESC");
@@ -103,39 +106,73 @@ public class RecordService {
         return records;
     }
 
-
-    public List<Record> getAllRecordByadminQuery(Integer page, int size, Integer collegeId, String major, Integer stuClass) {
+    /**
+     * @Description: 管理员根据学院专业班级查询学分学分列表
+     * @return: java.util.List<com.bean.Record>
+     */
+    public List<Record> getAllRecordByAdminQuery(Integer page, int size, Integer collegeId, String major, Integer stuClass) {
         if (collegeId != -1) {// 学院不为空
             String tableName = CollegeName.getTableName(collegeId);
-            if (!("-1".equals(major)) && stuClass != -1) { // 专业和班级不为空
-                List<Integer> list = collegeStuMapper.selectStuByCollegeAndMajorAndClass(tableName, major, stuClass);
-                RecordExample recordExample = new RecordExample();
-                RecordExample.Criteria criteria = recordExample.createCriteria();
-                criteria.andStuNumberIn(list);
-                PageHelper.startPage(page, size);
-                List<Record> records = recordMapper.selectByExample(recordExample);
-                return records;
-            } else if (!("-1".equals(major)) && stuClass == -1) {// 专业不为空 班级为空
-                List<Integer> list = collegeStuMapper.selectStuByCollegeAndMajor(tableName, major);
-                RecordExample recordExample = new RecordExample();
-                RecordExample.Criteria criteria = recordExample.createCriteria();
-                criteria.andStuNumberIn(list);
-                PageHelper.startPage(page, size);
-                List<Record> records = recordMapper.selectByExample(recordExample);
-                return records;
-            } else {// 专业为空 班级为空
-                List<Integer> list = collegeStuMapper.selectStuBycollege(tableName);
-                RecordExample recordExample = new RecordExample();
-                RecordExample.Criteria criteria = recordExample.createCriteria();
-                criteria.andStuNumberIn(list);
-                PageHelper.startPage(page, size);
-                List<Record> records = recordMapper.selectByExample(recordExample);
-                return records;
-            }
+            List<Integer> list = collegeStuMapper.selectStuNumber(tableName, major, stuClass);
+            RecordExample recordExample = new RecordExample();
+            RecordExample.Criteria criteria = recordExample.createCriteria();
+            criteria.andStuNumberIn(list);
+            PageHelper.startPage(page, size);
+            List<Record> records = recordMapper.selectByExample(recordExample);
+            return records;
         } else {// 学院为空的话默认从数据库查询
-            return getAllRecordByadmin(page, size);
+            return getAllRecordByAdmin(page, size);
         }
+    }
 
+    /**
+     * @Description: 根据学院、专业、班级、审核状态来查询申报记录
+     * @return:
+     */
+    public List<Record> getAllRecordToExport(Integer collegeId, String major, Integer stuClass, String auditState) {
+        List<Record> records = new ArrayList<>();
+        if (collegeId != -1 && !("-1".equals(auditState))) {// 学院不为空 审核状态不为空
+            String tableName = CollegeName.getTableName(collegeId);
+            List<Integer> list = collegeStuMapper.selectStuNumber(tableName, major, stuClass);
+            RecordExample recordExample = new RecordExample();
+            RecordExample.Criteria criteria = recordExample.createCriteria();
+            criteria.andStuNumberIn(list);
+            criteria.andAuditStateEqualTo(auditState);
+            records = recordMapper.selectByExample(recordExample);
+            return records;
+        } else if (collegeId != -1 && "-1".equals(auditState)) {// 学院不为空的话审核状态为空
+            String tableName = CollegeName.getTableName(collegeId);
+            List<Integer> list = collegeStuMapper.selectStuNumber(tableName, major, stuClass);
+            RecordExample recordExample = new RecordExample();
+            RecordExample.Criteria criteria = recordExample.createCriteria();
+            criteria.andStuNumberIn(list);
+            records = recordMapper.selectByExample(recordExample);
+        } else {// 学院、审核状态都为null
+            records = recordMapper.selectByExample(null);
+        }
+        return records;
+    }
 
+    /**
+     * @Description: 根据学院 专业 班级 关键字(学号、姓名)来查询学生学号
+     * @return: com.github.pagehelper.PageInfo<com.bean.Student>
+     */
+    public PageInfo<Student> selectStuBykeyword(Integer pageNum, Integer pageSize, Integer collegeId, String major, Integer stuClass, String keyword) {
+        PageInfo<Student> pageInfo = null;
+        if (collegeId == -1) {// 如果学院为空的话 默认从全部的学生列表进行关键字查询
+            PageHelper.startPage(pageNum, pageSize);
+            List<Student> students = studentMapper.selectStuBykeyword(keyword);
+            pageInfo = new PageInfo(students);
+        } else {// 学院不为null 学院学生表里面条件查询
+            String tableName = CollegeName.getTableName(collegeId);
+            List<Integer> stuNumbers = collegeStuMapper.selectStuNumberByKeyword(tableName, major, stuClass, keyword);
+            StudentExample studentExample = new StudentExample();
+            StudentExample.Criteria criteria = studentExample.createCriteria();
+            criteria.andStuNumberIn(stuNumbers);
+            PageHelper.startPage(pageNum, pageSize);
+            List<Student> students = studentMapper.selectByExample(studentExample);
+            pageInfo = new PageInfo(students);
+        }
+        return pageInfo;
     }
 }

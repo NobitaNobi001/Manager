@@ -20,7 +20,7 @@
 
 
     <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
 </head>
 <body>
 <header>
@@ -28,7 +28,7 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70" /></div>
+                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
                     <div class="title">湖北文理学院创新学分系统</div>
                 </div>
                 <div class="top-right right">
@@ -78,7 +78,7 @@
                             </select>
                         </div>
                         <div>
-                            <input type="text" name="keywords" id="keywords" placeholder="请输入搜索关键字" value="" />
+                            <input type="text" name="keywords" id="keywords" placeholder="请输入搜索关键字" value=""/>
                             <a href="javascript:;" class="btn btn-primary">搜索</a>
                         </div>
                     </div>
@@ -164,7 +164,9 @@
 <footer>
     <div id="footer">
         <div class="footer">
-            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院 版权所有</div>
+            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+                版权所有
+            </div>
         </div>
     </div>
 </footer>

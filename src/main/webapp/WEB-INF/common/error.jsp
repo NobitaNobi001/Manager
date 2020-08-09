@@ -3,9 +3,8 @@
 <html>
 <head>
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-    <script type="text/javascript" src="Jquery/jquery-1.12.4.js"></script>
-    <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript">
         $(function () {
             $("button").click(function () {

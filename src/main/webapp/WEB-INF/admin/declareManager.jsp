@@ -1,15 +1,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
     <title>湖北文理学院创新学分系统</title>
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
     <link rel="icon" type="image/png" href="static/images/logo.png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="static/bootstrap/css/bootstrap.min.css"/>
-    <script type="text/javascript" src="static/Jquery/jquery-1.12.4.js"></script>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
+    <script type="text/javascript" src="static/layer/layer.js"></script>
 </head>
 <body>
 <header>
@@ -35,6 +44,60 @@
         </div>
     </div>
 </header>
+<!--导出申报记录模态框-->
+<div class="modal fade" id="exportStuRecord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">导出申报记录</h4>
+            </div>
+            <form class="form-horizontal" action="admin/exportStuRecord" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">学院</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="college">
+                                <option value="-1">不限</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">专业</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="major">
+                                <option value="-1">不限</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">班级</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="stuClass">
+                                <option value="-1">不限</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审核状态</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="auditState">
+                                <option value="-1">不限</option>
+                                <option value="已审核">已审核</option>
+                                <option value="未审核">未审核</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" id="export">导出</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <main>
     <div id="main">
         <div class="main clear">
@@ -42,7 +105,7 @@
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
                     <li><a href="admin/toSee/studentRecord.html">申报管理</a></li>
-                    <li><a href="admin/stuManager">学生管理</a></li>
+                    <li><a href="admin/get/student.html">学生管理</a></li>
                     <li><a href="admin/teaManager">教师管理</a></li>
                     <li><a href="admin/watManager">督查管理</a></li>
                 </ul>
@@ -53,17 +116,17 @@
                     <h4>学分申报管理</h4>
                     <form class="form-inline" action="admin/toQuery/studentRecord.html" method="post">
                         <div class="form-group">
-                            <select name="college" id="college">
+                            <select name="college" class="form-control">
                                 <option value="-1">请选择学院</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <select name="major" id="major">
+                            <select name="major" class="form-control">
                                 <option value="-1">请选择专业</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <select name="stuClass" id="stuClass">
+                            <select name="stuClass" class="form-control">
                                 <option value="-1">请选择班级</option>
                             </select>
                         </div>
@@ -73,7 +136,8 @@
                     </form>
                     <div class="action">
                         <div>
-                            <a href="" class="btn btn-danger">导出申报数据</a>
+                            <button class="btn btn-danger" id="exportData"><i class="glyphicon glyphicon-download-alt">导出申报数据</i>
+                            </button>
                         </div>
                     </div>
                     <table class="table table-hover" border="0" cellspacing="0" cellpadding="0">
@@ -94,7 +158,7 @@
                         <tbody>
                         <c:forEach var="record" items="${info.list}" varStatus="index">
                             <tr>
-                                <td>${index.count+(info.pageNum-1)*5}</td>
+                                <td>${index.count+(info.pageNum-1)*5 }</td>
                                 <td>${record.stuNumber}</td>
                                 <td>${record.stuName}</td>
                                 <td>${record.sort}</td>
@@ -129,7 +193,7 @@
                         </c:forEach>
                         <c:if test="${empty info.list}">
                             <tr>
-                                <td colspan="6" align="center">
+                                <td colspan="10" align="center">
                                     <div style="font-size:24px;color:red;">抱歉！没有查询到您要的数据！</div>
                                 </td>
                             </tr>
@@ -250,18 +314,32 @@
 
     $(function () {
         getColleges();
-        // 学院改变后重新加载专业
-        $("select[name='college']").change(function () {
-            var collegeCode = $("select[name='college']").val();
-            getMajor(collegeCode);
-        });
+    });
 
-        // 专业改变后重新加载班级
-        $("select[name='major']").change(function () {
-            var collegeCode = $("select[name='college']").val();
-            var majorCode = $("select[name='major']").val();
-            getClass(collegeCode, majorCode);
-        });
+    // 学院改变后重新加载专业
+    $(".form-inline select[name='college']").change(function () {
+        var collegeCode = $(".form-inline select[name='college']").val();
+        getMajor(collegeCode);
+    });
+
+    // 专业改变后重新加载班级
+    $(".form-inline select[name='major']").change(function () {
+        var collegeCode = $(".form-inline select[name='college']").val();
+        var majorCode = $(".form-inline select[name='major']").val();
+        getClass(collegeCode, majorCode);
+    });
+
+    // 学院改变后重新加载专业
+    $(".form-horizontal select[name='college']").change(function () {
+        var collegeCode = $(".form-horizontal select[name='college']").val();
+        getMajor(collegeCode);
+    });
+
+    // 专业改变后重新加载班级
+    $(".form-horizontal select[name='major']").change(function () {
+        var collegeCode = $(".form-horizontal select[name='college']").val();
+        var majorCode = $(".form-horizontal select[name='major']").val();
+        getClass(collegeCode, majorCode);
     });
 
 
@@ -293,8 +371,6 @@
             $.each(data, function (index, element) {
                 $("select[name='major']").append($("<option></option>").val(element).text(element));
             });
-            // 根据第一个专业code获取对应班级
-            getClass(collegeCode, $("select[name='major']").val());
         }, 'json');
     };
 
@@ -312,4 +388,25 @@
             });
         }, 'json');
     };
+
+    // 重置新增员工表单的方法
+    function reset_form(ele) {
+        // 重置表单内容
+        $(ele)[0].reset();
+    }
+
+    // 给导出按钮绑定单击事件出现模态框
+    $("#exportData").click(function () {
+        // 每次出现模态框都将之前的信息给清空并且将表单样式也清空
+        reset_form("#exportStuRecord form");
+        // 弹出模态框之前显示学院班级姓名在下拉列表中
+
+        // 设置点网页背景不会关闭模态框
+        $("#exportStuRecord").modal({
+            backdrop: "static"
+        });
+    });
+
+    // 表单中的删除按钮绑定单击事件
+    // 批量删除
 </script>

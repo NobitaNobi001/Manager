@@ -148,31 +148,31 @@
         }
 
         //如果要修改的信息和原信息相同
-        if ($("input[type='radio']:checked").val() == "${watcher.gender }" && phone.val() == "${watcher.phone }" && email.val() == "${watcher.email }"){
+        if ($("input[type='radio']:checked").val() == "${watcher.gender }" && phone.val() == "${watcher.phone }" && email.val() == "${watcher.email }") {
 
         }
 
-            $.ajax({
-                url: "${APP_PATH}/watcher/updateInfo/" +${watcher.id },
-                type: "PUT",
-                data: {
-                    "gender": $("input[type='radio']:checked").val(),
-                    "phone": phone.val(),
-                    "email": email.val()
-                },
-                success: function (result) {
-                    if (result.code == 100) {
-                        alert("修改成功");
-                        window.location.reload();
-                    } else {
-                        alert(result.extend.msg);
-                        window.location.reload();
-                    }
-                },
-                error: function (error) {
-                    alert("服务器繁忙");
+        $.ajax({
+            url: "${APP_PATH}/watcher/updateInfo/" +${watcher.id },
+            type: "PUT",
+            data: {
+                "gender": $("input[type='radio']:checked").val(),
+                "phone": phone.val(),
+                "email": email.val()
+            },
+            success: function (result) {
+                if (result.code == 100) {
+                    alert("修改成功");
+                    window.location.reload();
+                } else {
+                    alert(result.extend.msg);
+                    window.location.reload();
                 }
-            });
+            },
+            error: function (error) {
+                alert("服务器繁忙");
+            }
+        });
 
     });
 
