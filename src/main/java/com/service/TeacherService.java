@@ -157,6 +157,21 @@ public class TeacherService {
     }
 
     /**
+     * 批量删除教师
+     * @param ids
+     */
+    public void batchDeleteTeachers(List<Integer> ids){
+
+        TeacherExample teacherExample = new TeacherExample();
+
+        TeacherExample.Criteria criteria = teacherExample.createCriteria();
+
+        criteria.andIdIn(ids);
+
+        teacherMapper.deleteByExample(teacherExample);
+    }
+
+    /**
      * 条件查询
      * @param collegeId 学院
      * @param keywords 关键字

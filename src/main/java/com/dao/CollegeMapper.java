@@ -16,16 +16,21 @@ public interface CollegeMapper {
 
     int insertSelective(College record);
 
+    List<College> selectByExampleWithBLOBs(CollegeExample example);
+
     List<College> selectByExample(CollegeExample example);
 
     College selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") College record, @Param("example") CollegeExample example);
 
+    int updateByExampleWithBLOBs(@Param("record") College record, @Param("example") CollegeExample example);
+
     int updateByExample(@Param("record") College record, @Param("example") CollegeExample example);
 
     int updateByPrimaryKeySelective(College record);
 
-    int updateByPrimaryKey(College record);
+    int updateByPrimaryKeyWithBLOBs(College record);
 
+    int updateByPrimaryKey(College record);
 }

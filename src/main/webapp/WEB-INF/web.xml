@@ -74,6 +74,10 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+    <listener>
+        <listener-class>com.listener.ContextListener</listener-class>
+    </listener>
+
     <!--spring的前端控制器-->
     <servlet>
         <servlet-name>spring</servlet-name>

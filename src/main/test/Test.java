@@ -1,5 +1,6 @@
 import com.bean.Teacher;
 import com.dao.TeacherMapper;
+import com.utils.UserTypeUtil;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
@@ -9,13 +10,18 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
+import javax.mail.internet.MimeMessage;
 import javax.sql.DataSource;
+import javax.swing.plaf.metal.MetalTheme;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class Test {
 
@@ -49,9 +55,20 @@ public class Test {
     private TeacherMapper teacherMapper;
 
     @org.junit.Test
-    public void selectTeacherUp(){
+    public void selectTeacherUp() {
         Teacher teacher = new Teacher();
         teacher.setTeaNumber(2018117111);
         System.out.println(teacherMapper.insertSelective(teacher));
     }
+
+    @org.junit.Test
+    public void testUserTypeEnum() {
+        System.out.println(UserTypeUtil.getUserType(1));
+    }
+
+    @org.junit.Test
+    public void testRandom(){
+        System.out.println((int)(Math.random()*9+1));
+    }
+
 }

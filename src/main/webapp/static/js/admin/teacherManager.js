@@ -1,7 +1,5 @@
 $(function () {
 
-    getColleges("#college");
-
     to_page(1);
 });
 
@@ -10,9 +8,6 @@ $("#add_teacher_btn").click(function () {
 
     //表单重置 表单的数据及样式
     reset_form("#teacherAddModal form");
-
-    //发送ajax请求，查出部门信息显示下拉列表
-    getColleges("#teacherAddModal select");
 
     $("#teacherAddModal").modal({
         //设置点击背景模态框不会消失
@@ -28,7 +23,7 @@ $("#teacherNumber_add_input").change(function () {
     var teacherNumber = this.value;
 
     $.ajax({
-        url: "/teacher/checkTeacher",
+        url: "teacher/checkTeacher",
         data: "teaNumber=" + teacherNumber,
         type: "POST",
         success: function (result) {
@@ -89,7 +84,7 @@ $("#teacher_save_btn").click(function () {
 
     //3.发送ajax请求保存教师信息
     $.ajax({
-        url: "/teacher/insertTeacher",
+        url: "teacher/insertTeacher",
         type: "POST",
         data: $("#teacherAddModal form").serialize(),
         success: function (result) {
@@ -118,7 +113,7 @@ $(document).on("click", ".delete-btn", function () {
 
     if (confirm("确认删除" + teacherName + "吗?")) {
         $.ajax({
-            url: "/teacher/deleteTeacher/" + teacherId,
+            url: "teacher/deleteTeacher/" + teacherId,
             type: "DELETE",
             success: function () {
                 //回到本页
@@ -138,8 +133,6 @@ $(document).on("click", ".delete-btn", function () {
 //给修改信息绑定单击事件
 $(document).on("click", ".edit-btn", function () {
 
-    //1.查出部门信息并显示部门列表
-    getColleges("#teacherUpdateModal select");
     //2.查出员工信息并显示员工列表
     getTeacher($(this).attr("edit-id"));
 
@@ -206,7 +199,7 @@ $("#teacher_update_btn").click(function () {
 
     //3.发送ajax请求保存更新的教师信息
     $.ajax({
-        url: "/teacher/updateTeacher/" + $(this).attr("edit-id"),
+        url: "teacher/updateTeacher/" + $(this).attr("edit-id"),
         type: "PUT",
         data: $("#teacherUpdateModal form").serialize(),
         success: function () {
@@ -230,7 +223,7 @@ $("#teacher_update_btn").click(function () {
 function getTeacher(id) {
 
     $.ajax({
-        url: "/teacher/getTeacher/" + id,
+        url: "teacher/getTeacher/" + id,
         type: "GET",
         success: function (result) {
 
@@ -244,7 +237,7 @@ function getTeacher(id) {
             //性别
             $("#teacherUpdateModal input[name=gender]").val([teacher.gender]);
             //职称
-            $("#teacherPosition_update_input").val(teacher.teaPositon == "");
+            $("#teacherPosition_update_input").val(teacher.teaPositon);
             //手机号
             $("#teacherPhone_update_input").val(teacher.phone);
             //邮箱
@@ -261,7 +254,7 @@ function getTeacher(id) {
 function to_page(pn) {
 
     $.ajax({
-        url: "/teacher/teachers",
+        url: "teacher/teachers",
         data: {
             "pn": pn
         },
@@ -296,7 +289,7 @@ function to_page(pn) {
 function to_page_condition(pn) {
 
     $.ajax({
-        url: "/teacher/searchTeachers",
+        url: "teacher/searchTeachers",
         data: {
             "pn": pn,
             "collegeId": $("#college").val(),
@@ -328,6 +321,57 @@ function to_page_condition(pn) {
     })
 }
 
+//当单击页面头部的全选时进行全选
+$("#allChecked").click(function () {
+
+    $(".check-item").prop("checked", $(this).prop("checked"));
+});
+
+//完成发送批量删除的请求
+$("#batch_del_teacher").click(function () {
+
+    //批量删除的教工名
+    var teachersNames = "";
+    //批量删除的教工id
+    var teachersIds = "";
+
+    $.each($(".check-item:checked"), function () {
+        teachersNames += $(this).parents("tr").find("td:eq(3)").text() + ",";
+        teachersIds += $(this).parents("tr").find("td:eq(6) a").attr("edit-id") + "-";
+    });
+
+    if(teachersNames==""||teachersIds==""){
+        alert("请选择需要删除的教师!");
+        return false;
+    }
+
+    teachersNames = teachersNames.substring(0, teachersNames.length - 1);
+    teachersIds += teachersIds.substring(0, teachersIds.length - 1);
+
+    if (confirm("确认删除" + teachersNames + "吗？")) {
+
+        $.ajax({
+            url: "teacher/deleteTeacher/" + teachersIds,
+            type: "DELETE",
+            success: function () {
+
+                //清除全选按钮的选择
+                $("#allChecked").prop("checked", false);
+                //回到本页面
+                if ($("#college").val() == -1 && $("#keywords").val().trim() == "") {
+                    to_page(currentPage);
+                } else {
+                    to_page_condition(currentPage);
+                }
+            }, error: function () {
+                alert("服务器繁忙!");
+            }
+        })
+    }
+
+});
+
+
 //构建教师管理表格
 function build_teacher_table(result) {
 
@@ -339,8 +383,11 @@ function build_teacher_table(result) {
     //遍历数据
     $.each(teachersInfo.list, function (index, item) {
 
+        //选择框
+        var checkItem = $("<td></td>").append("<input type='checkbox' class='check-item'/>");
+
         //序号
-        var teaCount = $("<td></td>").append(index + 1 + (teachersInfo.pageNum - 1) * 5);
+        var teaCount = $("<td></td>").append(index + 1 + (teachersInfo.pageNum == 0 ? teachersInfo.pageNum : teachersInfo.pageNum - 1) * 5);
 
         //工号
         var teaNumber = $("<td></td>").append(item.teaNumber);
@@ -365,7 +412,9 @@ function build_teacher_table(result) {
         //操作按钮
         var operateBtn = $("<td></td>").append(editBtn).append(delBtn);
 
-        $("<tr></tr>").append(teaCount)
+        $("<tr></tr>")
+            .append(checkItem)
+            .append(teaCount)
             .append(teaNumber)
             .append(teaName)
             .append(teaCollege)
@@ -374,29 +423,4 @@ function build_teacher_table(result) {
             .appendTo("#teacher_info tbody");
     })
 
-}
-
-//获取学院
-function getColleges(sel) {
-    //清空下拉框样式及内容
-    $(sel).empty();
-    $.ajax({
-        url: "/college/getColleges",
-        type: "GET",
-        success: function (result) {
-
-            $("<option></option>").append("请选择").attr("value", -1).attr("selected", true).appendTo(sel);
-            // 显示学院信息在下拉列表中
-            $.each(result.extend.colleges, function () {
-                if (this.id != 19) {
-                    var option = $("<option></option>").append(this.name).attr("value", this.id);
-                    option.appendTo(sel);
-                }
-
-            });
-        },
-        error: function () {
-            alert("服务器繁忙")
-        }
-    })
 }

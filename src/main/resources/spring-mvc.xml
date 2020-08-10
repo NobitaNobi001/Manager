@@ -51,4 +51,19 @@
         <property name="maxUploadSize" value="10485760"></property>
         <property name="maxInMemorySize" value="40960"></property>
     </bean>
+
+    <!--<mvc:view-controller path="watcher/teacherAudit"></mvc:view-controller>-->
+
+
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/forget/**"/>
+            <mvc:exclude-mapping path="/forget/forgetIndex"/>
+            <mvc:exclude-mapping path="/forget/checkCode"/>
+            <mvc:exclude-mapping path="/forget/checkUser"/>
+            <bean class="com.interceptor.ForgetInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    
 </beans>

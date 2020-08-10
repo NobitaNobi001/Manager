@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -216,9 +217,24 @@ public class WatcherController {
      */
     @RequestMapping(value = "/deleteWatcher/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Msg deleteWatcher(@PathVariable("id") Integer id) {
+    public Msg deleteWatcher(@PathVariable("id") String id) {
 
-        watcherService.deleteWatcher(id);
+        if (id.contains("-")) {
+
+            List<Integer> deleteIds = new ArrayList<>();
+
+            String[] ids = id.split("-");
+
+            for (String temp : ids) {
+                deleteIds.add(Integer.valueOf(temp));
+            }
+
+            watcherService.batchDeleteWathcers(deleteIds);
+
+        } else {
+            watcherService.deleteWatcher(Integer.valueOf(id));
+        }
+
 
         return Msg.success();
     }
@@ -268,4 +284,5 @@ public class WatcherController {
 
         return Msg.success().add("pageInfo", pages);
     }
+
 }

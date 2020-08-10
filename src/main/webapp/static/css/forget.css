@@ -5,6 +5,14 @@
 #forget .forget .top img{height: 60px;cursor: pointer;}
 #forget .forget .top .title{font-size: 20px;font-weight: bold;margin-left: 20px;}
 
+.schedule{padding: 10px 0;width: 1200px;margin: 0 auto;margin-top: 50px;position: relative;}
+.schedule ul{display: flex;justify-content: space-between;}
+.schedule ul::before{content: '';display: block;width: 900px;height: 8px;background-color: #ddd;position: absolute;top: 62px;left: 150px;z-index: 1;}
+.schedule ul li{width: 25%;text-align: center;padding: 30px 0;position: relative;z-index: 2;}
+.schedule ul li .emblem{background-color: #ddd;width: 50px;height: 50px;line-height: 50px;margin: 0 auto;border-radius: 50%;}
+.schedule ul li.active .emblem{background-color: #090;color: #fff;position: relative;z-index: 2;}
+.schedule ul li .text{padding: 20px 65px;text-align: left;}
+
 .forget-form{padding: 50px 0;margin: 0 auto;width: 1200px;}
 .forget-form h4{padding: 20px 0;border-bottom: 1px solid #eee;}
 .forget-form .item{padding: 30px 0;display: flex;border-bottom: 1px dashed #eee;}
@@ -12,9 +20,14 @@
 .forget-form .item>div{float: left;}
 .forget-form .item .title{width: 20%;text-align: right;box-sizing: border-box;padding: 0 10px;line-height: 40px;}
 .forget-form .item .input{}
-.forget-form .item .input input{border: 1px solid #ddd;height: 40px;padding: 0 12px;box-sizing: border-box;width: 700px;outline: none;}
+.forget-form .item .input input{border: 1px solid #ddd;height: 40px;padding: 0 12px;box-sizing: border-box;width: 300px;outline: none;}
 .forget-form .item .input input:focus{border: 1px solid #090;outline: #090;box-shadow: 0 0 5px rgba(0, 153, 0, .5);}
 .forget-form .item .input .notice{padding: 5px 0;font-size: 13px;color: #888;}
 .forget-form .item .input button{background: #090;border: 1px solid #090;height: 40px;padding: 0 40px;outline: none;cursor: pointer;color: #fff;}
+.forget-form .item .input img{margin-left: 5px;}
+
+.done{width: 1200px;margin: 0 auto;text-align: center;padding: 30px 0;}
+.done .done-btn{margin: 50px 0;}
+.done .show-done .done-text{color: #090;padding: 40px 0;}
 
 #forget .forget .foot{text-align: center;font-size: 13px;color: #444;border-top: 1px solid #eee;padding: 50px 0;}

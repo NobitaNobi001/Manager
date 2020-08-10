@@ -136,6 +136,22 @@ public class WatcherService {
     }
 
     /**
+     * 批量删除
+     *
+     * @param id
+     */
+    public void batchDeleteWathcers(List<Integer> id) {
+
+        WatcherExample watcherExample = new WatcherExample();
+
+        WatcherExample.Criteria criteria = watcherExample.createCriteria();
+
+        criteria.andIdIn(id);
+
+        watcherMapper.deleteByExample(watcherExample);
+    }
+
+    /**
      * 根据主键更新督察信息
      *
      * @param watcher
@@ -146,6 +162,7 @@ public class WatcherService {
 
     /**
      * 条件查询
+     *
      * @param collegeId
      * @param keywords
      * @return
@@ -154,11 +171,19 @@ public class WatcherService {
 
         List<Watcher> watchers = watcherMapper.selectWatcherWithCondition(collegeId, keywords);
 
-        if(watchers.size()==0){
+        if (watchers.size() == 0) {
             return null;
-        }else{
+        } else {
             return watchers;
         }
 
+    }
+
+    public boolean checkEmailByWatcher(Integer number, String email) {
+        return watcherMapper.selectEmailByWatcher(number, email) == 0;
+    }
+
+    public void updatePasswordByWatcherNumber(Integer number,String password){
+        watcherMapper.updatePasswordByWatcherNumber(number,password);
     }
 }

@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -267,16 +268,35 @@ public class TeacherController {
     }
 
     /**
-     * 删除单个教师信息
+     * 删除单个及多个教师信息
      *
      * @param id
      * @return
      */
     @RequestMapping(value = "/deleteTeacher/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Msg deleteTeacher(@PathVariable("id") Integer id) {
+    public Msg deleteTeacher(@PathVariable("id") String id) {
 
-        teacherService.deleteTeacher(id);
+        if (id.contains("-")) {
+
+            //存放待删除id
+            List<Integer> delete_ids = new ArrayList<>();
+
+            //将传过来的id进行格式化
+            String[] ids = id.split("-");
+
+            //存到集合中
+            for(String temp:ids){
+                delete_ids.add(Integer.valueOf(temp));
+            }
+
+            //批量删除
+            teacherService.batchDeleteTeachers(delete_ids);
+
+        } else {
+            teacherService.deleteTeacher(Integer.parseInt(id));
+        }
+
 
         return Msg.success();
     }
@@ -313,9 +333,10 @@ public class TeacherController {
 
     /**
      * 条件查询
-     * @param pn 起始页码
+     *
+     * @param pn        起始页码
      * @param collegeId 学院id
-     * @param keywords 关键字
+     * @param keywords  关键字
      * @return
      */
     @RequestMapping(value = "/searchTeachers", method = RequestMethod.GET)

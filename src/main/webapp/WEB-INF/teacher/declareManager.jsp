@@ -204,7 +204,7 @@
 </body>
 </html>
 <%--引入构建分页信息和页码控制的js文件--%>
-<script type="text/javascript" src="${APP_PATH}/static/js/tableInfo.js"></script>
+<script type="text/javascript" src="${APP_PATH}/static/js/common/tableInfo.js/js/tableInfo.js"></script>
 <script type="text/javascript">
 
     //获取学生的学号

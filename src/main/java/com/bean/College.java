@@ -5,6 +5,8 @@ public class College {
 
     private String name;
 
+    private String rule;
+
     public Integer getId() {
         return id;
     }
@@ -19,5 +21,13 @@ public class College {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getRule() {
+        return rule;
+    }
+
+    public void setRule(String rule) {
+        this.rule = rule == null ? null : rule.trim();
     }
 }

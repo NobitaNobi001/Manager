@@ -1,15 +1,25 @@
 package com.controller;
 
+
+import com.bean.Msg;
 import com.shrio.token.LoginToken;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Properties;
 
 @Controller
 public class UserController {
@@ -54,15 +64,4 @@ public class UserController {
         //若登陆失败重定向到登录页面
         return "redirect:/login.jsp";
     }
-
-    /**
-     * 去到忘记密码页面
-     * @return
-     */
-    @RequestMapping("/forgetPassword")
-    public String forgetPassword(){
-
-        return "common/passwordLost";
-    }
-
 }

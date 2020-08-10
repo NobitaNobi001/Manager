@@ -38,7 +38,7 @@
                 <div>
                     <button type="submit">登录</button>
                 </div>
-                <div class="forget"><a href="${APP_PATH}/forgetPassword">忘记密码？</a></div>
+                <div class="forget"><a href="${APP_PATH}/forget/forgetIndex">忘记密码？</a></div>
             </form>
         </div>
         <div class="foot">

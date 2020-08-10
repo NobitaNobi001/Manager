@@ -318,4 +318,16 @@
             </if>
         </where>
     </select>
+
+    <select id="selectEmailByWatcher" resultType="java.lang.Integer">
+        select count(*) from watcher_info
+        where email = #{email} and watcher_number = #{number}
+    </select>
+
+    <update id="updatePasswordByWatcherNumber" >
+        update watcher_info
+        set password = #{password,jdbcType=VARCHAR}
+        where watcher_number = #{number,jdbcType=INTEGER}
+    </update>
+
 </mapper>

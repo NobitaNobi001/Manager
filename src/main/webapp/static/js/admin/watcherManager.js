@@ -1,8 +1,6 @@
 //页面初始化
 $(function () {
 
-    getColleges("#college");
-
     to_page(1);
 });
 
@@ -11,9 +9,6 @@ $("#add_watcher_btn").click(function () {
 
     //1.表单重置 表单的数据及样式
     reset_form("#watcherAddModal form");
-
-    //2.发送ajax请求，查出部门信息显示下拉列表
-    getColleges("#watcherAddModal select");
 
     //3.设置点击背景模态框不会消失
     $("#watcherAddModal").modal({
@@ -27,7 +22,7 @@ $("#watcherNumber_add_input").change(function () {
     var watcherNumber = this.value;
 
     $.ajax({
-        url: "/watcher/checkWatcher",
+        url: "watcher/checkWatcher",
         type: "POST",
         data: "watcherNumber=" + watcherNumber,
         success: function (result) {
@@ -87,7 +82,7 @@ $("#watcher_save_btn").click(function () {
 
     //3.发送ajax请求
     $.ajax({
-        url: "/watcher/insertWatcher",
+        url: "watcher/insertWatcher",
         type: "POST",
         data: $("#watcherAddModal form").serialize(),
         success: function (result) {
@@ -116,7 +111,7 @@ $(document).on("click", ".delete-btn", function () {
     if (confirm("确认删除" + watcherName + "吗？")) {
         //2.发送ajax请求
         $.ajax({
-            url: "/watcher/deleteWatcher/" + watcherId,
+            url: "watcher/deleteWatcher/" + watcherId,
             type: "DELETE",
             success: function () {
                 //回到本页
@@ -138,7 +133,7 @@ $(document).on("click", ".delete-btn", function () {
 $(document).on("click", ".edit-btn", function () {
 
     //1.查出部门信息并显示部门列表
-    getColleges("#watcherUpdateModal select");
+    // getColleges("#watcherUpdateModal select");
     //2.查出员工信息并显示员工列表
     getWacther($(this).attr("edit-id"));
 
@@ -163,7 +158,7 @@ function validat_update_form() {
     var email = $("#email_update_input").val();
     //定义正则表达式
     var regEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-    if (regEmail.test(email)|| email.trim()=="") {
+    if (regEmail.test(email) || email.trim() == "") {
         show_validate_msg("#email_update_input", "success", "");
     } else {
         show_validate_msg("#email_update_input", "error", "邮箱格式不正确");
@@ -204,7 +199,7 @@ $("#watcher_update_btn").click(function () {
 
     //3.发送ajax请求保存更新的员工信息
     $.ajax({
-        url: "/watcher/updateWatcher/" + $(this).attr("edit-id"),
+        url: "watcher/updateWatcher/" + $(this).attr("edit-id"),
         type: "PUT",
         data: $("#watcherUpdateModal form").serialize(),
         success: function () {
@@ -229,7 +224,7 @@ $("#watcher_update_btn").click(function () {
 function getWacther(id) {
 
     $.ajax({
-        url: "/watcher/getWatcher/" + id,
+        url: "watcher/getWatcher/" + id,
         type: "GET",
         success: function (result) {
             //获取到此督察信息
@@ -263,8 +258,10 @@ function build_watcher_table(result) {
     //遍历添加数据到table中
     $.each(watchersInfo.list, function (index, item) {
 
+        //选择框
+        var checkItem = $("<td></td>").append("<input type='checkbox' class='check-item'/>");
         //序号
-        var watcherCount = $("<td></td>").append(index + 1 + (watchersInfo.pageNum - 1) * 5);
+        var watcherCount = $("<td></td>").append(index + 1 + (watchersInfo.pageNum == 0 ? watchersInfo.pageNum : watchersInfo.pageNum - 1) * 5);
         //督察工号
         var watcherNumber = $("<td></td>").append(item.watcherNumber);
         //督察姓名
@@ -283,7 +280,9 @@ function build_watcher_table(result) {
         //操作按钮
         var operateBtn = $("<td></td>").append(editBtn).append(delBtn);
 
-        $("<tr></tr>").append(watcherCount)
+        $("<tr></tr>")
+            .append(checkItem)
+            .append(watcherCount)
             .append(watcherNumber)
             .append(watcherName)
             .append(college)
@@ -296,7 +295,7 @@ function build_watcher_table(result) {
 function to_page(pn) {
 
     $.ajax({
-        url: "/watcher/watchers",
+        url: "watcher/watchers",
         data: {
             "pn": pn,
         },
@@ -330,7 +329,7 @@ function to_page(pn) {
 function to_page_condition(pn) {
 
     $.ajax({
-        url: "/watcher/searchWatchers",
+        url: "watcher/searchWatchers",
         data: {
             "pn": pn,
             "collegeId": $("#college").val(),
@@ -362,24 +361,48 @@ function to_page_condition(pn) {
     })
 }
 
-//获取学院
-function getColleges(sel) {
-    //清空下拉框样式及内容
-    $(sel).empty();
-    $.ajax({
-        url: "/college/getColleges",
-        type: "GET",
-        success: function (result) {
-            $("<option></option>").append("请选择").attr("value", -1).attr("selected", true).appendTo(sel);
-            // 显示学院信息在下拉列表中
-            $.each(result.extend.colleges, function () {
-                var option = $("<option></option>").append(this.name).attr("value", this.id);
-                option.appendTo(sel);
+//全选
+$("#checkAllWatchers").click(function () {
+    $(".check-item").prop("checked", $(this).prop("checked"));
+});
 
-            });
-        },
-        error: function () {
-            alert("服务器繁忙")
-        }
-    })
-}
+$("#batch_del_watcher").click(function () {
+
+    var watcherNames = "";
+    var watcherIds = "";
+
+    $.each($(".check-item:checked"), function () {
+        watcherNames += $(this).parents("tr").find("td:eq(3)").text() + ",";
+        watcherIds += $(this).parents("tr").find("td:eq(5) a").attr("edit-id") + "-";
+        console.log(watcherIds);
+    });
+
+    if(watcherNames=""||watcherIds==""){
+        alert("请选择需要删除的督察!");
+        return false;
+    }
+
+
+    watcherNames = watcherIds.substring(0, watcherNames.length - 1);
+    watcherIds = watcherIds.substring(0, watcherIds.length - 1);
+
+    if (confirm("确认删除" + watcherNames + "吗？")) {
+        $.ajax({
+            url: "watcher/deleteWatcher/" + watcherIds,
+            type: "DELETE",
+            success: function () {
+
+                $("#checkAllWatchers").prop("checked", false);
+
+                //回到本页面
+                if ($("#college").val() == -1 && $("#keywords").val().trim() == "") {
+                    to_page(currentPage);
+                } else {
+                    to_page_condition(currentPage);
+                }
+            }, error: function () {
+                alert("服务器繁忙!");
+            }
+        })
+    }
+});

@@ -7,6 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -44,7 +45,8 @@
                     <div class="form-group">
                         <label for="teacherNumber_update_input" class="col-sm-2 control-label">工号</label>
                         <div class="col-sm-10">
-                            <input type="text" name="teaNumber" class="form-control" id="teacherNumber_update_input">
+                            <input type="text" name="teaNumber" class="form-control" id="teacherNumber_update_input"
+                                   readonly/>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -103,7 +105,9 @@
                         <div class="col-sm-4">
                             <%--部门提交id即可--%>
                             <select class="form-control" name="collegeId">
-
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <option value="${college.id }">${college.name }</option>
+                                </c:forEach>
                             </select>
                         </div>
                     </div>
@@ -166,7 +170,12 @@
                         <div class="col-sm-4">
                             <%--部门提交id即可--%>
                             <select class="form-control" name="collegeId">
-
+                                <option value="-1">请选择院系</option>
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <c:if test="${college.id ne 19}">
+                                        <option value="${college.id }">${college.name }</option>
+                                    </c:if>
+                                </c:forEach>
                             </select>
                         </div>
                     </div>
@@ -222,19 +231,28 @@
                     <div class="action" style="float: left;">
                         <div style="float: left;">
                             <select name="college" id="college">
-                                <option value="0">请选择院系</option>
+                                <option value="-1">请选择院系</option>
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <c:if test="${college.id ne 19}">
+                                        <option value="${college.id }">${college.name }</option>
+                                    </c:if>
+                                </c:forEach>
                             </select>
-                                <input type="text" name="keywords" id="keywords" placeholder="请输入搜索关键字" value=""/>
-                                <button onclick="to_page_condition(1)" class="btn btn-primary">搜索</button>
+                            <input type="text" name="keywords" id="keywords" placeholder="请输入教师姓名" value=""/>
+                            <button onclick="to_page_condition(1)" class="btn btn-primary">搜索</button>
                         </div>
-                        <div style="margin-left: 410px;">
+                        <div style="margin-left: 325px;">
                             <button class="btn btn-primary" id="add_teacher_btn">新增教师</button>
-                            <button class="btn btn-danger" id="batch_add_teacher_btn">导入教师</button>
+                            <button class="btn btn-danger" id="batch_del_teacher">删除教师</button>
+                            <button class="btn btn-success" id="batch_add_teacher_btn">导入教师</button>
                         </div>
                     </div>
                     <table class="table" border="0" cellspacing="0" cellpadding="0" id="teacher_info">
                         <thead>
                         <tr>
+                            <th>
+                                <input type="checkbox" id="allChecked">
+                            </th>
                             <th>序号</th>
                             <th>工号</th>
                             <th>姓名</th>
@@ -268,9 +286,9 @@
 </body>
 </html>
 <%--引入构建分页信息和页码控制的js文件--%>
-<script type="text/javascript" src="${APP_PATH}/static/js/tableInfo.js"></script>
-<script type="text/javascript" src="${APP_PATH}/static/js/tableCondition.js"></script>
+<script type="text/javascript" src="${APP_PATH}/static/js/common/tableInfo.js"></script>
+<script type="text/javascript" src="${APP_PATH}/static/js/common/tableCondition.js"></script>
 <%--引入一些清空样式的基本操作--%>
-<script type="text/javascript" src="${APP_PATH}/static/js/prompt.js"></script>
-<script type="text/javascript" src="${APP_PATH}/static/js/teacherManager.js"></script>
+<script type="text/javascript" src="${APP_PATH}/static/js/common/prompt.js"></script>
+<script type="text/javascript" src="${APP_PATH}/static/js/admin/teacherManager.js"></script>
 

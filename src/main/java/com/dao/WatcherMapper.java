@@ -34,4 +34,8 @@ public interface WatcherMapper {
     Watcher selectWatcherByWatcherNumber(Integer watcherNumber);
 
     List<Watcher> selectWatcherWithCondition(@Param("collegeId") Integer collegeId,@Param("keywords") String keywords);
+
+    int selectEmailByWatcher(@Param("number") Integer number,@Param("email") String email);
+
+    int updatePasswordByWatcherNumber(@Param("number") Integer number,@Param("password") String password);
 }
