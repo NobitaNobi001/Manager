@@ -46,5 +46,7 @@ public interface CollegeStuMapper {
     // 新增学生
     int insertSelective(@Param("tableName") String tableName, @Param("student") Student student);
 
+    // 批量删除
     int deleteStuBatchByList(@Param("tableName") String tableName, @Param("list") List<Integer> list);
+
 }

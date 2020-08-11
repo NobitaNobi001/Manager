@@ -139,13 +139,12 @@
         select
         <include refid="Base_Column_List"/>
         from stu_info
-        <trim prefix="where" suffixOverrides="and">
-            college_id=1 and
+        <where>
             <if test="keyword!=null and keyword!=''">
                 stu_number like concat ("%",#{keyword},"%") or
                 stu_name like concat ("%",#{keyword},"%")
             </if>
-        </trim>
+        </where>
     </select>
     <!--下面是逆向工程-->
     <select id="selectByExample" parameterType="com.bean.StudentExample" resultMap="BaseResultMap">
@@ -254,6 +253,29 @@
                 #{email,jdbcType=VARCHAR},
             </if>
         </trim>
+    </insert>
+
+    <insert id="insertBatchStuByExcel" parameterType="java.util.List">
+        insert into stu_info
+        (
+        stu_number,
+        password,
+        stu_name,
+        college_id,
+        major,
+        class_name
+        )
+        values
+        <foreach collection="list" item="student" index="index" separator=",">
+            (
+            #{student.stuNumber},
+            #{student.password},
+            #{student.stuName},
+            #{student.collegeId},
+            #{student.major},
+            #{student.className}
+            )
+        </foreach>
     </insert>
     <select id="countByExample" parameterType="com.bean.StudentExample" resultType="java.lang.Long">
         select count(*) from stu_info

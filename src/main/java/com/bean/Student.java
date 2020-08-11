@@ -1,35 +1,32 @@
 package com.bean;
 
-import com.alibaba.excel.annotation.ExcelIgnore;
-import com.alibaba.excel.annotation.ExcelProperty;
-import sun.security.util.Password;
-
 import java.io.Serializable;
 
 public class Student implements Serializable {
     private Integer id;
 
-    private Integer stuNumber;
+    private Integer stuNumber;// 学号
 
-    private String password;
+    private String password;// 密码
 
-    private String stuName;
+    private String stuName;// 姓名
 
-    private int collegeId ;
+    private int collegeId;// 学院id
 
-    private String major;
+    private String major;// 专业
 
-    private String className;
+    private String className;// 班级
 
-    private String gender;
+    private String gender;// 性别
 
-    private String phone;
+    private String phone;// 手机
 
-    private String email;
+    private String email;// 邮箱地址
 
-    private College college;
 
-    private Double sumCredit;
+    private College college;// 学院
+
+    private Double sumCredit;// 总学分
 
     public Double getSumCredit() {
         return sumCredit;

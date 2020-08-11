@@ -59,9 +59,9 @@
     </delete>
 
     <delete id="deleteStuBatchByList">
-        delete from where ${tableName} in
+        delete from ${tableName} where stu_number in
         <foreach item="item" collection="list" open="(" separator="," close=")">
-            #{item,jdbcType=int}
+            #{item,jdbcType=INTEGER}
         </foreach>
     </delete>
 

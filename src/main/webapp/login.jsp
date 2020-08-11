@@ -18,7 +18,7 @@
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
-    <script type="text/javascript" src="static/layer/layer.js"></script>
+    <script type="text/javascript" src="static/layui/layui.js"></script>
 </head>
 <body>
 <div id="login">
@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <div class="input-group">
                           <span class="input-group-addon">
-                    <span class="glyphicon glyphicon-eye-open"></span>
+                    <span class="glyphicon glyphicon-eye-open" id="eye"></span>
                     </span>
                         <input type="password" name="password" class="form-control" id="password"
                                placeholder="登录密码" onchange="checkpwd()" value="12345678"/>
@@ -107,4 +107,17 @@
         var check = checkuser() && checkpwd();
         return check;
     }
+
+    $("#eye").click(function () {
+        var flag = $(this).hasClass("glyphicon-eye-open");
+        if (flag == true) {
+            $("#eye").removeClass("glyphicon-eye-open");
+            $("#eye").addClass("glyphicon-eye-close");
+            $("#StuUpdateModal input[name='password']").attr("type", "Text");
+        } else {
+            $("#eye").removeClass("glyphicon-eye-close");
+            $("#eye").addClass("glyphicon-eye-open");
+            $("#StuUpdateModal input[name='password']").attr("type", "password");
+        }
+    });
 </script>

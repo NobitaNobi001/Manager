@@ -71,5 +71,66 @@ public class CollegeName {
         }
         return tableName;
     }
+
+    public static int getCollegeId(String collegeName) {
+        int collegeId = 0;
+        switch (collegeName) {
+            case "马克思主义学院":
+                collegeId = 1;
+                break;
+            case "政法学院":
+                collegeId = 2;
+                break;
+            case "教育学院":
+                collegeId = 3;
+                break;
+            case "体育学院":
+                collegeId = 4;
+                break;
+            case "文学与传媒学院":
+                collegeId = 5;
+                break;
+            case "外国语学院":
+                collegeId = 6;
+                break;
+            case "数学与统计学院":
+                collegeId = 7;
+                break;
+            case "物理与电子工程学院":
+                collegeId = 8;
+                break;
+            case "计算机工程学院":
+                collegeId = 9;
+                break;
+            case "汽车与交通工程学院":
+                collegeId = 10;
+                break;
+            case "机械工程学院":
+                collegeId = 11;
+                break;
+            case "土木工程与建筑学院":
+                collegeId = 12;
+                break;
+            case "食品科学技术学院化学工程学院":
+                collegeId = 13;
+                break;
+            case "医学院":
+                collegeId = 14;
+                break;
+            case "资源环境与旅游学院":
+                collegeId = 15;
+                break;
+            case "经济管理学院":
+                collegeId = 16;
+                break;
+            case "美术学院":
+                collegeId = 17;
+                break;
+            case "音乐与舞蹈学院":
+                collegeId = 18;
+                break;
+        }
+        return collegeId;
+    }
 }
 

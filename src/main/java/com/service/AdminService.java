@@ -6,6 +6,7 @@ import com.utils.CollegeName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -76,8 +77,9 @@ public class AdminService {
      * @Description: 批量删除
      * @return: void
      */
-    public void deleteStuBatch(List<Integer> list) {
-        // 得到表名
+    public int deleteStuBatch(List<Integer> list) {
+        int sum = 0;
+        // 得到表名 注意批量删除只能删除一个学院里面
         String tableName = CollegeName.getTableName(studentMapper.selectStudentByStuNumber(list.get(0)).getCollegeId());
         // 先在学院学生表里面删除 然后学分表 学分记录表 最后学生表
         CreditExample creditExample = new CreditExample();
@@ -99,20 +101,48 @@ public class AdminService {
             // 学院学生表删除
             collegeStuMapper.deleteStuBatchByList(tableName, list);
             // 学生表删除
-            studentMapper.deleteByExample(studentExample);
+            int count = studentMapper.deleteByExample(studentExample);
+            sum += count;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
+        return sum;
     }
 
     /**
      * @Description: 单个删除
      * @return: void
      */
-    public void deleteStu(int id) {
+    public int deleteStu(int stuNumber) {
+        int sum = 0;
+        // 得到表名
+        String tableName = CollegeName.getTableName(studentMapper.selectStudentByStuNumber(stuNumber).getCollegeId());
+        // 先在学院学生表里面删除 然后学分表 学分记录表 最后学生表
+        CreditExample creditExample = new CreditExample();
+        CreditExample.Criteria criteria = creditExample.createCriteria();
+        criteria.andStuNumberEqualTo(stuNumber);
 
+        RecordExample recordExample = new RecordExample();
+        RecordExample.Criteria criteria1 = recordExample.createCriteria();
+        criteria1.andStuNumberEqualTo(stuNumber);
+
+        StudentExample studentExample = new StudentExample();
+        StudentExample.Criteria criteria2 = studentExample.createCriteria();
+        criteria2.andStuNumberEqualTo(stuNumber);
+        try {
+            // 学分表删除
+            creditMapper.deleteByExample(creditExample);
+            // 学分记录表删除
+            recordMapper.deleteByExample(recordExample);
+            // 学院学生表删除
+            collegeStuMapper.deleteStuByStuNumber(tableName, stuNumber);
+            // 学生表删除
+            int count = studentMapper.deleteByExample(studentExample);
+            sum += count;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sum;
     }
 
     /**
@@ -131,7 +161,10 @@ public class AdminService {
         }
     }
 
-    // 通过表单插入学生
+    /**
+     * @Description: 通过模态框中的表单新增学生
+     * @return: void
+     */
     public void insertStuByForm(Student student) {
         // 先在学生表里面添加 然后学分表 学院学生表
         try {
@@ -140,6 +173,34 @@ public class AdminService {
             creditMapper.insertSelective(credit);
             String tableName = CollegeName.getTableName(student.getCollegeId());
             collegeStuMapper.insertSelective(tableName, student);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @Description: 通过excel新增学生
+     * @return: void
+     */
+    public void insertStuByExcel(List<Student> students) {
+        try {
+            List<Credit> credits = new ArrayList<>();
+            // 创建学分对象
+            // 截取学号封装密码
+            for (Student student : students) {
+                String password = student.getStuNumber().toString().substring(4);
+                student.setPassword(password);
+                credits.add(new Credit(student.getStuNumber(), 0.0));
+            }
+            // 插入学生表
+            studentMapper.insertBatchStuByExcel(students);
+            // 插入学分表
+            creditMapper.insertBatchCreditByExcel(credits);
+            // 插入学院学生表
+            for (Student student : students) {
+                String tableName = CollegeName.getTableName(student.getCollegeId());
+                collegeStuMapper.insertSelective(tableName, student);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

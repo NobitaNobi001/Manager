@@ -16,6 +16,8 @@ public interface CreditMapper {
 
     int insertSelective(Credit record);
 
+    int insertBatchCreditByExcel(@Param("list") List<Credit> credits);
+
     List<Credit> selectByExample(CreditExample example);
 
     Credit selectByPrimaryKey(Integer id);

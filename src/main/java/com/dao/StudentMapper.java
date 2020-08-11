@@ -24,6 +24,9 @@ public interface StudentMapper {
 
     // 根据关键字(学号、姓名)查询学生
     List<Student> selectStuBykeyword(@Param("keyword") String keyword);
+
+    // 批量插入学生
+    int insertBatchStuByExcel(@Param("list") List<Student> students);
     // 下面逆向工程
 
     // 查询学生的数量

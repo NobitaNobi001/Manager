@@ -17,7 +17,7 @@
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
-    <script type="text/javascript" src="static/layer/layer.js"></script>
+    <script type="text/javascript" src="static/layui/layui.js"></script>
 </head>
 <body>
 <header>

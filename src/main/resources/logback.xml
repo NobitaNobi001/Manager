@@ -19,5 +19,5 @@
 
     <!-- 根据特殊需求指定局部日志级别 -->
     <!--要查看sql语句用debug级别，因为全局是info级别-->
-    <logger name="com.dao" level="DEBUG"/>
+    <logger name="mybatis.sql" level="DEBUG"></logger>
 </configuration>

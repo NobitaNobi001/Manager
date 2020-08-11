@@ -15,11 +15,11 @@
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
-    <link rel="stylesheet" type="text/css" href="static/layer/mobile/need/layer.css"/>
+    <link rel="stylesheet" type="text/css" href="static/layui/css/layui.css" media="all">
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
-    <script type="text/javascript" src="static/layer/layer.js"></script>
+    <script type="text/javascript" src="static/layui/layui.js"></script>
 </head>
 <body>
 <header>
@@ -252,10 +252,9 @@
                                 class="glyphicon glyphicon-plus"></i>新增
                         </button>
                         <button type="button" class="btn btn-danger" style="margin-left:10px;" id="deleteStu__All_Btn">
-                            <i
-                                    class="glyphicon glyphicon-trash"></i>删除
+                            <i class="glyphicon glyphicon-trash"></i>删除
                         </button>
-                        <button type="button" class="btn btn-success" style="margin-left:10px;"><i
+                        <button type="button" class="btn btn-success" style="margin-left:10px;" id="importExcel"><i
                                 class="glyphicon glyphicon-upload"></i>导入学生excel
                         </button>
                     </div>
@@ -284,7 +283,6 @@
                                 <tr>
                                     <td>${index.count+(pageInfo.pageNum-1)*5 }</td>
                                     <td>
-                                        <input type="hidden" name="id" value="${student.id}">
                                         <input type="checkbox" class="check_item">
                                     </td>
                                     <td>${student.stuNumber }</td>
@@ -297,7 +295,7 @@
                                         <button class="btn btn-primary btn-xs edit_btn" edit_id="${student.id }"><i
                                                 class=" glyphicon glyphicon-pencil"></i>修改
                                         </button>
-                                        <button class="btn btn-danger btn-xs delete_btn" delete_id="${student.id }"><i
+                                        <button class="btn btn-danger btn-xs delete_btn"><i
                                                 class=" glyphicon glyphicon-remove"></i>删除
                                         </button>
                                     </td>
@@ -471,6 +469,11 @@
                         notEmpty: {
                             message: '学生学号不能为空'
                         },
+                        regexp: {
+                            regexp: /^\d{10}$/,
+                            message: '学号格式错误'
+
+                        },
                         stringLength: {
                             min: 10,
                             max: 10,
@@ -487,6 +490,38 @@
             }
         });
         getColleges("#checkForm select[name='college']");
+
+        layui.use('upload', function () {
+            var upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: "#importExcel", // 绑定元素
+                url: "admin/insertStuByExcel",// 上传接口
+                accept: "file",// 普通文件
+                acceptMime: "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // 接收的mime类型
+                auto: true,// 自动上传
+                multiple: false,// 取消多文件上传
+                field: "ExcelFile",// 设置字段名
+                exts: 'xls|xlsx',// 允许上传的文件后缀
+                before: function () {
+                    layer.msg('上传中', {icon: 16, shade: 0.01}); // 上传loading
+                },
+                done: function (res) {// 上传完毕回调 res服务器响应信息 index当前文件的索引 upload重新上传的方法
+                    layer.close(layer.index); // 关闭loading
+                    if (res == "导入成功") {
+                        layer.msg("导入成功");
+                        // 重新加载页面
+                        location.reload();
+                    } else {
+                        layer.msg("导入失败，请重新上传")
+                    }
+                },
+                error: function (index, upload) {// 请求异常回调
+                    layer.confirm("上传文件格式错误，请重新上传", {btn: ['重新上传', '取消上传'], skin: 'layui-layer-molv'}, function () {
+
+                    })
+                }
+            });
+        });
     });
 
     // 给新增按钮绑定单击事件出现模态框
@@ -676,8 +711,8 @@
     $(document).on("click", ".delete_btn", function () {
         // 获取学生姓名
         var stuName = $(this).parents("tr").find("td:eq(3)").text();
-        // 获取学生id
-        var stuId = $(this).attr("delete-id");
+        // 学生学号
+        var stuNumbers = $(this).parents("tr").find("td:eq(2)").text();
         // confirm
         layer.confirm("确认删除【" + stuName + "】吗?一经删除有关学生信息将永远销毁", {
             btn: ['确认', '再想想'],
@@ -685,29 +720,33 @@
             skin: 'layui-layer-molv'
         }, function () {
             $.ajax({
-                url: "admin/deleteStu/" + stuId,
+                url: "admin/deleteStu/" + stuNumbers,
                 type: "DELETE",
                 success: function (result) {
-                    layer.msg(result, {icon: 1, time: 2000}, function () {
-                        // 页面重新加载
-                        location.reload();
-                    });
+                    if (result == "删除成功") {
+                        layer.msg(result, {icon: 1, time: 2000}, function () {
+                            // 页面重新加载分页
+                            location.reload();
+                        });
+                    } else {
+                        layer.msg(result, {icon: 2, time: 2000});
+                    }
                 }
             });
         });
     });
 
-    // 搜索框中的删除按钮
+    // 批量删除
     $("#deleteStu__All_Btn").click(function () {
         var stuNames = "";
-        var stuIds = "";
+        var stuNumbers = "";
         $.each($(".check_item:checked"), function () {
             stuNames += $(this).parents("tr").find("td:eq(3)").text() + ",";
-            stuIds += $(this).parents("tr").find("td:eq(1) input[type='hidden']").val() + "-";
+            stuNumbers += $(this).parents("tr").find("td:eq(2)").text() + "-";
         });
         //去除末尾多余的符号
         stuNames = stuNames.substring(0, stuNames.length - 1);
-        stuIds = stuIds.substring(0, stuIds.length - 1);
+        stuNumbers = stuNumbers.substring(0, stuNumbers.length - 1);
         layer.confirm("确认删除【" + stuNames + "】吗?一经删除有关学生信息将不可回撤", {
             btn: ['确认', '再想想'],
             icon: 0,
@@ -715,13 +754,19 @@
             title: '提示'
         }, function () {
             $.ajax({
-                url: "admin/deleteStu/" + stuIds,
+                url: "admin/deleteStu/" + stuNumbers,
                 type: "DELETE",
                 success: function (result) {
-                    layer.msg(result, {icon: 1, time: 2000}, function () {
-                        // 页面重新加载
-                        location.reload();
-                    });
+                    if (result == "删除成功") {
+                        layer.msg(result, {icon: 1, time: 2000}, function () {
+                            // 页面重新加载分页
+                            location.reload();
+                        });
+                    } else {
+                        layer.msg("操作失败", {icon: 2, time: 2000});
+                    }
+                }, error: function () {
+                    layer.msg("服务器繁忙");
                 }
             });
         });

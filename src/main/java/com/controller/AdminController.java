@@ -1,7 +1,10 @@
 package com.controller;
 
 
+import com.Listener.ExportStuListener;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.builder.ExcelReaderBuilder;
+import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.bean.*;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +46,8 @@ public class AdminController {
     private WatcherService watcherService;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private ExportStuListener stuListener;
 
 
     /**
@@ -163,28 +169,40 @@ public class AdminController {
      */
     @RequestMapping("/exportStuRecord")
     public void exportStuRecord(HttpServletResponse response, @RequestParam(value = "college", required = false) Integer collegeId, @RequestParam(value = "major", required = false) String major, @RequestParam(value = "stuClass", required = false) Integer stuClass, @RequestParam(value = "auditState", required = false) String auditState) throws IOException {
-        String collegeName = "";
-        ExcelWriterSheetBuilder sheet = null;
-        response.setContentType("application/vnd.ms-excel");
-        response.setCharacterEncoding("utf-8");
-        String fileName = URLEncoder.encode("湖北文理学院创新学分申报表", "UTF-8");
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
-        ServletOutputStream outputStream = response.getOutputStream();
-        // 创建工作簿
-        ExcelWriterBuilder writeWordBook = EasyExcel.write(outputStream, Record.class);
-        // 获取工作表对象
-        if (collegeId != -1) {
-            collegeName = CollegeName.getTableName(collegeId);
+        try {
+            String collegeName = "";
+            ExcelWriterSheetBuilder sheet = null;
+            response.setContentType("application/vnd.ms-excel");
+            response.setCharacterEncoding("utf-8");
+            String fileName = URLEncoder.encode("湖北文理学院创新学分申报表", "UTF-8");
+            response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+            ServletOutputStream outputStream = response.getOutputStream();
+            // 创建工作簿
+            ExcelWriterBuilder writeWordBook = EasyExcel.write(outputStream, Record.class);
+            // 获取工作表对象
+            if (collegeId != -1) {
+                collegeName = CollegeName.getTableName(collegeId);
+            }
+            if (collegeName != "") {
+                sheet = writeWordBook.sheet(collegeName);
+            } else {
+                sheet = writeWordBook.sheet("申报记录");
+            }
+            // 准备数据 从service中查询
+            List<Record> records = recordService.getAllRecordToExport(collegeId, major, stuClass, auditState);
+            // 写
+            sheet.doWrite(records);
+        } catch (Exception e) {
+            // 重置response
+            response.reset();
+            response.setContentType("application/json");
+            response.setCharacterEncoding("utf-8");
+            Map<String, String> map = new HashMap<String, String>();
+            map.put("status", "failure");
+            map.put("message", "下载文件失败" + e.getMessage());
+            response.getWriter().println(objectMapper.writeValueAsString(map));
+            e.printStackTrace();
         }
-        if (collegeName != "") {
-            sheet = writeWordBook.sheet(collegeName);
-        } else {
-            sheet = writeWordBook.sheet("申报记录");
-        }
-        // 准备数据 从service中查询
-        List<Record> records = recordService.getAllRecordToExport(collegeId, major, stuClass, auditState);
-        // 写
-        sheet.doWrite(records);
     }
 
     /**
@@ -213,22 +231,31 @@ public class AdminController {
      * @Description: 删除学生信息
      * @return:
      */
-    @RequestMapping(value = "/deleteStu/{StuIds}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/deleteStu/{StuNumbers}", method = RequestMethod.DELETE)
     @ResponseBody
-    public String deleteStu(@PathVariable("StuIds") String StuIds) {
+    public String deleteStu(@PathVariable("StuNumbers") String StuNumbers) {
         // 判断是批量删除还是单个删除
-        if (StuIds.contains("-")) {//批量删除
-            String[] id_arr = StuIds.split("-");
+        if (StuNumbers.contains("-")) {//批量删除
+            String[] stuNumber_arr = StuNumbers.split("-");
             List<Integer> list = new ArrayList<>();
-            for (String id : id_arr) {
-                list.add(Integer.parseInt(id));
+            for (String stuNumber : stuNumber_arr) {
+                list.add(Integer.parseInt(stuNumber));
             }
-            adminService.deleteStuBatch(list);
-            return "删除成功";
+            System.out.println(list);
+            int count = adminService.deleteStuBatch(list);
+            if (count == list.size()) {
+                return "删除成功";
+            } else {
+                return "删除失败";
+            }
         } else {//单个删除员工
-            int id = Integer.parseInt(StuIds);
-            adminService.deleteStu(id);
-            return "删除成功";
+            int stuNumber = Integer.parseInt(StuNumbers);
+            int count = adminService.deleteStu(stuNumber);
+            if (count == 1) {
+                return "删除成功";
+            } else {
+                return "删除失败";
+            }
         }
     }
 
@@ -243,8 +270,7 @@ public class AdminController {
         boolean flag = adminService.checkStuNumberISExist(stuNumber);
         Map<String, Boolean> map = new HashMap();
         map.put("valid", flag);
-        String result = objectMapper.writeValueAsString(map);
-        return result;
+        return objectMapper.writeValueAsString(map);
     }
 
 
@@ -270,9 +296,14 @@ public class AdminController {
      * @return: void
      */
     @RequestMapping("/insertStuByExcel")
-    public void insertStuByExcel() {
-
+    @ResponseBody
+    public String insertStuByExcel(@RequestParam("ExcelFile") MultipartFile uploadExcel) throws IOException {
+        // 工作簿
+        ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), StuExcel.class, stuListener);
+        // 工作表
+        ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
+        // 读
+        sheet.doRead();
+        return "导入成功";
     }
-
-
 }
