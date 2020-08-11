@@ -1,11 +1,17 @@
 package com.bean;
 
+import org.springframework.context.annotation.Scope;
+
+
 public class Credit {
     private Integer id;
 
     private Integer stuNumber;
 
     private Double sumCredit;
+
+    public Credit() {
+    }
 
     public Credit(Integer stuNumber, Double auditCredit) {
         this.stuNumber = stuNumber;

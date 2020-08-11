@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.CollegeStuMapper">
 
+
     <resultMap id="BaseResultMap" type="com.bean.Student">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
@@ -9,9 +10,60 @@
         <result column="college_id" property="collegeId"/>
         <result column="stu_class" property="className" jdbcType="VARCHAR"/>
         <result column="major" property="major"></result>
-        <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey" column="college_id"></association>
-        <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber" column="stu_number"></association>
+        <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey"
+                     column="college_id"></association>
+        <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber"
+                     column="stu_number"></association>
     </resultMap>
+    <insert id="insertSelective">
+        insert into ${tableName}
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="student.collegeId != null">
+                college_id,
+            </if>
+            <if test="student.stuNumber != null">
+                stu_number,
+            </if>
+            <if test="student.stuName != null">
+                stu_name,
+            </if>
+            <if test="student.major != null">
+                major,
+            </if>
+            <if test="student.className != null">
+                stu_class,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="student.collegeId != null">
+                #{student.collegeId,jdbcType=INTEGER},
+            </if>
+            <if test="student.stuNumber != null">
+                #{student.stuNumber,jdbcType=INTEGER},
+            </if>
+            <if test="student.stuName != null">
+                #{student.stuName,jdbcType=VARCHAR},
+            </if>
+            <if test="student.major != null">
+                #{student.major,jdbcType=VARCHAR},
+            </if>
+            <if test="student.className != null">
+                #{student.className,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteStuByStuNumber">
+    delete from ${tableName}
+    where stu_number = #{stuNumber,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteStuBatchByList">
+        delete from ${tableName} where stu_number in
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item,jdbcType=INTEGER}
+        </foreach>
+    </delete>
 
     <!--根据学院名来查找学生的学号-->
     <select id="selectStuNumberWithCollegeName" resultType="java.lang.Integer">
@@ -64,11 +116,38 @@
 
     <!--根据专业得到班级名-->
     <select id="getAllClass" resultType="java.lang.String">
-        select distinct stu_class from ${tableName} where major=#{major} order by stu_class asc
+        select distinct stu_class from ${tableName} where
+        <if test="major!=null and major!='' and major!='-1'.toString()">
+            major=#{major}
+        </if>
+        order by stu_class asc
     </select>
 
-    <select id="conditionSearch" resultMap="BaseResultMap">
-        select * from ${tableName} where major = #{major,jdbcType=VARCHAR} and stu_class = #{stuClass}
+    <select id="selectStuNumber" resultType="java.lang.Integer">
+        select stu_number from ${tableName}
+        <trim prefix="where" suffixOverrides="and">
+            <if test="major!=null and major!='' and major!='-1'.toString() ">
+                major=#{major} and
+            </if>
+            <if test="stuClass!=null and stuClass!='' and stuClass!='-1'.toString() ">
+                stu_class=#{stuClass}
+            </if>
+        </trim>
     </select>
 
+    <select id="selectStuNumberByKeyword" resultType="java.lang.Integer">
+        select stu_number from ${tableName}
+        <trim prefix="where" suffixOverrides="and">
+            <if test="major!=null and major!='' and major!='-1'.toString() ">
+                major=#{major} and
+            </if>
+            <if test="stuClass!=null and stuClass!='' and stuClass!='-1'.toString() ">
+                stu_class=#{stuClass}
+            </if>
+            <if test="keyword!=null and keyword!=''">
+                or stu_number like concat ("%",#{keyword},"%") or
+                stu_name like concat ("%",#{keyword},"%")
+            </if>
+        </trim>
+    </select>
 </mapper>

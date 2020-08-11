@@ -3,20 +3,21 @@
         PUBLIC "-/com.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
     <settings>
+        <!--自增主键-->
+        <setting name="useGeneratedKeys" value="true"/>
         <!--开启驼峰命名法-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <!--懒加载-->
-        <setting name="lazyLoadingEnabled" value="true"/>
-        <setting name="aggressiveLazyLoading" value="false"/>
-
-        <!--开启日志-->
-        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!--开启缓存 禁止懒加载-->
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <!--日志-->
+        <setting name="logPrefix" value="mybatis.sql."/>
     </settings>
     <!--分页插件-->
     <plugins>
-        <plugin interceptor="com.github.pagehelper.PageInterceptor"></plugin>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <property name="reasonable" value="true"/>
+        </plugin>
     </plugins>
-
 </configuration>

@@ -54,7 +54,6 @@
                     <li><a href="${APP_PATH}/admin/stuManager">学生管理</a></li>
                     <li><a href="${APP_PATH}/admin/teaManager">教师管理</a></li>
                     <li><a href="${APP_PATH}/admin/watManager">督查管理</a></li>
-                    <li><a href="${APP_PATH}/admin/collegeManager">学院管理</a></li>
                 </ul>
             </div>
             <div class="main-right right">

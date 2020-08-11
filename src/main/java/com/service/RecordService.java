@@ -31,11 +31,10 @@ public class RecordService {
 
     /**
      * 根据学号批量查询出已审核的学生申报记录
-     *
      * @param stuNumbers
      * @return
      */
-    public List<Record> getAllAuditRecords(List<Integer> stuNumbers) {
+    public List<Record> getAllAuditRecords(List<Integer> stuNumbers){
         List<Record> stuRecords = recordMapper.findAllAuditBystuNumbers(stuNumbers);
 
         return stuRecords;
@@ -75,7 +74,6 @@ public class RecordService {
 
     /**
      * 根据主键查找记录
-     *
      * @param id
      * @return
      */
@@ -83,16 +81,9 @@ public class RecordService {
         return recordMapper.selectByPrimaryKey(id);
     }
 
-    public Integer selectCountRecord() {
+    public Integer selectCountRecord(){
         return recordMapper.countByExample(null);
     }
 
-    /**
-     * 查出所有记录数
-     * @return
-     */
-    public List<Record> selectAllRecords() {
-        return recordMapper.selectByExample(null);
-    }
 
 }

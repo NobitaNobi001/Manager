@@ -4,12 +4,11 @@ import com.bean.Student;
 import com.bean.StudentExample;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface StudentMapper {
     //根据学号查询密码
     Student selectUPByStuNumber(Integer stuNumber);
-
-    //根据主键来查询学生
-    Student selectByPrimaryKey(Integer id);
 
     //根据学号来查询学生
     Student selectStudentByStuNumber(Integer stuNumber);
@@ -23,5 +22,33 @@ public interface StudentMapper {
     //根据id来查询major专业
     String selectMajorBystuNumber(@Param("stuNumber") Integer stuNumber);
 
-    Integer countByExample(StudentExample example);
+    // 根据关键字(学号、姓名)查询学生
+    List<Student> selectStuBykeyword(@Param("keyword") String keyword);
+
+    // 批量插入学生
+    int insertBatchStuByExcel(@Param("list") List<Student> students);
+    // 下面逆向工程
+
+    // 查询学生的数量
+    long countByExample(StudentExample example);
+
+    int deleteByExample(StudentExample example);
+
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(Student record);
+
+    int insertSelective(Student record);
+
+    List<Student> selectByExample(StudentExample example);
+
+    Student selectByPrimaryKey(Integer id);
+
+    int updateByExampleSelective(@Param("record") Student record, @Param("example") StudentExample example);
+
+    int updateByExample(@Param("record") Student record, @Param("example") StudentExample example);
+
+    int updateByPrimaryKeySelective(Student record);
+
+    int updateByPrimaryKey(Student record);
 }

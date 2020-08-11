@@ -120,24 +120,38 @@
       <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="stuNumber != null" >
+      <if test="stuNumber != null">
         #{stuNumber,jdbcType=INTEGER},
       </if>
-      <if test="sumCredit != null" >
+      <if test="sumCredit != null">
         #{sumCredit,jdbcType=DOUBLE},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.bean.CreditExample" resultType="java.lang.Integer" >
+  <insert id="insertBatchCreditByExcel" parameterType="java.util.List">
+    insert into credit
+    (
+    stu_number,
+    sum_credit
+    )
+    values
+    <foreach collection="list" item="credit" index="index" separator=",">
+      (
+      #{credit.stuNumber},
+      #{credit.sumCredit}
+      )
+    </foreach>
+  </insert>
+  <select id="countByExample" parameterType="com.bean.CreditExample" resultType="java.lang.Integer">
     select count(*) from credit
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause"/>
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update credit
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
       <if test="record.stuNumber != null" >

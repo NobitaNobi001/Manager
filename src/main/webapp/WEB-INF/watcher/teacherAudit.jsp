@@ -7,7 +7,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
@@ -29,17 +28,6 @@
     <%--引入jQuery外部文件--%>
     <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="${APP_PATH}/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
-    <%--修改弹出框的默认宽度--%>
-    <style type="text/css">
-        .popover{
-            width: auto;
-            height: auto;
-            max-height: 800px;
-            max-width: 800px;
-        }
-    </style>
-
 </head>
 <body>
 <header>
@@ -71,6 +59,7 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
+                    <li><a href="${APP_PATH}/watcher/stuCredit">学生学分</a></li>
                     <li><a href="${APP_PATH}/watcher/watAudit">教师审核</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="${APP_PATH}/watcher/watProfile">个人信息</a></li>
@@ -84,19 +73,7 @@
                     <div class="action">
                         <div>
                             <select name="college" id="college" onchange="to_page(1)">
-                                <c:choose>
-                                    <c:when test="${watcher.collegeId eq 19}">
-                                        <option value="-1">请选择院系</option>
-                                        <c:forEach items="${applicationScope.colleges }" var="college">
-                                            <c:if test="${college.id ne 19}">
-                                                <option value="${college.id }">${college.name }</option>
-                                            </c:if>
-                                        </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <option value="${watcher.collegeId }">${watcher.college.name }</option>
-                                    </c:otherwise>
-                                </c:choose>
+
                             </select>
                         </div>
                         <div>
@@ -143,5 +120,137 @@
 </body>
 </html>
 <%--引入构建分页信息和页码控制的js文件--%>
-<script type="text/javascript" src="${APP_PATH}/static/js/common/tableInfo.js"></script>
-<script type="text/javascript" src="${APP_PATH}/static/js/watcher/teacherAudit.js"></script>
+<script type="text/javascript" src="${APP_PATH}/static/js/tableInfo.js"></script>
+<script type="text/javascript">
+
+    $(function () {
+
+        // 若是校级督察就将十八个学院全部添加到下拉框中
+        if ("${watcher.collegeId }" == 19) {
+            getColleges("#college");
+
+        } else {
+            $("select[name='college']").append(("<option value='${watcher.collegeId }'>${watcher.college.name }</option>"));
+        }
+
+        //去到查询数据的第一页
+        to_page(1);
+    });
+
+    function to_page(pn) {
+
+        $.ajax({
+            url: "${APP_PATH}/record/auditInfo",
+            data: {
+                "pn": pn,
+                "collegeId": "${watcher.collegeId }" == 19 ? $('#college option:selected').val() : "${watcher.collegeId }"
+            },
+            type: "GET",
+            success: function (result) {
+
+                //清空table表格样式
+                $("#stuDeclare tbody").empty();
+                //清空分页条数据
+                $("#page_nav_area").empty();
+                //清空分页信息
+                $("#page_info_area").empty();
+
+                if (result.code == 100) {   //返回成功
+                    //1.构建申报管理表格
+                    build_declare_table(result);
+                    //2.解析分页条信息
+                    build_page_nav(result);
+                    //3.解析分页信息
+                    build_page_info(result);
+                } else if (result.code == 200) {
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#stuDeclare tbody");
+                }
+
+            }
+        });
+    }
+
+    function build_declare_table(result) {
+        //清空table表格样式
+        // $("#stuDeclare tbody").empty();
+        //拿到后台返回的数据
+        var stuRecordInfo = result.extend.pageInfo;
+        //遍历数据
+        $.each(stuRecordInfo.list, function (index, item) {
+
+            //序号
+            var stuCount = $("<td></td>").append(index + 1 + (stuRecordInfo.pageNum - 1) * 5);
+            //学号
+            var stuNumber = $("<td></td>").append(item.stuNumber);
+            //姓名
+            var stuName = $("<td></td>").append(item.stuName);
+            //申报类别
+            var applySort = $("<td></td>").append(item.sort);
+            //申报名称
+            var applyName = $("<td></td>").append(item.applyName);
+            //申报学分
+            var applyCredit = $("<td></td>").append(item.applyCredit);
+            //申报材料
+            var applyBtn = $("<td></td>").append($("<a></a>").addClass("btn btn-default").attr("apply-id", item.id).attr("tabindex", 0).attr("role", "button").attr("data-toggle","popover").attr("placement","right").append("查看").attr("url","applyImg/"+item.picture));
+            // var applyBtn = $("<td></td>").append($("<button>查看</button>").addClass("btn btn-default"));
+            //审核学分
+            var auditCredit = $("<td></td>").append(item.auditCredit);
+            //审核教师
+            var auditTea = $("<td></td>").append(item.auditTea);
+
+            //审核状态
+            var auditState = $("<td></td>").append($("<a></a>").addClass("btn btn-success btn-2x").append(item.auditState));
+
+            $("<tr></tr>").append(stuCount)
+                .append(stuNumber)
+                .append(stuName)
+                .append(applySort)
+                .append(applyName)
+                .append(applyCredit)
+                .append(applyBtn)
+                .append(auditCredit)
+                .append(auditTea)
+                .append(auditState)
+                .appendTo("#stuDeclare tbody");
+
+        });
+    }
+
+    // $("apply-id").popover({
+    //     trigger:'focus',
+    //     html:true,
+    //     content:function () {
+    //         console.log($(this));
+    //         var url = $(this).attr("url");
+    //         var $div = $("<div style='width: 700px; height:500px;'></div>");
+    //         var $img = $("<img style='width: 700px; height:500px;'/>");
+    //         $img.attr("src",url);
+    //         $img.appendTo($div);
+    //         return $div;
+    //     }
+    // });
+
+    //获取学院
+    function getColleges(sel) {
+        //清空下拉框样式及内容
+        $(sel).empty();
+        $.ajax({
+            url: "${APP_PATH}/college/getColleges",
+            type: "GET",
+            success: function (result) {
+                // 显示学院信息在下拉列表中
+                $.each(result.extend.colleges, function () {
+
+                    if (this.id != 19) {
+                        var option = $("<option></option>").append(this.name).attr("value", this.id);
+                        option.appendTo(sel);
+                    }
+
+                });
+            },
+            error: function () {
+                alert("服务器繁忙")
+            }
+        })
+    }
+</script>

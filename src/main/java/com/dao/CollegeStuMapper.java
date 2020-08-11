@@ -28,9 +28,25 @@ public interface CollegeStuMapper {
     // 模糊查询
     List<Student> selectStuByLikeSearch(@Param("tableName") String tableName, @Param("keyword") String keyword);
 
+    //根据学院查到专业
     List<String> getAllMajor(@Param("tableName") String tableName);
 
+    // 查询所在学院的班级
     List<String> getAllClass(@Param("tableName") String tableName, @Param("major") String major);
 
-    List<Student> conditionSearch(@Param("tableName") String tableName,@Param("major") String major,@Param("stuClass") String stuClass);
+    // 根据学院 专业  班级 查询学生学号
+    List<Integer> selectStuNumber(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") Integer stuClass);
+
+    // 根据学院 专业 班级 关键字来查询学生学号
+    List<Integer> selectStuNumberByKeyword(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") Integer stuClass, @Param("keyword") String keyword);
+
+    // 根据学号删除当个学生
+    int deleteStuByStuNumber(@Param("tableName") String tableName, @Param("stuNumber") Integer stuNumber);
+
+    // 新增学生
+    int insertSelective(@Param("tableName") String tableName, @Param("student") Student student);
+
+    // 批量删除
+    int deleteStuBatchByList(@Param("tableName") String tableName, @Param("list") List<Integer> list);
+
 }

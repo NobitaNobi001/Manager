@@ -107,21 +107,11 @@ public class AdminController {
     }
 
     /**
-     * 学院管理界面
-     * @return
-     */
-    @RequestMapping("/collegeManager")
-    public String collegeManager(){
-
-        return "admin/collegeManager";
-    }
-
-    /**
      * 督察个人信息界面
      * @return
      */
     @RequestMapping("/admProfile")
-    public String adminProfile(){
+    public String adminProdile(){
 
         return "admin/profile";
     }

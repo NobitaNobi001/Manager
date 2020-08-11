@@ -2,7 +2,6 @@ package com.service;
 
 import com.bean.Student;
 import com.bean.Watcher;
-import com.bean.WatcherExample;
 import com.dao.CollegeStuMapper;
 import com.dao.WatcherMapper;
 import com.github.pagehelper.PageHelper;
@@ -76,7 +75,6 @@ public class WatcherService {
 
     /**
      * 批量查询督察
-     *
      * @return
      */
     public List<Watcher> selectWatchers() {
@@ -85,9 +83,8 @@ public class WatcherService {
 
     /**
      * 督查学院映射到学院学生表，模糊查询
-     *
      * @param collegeId 学院id
-     * @param keyword   关键词
+     * @param keyword 关键词
      * @return
      */
     public List<Student> selectStuBycondition(int collegeId, String keyword) {
@@ -98,92 +95,5 @@ public class WatcherService {
         return collegeStuMapper.selectStuByLikeSearch(tableName, keyword);
     }
 
-    /**
-     * 校验用户名是否已经存在
-     *
-     * @param watcherNumber
-     * @return
-     */
-    public boolean checkWatcher(Integer watcherNumber) {
 
-        //创建一个watcherExample对象
-        WatcherExample watcherExample = new WatcherExample();
-
-        WatcherExample.Criteria criteria = watcherExample.createCriteria();
-
-        criteria.andWatcherNumberEqualTo(watcherNumber);
-
-        return watcherMapper.countByExample(watcherExample) == 0;
-
-    }
-
-    /**
-     * 新增单个督察
-     *
-     * @param watcher 单个督察信息
-     */
-    public void insertWatcher(Watcher watcher) {
-        watcherMapper.insertSelective(watcher);
-    }
-
-    /**
-     * 根据主键删除督察信息
-     *
-     * @param id
-     */
-    public void deleteWatcher(Integer id) {
-        watcherMapper.deleteByPrimaryKey(id);
-    }
-
-    /**
-     * 批量删除
-     *
-     * @param id
-     */
-    public void batchDeleteWathcers(List<Integer> id) {
-
-        WatcherExample watcherExample = new WatcherExample();
-
-        WatcherExample.Criteria criteria = watcherExample.createCriteria();
-
-        criteria.andIdIn(id);
-
-        watcherMapper.deleteByExample(watcherExample);
-    }
-
-    /**
-     * 根据主键更新督察信息
-     *
-     * @param watcher
-     */
-    public void updateWatcherByPrimaryKey(Watcher watcher) {
-        watcherMapper.updateByPrimaryKeySelective(watcher);
-    }
-
-    /**
-     * 条件查询
-     *
-     * @param collegeId
-     * @param keywords
-     * @return
-     */
-    public List<Watcher> findWathcerWithCondition(Integer collegeId, String keywords) {
-
-        List<Watcher> watchers = watcherMapper.selectWatcherWithCondition(collegeId, keywords);
-
-        if (watchers.size() == 0) {
-            return null;
-        } else {
-            return watchers;
-        }
-
-    }
-
-    public boolean checkEmailByWatcher(Integer number, String email) {
-        return watcherMapper.selectEmailByWatcher(number, email) == 0;
-    }
-
-    public void updatePasswordByWatcherNumber(Integer number,String password){
-        watcherMapper.updatePasswordByWatcherNumber(number,password);
-    }
 }
