@@ -24,6 +24,7 @@
         <!--指定mybatis配置文件的位置-->
         <property name="mapperLocations" value="classpath:mapper/*.xml"/>
     </bean>
+
     <!--扫描所有mapper接口的实现，让这些mapper可以自动注入-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.dao"/>

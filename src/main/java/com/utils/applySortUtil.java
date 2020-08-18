@@ -1,6 +1,9 @@
 package com.utils;
 
-public class applySort {
+/**
+ * 申报类别的工具类
+ */
+public class applySortUtil {
 
     public static String getApplyName(String number){
 

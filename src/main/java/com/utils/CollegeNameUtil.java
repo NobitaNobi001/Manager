@@ -1,10 +1,9 @@
 package com.utils;
 
 /**
- * @author hbk
- * @date 2020/7/6
- **/
-public class CollegeName {
+ * 获取学院对应数据表的工具类
+ */
+public class CollegeNameUtil {
 
     /**
      * 获取学院的表名

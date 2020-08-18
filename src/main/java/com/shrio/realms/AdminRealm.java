@@ -4,10 +4,14 @@ import com.bean.Admin;
 
 import com.service.AdminService;
 import com.shrio.token.LoginToken;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class AdminRealm extends AuthorizingRealm {
@@ -25,7 +29,7 @@ public class AdminRealm extends AuthorizingRealm {
         LoginToken token = (LoginToken) authenticationToken;
 
         //根据用户名进行查询stuNumber对应的记录
-        Admin admin = adminService.selectUPByAdminNumber(Integer.valueOf(token.getUsername()));
+        Admin admin = adminService.selectAdminByAdminNumber(Integer.valueOf(token.getUsername()));
 
         //用户不存在
         if (admin == null) {
@@ -44,7 +48,14 @@ public class AdminRealm extends AuthorizingRealm {
         //3.realmName 当前realm对象的name调用父类的getName方法即可
         String realmName = getName();
         //4.盐值
-        //ByteSource credentialsSalt = ByteSource.Util.bytes(token.getUsername());
+//        ByteSource credentialsSalt = ByteSource.Util.bytes(token.getUsername());
+
+        //获取当前用户
+        Subject currentUser = SecurityUtils.getSubject();
+        //获取当前用户的session对象
+        Session session = currentUser.getSession();
+        //将用户信息存入session对象中
+        session.setAttribute("admin",admin);
 
         //构建AuthenticationInfo对象并返回
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, realmName);

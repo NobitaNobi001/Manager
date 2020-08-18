@@ -8,12 +8,15 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
+
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
+
     <link rel="icon" type="image/png" href="static/images/logo.png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
+
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
@@ -26,7 +29,7 @@
             <div class="top clear">
                 <div class="top-left left">
                     <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
                     <a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.stuName}(${student.stuNumber})</a>
@@ -101,7 +104,6 @@
                     <!-- 修改密码 end -->
                 </div>
             </div>
-        </div>
 </main>
 <footer>
     <div id="footer">
@@ -128,7 +130,6 @@
             // enabled 字段值有变化就触发验证 disabled提交之后才触发
             live: 'disabled提交之后才触发',
             submitButtons: '#submitBtn',
-
             fields: {
                 oldPassword: {
                     message: '用户名验证失败',
@@ -211,12 +212,10 @@
             }
         });
     });
-
     // 重置表单
     $('#resetBtn').click(function () {
         $('#updatePwdForm').data('bootstrapValidator').resetForm(true);
     });
-
     // 点击密码输入框后面的小眼睛将password改为text
     $("#eye").click(function () {
         var flag = $(this).hasClass("glyphicon-eye-open");

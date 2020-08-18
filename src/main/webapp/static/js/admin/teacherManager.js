@@ -1,8 +1,3 @@
-$(function () {
-
-    to_page(1);
-});
-
 //点击新增按钮时弹出模态框
 $("#add_teacher_btn").click(function () {
 

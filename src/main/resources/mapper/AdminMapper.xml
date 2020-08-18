@@ -11,15 +11,10 @@
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
     </resultMap>
-    <!--查询账密-->
-    <resultMap id="UserNameAndPassword" type="com.bean.Admin">
-        <result column="admin_number" property="adminNumber" jdbcType="INTEGER"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-    </resultMap>
 
     <resultMap id="AdminWithCollege" type="com.bean.Admin">
         <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="tea_number" property="adminNumber" jdbcType="INTEGER"/>
+        <result column="admin_number" property="adminNumber" jdbcType="INTEGER"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="admin_name" property="adminName" jdbcType="VARCHAR"/>
         <result column="college_id" property="collegeId" jdbcType="INTEGER"/>
@@ -98,11 +93,6 @@
     <sql id="WithCollege_Column_List">
     a.id, admin_number, password, admin_name, a.college_id, gender,  phone, email,c.id,c.name
 </sql>
-
-    <!--根据管理员账号查询密码-->
-    <select id="selectUPByAdminNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
-    select admin_number,password from admin_info where admin_number = #{adminNumber,jdbcType=INTEGER}
-  </select>
 
     <!--根据管理员账号查询信息-->
     <select id="selectAdminByAdminNumber" resultMap="AdminWithCollege" parameterType="java.lang.Integer">
@@ -298,4 +288,15 @@
       email = #{email,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <select id="selectEmailByAdmin" resultType="java.lang.Integer">
+        select count(*) from admin_info
+        where email = #{email} and admin_number = #{number}
+    </select>
+
+    <update id="updatePasswordByAdminNumber" >
+        update admin_info
+        set password = #{password,jdbcType=VARCHAR}
+        where admin_number = #{number,jdbcType=INTEGER}
+    </update>
 </mapper>

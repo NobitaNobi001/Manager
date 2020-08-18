@@ -9,13 +9,16 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
+
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
+
     <link rel="icon" type="image/png" href="static/images/logo.png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
     <link rel="stylesheet" type="text/css" href="static/layui/css/layui.css" media="all">
+
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
@@ -28,10 +31,10 @@
             <div class="top clear">
                 <div class="top-left left">
                     <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="admin/admProfile">admin@qq.com</a>
+                    <a href="admin/admProfile">${admin.adminName}(${admin.adminNumber})</a>
                     <a href="logout">退出</a>
                 </div>
             </div>
@@ -60,7 +63,10 @@
                         <label class="col-sm-2 control-label" for="addStuCollege">学院</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="collegeId" id="addStuCollege">
-                                <option value="">请选择学院</option>
+                                <option value="-1">请选择学院</option>
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <option value="${college.id }">${college.name }</option>
+                                </c:forEach>
                             </select>
                         </div>
                     </div>
@@ -137,7 +143,10 @@
                         <label class="col-sm-2 control-label" for="updateStuCollege">学院</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="collegeId" id="updateStuCollege">
-                                <option value="">请选择学院</option>
+                                <option value="-1">请选择学院</option>
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <option value="${college.id }">${college.name }</option>
+                                </c:forEach>
                             </select>
                         </div>
                     </div>
@@ -219,12 +228,15 @@
             </div>
             <div class="main-right right">
                 <!-- 学分列表 start -->
-                <center class="student">
-                    <h4><i class="glyphicon glyphicon-th"></i>学生列表</h4>
+                <div class="student">
+                    <h4>学生列表</h4>
                     <form class="form-inline pull-left" action="admin/get/student.html" method="post" id="checkForm">
                         <div class="form-group">
                             <select name="college" class="form-control">
                                 <option value="-1">请选择学院</option>
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <option value="${college.id }">${college.name }</option>
+                                </c:forEach>
                             </select>
                         </div>
                         <div class="form-group">
@@ -275,7 +287,7 @@
                         <tbody>
                         <c:if test="${empty requestScope.pageInfo.list }">
                             <tr>
-                                <td colspan="9" align="center">抱歉！没有查询到您要的数据！</td>
+                                <td colspan="9" align="center">暂无数据记录</td>
                             </tr>
                         </c:if>
                         <c:if test="${!empty requestScope.pageInfo.list }">
@@ -345,10 +357,10 @@
                             </ul>
                         </nav>
                     </center>
+                </div>
             </div>
             <!-- 学分列表 end -->
         </div>
-    </div>
     </div>
 </main>
 <footer>
@@ -420,7 +432,6 @@
                 }
             }
         });
-
         // 新增模态框表单验证
         $('#StuAddModal form').bootstrapValidator({
             // 通用提示语
@@ -472,7 +483,6 @@
                         regexp: {
                             regexp: /^\d{10}$/,
                             message: '学号格式错误'
-
                         },
                         stringLength: {
                             min: 10,
@@ -489,8 +499,7 @@
                 }
             }
         });
-        getColleges("#checkForm select[name='college']");
-
+        // getColleges("#checkForm select[name='college']");
         layui.use('upload', function () {
             var upload = layui.upload;
             var uploadInst = upload.render({
@@ -517,13 +526,11 @@
                 },
                 error: function (index, upload) {// 请求异常回调
                     layer.confirm("上传文件格式错误，请重新上传", {btn: ['重新上传', '取消上传'], skin: 'layui-layer-molv'}, function () {
-
                     })
                 }
             });
         });
     });
-
     // 给新增按钮绑定单击事件出现模态框
     $("#stu_add_modal_btn").click(function () {
         // 表单重置
@@ -535,8 +542,6 @@
             backdrop: "static"
         });
     });
-
-
     // 新增模态框学院改变后重新加载专业
     $("#StuAddModal select[name='collegeId']").change(function () {
         var collegeCode = $("#StuAddModal select[name='collegeId']").val();
@@ -544,14 +549,12 @@
         $("#StuAddModal select[name='className']").empty();
         $("#StuAddModal select[name='className']").append($("<option></option>").val("").text("请选择班级"));
     });
-
     // 新增模态框专业改变后重新加载班级
     $("#StuAddModal select[name='major']").change(function () {
         var collegeCode = $("#StuAddModal select[name='collegeId']").val();
         var majorCode = $("#StuAddModal select[name='major']").val();
         getClass(collegeCode, majorCode, "#StuAddModal select[name='className']", "");
     });
-
     // 修改模态框学院改变后重新加载专业
     $("#StuUpdateModal select[name='collegeId']").change(function () {
         var collegeCode = $("#StuUpdateModal select[name='collegeId']").val();
@@ -559,14 +562,12 @@
         $("#StuUpdateModal select[name='className']").empty();
         $("#StuUpdateModal select[name='className']").append($("<option></option>").val("").text("请选择班级"));
     });
-
     // 修改模态框专业改变后重新加载班级
     $("#StuUpdateModal select[name='major']").change(function () {
         var collegeCode = $("#StuUpdateModal select[name='collegeId']").val();
         var majorCode = $("#StuUpdateModal select[name='major']").val();
         getClass(collegeCode, majorCode, "#StuUpdateModal select[name='className']", "");
     });
-
     //普通表单学院改变后重新加载专业
     $("#checkForm select[name='college']").change(function () {
         var collegeCode = $("#checkForm select[name='college']").val();
@@ -580,8 +581,6 @@
         var majorCode = $("#checkForm select[name='major']").val();
         getClass(collegeCode, majorCode, "#checkForm select[name='stuClass']", "-1");
     });
-
-
     //获取学院
     function getColleges(ele) {
         $.ajax({
@@ -599,7 +598,6 @@
             dataType: "json"
         })
     }
-
     // 获取专业
     function getMajor(collegeCode, ele, DefaultValue) {
         $(ele).empty();
@@ -617,7 +615,6 @@
             dataType: "json"
         })
     };
-
     //获取班级
     function getClass(collegeCode, majorCode, ele, DefaultValue) {
         $(ele).empty();
@@ -635,7 +632,6 @@
             dataType: "json"
         })
     };
-
     //获取学生信息的ajax显示在更新模态框中
     function getStu(id) {
         $.ajax({
@@ -658,8 +654,6 @@
             dataType: "json"
         });
     }
-
-
     // 给编辑按钮绑定单击事件出现模态框
     $(document).on("click", ".edit_btn", function () {
         // 表单重置
@@ -673,7 +667,6 @@
             backdrop: "static"
         });
     });
-
     // 点击编辑模态框中的密码输入框后面的小眼睛将password改为text
     $("#eye").click(function () {
         var flag = $(this).hasClass("glyphicon-eye-open");
@@ -687,15 +680,12 @@
             $("#StuUpdateModal input[name='password']").attr("type", "password");
         }
     });
-
     // 重置登录密码
     $("#resetPwd").click(function () {
         // 将输入框的密码变成学号（大于8位小于16位）
         var initPwd = $("#StuUpdateModal input[name='stuNumber']").val().substr(4, 6);
         $("#StuUpdateModal input[name='password']").val(initPwd);
     })
-
-
     //全选与全不选功能
     $("#check_All").click(function () {
         var flag = $(this).prop("checked");
@@ -706,7 +696,6 @@
         var flag = $(".check_item:checked").length == $(".check_item").length;
         $("#check_All").prop("checked", flag);
     });
-
     // 表单中删除按钮（单个删除）
     $(document).on("click", ".delete_btn", function () {
         // 获取学生姓名
@@ -735,7 +724,6 @@
             });
         });
     });
-
     // 批量删除
     $("#deleteStu__All_Btn").click(function () {
         var stuNames = "";
@@ -771,7 +759,4 @@
             });
         });
     });
-
 </script>
-
-

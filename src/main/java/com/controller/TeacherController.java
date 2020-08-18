@@ -1,13 +1,10 @@
 package com.controller;
 
 import com.bean.*;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.service.CollegeStuService;
-import com.service.RecordService;
 import com.service.TeacherService;
-import com.utils.CollegeName;
+import com.utils.CollegeNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,72 +27,6 @@ public class TeacherController {
     private TeacherService teacherService;
 
     /**
-     * 教工信息查询并存放到model中
-     *
-     * @param request
-     * @param model
-     */
-    public void teaSelect(HttpServletRequest request, Model model) {
-
-        //获取登陆成功的教工号
-        Integer teaNumber = (Integer) request.getSession().getAttribute("number");
-
-        //根据教工号查找教师信息
-        Teacher teacher = teacherService.selectTeacherByTeaNumber(teaNumber);
-
-        //将查找的教工信息添加到model中
-        model.addAttribute("teacher", teacher);
-    }
-
-    /**
-     * 教师首页
-     *
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping("/teaIndex")
-    public String teaIndex(HttpServletRequest request, Model model) {
-
-        teaSelect(request, model);
-
-        //跳转到教室首页页面
-        return "teacher/teacher";
-    }
-
-    /**
-     * 教师个人信息
-     *
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping("/teaProfile")
-    public String teaProfile(HttpServletRequest request, Model model) {
-
-        teaSelect(request, model);
-
-        //跳转到teaProfile.jsp页面
-        return "teacher/profile";
-    }
-
-    /**
-     * 教师修改密码页面
-     *
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping("/teaPassword")
-    public String teaPassword(HttpServletRequest request, Model model) {
-
-        teaSelect(request, model);
-
-        //跳转到teaPassword.jsp页面
-        return "teacher/password";
-    }
-
-    /**
      * 学生列表
      *
      * @param page
@@ -105,21 +36,14 @@ public class TeacherController {
      */
     @RequestMapping("/stuList")
     public String stuList(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
-        //获取登陆成功的教工号
-        Integer teaNumber = (Integer) request.getSession().getAttribute("number");
 
-        //根据教工号查找教师信息
-        Teacher teacher = teacherService.selectTeacherByTeaNumber(teaNumber);
-
-        //将查找的教工信息添加到model中
-        model.addAttribute("teacher", teacher);
+        Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
 
         //查询教师的学院id得到学院表名称
-        String tableName = CollegeName.getTableName(teacher.getCollegeId());
+        String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
         List<Student> students = teacherService.selectStuByCollegeName(tableName, page, 5);
         PageInfo<Record> info = new PageInfo(students);
         model.addAttribute("info", info);
-
 
         //跳转到stuList页面
         return "teacher/studentList";
@@ -139,43 +63,41 @@ public class TeacherController {
      */
     @RequestMapping("/queryStu")
     public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String stuName, @RequestParam("stuClass") String stuClass, @RequestParam("major") String major, Model model, HttpServletRequest request) {
-        //获取登陆成功的教工号
-        Integer teaNumber = (Integer) request.getSession().getAttribute("number");
 
-        //根据教工号查找教师信息
-        Teacher teacher = teacherService.selectTeacherByTeaNumber(teaNumber);
+        Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
 
-        //将查找的教工信息添加到model中
-        model.addAttribute("teacher", teacher);
-        String tableName = CollegeName.getTableName(teacher.getCollegeId());
+        String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
+
         List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber, stuName, stuClass, page, 5, major);
+
         PageInfo<Record> info = new PageInfo(students);
+
         model.addAttribute("info", info);
+
         return "teacher/studentList";
     }
 
-    @RequestMapping("/declareManager")
-    public String stuDeclareManager(HttpServletRequest request, Model model) {
-
-        teaSelect(request, model);
-
-        //跳转到申报审核页面
-        return "teacher/declareManager";
-    }
 
     /**
      * 更新教工的密码
      *
-     * @param teacher
+     * @param oldPass 旧密码
+     * @param newPass 新密码
+     * @param resPass 重复输入的新密码
+     * @param request
      * @return
      */
-    @RequestMapping(value = "/updatePassword/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/updatePassword/{id}")
     @ResponseBody
-    public Msg updatePassword(Teacher teacher) {
+    public Msg updatePassword(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass, @RequestParam("resPass") String resPass, HttpServletRequest request) {
 
-        //如果要修改的密码和原密码相同
-        if (teacherService.selectByPrimaryKey(teacher.getId()).getPassword().equals(teacher.getPassword())) {
-            return Msg.fail();
+        Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
+
+
+        if (!(newPass.equals(resPass))) {
+            return Msg.fail().add("msg", "两次密码输入不一致!");
+        } else if (!(teacher.getPassword().equals(oldPass))) {
+            return Msg.fail().add("msg", "原密码输入错误!");
         } else {
             teacherService.updateTeacher(teacher);
             return Msg.success();
@@ -188,11 +110,11 @@ public class TeacherController {
      * @param teacher
      * @return
      */
-    @RequestMapping(value = "/updateInfo/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/updateInfo/{id}")
     @ResponseBody
-    public Msg updateInfo(Teacher teacher) {
+    public Msg updateInfo(Teacher teacher,HttpServletRequest request) {
 
-        Teacher teacher1 = teacherService.selectByPrimaryKey(teacher.getId());
+        Teacher teacher1 = (Teacher) request.getSession().getAttribute("teacher");
 
         //如果要修改的电话号码和邮箱都是相同的
         if (teacher1.getEmail().equals(teacher.getEmail()) && teacher1.getPhone().equals(teacher.getPhone()) && teacher1.getGender().equals(teacher.getGender())) {
@@ -200,6 +122,10 @@ public class TeacherController {
         } else {
             //否则更新信息
             teacherService.updateTeacher(teacher);
+
+            Teacher teacher2 = teacherService.selectTeacherByTeaNumber(teacher1.getTeaNumber());
+
+            request.getSession().setAttribute("teacher",teacher2);
 
             return Msg.success();
         }
@@ -211,7 +137,7 @@ public class TeacherController {
      * @param pn
      * @return
      */
-    @RequestMapping(value = "/teachers", method = RequestMethod.GET)
+    @GetMapping(value = "/teachers")
     @ResponseBody
     public Msg selectTeachers(@RequestParam(defaultValue = "1", value = "pn") Integer pn) {
 
@@ -237,7 +163,7 @@ public class TeacherController {
      * @param teaNumber
      * @return
      */
-    @RequestMapping(value = "/checkTeacher", method = RequestMethod.POST)
+    @PostMapping(value = "/checkTeacher")
     @ResponseBody
     public Msg checkTeacher(@RequestParam("teaNumber") Integer teaNumber) {
 
@@ -256,7 +182,7 @@ public class TeacherController {
      * @param teacher
      * @return
      */
-    @RequestMapping(value = "/insertTeacher", method = RequestMethod.POST)
+    @PostMapping(value = "/insertTeacher")
     @ResponseBody
     public Msg insertTeacher(Teacher teacher) {
 
@@ -267,13 +193,14 @@ public class TeacherController {
 
     }
 
+
     /**
      * 删除单个及多个教师信息
      *
      * @param id
      * @return
      */
-    @RequestMapping(value = "/deleteTeacher/{id}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/deleteTeacher/{id}")
     @ResponseBody
     public Msg deleteTeacher(@PathVariable("id") String id) {
 
@@ -286,7 +213,7 @@ public class TeacherController {
             String[] ids = id.split("-");
 
             //存到集合中
-            for(String temp:ids){
+            for (String temp : ids) {
                 delete_ids.add(Integer.valueOf(temp));
             }
 
@@ -307,7 +234,7 @@ public class TeacherController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/getTeacher/{id}", method = RequestMethod.GET)
+    @GetMapping(value = "/getTeacher/{id}")
     @ResponseBody
     public Msg getTeacher(@PathVariable("id") Integer id) {
 
@@ -322,7 +249,7 @@ public class TeacherController {
      * @param teacher
      * @return
      */
-    @RequestMapping(value = "/updateTeacher/{id}", method = RequestMethod.PUT)
+    @PutMapping(value = "/updateTeacher/{id}")
     @ResponseBody
     public Msg updateTeacher(Teacher teacher) {
 
@@ -339,7 +266,7 @@ public class TeacherController {
      * @param keywords  关键字
      * @return
      */
-    @RequestMapping(value = "/searchTeachers", method = RequestMethod.GET)
+    @GetMapping(value = "/searchTeachers")
     @ResponseBody
     public Msg findTeachers(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") Integer collegeId, @RequestParam("keywords") String keywords) {
 

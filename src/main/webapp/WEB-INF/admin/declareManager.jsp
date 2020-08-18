@@ -9,16 +9,29 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
+
     <link rel="icon" type="image/png" href="static/images/logo.png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
+
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="static/layui/layui.js"></script>
+
+    <%--修改弹出框的默认宽度--%>
+    <style type="text/css">
+        .popover{
+            width: auto;
+            height: auto;
+            max-height: 800px;
+            max-width: 800px;
+        }
+    </style>
+
 </head>
 <body>
 <header>
@@ -27,10 +40,10 @@
             <div class="top clear">
                 <div class="top-left left">
                     <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="admin/admProfile">admin@qq.com</a>
+                    <a href="admin/admProfile">${admin.adminName}(${admin.adminNumber})</a>
                     <a href="logout">退出</a>
                 </div>
             </div>
@@ -118,6 +131,11 @@
                         <div class="form-group">
                             <select name="college" class="form-control">
                                 <option value="-1">请选择学院</option>
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <c:if test="${college.id ne 19}">
+                                        <option value="${college.id }">${college.name }</option>
+                                    </c:if>
+                                </c:forEach>
                             </select>
                         </div>
                         <div class="form-group">
@@ -165,9 +183,9 @@
                                 <td>${record.applyName}</td>
                                 <td>${record.date}</td>
                                 <td>
-                                    <button type="button" class="btn btn-default" data-container="body"
+                                    <button type="button" class="btn btn-default apply-btn" data-container="body" url="applyImg/${record.picture }"
                                             data-toggle="popover"
-                                            data-placement="right" name="picture_btn" id="picture_btn">查看图片
+                                            data-placement="top" name="picture_btn" >查看图片
                                     </button>
                                 </td>
                                 <td>${record.applyCredit}</td>
@@ -193,8 +211,8 @@
                         </c:forEach>
                         <c:if test="${empty info.list}">
                             <tr>
-                                <td colspan="10" align="center">
-                                    <div style="font-size:24px;color:red;">抱歉！没有查询到您要的数据！</div>
+                                <td colspan="9" align="center">
+                                    <div>暂无数据记录</div>
                                 </td>
                             </tr>
                         </c:if>
@@ -299,112 +317,4 @@
 </footer>
 </body>
 </html>
-<script type="text/javascript">
-    // 给审核按钮添加样式
-    var arr = $("button[name='state']");
-    $.each(arr, function () {
-        if ($(this).val() == "已通过") {
-            $(this).addClass("btn-success");
-        } else if ($(this).val() == "未审核") {
-            $(this).addClass("btn-primary");
-        } else {
-            $(this).addClass("btn-warning");
-        }
-    })
-
-    $(function () {
-        getColleges();
-    });
-
-    // 学院改变后重新加载专业
-    $(".form-inline select[name='college']").change(function () {
-        var collegeCode = $(".form-inline select[name='college']").val();
-        getMajor(collegeCode);
-    });
-
-    // 专业改变后重新加载班级
-    $(".form-inline select[name='major']").change(function () {
-        var collegeCode = $(".form-inline select[name='college']").val();
-        var majorCode = $(".form-inline select[name='major']").val();
-        getClass(collegeCode, majorCode);
-    });
-
-    // 学院改变后重新加载专业
-    $(".form-horizontal select[name='college']").change(function () {
-        var collegeCode = $(".form-horizontal select[name='college']").val();
-        getMajor(collegeCode);
-    });
-
-    // 专业改变后重新加载班级
-    $(".form-horizontal select[name='major']").change(function () {
-        var collegeCode = $(".form-horizontal select[name='college']").val();
-        var majorCode = $(".form-horizontal select[name='major']").val();
-        getClass(collegeCode, majorCode);
-    });
-
-
-    //获取学院
-    function getColleges() {
-        $.ajax({
-            url: "college/getColleges",
-            type: "GET",
-            success: function (result) {
-                // 显示学院信息在下拉列表中
-                $.each(result, function (index, element) {
-                    if (element.id != 19) {
-                        $("select[name='college']").append($("<option></option>").val(element.id).text(element.name));
-                    }
-                });
-            },
-            dataType: "json"
-        })
-    }
-
-    // 获取专业
-    function getMajor(collegeCode) {
-        $("select[name='major']").empty();
-        $("select[name='major']").append($("<option></option>").val("-1").text("请选择专业"));
-        // ajax请求所有专业
-        $.get("college/getMajor", {
-            "collegeId": collegeCode
-        }, function (data) {
-            $.each(data, function (index, element) {
-                $("select[name='major']").append($("<option></option>").val(element).text(element));
-            });
-        }, 'json');
-    };
-
-    //获取班级
-    function getClass(collegeCode, majorCode) {
-        $("select[name='stuClass']").empty();
-        $("select[name='stuClass']").append($("<option></option>").val("-1").text("请选择班级"));
-        // ajax请求所有班级
-        $.get("college/getClass", {
-            "collegeId": collegeCode,
-            "major": majorCode
-        }, function (data) {
-            $.each(data, function (index, element) {
-                $("select[name='stuClass']").append($("<option></option>").val(element).text(element));
-            });
-        }, 'json');
-    };
-
-    // 重置新增员工表单的方法
-    function reset_form(ele) {
-        // 重置表单内容
-        $(ele)[0].reset();
-    }
-
-    // 给导出按钮绑定单击事件出现模态框
-    $("#exportData").click(function () {
-        // 每次出现模态框都将之前的信息给清空并且将表单样式也清空
-        reset_form("#exportStuRecord form");
-        // 弹出模态框之前显示学院班级姓名在下拉列表中
-
-        // 设置点网页背景不会关闭模态框
-        $("#exportStuRecord").modal({
-            backdrop: "static"
-        });
-    });
-
-</script>
+<script type="text/javascript" src="static/js/admin/declareManager.js"></script>

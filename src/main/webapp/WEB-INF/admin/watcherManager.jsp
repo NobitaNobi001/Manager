@@ -1,34 +1,27 @@
-<%--
-  //督察管理
-  Created by IntelliJ IDEA.
-  User: jihn
-  Date: 20/7/26
-  Time: 10:46
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-    pageContext.setAttribute("APP_PATH", request.getContextPath());
 %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
 
     <base href="<%=basePath%>">
 
     <%--引入bootstrap的css样式文件--%>
-    <link rel="stylesheet" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
 
     <%--引入jQuery外部文件--%>
-    <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
-    <script type="text/javascript" src="${APP_PATH}/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -175,19 +168,19 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/admin/admProfile">admin@qq.com</a>
-                    <a href="${APP_PATH}/logout">退出</a>
+                    <a href="admin/admProfile">${admin.adminName}(${admin.adminNumber})</a>
+                    <a href="logout">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">管理中心</a></li>
-                    <li><a href="${APP_PATH}/admin/admIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/admin/admProfile">个人信息</a></li>
+                    <li><a href="admin/admIndex">首页</a></li>
+                    <li><a href="admin/admProfile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -199,10 +192,10 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/admin/decManager">申报管理</a></li>
-                    <li><a href="${APP_PATH}/admin/stuManager">学生管理</a></li>
-                    <li><a href="${APP_PATH}/admin/teaManager">教师管理</a></li>
-                    <li><a href="${APP_PATH}/admin/watManager">督查管理</a></li>
+                    <li><a href="admin/toSee/studentRecord.html">申报管理</a></li>
+                    <li><a href="admin/get/student.html">学生管理</a></li>
+                    <li><a href="admin/teaManager">教师管理</a></li>
+                    <li><a href="admin/watManager">督查管理</a></li>
 
                 </ul>
             </div>
@@ -266,9 +259,13 @@
 </body>
 </html>
 <%--引入构建分页信息和页码控制的js文件--%>
-<script type="text/javascript" src="${APP_PATH}/static/js/common/tableInfo.js"></script>
-<script type="text/javascript" src="${APP_PATH}/static/js/common/tableCondition.js"></script>
+<script type="text/javascript" src="static/js/common/tableInfo.js"></script>
+<script type="text/javascript" src="static/js/common/tableCondition.js"></script>
 <%--引入一些清空样式的基本操作--%>
-<script type="text/javascript" src="${APP_PATH}/static/js/common/prompt.js"></script>
-<script type="text/javascript" src="${APP_PATH}/static/js/admin/watcherManager.js"></script>
-
+<script type="text/javascript" src="static/js/common/prompt.js"></script>
+<script type="text/javascript" src="static/js/admin/watcherManager.js"></script>
+<script type="text/javascript">
+    $(function () {
+        to_page(1);
+    });
+</script>

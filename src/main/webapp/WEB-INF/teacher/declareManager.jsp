@@ -1,29 +1,15 @@
-<%--
-  申报管理
-  Created by IntelliJ IDEA.
-  User: jihn
-  Date: 20/7/26
-  Time: 10:39
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
-    pageContext.setAttribute("APP_PATH", request.getContextPath());
-%>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
 
-
-    <base href="<%=basePath%>">
+    <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
     <%--引入bootstrap的css样式文件--%>
-    <link rel="stylesheet" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
 
     <%--修改弹出框的默认宽度--%>
     <style type="text/css">
@@ -36,8 +22,8 @@
     </style>
 
     <%--引入jQuery外部文件--%>
-    <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
-    <script type="text/javascript" src="${APP_PATH}/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -119,19 +105,19 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/logout">退出</a>
+                    <a href="teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
+                    <a href="logout">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
+                    <li><a href="teacher/teaIndex">首页</a></li>
+                    <li><a href="teacher/teaProfile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -143,11 +129,11 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/stuList">学生列表</a></li>
-                    <li><a href="${APP_PATH}/teacher/declareManager">申报管理</a></li>
+                    <li><a href="teacher/stuList">学生列表</a></li>
+                    <li><a href="teacher/declareManager">申报管理</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaPassword">修改密码</a></li>
+                    <li><a href="teacher/teaProfile">个人信息</a></li>
+                    <li><a href="teacher/teaPassword">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
@@ -204,7 +190,7 @@
 </body>
 </html>
 <%--引入构建分页信息和页码控制的js文件--%>
-<script type="text/javascript" src="${APP_PATH}/static/js/common/tableInfo.js/js/tableInfo.js"></script>
+<script type="text/javascript" src="static/js/common/tableInfo.js"></script>
 <script type="text/javascript">
 
     //获取学生的学号
@@ -220,13 +206,13 @@
 
         //正则校验搜索框的输入
         var regKey = /[\u4E00-\u9FA5]/;
-        if (!regKey.test($("#keywords").val().trim())) {
-            alert("请输入姓名!");
+        if (regKey.test($("#keywords").val().trim())) {
+            alert("请输入正确的姓名!");
             return false;
         }
 
         $.ajax({
-            url: "${APP_PATH}/record/stuRecord",
+            url: "record/stuRecord",
             type: "GET",
             data: {
                 "stuName": $("#keywords").val(),
@@ -263,7 +249,7 @@
     function to_page(pn) {
 
         $.ajax({
-            url: "${APP_PATH}/record/declare",
+            url: "record/declare",
             type: "GET",
             data: {
                 "pn": pn,
@@ -373,7 +359,7 @@
 
         //发送ajax请求更新审核的信息
         $.ajax({
-            url: "${APP_PATH}/record/updateRecord/" + $(this).attr("audit-id"),
+            url: "record/updateRecord/" + $(this).attr("audit-id"),
             type: "PUT",
             data: {
                 // "stuNumber": StuNumber,
@@ -416,7 +402,7 @@
     //根据申报记录的id获取对应的学生的申报记录
     function getStuRecord(id) {
         $.ajax({
-            url: "${APP_PATH}/record/studentRecord/" + id,
+            url: "record/studentRecord/" + id,
             type: "GET",
             success: function (result) {
                 //解析数据 回显到模态框内
@@ -461,5 +447,3 @@
     });
 
 </script>
-
-

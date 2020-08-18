@@ -1,46 +1,36 @@
-<%--
-  个人信息
-  Created by IntelliJ IDEA.
-  User: jihn
-  Date: 20/7/26
-  Time: 10:39
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
 
-        <%
-        pageContext.setAttribute("APP_PATH", request.getContextPath());
-    %>
+    <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
-    <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
 
     <%--引入jQuery外部文件--%>
-    <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
 <body>
 <header>
     <div id="header">
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/teacher/teaProfile"
+                    <a href="teacher/teaProfile"
                        style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/WEB-INF/watcher/login.jsp" style="font-size: 14px; color: #337ab7;">退出</a>
+                    <a href="logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
+                    <li><a href="teacher/teaIndex">首页</a></li>
+                    <li><a href="teacher/teaProfile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -52,11 +42,11 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/stuList">学生列表</a></li>
-                    <li><a href="${APP_PATH}/teacher/declareManager">申报管理</a></li>
+                    <li><a href="teacher/stuList">学生列表</a></li>
+                    <li><a href="teacher/declareManager">申报管理</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
-                    <li class=""><a href="${APP_PATH}/teacher/teaPassword">修改密码</a></li>
+                    <li><a href="teacher/teaProfile">个人信息</a></li>
+                    <li class=""><a href="teacher/teaPassword">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
@@ -154,7 +144,7 @@
         }
 
         $.ajax({
-            url: "${APP_PATH}/teacher/updateInfo/" +${teacher.id },
+            url: "teacher/updateInfo/" +${teacher.id },
             type: "PUT",
             data: {
                 "gender": $("input[type='radio']:checked").val(),

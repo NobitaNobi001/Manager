@@ -12,10 +12,6 @@
         <result column="phone" property="phone" jdbcType="VARCHAR" />
         <result column="email" property="email" jdbcType="VARCHAR" />
     </resultMap>
-    <resultMap id="UserNameAndPassword" type="com.bean.Teacher">
-        <result column="tea_number" property="teaNumber" jdbcType="INTEGER"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-    </resultMap>
     <resultMap id="teacherWithCollege" type="com.bean.Teacher">
         <id column="id" property="id" jdbcType="INTEGER" />
         <result column="tea_number" property="teaNumber" jdbcType="INTEGER" />
@@ -300,11 +296,6 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <!--根据教工帐号查找教师的用户名和密码信息-->
-    <select id="selectUPByTeaNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
-    select tea_number,password from tea_info where tea_number = #{tea_number,jdbcType=INTEGER}
-  </select>
-
     <!--根据教工账号查找教工的信息-->
     <select id="selectTeacherByTeaNumber" resultMap="teacherWithCollege" parameterType="java.lang.Integer">
         select
@@ -329,5 +320,16 @@
             </if>
         </where>
     </select>
+
+    <select id="selectEmailByTeacher" resultType="java.lang.Integer">
+        select count(*) from tea_info
+        where email = #{email} and tea_number = #{number}
+    </select>
+
+    <update id="updatePasswordByTeacherNumber">
+        update tea_info
+        set password = #{password,jdbcType=VARCHAR}
+        where tea_number = #{number,jdbcType=INTEGER}
+    </update>
 
 </mapper>

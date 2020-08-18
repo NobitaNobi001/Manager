@@ -110,8 +110,4 @@
         <url-pattern>*.png</url-pattern>
         <url-pattern>*.jpg</url-pattern>
     </servlet-mapping>
-    <!--设置session的失效时间-->
-    <session-config>
-        <session-timeout>15</session-timeout>
-    </session-config>
 </web-app>

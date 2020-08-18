@@ -1,9 +1,3 @@
-$(function () {
-
-    //去到查询数据的第一页
-    to_page(1);
-});
-
 function to_page(pn) {
 
     $.ajax({

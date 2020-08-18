@@ -2,8 +2,6 @@
 var currentPage = 0;
 //最后一页
 var totalPage = 0;
-//删除时去到的页码
-var afterDeletePage = 0;
 
 //解析分页条信息
 function build_page_nav(result) {
@@ -89,12 +87,5 @@ function build_page_info(result) {
     currentPage = result.extend.pageInfo.pageNum;
 
     totalPage = result.extend.pageInfo.total;
-
-    // //表示最后一页
-    // if (result.extend.pageInfo.size == 5) {     //如果当前页的记录数量是5 那新增后 最后一页就应该+1
-    //     totalPage = result.extend.pageInfo.pages + 1;
-    // } else {    //反之 保持当前页不变
-    //     totalPage =
-    // }
 
 }

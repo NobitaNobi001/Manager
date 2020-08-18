@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.mail.MessagingException;
@@ -48,50 +45,6 @@ public class ForgetController {
     private JavaMailSender javaMailSender;
 
     /**
-     * 去到忘记密码页面
-     *
-     * @return
-     */
-    @RequestMapping("/forgetIndex")
-    public String forget() {
-
-        return "common/forget";
-    }
-
-    /**
-     * 密码验证页面
-     *
-     * @return
-     */
-    @RequestMapping("/forgetCheck")
-    public String forgetCheck() {
-
-        return "common/forgetCheck";
-    }
-
-    /**
-     * 重置密码页面
-     *
-     * @return
-     */
-    @RequestMapping("/forgetPassword")
-    public String forgetPassword() {
-
-        return "common/forgetPassword";
-    }
-
-    /**
-     * 重置密码完成页面
-     *
-     * @return
-     */
-    @RequestMapping("/forgetDone")
-    public String forgetDone() {
-
-        return "common/forgetDone";
-    }
-
-    /**
      * 生成随机验证码
      *
      * @param request
@@ -118,22 +71,27 @@ public class ForgetController {
         g.setColor(CheckImageUtil.getRandColor(130, 200));
         g.setFont(new Font("Times New Roman", 0, 28));
         g.fillRect(0, 0, width, height);
+
         //绘制干扰线
         for (int i = 0; i < 40; i++) {
+
             g.setColor(CheckImageUtil.getRandColor(130, 200));
             int x = random.nextInt(width);
             int y = random.nextInt(height);
             int x1 = random.nextInt(12);
             int y1 = random.nextInt(12);
             g.drawLine(x, y, x + x1, y + y1);
+
         }
 
         String strCode = "";
         for (int i = 0; i < 4; i++) {
+
             String rand = String.valueOf(random.nextInt(10));
             strCode = strCode + rand;
             g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
             g.drawString(rand, 13 * i + 6, 28);
+
         }
 
         //将字符保存到session中用于前端验证
@@ -154,7 +112,7 @@ public class ForgetController {
      * @param type
      * @return
      */
-    @RequestMapping(value = "/checkUser", method = RequestMethod.POST)
+    @PostMapping(value = "/checkUser")
     @ResponseBody
     public Msg checkUser(@RequestParam("number") String number, @RequestParam("type") Integer type, @RequestParam("checkCode") String checkCode, HttpServletRequest request) {
 
@@ -172,6 +130,8 @@ public class ForgetController {
 
         //判断用户类型并进行相应的查询
         if (userType.equals("Student")) {
+
+            flag = studentService.checkStudent(Integer.valueOf(number));
 
         } else if (userType.equals("Teacher")) {
 
@@ -195,7 +155,7 @@ public class ForgetController {
         }
     }
 
-    @RequestMapping(value = "/checkEmail", method = RequestMethod.POST)
+    @PostMapping(value = "/checkEmail")
     @ResponseBody
     public Msg checkEmail(@RequestParam("email") String email, HttpServletRequest request) {
 
@@ -208,14 +168,18 @@ public class ForgetController {
         //判断用户类型并进行相应的查询
         if (userType.equals("Student")) {
 
+            flag = studentService.checkEmailByStudent(Integer.valueOf(number), email);
+
         } else if (userType.equals("Teacher")) {
 
+            flag = teacherService.checkEmailByTeacher(Integer.valueOf(number), email);
 
         } else if (userType.equals("Watcher")) {
 
             flag = watcherService.checkEmailByWatcher(Integer.valueOf(number), email);
         } else {
 
+            flag = adminService.checkEmailByAdmin(Integer.valueOf(number), email);
         }
 
         if (!flag) {
@@ -225,7 +189,7 @@ public class ForgetController {
         }
     }
 
-    @RequestMapping(value = "/sendEmail", method = RequestMethod.POST)
+    @PostMapping(value = "/sendEmail")
     @ResponseBody
     public Msg sendEmail(@RequestParam("email") String email, HttpServletRequest request) throws MessagingException {
 
@@ -236,7 +200,7 @@ public class ForgetController {
         HttpSession session = request.getSession();
         //3.将验证码存入到session域中
         session.setAttribute("checkCode", checkCode);
-        //4.设置session的过期时间为10分钟
+        //4.设置session的过期时间为5分钟
         session.setMaxInactiveInterval(300);
 
         //二、邮件设置部分
@@ -279,7 +243,7 @@ public class ForgetController {
         return Msg.fail();
     }
 
-    @RequestMapping(value = "/checkEmailCode", method = RequestMethod.POST)
+    @PostMapping(value = "/checkEmailCode")
     @ResponseBody
     public Msg checkEmailCode(@RequestParam("captcha") String captcha, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
@@ -297,7 +261,14 @@ public class ForgetController {
 
     }
 
-    @RequestMapping(value = "/password", method = RequestMethod.POST)
+    /**
+     * 更新密码
+     *
+     * @param password
+     * @param request
+     * @return
+     */
+    @PostMapping(value = "/password")
     @ResponseBody
     public Msg updatePassword(@RequestParam("password") String password, HttpServletRequest request) {
 
@@ -309,8 +280,11 @@ public class ForgetController {
         //判断用户类型并进行相应的查询
         if (userType.equals("Student")) {
 
+            studentService.updatePasswordByStudentNumber(number, password);
+
         } else if (userType.equals("Teacher")) {
 
+            teacherService.updatePasswordByTeacherNumber(number, password);
 
         } else if (userType.equals("Watcher")) {
 
@@ -318,6 +292,7 @@ public class ForgetController {
 
         } else {
 
+            adminService.updatePasswordByAdminNumber(number, password);
         }
 
         return Msg.success();

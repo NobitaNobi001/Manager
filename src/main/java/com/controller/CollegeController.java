@@ -7,7 +7,6 @@ import com.github.pagehelper.PageInfo;
 import com.service.CollegeService;
 import com.service.CollegeStuService;
 import com.service.WatcherService;
-import com.utils.CollegeName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,17 +68,49 @@ public class CollegeController {
         return objectMapper.writeValueAsString(allClass);
     }
 
-    // 条件查询
-/*    @RequestMapping("/conditionSearch")
-    public String conditionSearch(@RequestParam(value = "college", defaultValue = "1") Integer college, @RequestParam("major") String major, @RequestParam("class") String Class, @RequestParam("keywords") String keyword, Model model, HttpServletRequest request) {
-        List<Student> students = collegeStuService.conditionnSearch(college, major, Class, keyword);
+
+    /**
+     * 条件查询
+     *
+     * @param college
+     * @param major
+     * @param stuClass
+     * @param model
+     * @param request
+     * @return
+     */
+    @RequestMapping("/conditionSearch")
+    public Msg conditionSearch(@RequestParam(value = "college", defaultValue = "1") Integer college, @RequestParam("major") String major, @RequestParam("stuClass") String stuClass, Model model, HttpServletRequest request) {
+
+        List<Student> students = collegeStuService.selectWithCondition(college, major, stuClass);
+
         //获取登陆成功的督察账号
         Integer watcherNumber = (Integer) request.getSession().getAttribute("number");
+
         //根据督察账号查找督察信息
         Watcher watcher = watcherService.selectWatcherByWatcherNumber(watcherNumber);
+
         PageInfo<Record> info = new PageInfo(students);
+
         model.addAttribute("info", info);
         model.addAttribute("watcher", watcher);
-        return "redirect:fraction";
-    }*/
+
+        return Msg.success().add("students", students);
+    }
+
+    /**
+     * 根据学院 专业 班级来查询所有学生
+     * @param college
+     * @param major
+     * @param stuClass
+     * @return
+     */
+    @RequestMapping("/selectStudent")
+    public Msg selectStudents(@RequestParam("college") Integer college, @RequestParam("major") String major, @RequestParam("stuClass") String stuClass) {
+
+        List<Student> students = collegeStuService.selectAllStuByCollegeName(college, 1, 5);
+
+        return Msg.success().add("students", students);
+    }
+
 }

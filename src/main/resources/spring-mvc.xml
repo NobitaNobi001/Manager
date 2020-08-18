@@ -56,20 +56,18 @@
     </bean>
 
     <!--基于xml的异常映射-->
-    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"
-          id="simpleMappingExceptionResolver">
-        <property name="exceptionMappings">
-            <props>
-                <!--key属性指定异常全类名-->
-                <prop key="java.lang.Exception">common/error</prop>
-            </props>
-        </property>
-    </bean>
+    <!--<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"-->
+          <!--id="simpleMappingExceptionResolver">-->
+        <!--<property name="exceptionMappings">-->
+            <!--<props>-->
+                <!--&lt;!&ndash;key属性指定异常全类名&ndash;&gt;-->
+                <!--<prop key="java.lang.Exception">common/error</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+    <!---->
 
-    <!--<mvc:view-controller path="watcher/teacherAudit"></mvc:view-controller>-->
-
-
-
+    <!--忘记密码页面的拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/forget/**"/>
@@ -79,5 +77,62 @@
             <bean class="com.interceptor.ForgetInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
-    
+
+    <!--
+        1、学生页面
+    -->
+    <!--首页-->
+    <mvc:view-controller path="student/stuIndex" view-name="student/student"/>
+
+
+    <!--
+        2、教师页面
+    -->
+    <!--首页-->
+    <mvc:view-controller path="teacher/teaIndex" view-name="teacher/teacher"/>
+    <!--学分审核页面-->
+    <mvc:view-controller path="teacher/declareManager" view-name="teacher/declareManager"/>
+    <!--个人信息页面-->
+    <mvc:view-controller path="teacher/teaProfile" view-name="teacher/profile"/>
+    <!--修改密码页面-->
+    <mvc:view-controller path="teacher/teaPassword" view-name="teacher/password"/>
+
+    <!--
+        3、督察页面
+    -->
+    <!--首页-->
+    <mvc:view-controller path="watcher/watIndex" view-name="watcher/watcher"/>
+    <!--教师审核-->
+    <mvc:view-controller path="watcher/watAudit" view-name="watcher/teacherAudit"/>
+    <!--个人信息-->
+    <mvc:view-controller path="watcher/watProfile" view-name="watcher/profile"/>
+    <!--修改密码-->
+    <mvc:view-controller path="watcher/watPassword" view-name="watcher/password"/>
+
+    <!--
+        4、管理员页面
+    -->
+    <!--首页-->
+    <!--<mvc:view-controller path="admin/admIndex" view-name="admin/admin"/>-->
+    <!--申报管理-->
+    <!--学生管理-->
+    <mvc:view-controller path="admin/stuManager" view-name="admin/studentManager"/>
+    <!--教师管理-->
+    <mvc:view-controller path="admin/teaManager" view-name="admin/teacherManager"/>
+    <!--督察管理-->
+    <mvc:view-controller path="admin/watManager" view-name="admin/watcherManager"/>
+    <!--个人信息-->
+    <mvc:view-controller path="admin/admProfile" view-name="admin/profile"/>
+
+    <!--
+        5、忘记密码页面
+    -->
+    <!--首页-->
+    <mvc:view-controller path="forget/forgetIndex" view-name="forget/forget"/>
+    <!--发送验证码页面-->
+    <mvc:view-controller path="forget/forgetCheck" view-name="forget/forgetCheck"/>
+    <!--修改密码页面-->
+    <mvc:view-controller path="forget/forgetPassword" view-name="forget/forgetPassword"/>
+    <!--修改密码完成页面-->
+    <mvc:view-controller path="forget/forgetDone" view-name="forget/forgetDone"/>
 </beans>

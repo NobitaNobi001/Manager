@@ -1,9 +1,3 @@
-//页面初始化
-$(function () {
-
-    to_page(1);
-});
-
 //新增督察按钮
 $("#add_watcher_btn").click(function () {
 

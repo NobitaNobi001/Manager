@@ -9,12 +9,15 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
+
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
+
     <link rel="icon" type="image/png" href="static/images/logo.png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
+
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
@@ -26,19 +29,19 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
                     <a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.stuName}(${student.stuNumber})</a>
-                    <a href="${APP_PATH}/logout">退出</a>
+                    <a href="logout">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">学生中心</a></li>
-                    <li><a href="${APP_PATH}/student/stuIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/student/updateInfo/${student.id}">个人信息</a></li>
+                    <li><a href="student/stuIndex">首页</a></li>
+                    <li><a href="student/updateInfo/${student.id}">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -50,11 +53,11 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/student/viewCredit">学分列表</a></li>
-                    <li><a href="${APP_PATH}/student/applyCredit/${student.id}">学分申报</a></li>
+                    <li><a href="student/viewCredit">学分列表</a></li>
+                    <li><a href="student/applyCredit/${student.id}">学分申报</a></li>
                     <li class="headline"><a href="javascript:;">账号管理</a></li>
-                    <li><a href="${APP_PATH}/student/updateInfo/${student.id}">修改信息</a></li>
-                    <li><a href="${APP_PATH}/student/updatepwd/${student.id}">修改密码</a></li>
+                    <li><a href="student/updateInfo/${student.id}">修改信息</a></li>
+                    <li><a href="student/updatepwd/${student.id}">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
@@ -103,7 +106,7 @@
                     <center>
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
-                                <li><a href="${APP_PATH}/student/viewCredit?page=1">首页</a></li>
+                                <li><a href="student/viewCredit?page=1">首页</a></li>
                                 <c:if test="${info.pageNum==1}">
                                     <li class="disabled">
                                         <a href="javascript:void(0)" aria-label="Previous">
@@ -114,7 +117,7 @@
 
                                 <c:if test="${info.pageNum!=1}">
                                     <li>
-                                        <a href="${APP_PATH}/student/viewCredit?page=${info.pageNum-1}"
+                                        <a href="student/viewCredit?page=${info.pageNum-1}"
                                            aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
@@ -125,10 +128,10 @@
                                     <c:forEach begin="1" end="5" var="i">
                                         <c:if test="${info.pageNum==i}">
                                             <li class="active"><a
-                                                    href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+                                                    href="student/viewCredit?page=${i}">${i}</a></li>
                                         </c:if>
                                         <c:if test="${info.pageNum!=i}">
-                                            <li><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+                                            <li><a href="student/viewCredit?page=${i}">${i}</a></li>
                                         </c:if>
                                     </c:forEach>
                                 </c:if>
@@ -137,10 +140,10 @@
                                     <c:forEach begin="1" end="${info.pages}" var="i">
                                         <c:if test="${info.pageNum==i}">
                                             <li class="active"><a
-                                                    href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+                                                    href="student/viewCredit?page=${i}">${i}</a></li>
                                         </c:if>
                                         <c:if test="${info.pageNum!=i}">
-                                            <li><a href="${APP_PATH}/student/viewCredit?page=${i}">${i}</a></li>
+                                            <li><a href="student/viewCredit?page=${i}">${i}</a></li>
                                         </c:if>
                                     </c:forEach>
                                 </c:if>
@@ -156,14 +159,14 @@
 
                                 <c:if test="${info.pageNum!=info.pages}">
                                     <li>
-                                        <a href="${APP_PATH}/student/viewCredit?page=${info.pageNum+1}"
+                                        <a href="student/viewCredit?page=${info.pageNum+1}"
                                            aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
                                 </c:if>
 
-                                <li><a href="${APP_PATH}/student/viewCredit?page=${info.pages}">末页</a></li>
+                                <li><a href="student/viewCredit?page=${info.pages}">末页</a></li>
                                 <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
 								</span>

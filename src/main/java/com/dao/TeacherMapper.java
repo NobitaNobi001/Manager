@@ -30,10 +30,12 @@ public interface TeacherMapper {
 
     int updateByPrimaryKey(Teacher record);
 
-    Teacher selectUPByTeaNumber(Integer teaNumber);
-
     Teacher selectTeacherByTeaNumber(Integer teaNumber);
 
     List<Teacher> selectTeacherWithCondition(@Param("collegeId") Integer collegeId,@Param("keywords") String keywords);
+
+    int selectEmailByTeacher(@Param("number") Integer number,@Param("email") String email);
+
+    int updatePasswordByTeacherNumber(@Param("number") Integer number,@Param("password") String password);
 
 }

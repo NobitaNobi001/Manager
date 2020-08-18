@@ -1,13 +1,11 @@
-package com.Listener;
+package com.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
-import com.bean.Record;
 import com.bean.StuExcel;
 import com.bean.Student;
 import com.service.AdminService;
-import com.service.StudentService;
-import com.utils.CollegeName;
+import com.utils.CollegeNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,9 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author hbk
- * @date 2020/7/31
- **/
+ * 监听批量excel的导入
+ */
 @Component
 @Scope("prototype")
 public class ExportStuListener extends AnalysisEventListener<StuExcel> {
@@ -33,7 +30,7 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
         Student student = new Student();
         student.setStuNumber(stuExcel.getStuNumber());
         student.setStuName(stuExcel.getStuName());
-        student.setCollegeId(CollegeName.getCollegeId(stuExcel.getCollegeName()));
+        student.setCollegeId(CollegeNameUtil.getCollegeId(stuExcel.getCollegeName()));
         student.setMajor(stuExcel.getMajor());
         student.setClassName(stuExcel.getClassName());
         student.setPassword(stuExcel.getStuNumber().toString().substring(4));

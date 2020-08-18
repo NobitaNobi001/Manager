@@ -1,30 +1,20 @@
-<%--
-  学生列表
-  Created by IntelliJ IDEA.
-  User: jihn
-  Date: 20/7/26
-  Time: 10:39
-  To change this template use File | Settings | File Templates.
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
 
-    <%
-        pageContext.setAttribute("APP_PATH", request.getContextPath());
-    %>
+    <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
     <%--引入bootstrap的css样式文件--%>
-    <link rel="stylesheet" href="${APP_PATH}/webjars/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
 
     <%--引入jQuery外部文件--%>
-    <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
-    <script type="text/javascript" src="${APP_PATH}/webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -81,19 +71,19 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/logout">退出</a>
+                    <a href="teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
+                    <a href="logout">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
+                    <li><a href="teacher/teaIndex">首页</a></li>
+                    <li><a href="teacher/teaProfile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -105,18 +95,18 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/stuList">学生列表</a></li>
-                    <li><a href="${APP_PATH}/teacher/declareManager">申报管理</a></li>
+                    <li><a href="teacher/stuList">学生列表</a></li>
+                    <li><a href="teacher/declareManager">申报管理</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaPassword">修改密码</a></li>
+                    <li><a href="teacher/teaProfile">个人信息</a></li>
+                    <li><a href="teacher/teaPassword">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
                 <!-- 学分列表 start -->
                 <div class="student">
                     <h4>学生列表</h4>
-                    <form class="form-inline" action="${APP_PATH}/teacher/queryStu" method="post" style="margin-left: 20px; line-height: 72px;">
+                    <form class="form-inline" action="teacher/queryStu" method="post" style="margin-left: 20px; line-height: 72px;">
                         <div class="form-group">
                             <label for="exampleInputNumber">学号</label>
                             <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber" placeholder="如:2018111111" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
@@ -163,7 +153,7 @@
                     <center>
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
-                                <li><a href="${APP_PATH}/teacher/stuList?page=1">首页</a></li>
+                                <li><a href="teacher/stuList?page=1">首页</a></li>
                                 <c:if test="${info.pageNum==1}">
                                     <li class="disabled">
                                         <a href="javascript:void(0)" aria-label="Previous">
@@ -174,7 +164,7 @@
 
                                 <c:if test="${info.pageNum!=1}">
                                     <li>
-                                        <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum-1}" aria-label="Previous">
+                                        <a href="teacher/stuList?page=${info.pageNum-1}" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
@@ -183,10 +173,10 @@
                                 <c:if test="${info.pages<=5}">
                                     <c:forEach begin="1" end="${info.pages}" var="i">
                                         <c:if test="${info.pageNum==i}">
-                                            <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
+                                            <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
                                         </c:if>
                                         <c:if test="${info.pageNum!=i}">
-                                            <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
+                                            <li><a href="teacher/stuList?page=${i}">${i}</a></li>
                                         </c:if>
                                     </c:forEach>
                                 </c:if>
@@ -194,10 +184,10 @@
                                 <c:if test="${info.pages>5}">
                                     <c:forEach begin="1" end="5" var="i">
                                         <c:if test="${info.pageNum==i}">
-                                            <li class="active"><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
+                                            <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
                                         </c:if>
                                         <c:if test="${info.pageNum!=i}">
-                                            <li><a href="${APP_PATH}/teacher/stuList?page=${i}">${i}</a></li>
+                                            <li><a href="teacher/stuList?page=${i}">${i}</a></li>
                                         </c:if>
                                     </c:forEach>
                                 </c:if>
@@ -213,13 +203,13 @@
 
                                 <c:if test="${info.pageNum!=info.pages}">
                                     <li>
-                                        <a href="${APP_PATH}/teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
+                                        <a href="teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
                                 </c:if>
 
-                                <li><a href="${APP_PATH}/teacher/stuList?page=${info.pages}">末页</a></li>
+                                <li><a href="teacher/stuList?page=${info.pages}">末页</a></li>
                                 <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
 									</span>

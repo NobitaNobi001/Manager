@@ -11,10 +11,7 @@
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
     </resultMap>
-    <resultMap id="UserNameAndPassword" type="com.bean.Watcher">
-        <result column="watcher_number" property="watcherNumber" jdbcType="INTEGER"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-    </resultMap>
+
     <resultMap id="watcherWithCollege" type="com.bean.Watcher">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="watcher_number" property="watcherNumber" jdbcType="INTEGER"/>
@@ -288,11 +285,6 @@
       email = #{email,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
-    <!--根据督察账号查找账密-->
-    <select id="selectUPByWatcherNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
-         select watcher_number,password from watcher_info where watcher_number = #{watcherNumber,jdbcType=INTEGER}
-    </select>
 
     <!--根据督察账号查找个人信息-->
     <select id="selectWatcherByWatcherNumber" resultMap="watcherWithCollege" parameterType="java.lang.Integer">

@@ -18,6 +18,8 @@ public interface RecordMapper {
 
     List<Record> selectByExample(RecordExample example);
 
+    List<Record> selectByExampleCondition(RecordExample example);
+
     Record selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") Record record, @Param("example") RecordExample example);

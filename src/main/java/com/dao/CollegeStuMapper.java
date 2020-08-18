@@ -7,10 +7,6 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-/**
- * @author hbk
- * @date 2020/7/6
- **/
 public interface CollegeStuMapper {
 
     //根据学院id查询对应学院的学号
@@ -33,6 +29,8 @@ public interface CollegeStuMapper {
 
     // 查询所在学院的班级
     List<String> getAllClass(@Param("tableName") String tableName, @Param("major") String major);
+
+    List<Student> conditionSearch(@Param("tableName") String tableName,@Param("major") String major,@Param("stuClass") String stuClass);
 
     // 根据学院 专业  班级 查询学生学号
     List<Integer> selectStuNumber(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") Integer stuClass);

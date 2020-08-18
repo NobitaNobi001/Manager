@@ -7,7 +7,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.service.StudentService;
-import com.utils.applySort;
+import com.utils.applySortUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,22 +30,8 @@ public class StudentController {
     private StudentService studentService;
 
     /**
-     * 学生首页
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping("/stuIndex")
-    public String stuIndex(HttpServletRequest request, Model model) {
-        //从session中获取学生学号
-        Integer stuNumber = (Integer) request.getSession().getAttribute("number");
-        Student student = studentService.selectStudentByStuNumber(stuNumber);
-        model.addAttribute("student", student);
-        return "student/student";
-    }
-
-    /**
      * 根据学生id修改信息
+     *
      * @param id
      * @param model
      * @return
@@ -60,18 +45,19 @@ public class StudentController {
 
     /**
      * 将完善信息封装为学生对象 修改数据 之后回到学生首页
+     *
      * @param student
-     * @param model
      * @return
      */
     @RequestMapping("/updateStuNullInfo")
-    public String updateStuNullInfo(Student student, Model model) {
-        boolean flag = studentService.updateStuInfoById(student);
+    public String updateStuNullInfo(Student student) {
+        studentService.updateStuInfoById(student);
         return "redirect:/student/stuIndex";
     }
 
     /**
      * 去修改密码页面
+     *
      * @param model
      * @param id
      * @return
@@ -86,10 +72,11 @@ public class StudentController {
     /**
      * 修改密码
      */
-    @RequestMapping(value = "/updateStuPassword", method = {RequestMethod.POST})
+    @PostMapping(value = "/updateStuPassword")
     @ResponseBody
     public String updateStupwd(@RequestParam("stuNumber") int stuNumber, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
         if (studentService.updateStuPwd(stuNumber, oldPassword, newPassword)) {//修改密码成功
+
             return "修改密码成功，您将返回登录页面";
         } else {
             return "输入的原密码错误,请重新输入";
@@ -98,6 +85,7 @@ public class StudentController {
 
     /**
      * 去申请学分页面
+     *
      * @param model
      * @param id
      * @return
@@ -111,6 +99,7 @@ public class StudentController {
 
     /**
      * 提交学分申请
+     *
      * @param stuNumber
      * @param name
      * @param number
@@ -125,7 +114,7 @@ public class StudentController {
      */
     @RequestMapping("/apply")
     public String apply(@RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String name, @RequestParam("sort") String number, @RequestParam("applyName") String applyName, @RequestParam("applyCredit") Double applyCredit, @RequestParam("words") String words, @RequestParam("file") CommonsMultipartFile file, HttpServletRequest request, Model model) throws IOException {
-        StringBuilder path =new StringBuilder(request.getServletContext().getRealPath("/applyImg"));
+        StringBuilder path = new StringBuilder(request.getServletContext().getRealPath("/applyImg"));
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         //获取申请日期
@@ -136,7 +125,7 @@ public class StudentController {
         int year = now.get(Calendar.YEAR);
         int month = now.get(Calendar.MONDAY) + 1;//0~11
         int day = now.get(Calendar.DAY_OF_MONTH);
-        String uploadingName= UUID.randomUUID().toString() +file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+        String uploadingName = UUID.randomUUID().toString() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
         path = path.append("/").append(year).append("/").append(month).append("/").append(day);
         //如果路径不保存，创建一个
         File realPath = new File(path.toString());
@@ -157,8 +146,8 @@ public class StudentController {
         os.close();
         is.close();
         //上传成功之后数据库中增加信息
-        String sort = applySort.getApplyName(number);
-        studentService.addCreditRecord(new Record(stuNumber, name, date, sort, year+"/"+month+"/"+day+"/"+uploadingName, applyName, applyCredit, words));
+        String sort = applySortUtil.getApplyName(number);
+        studentService.addCreditRecord(new Record(stuNumber, name, date, sort, year + "/" + month + "/" + day + "/" + uploadingName, applyName, applyCredit, words));
         Student student = studentService.selectStudentByStuNumber(stuNumber);
         model.addAttribute("student", student);
         return "redirect:/student/viewCredit";
@@ -166,6 +155,7 @@ public class StudentController {
 
     /**
      * 学分列表
+     *
      * @param page
      * @param model
      * @param request
@@ -175,14 +165,13 @@ public class StudentController {
     @RequestMapping("/viewCredit")
     public String viewCredit(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpServletRequest request) throws Exception {
 
-        Integer stuNumber = (Integer) request.getSession().getAttribute("number");
+        Student student = (Student) request.getSession().getAttribute("student");
 
-        Student student = studentService.selectStudentByStuNumber(stuNumber);
         if (page < 0) {
             page = 1;
         }
 
-        List<Record> list = studentService.findAllBystuNumber(stuNumber, page, 5);
+        List<Record> list = studentService.findAllBystuNumber(student.getStuNumber(), page, 5);
 
         PageInfo<Record> info = new PageInfo(list);
 
@@ -196,7 +185,7 @@ public class StudentController {
 //        System.out.println("查询结果:" + info.getList());
 
         //查询总学分
-        Double sumCredit = studentService.selectSumCreditBystuNumber(stuNumber);
+        Double sumCredit = studentService.selectSumCreditBystuNumber(student.getStuNumber());
         model.addAttribute("sumCredit", sumCredit);
         model.addAttribute("student", student);
         model.addAttribute("info", info);
@@ -213,10 +202,10 @@ public class StudentController {
     }
 
     // 查看学号是否存在
-    @RequestMapping("checkStuNumberIsExists")
+    @RequestMapping("/checkStuNumberIsExists")
     @ResponseBody
     public String checkStuNumberIsExists(@RequestParam("stuNumber") Integer stuNumber) throws JsonProcessingException {
-        boolean flag = studentService.findStuNumberIsExists(stuNumber);
+        boolean flag = !(studentService.checkStudent(stuNumber));
         Map map = new HashMap();
         map.put("valid", flag);
         ObjectMapper objectMapper = new ObjectMapper();

@@ -1,5 +1,6 @@
 package com.bean;
 
+
 public class Admin {
     private Integer id;
 

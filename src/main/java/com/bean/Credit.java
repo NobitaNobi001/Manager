@@ -1,7 +1,5 @@
 package com.bean;
 
-import org.springframework.context.annotation.Scope;
-
 
 public class Credit {
     private Integer id;

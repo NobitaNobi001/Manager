@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.StudentMapper">
-  <resultMap id="WithCreditResultMap" type="com.bean.Student">
-      <id column="id" property="id" jdbcType="INTEGER"/>
-      <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
-      <result column="password" property="password" jdbcType="VARCHAR"/>
-      <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
-      <result column="college_id" property="collegeId"/>
-      <result column="major" property="major" jdbcType="VARCHAR"/>
-      <result column="class_name" property="className" jdbcType="VARCHAR"/>
-      <result column="gender" property="gender" jdbcType="CHAR"/>
-      <result column="phone" property="phone" jdbcType="VARCHAR"/>
-      <result column="email" property="email" jdbcType="VARCHAR"/>
-      <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey"
-                   column="college_id"></association>
-      <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber"
-                   column="stu_number"></association>
-  </resultMap>
+    <resultMap id="WithCreditResultMap" type="com.bean.Student">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
+        <result column="college_id" property="collegeId"/>
+        <result column="major" property="major" jdbcType="VARCHAR"/>
+        <result column="class_name" property="className" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey"
+                     column="college_id"></association>
+        <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber"
+                     column="stu_number"></association>
+    </resultMap>
     <resultMap id="UserNameAndPassword" type="com.bean.Student">
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
@@ -79,52 +79,50 @@
                                 </when>
                                 <when test="criterion.betweenValue">
                                     and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                        #{listItem}
-                    </foreach>
-                </when>
-              </choose>
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
             </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
     id, stu_number, password, stu_name, college_id, major, class_name, gender, phone,
     email
   </sql>
-  <!--根据学号查找学生的用户名和密码信息-->
-  <select id="selectUPByStuNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
-    select stu_number,password from stu_info where stu_number = #{stu_number,jdbcType=INTEGER}
-  </select>
-  <!--根据学号查找学生的信息-->
+
+    <!--根据学号查找学生的信息-->
     <select id="selectStudentByStuNumber" resultMap="WithCreditResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List"/>
         from stu_info where stu_number= #{stu_number,jdbcType=INTEGER}
     </select>
-  <!--完善学生信息-->
-  <update id="updateStuInfoById">
-    update stu_info
-    <set>
-      <if test="gender!=null">
-        gender=#{gender},
-      </if>
-      <if test="phone!=null">
-        phone=#{phone},
-      </if>
-      <if test="email!=null">
-        email=#{email},
-      </if>
-    </set>
-    <where>
-      id=#{id}
-    </where>
-  </update>
+    <!--完善学生信息-->
+    <update id="updateStuInfoById">
+        update stu_info
+        <set>
+            <if test="gender!=null">
+                gender=#{gender},
+            </if>
+            <if test="phone!=null">
+                phone=#{phone},
+            </if>
+            <if test="email!=null">
+                email=#{email},
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
     <!--根据学号修改密码-->
     <update id="updateStuPwdByStuNumber">
         update stu_info set password=#{password} where stu_number=#{stuNumber}
@@ -384,4 +382,15 @@
       email = #{email,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <select id="selectEmailByStudent" resultType="java.lang.Integer">
+        select count(*) from stu_info
+        where email = #{email} and stu_number = #{number}
+    </select>
+
+    <update id="updatePasswordByStudentNumber">
+        update stu_info
+        set password = #{password,jdbcType=VARCHAR}
+        where stu_number = #{number,jdbcType=INTEGER}
+    </update>
 </mapper>

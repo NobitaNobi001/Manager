@@ -1,25 +1,21 @@
-<%--
-  修改密码
-  Created by IntelliJ IDEA.
-  User: jihn
-  Date: 20/7/26
-  Time: 10:40
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分系统</title>
+    <title>湖北文理学院创新学分管理系统</title>
 
-    <%
-        pageContext.setAttribute("APP_PATH", request.getContextPath());
-    %>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
 
-    <link rel="icon" href="${APP_PATH}/static/images/logo.png" type="image/png">
-    <link rel="stylesheet" type="text/css" href="${APP_PATH}/static/css/common.css"/>
+    <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
+
+    <link rel="icon" href="static/images/logo.png" type="image/png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
 
     <%--引入jQuery外部文件--%>
-    <script type="text/javascript" src="${APP_PATH}/webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
 
 </head>
 <html>
@@ -29,20 +25,20 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="${APP_PATH}/static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分系统</div>
+                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
+                    <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="${APP_PATH}/teacher/teaProfile"
+                    <a href="teacher/teaProfile"
                        style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="${APP_PATH}/WEB-INF/watcher/login.jsp" style="font-size: 14px; color: #337ab7;">退出</a>
+                    <a href="logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaIndex">首页</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
+                    <li><a href="teacher/teaIndex">首页</a></li>
+                    <li><a href="teacher/teaProfile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -54,11 +50,11 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="${APP_PATH}/teacher/stuList">学生列表</a></li>
-                    <li><a href="${APP_PATH}/teacher/declareManager">申报管理</a></li>
+                    <li><a href="teacher/stuList">学生列表</a></li>
+                    <li><a href="teacher/declareManager">申报管理</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaProfile">个人信息</a></li>
-                    <li><a href="${APP_PATH}/teacher/teaPassword">修改密码</a></li>
+                    <li><a href="teacher/teaProfile">个人信息</a></li>
+                    <li><a href="teacher/teaPassword">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
@@ -138,10 +134,12 @@
 
         //向后台发送请求更新用户密码
         $.ajax({
-            url: "${APP_PATH}/teacher/updatePassword/" +${teacher.id },
+            url: "teacher/updatePassword/" +${teacher.id },
             type: "PUT",
             data: {
-                "password": respass.val()
+                "oldPass": password.val(),
+                "newPass":pass.val(),
+                "resPass":respass.val()
             },
             dataType: 'json',
             success: function (result) {
@@ -149,12 +147,12 @@
                 if (result.code == 100) {
                     alert("密码修改成功!");
                     //刷新当前页面
-                    window.location.reload();
-                }else {
-                    alert("原密码和新密码一致!");
+                    window.location.replace("/login.jsp")
+                } else {
+                    alert(result.extend.msg);
                 }
             },
-            error:function () {
+            error: function () {
                 alert("服务器繁忙!")
             }
         });
@@ -165,17 +163,11 @@
         //判断密码框的而输入是否为空
         if (password.val().trim() == "") {
             password.next().html("<p style='color: red;'>请输入当前用户密码</p>");
-        } else {  //密码输入不为空 就和数据库中查出的密码进行比对
-
-            //如果和数据库中密码相同就返回true
-            if (password.val() == "${teacher.password }") {
-                password.next().html("&nbsp;");
-                return true;
-            } else {
-                password.next().html("<p style='color: red;'>密码输入错误</p>");
-            }
+            return false;
+        }else{
+            password.next().html("&nbsp;");
         }
-        return false;
+        return true;
     }
 
 

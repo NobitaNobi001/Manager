@@ -1,57 +1,50 @@
 package com.controller;
 
 
-import com.bean.Msg;
 import com.shrio.token.LoginToken;
+import com.utils.UserTypeUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Properties;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 
 
     /**
      * 检验用户名密码是否匹配
      *
-     * @param Number   用户名
+     * @param number   用户名
      * @param password 密码
      * @param type     身份类型
      */
-    @RequestMapping(value = "/checkuser", method = RequestMethod.POST)
-    public String checkUser(@RequestParam("Number") Integer Number, @RequestParam("password") String password, @RequestParam("type") String type, HttpServletRequest request) {
+    @PostMapping(value = "/login")
+    public String checkUser(@RequestParam("number") Integer number, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest request) {
 
         //1、获取实体对象
         Subject subject = SecurityUtils.getSubject();
 
+        //2、根据前台传入的值获取用户类型
+        String loginType = UserTypeUtil.getUserType(type);
 
-        //2、将用户名 密码 用户类型 封装为一个Token对象
-        LoginToken token = new LoginToken(Number, password, type);
+        //3、将用户名 密码 用户类型 封装为一个Token对象
+        LoginToken token = new LoginToken(number, password, loginType);
 
         try {
 
-            //3、进行登录认证
+            //4、进行登录认证
             subject.login(token);
 
-            //4.认证成功后将用户名信息保存到session
-            request.getSession().setAttribute("number", Number);
-
-            //5.将用户类型转换为小写 以便进行页面跳转
-            String page = type.toLowerCase();
+            //6.将用户类型转换为小写 以便进行页面跳转
+            String page = loginType.toLowerCase();
 
             //实现页面的重定向
             return "redirect:/" + page + "/" + page.substring(0, 3) + "Index";

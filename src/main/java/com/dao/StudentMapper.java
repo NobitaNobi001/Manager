@@ -7,8 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface StudentMapper {
-    //根据学号查询密码
-    Student selectUPByStuNumber(Integer stuNumber);
 
     //根据学号来查询学生
     Student selectStudentByStuNumber(Integer stuNumber);
@@ -51,4 +49,8 @@ public interface StudentMapper {
     int updateByPrimaryKeySelective(Student record);
 
     int updateByPrimaryKey(Student record);
+
+    int selectEmailByStudent(@Param("number") Integer number,@Param("email") String email);
+
+    int updatePasswordByStudentNumber(@Param("number") Integer number,@Param("password") String password);
 }

@@ -29,8 +29,10 @@ public interface AdminMapper {
 
     int updateByPrimaryKey(Admin record);
 
-    Admin selectUPByAdminNumber(Integer adminNumber);
-
     Admin selectAdminByAdminNumber(Integer adminNumber);
+
+    int selectEmailByAdmin(@Param("number") Integer number,@Param("email") String email);
+
+    int updatePasswordByAdminNumber(@Param("number") Integer number,@Param("password") String password);
 
 }

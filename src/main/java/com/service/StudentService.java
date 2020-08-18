@@ -1,6 +1,5 @@
 package com.service;
 
-
 import com.bean.Record;
 import com.bean.Student;
 import com.bean.StudentExample;
@@ -13,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 学生相关操作的业务层
+ */
 @Service
 public class StudentService {
 
@@ -26,16 +28,21 @@ public class StudentService {
     private CreditMapper creditMapper;
 
     /**
-     * 根据学号查询密码
-     * @param stuNumber 学生学号
+     * select
+     */
+
+    /**
+     * 查询学生数量
+     *
      * @return
      */
-    public Student selectUPByStuNumber(Integer stuNumber) {
-        return studentMapper.selectUPByStuNumber(stuNumber);
+    public long selectCountStudent() {
+        return studentMapper.countByExample(null);
     }
 
     /**
      * 根据学号查找学生
+     *
      * @param stuNumber 学生学号
      * @return
      */
@@ -43,14 +50,61 @@ public class StudentService {
         return studentMapper.selectStudentByStuNumber(stuNumber);
     }
 
-    //根据主键查找学生
+    /**
+     * 根据主键查找学生信息
+     *
+     * @param id 主键
+     * @return
+     */
     public Student selectByPrimaryKey(Integer id) {
-        Student student = studentMapper.selectByPrimaryKey(id);
-        return student;
+        return studentMapper.selectByPrimaryKey(id);
     }
 
     /**
-     * 更新学生表中为null的数据
+     * 查询学生的总学分
+     *
+     * @param stuNumber 学生学号
+     * @return
+     */
+    public Double selectSumCreditBystuNumber(int stuNumber) {
+        return creditMapper.selectBystuNumber(stuNumber);
+    }
+
+    /**
+     * find
+     */
+
+    /**
+     * 分页查询申报记录
+     *
+     * @param stuNumber 学号
+     * @param page      起始页
+     * @param size      一页显示的数据量
+     * @return
+     * @throws Exception
+     */
+    public List<Record> findAllBystuNumber(int stuNumber, int page, int size) throws Exception {
+        PageHelper.startPage(page, size);
+        return recordMapper.findAllBystuNumber(stuNumber);
+    }
+
+    /**
+     * update
+     */
+
+    /**
+     * 根据学号更新密码
+     *
+     * @param number
+     * @param password
+     */
+    public void updatePasswordByStudentNumber(Integer number, String password) {
+        studentMapper.updatePasswordByStudentNumber(number, password);
+    }
+
+    /**
+     * 更新学生信息表中为null的数据
+     *
      * @param student 学生对象
      * @return
      */
@@ -60,9 +114,10 @@ public class StudentService {
 
     /**
      * 判断输入的密码和原有密码是否相同 进行更新
+     *
      * @param stuNumber 学生学号
-     * @param oldPwd 旧密码
-     * @param newPwd 新密码
+     * @param oldPwd    旧密码
+     * @param newPwd    新密码
      * @return
      */
     public boolean updateStuPwd(int stuNumber, String oldPwd, String newPwd) {
@@ -80,7 +135,8 @@ public class StudentService {
 
     /**
      * 新增创建学分申报记录
-     * @param record
+     *
+     * @param record 记录
      * @return
      */
     public boolean addCreditRecord(Record record) {
@@ -93,52 +149,31 @@ public class StudentService {
     }
 
     /**
-     * 分页查询申报记录
-     * @param stuNumber 学号
-     * @param page 起始页
-     * @param size 一页显示的数据量
-     * @return
-     * @throws Exception
-     */
-    public List<Record> findAllBystuNumber(int stuNumber, int page, int size) throws Exception {
-        PageHelper.startPage(page, size);
-        return recordMapper.findAllBystuNumber(stuNumber);
-    }
-
-    /**
-     * 查询学生的总学分
-     * @param stuNumber 学生学分
-     * @return
-     */
-    public Double selectSumCreditBystuNumber(int stuNumber) {
-        return creditMapper.selectBystuNumber(stuNumber);
-    }
-
-    /**
-     * 查询学生数量
+     * 校验邮箱是否绑定此账号
      *
+     * @param number 学号
+     * @param email 邮箱
      * @return
      */
-    public long selectCountStudent() {
-        return studentMapper.countByExample(null);
+    public boolean checkEmailByStudent(Integer number, String email) {
+        return studentMapper.selectEmailByStudent(number, email) == 0;
     }
-
 
     /**
-     * @Description: 查看学生学号是否已存在
-     * @return: int
+     * 检查学生学号是否已存在
+     *
+     * @param stuNumber 学生学号
+     * @return
      */
-    public boolean findStuNumberIsExists(Integer stuNumber) {
+    public boolean checkStudent(Integer stuNumber) {
+
         StudentExample studentExample = new StudentExample();
+
         StudentExample.Criteria criteria = studentExample.createCriteria();
+
         criteria.andStuNumberEqualTo(stuNumber);
-        List<Student> students = studentMapper.selectByExample(studentExample);
-        if (students.isEmpty()) {
-            return false;
-        } else {
-            return true;
-        }
+
+        return studentMapper.countByExample(studentExample) == 0;
+
     }
-
-
 }

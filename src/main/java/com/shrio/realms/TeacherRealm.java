@@ -4,10 +4,13 @@ package com.shrio.realms;
 import com.bean.Teacher;
 import com.service.TeacherService;
 import com.shrio.token.LoginToken;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TeacherRealm extends AuthorizingRealm {
@@ -28,7 +31,7 @@ public class TeacherRealm extends AuthorizingRealm {
 
         //根据用户名进行查询teaNumber对应的记录
 
-        Teacher teacher = teacherService.selectUPByTeaNumber(Integer.valueOf(token.getUsername()));
+        Teacher teacher = teacherService.selectTeacherByTeaNumber(Integer.valueOf(token.getUsername()));
 
         //用户不存在
         if (teacher == null) {
@@ -48,6 +51,13 @@ public class TeacherRealm extends AuthorizingRealm {
         String realmName = getName();
         //4.盐值
         //ByteSource credentialsSalt = ByteSource.Util.bytes(token.getUsername());
+
+        //获取当前用户
+        Subject currentUser = SecurityUtils.getSubject();
+        //获取当前用户的session对象
+        Session session = currentUser.getSession();
+        //将用户信息存入session对象中
+        session.setAttribute("teacher",teacher);
 
         //构建AuthenticationInfo对象并返回
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, realmName);

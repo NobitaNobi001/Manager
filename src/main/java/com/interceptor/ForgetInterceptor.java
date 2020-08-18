@@ -17,7 +17,7 @@ public class ForgetInterceptor implements HandlerInterceptor {
         Integer forgetNumber = (Integer) httpServletRequest.getSession().getAttribute("forget_number");
 
         //如果session域中没有忘记密码的账号就进行拦截
-        if(forgetNumber==null){
+        if (forgetNumber == null) {
             httpServletResponse.sendRedirect("/forget/forgetIndex");
             return false;
         }

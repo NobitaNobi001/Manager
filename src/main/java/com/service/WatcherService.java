@@ -1,37 +1,33 @@
 package com.service;
 
-import com.bean.Student;
 import com.bean.Watcher;
 import com.dao.CollegeStuMapper;
 import com.dao.WatcherMapper;
-import com.github.pagehelper.PageHelper;
-import com.utils.CollegeName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 督察相关操作的业务层
+ */
 @Service
 public class WatcherService {
 
     @Autowired
     private WatcherMapper watcherMapper;
 
-    @Autowired
-    private CollegeStuMapper collegeStuMapper;
+    /**
+     * select
+     */
 
     /**
-     * 根据督察账号查找密码
+     * 查找督察数量
      *
-     * @param watcherNumber
      * @return
      */
-    public Watcher selectUPByWatcherNumber(Integer watcherNumber) {
-
-        //通过dao层将数据进行查出
-        Watcher watcher = watcherMapper.selectUPByWatcherNumber(watcherNumber);
-
-        return watcher;
+    public Integer selectCountWatcher() {
+        return watcherMapper.countByExample(null);
     }
 
     /**
@@ -56,6 +52,42 @@ public class WatcherService {
     }
 
     /**
+     * 批量查询所有督察
+     *
+     * @return
+     */
+    public List<Watcher> selectWatchers() {
+        return watcherMapper.selectByExample(null);
+    }
+
+    /**
+     * find
+     */
+
+    /**
+     * 条件查询
+     *
+     * @param collegeId
+     * @param keywords
+     * @return
+     */
+    public List<Watcher> findWathcerWithCondition(Integer collegeId, String keywords) {
+
+        List<Watcher> watchers = watcherMapper.selectWatcherWithCondition(collegeId, keywords);
+
+        if (watchers.size() == 0) {
+            return null;
+        } else {
+            return watchers;
+        }
+
+    }
+
+    /**
+     * update
+     */
+
+    /**
      * 修改督察信息
      *
      * @param watcher
@@ -65,21 +97,68 @@ public class WatcherService {
     }
 
     /**
-     * 查找督察数量
-     *
-     * @return
+     * 根据督察工号更新密码
+     * @param number
+     * @param password
      */
-    public Integer selectCountWatcher() {
-        return watcherMapper.countByExample(null);
+    public void updatePasswordByWatcherNumber(Integer number, String password) {
+        watcherMapper.updatePasswordByWatcherNumber(number, password);
     }
 
     /**
-     * 批量查询督察
-     * @return
+     * 根据主键更新督察信息
+     *
+     * @param watcher
      */
-    public List<Watcher> selectWatchers() {
-        return watcherMapper.selectByExample(null);
+    public void updateWatcherByPrimaryKey(Watcher watcher) {
+        watcherMapper.updateByPrimaryKeySelective(watcher);
     }
+
+    /**
+     * insert
+     */
+
+    /**
+     * 新增单个督察
+     *
+     * @param watcher 单个督察信息
+     */
+    public void insertWatcher(Watcher watcher) {
+        watcherMapper.insertSelective(watcher);
+    }
+
+    /**
+     * delete
+     */
+
+    /**
+     * 根据主键删除督察信息
+     *
+     * @param id
+     */
+    public void deleteWatcher(Integer id) {
+        watcherMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param id
+     */
+    public void batchDeleteWathcers(List<Integer> id) {
+
+        WatcherExample watcherExample = new WatcherExample();
+
+        WatcherExample.Criteria criteria = watcherExample.createCriteria();
+
+        criteria.andIdIn(id);
+
+        watcherMapper.deleteByExample(watcherExample);
+    }
+
+    /**
+     * check
+     */
 
     /**
      * 督查学院映射到学院学生表，模糊查询
@@ -95,5 +174,13 @@ public class WatcherService {
         return collegeStuMapper.selectStuByLikeSearch(tableName, keyword);
     }
 
-
+    /**
+     * 根据督察工号检查是否绑定此邮箱
+     * @param number 工号
+     * @param email 邮箱
+     * @return
+     */
+    public boolean checkEmailByWatcher(Integer number, String email) {
+        return watcherMapper.selectEmailByWatcher(number, email) == 0;
+    }
 }

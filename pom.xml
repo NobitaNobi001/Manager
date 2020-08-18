@@ -119,13 +119,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <!--邮件相关依赖-->
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>1.6.1</version>
-        </dependency>
-
         <!--junit单元测试依赖-->
         <dependency>
             <groupId>junit</groupId>
@@ -147,6 +140,13 @@
             <artifactId>pagehelper</artifactId>
             <version>5.1.10</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+
         <!--easyExcel-->
         <dependency>
             <groupId>com.alibaba</groupId>

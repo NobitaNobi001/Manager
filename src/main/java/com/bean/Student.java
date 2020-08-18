@@ -3,30 +3,41 @@ package com.bean;
 import java.io.Serializable;
 
 public class Student implements Serializable {
+
     private Integer id;
 
-    private Integer stuNumber;// 学号
+    // 学号
+    private Integer stuNumber;
 
-    private String password;// 密码
+    // 密码
+    private String password;
 
-    private String stuName;// 姓名
+    // 姓名
+    private String stuName;
 
-    private int collegeId;// 学院id
+    // 学院id
+    private int collegeId;
 
-    private String major;// 专业
+    // 专业
+    private String major;
 
-    private String className;// 班级
+    // 班级
+    private String className;
 
-    private String gender;// 性别
+    // 性别
+    private String gender;
 
-    private String phone;// 手机
+    // 手机
+    private String phone;
 
-    private String email;// 邮箱地址
+    // 邮箱地址
+    private String email;
 
+    // 学院对象
+    private College college;
 
-    private College college;// 学院
-
-    private Double sumCredit;// 总学分
+    // 总学分对象
+    private Double sumCredit;
 
     public Double getSumCredit() {
         return sumCredit;
