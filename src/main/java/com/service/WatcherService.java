@@ -1,8 +1,12 @@
 package com.service;
 
+import com.bean.Student;
+import com.bean.StudentExample;
 import com.bean.Watcher;
+import com.bean.WatcherExample;
 import com.dao.CollegeStuMapper;
 import com.dao.WatcherMapper;
+import com.utils.CollegeNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +20,9 @@ public class WatcherService {
 
     @Autowired
     private WatcherMapper watcherMapper;
+
+    @Autowired
+    private CollegeStuMapper collegeStuMapper;
 
     /**
      * select
@@ -169,7 +176,7 @@ public class WatcherService {
     public List<Student> selectStuBycondition(int collegeId, String keyword) {
 
         //获取表名
-        String tableName = CollegeName.getTableName(collegeId);
+        String tableName = CollegeNameUtil.getTableName(collegeId);
 
         return collegeStuMapper.selectStuByLikeSearch(tableName, keyword);
     }
@@ -182,5 +189,23 @@ public class WatcherService {
      */
     public boolean checkEmailByWatcher(Integer number, String email) {
         return watcherMapper.selectEmailByWatcher(number, email) == 0;
+    }
+
+    /**
+     * 检查学生学号是否已存在
+     *
+     * @param watcherNumber 学生学号
+     * @return
+     */
+    public boolean checkWatcher(Integer watcherNumber) {
+
+        WatcherExample watcherExample = new WatcherExample();
+
+        WatcherExample.Criteria criteria = watcherExample.createCriteria();
+
+        criteria.andWatcherNumberEqualTo(watcherNumber);
+
+        return watcherMapper.countByExample(watcherExample) == 0;
+
     }
 }

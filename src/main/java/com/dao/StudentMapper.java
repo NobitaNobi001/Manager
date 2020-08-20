@@ -42,6 +42,8 @@ public interface StudentMapper {
 
     Student selectByPrimaryKey(Integer id);
 
+    Student selectUPByStuNumber(Integer stuNumber);
+
     int updateByExampleSelective(@Param("record") Student record, @Param("example") StudentExample example);
 
     int updateByExample(@Param("record") Student record, @Param("example") StudentExample example);

@@ -105,6 +105,10 @@
         <include refid="Base_Column_List"/>
         from stu_info where stu_number= #{stu_number,jdbcType=INTEGER}
     </select>
+
+    <select id="selectUPByStuNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
+        select password from stu_info where stu_number=#{stu_number}
+    </select>
     <!--完善学生信息-->
     <update id="updateStuInfoById">
         update stu_info
