@@ -150,4 +150,9 @@
             </if>
         </trim>
     </select>
+
+    <select id="conditionSearch" resultMap="BaseResultMap">
+        select * from ${tableName} where major = #{major,jdbcType=VARCHAR} and stu_class = #{stuClass}
+    </select>
+
 </mapper>
