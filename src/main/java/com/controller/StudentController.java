@@ -62,7 +62,7 @@ public class StudentController {
      * @param id
      * @return
      */
-    @RequestMapping("/updatepwd/{stuID}")
+    @RequestMapping("/updatePwd/{stuID}")
     public String updatepwd(Model model, @PathVariable("stuID") int id) {
         Student student = studentService.selectByPrimaryKey(id);
         model.addAttribute("student", student);

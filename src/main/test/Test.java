@@ -1,5 +1,7 @@
 import com.bean.Teacher;
 import com.dao.TeacherMapper;
+import com.listener.ContextListener;
+import com.listener.ExportStuListener;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.xml.ConfigurationParser;
@@ -22,14 +24,16 @@ public class Test {
     private ApplicationContext atc = null;
 
     {
-        atc = new ClassPathXmlApplicationContext("spring-dao.xml");
+        atc = new ClassPathXmlApplicationContext("applicationContext.xml");
     }
 
     //测试数据库连接
     @org.junit.Test
     public void ConnectionTest() throws SQLException {
-        DataSource dataSource = atc.getBean(DataSource.class);
-        System.out.println(dataSource.getConnection());
+        //DataSource dataSource = atc.getBean(DataSource.class);
+        //System.out.println(dataSource.getConnection());
+        ContextListener bean = atc.getBean(ContextListener.class);
+        System.out.println(bean);
     }
 
     //测试逆向工程
@@ -53,5 +57,11 @@ public class Test {
         Teacher teacher = new Teacher();
         teacher.setTeaNumber(2018117111);
         System.out.println(teacherMapper.insertSelective(teacher));
+    }
+
+    @org.junit.Test
+    public void testIntegerMax(){
+        //System.out.println(Integer.MAX_VALUE);//2147483647
+        //System.out.println(Integer.MIN_VALUE);//-2147483648
     }
 }

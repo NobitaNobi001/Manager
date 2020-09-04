@@ -27,7 +27,7 @@ public class UserController {
      * @param type     身份类型
      */
     @PostMapping(value = "/login")
-    public String checkUser(@RequestParam("number") Integer number, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest request) {
+    public String checkUser(@RequestParam("stuNumber") Integer number, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest request) {
 
         //1、获取实体对象
         Subject subject = SecurityUtils.getSubject();
@@ -38,8 +38,6 @@ public class UserController {
         //3、将用户名 密码 用户类型 封装为一个Token对象
         LoginToken token = new LoginToken(number, password, loginType);
 
-        try {
-
             //4、进行登录认证
             subject.login(token);
 
@@ -49,12 +47,5 @@ public class UserController {
             //实现页面的重定向
             return "redirect:/" + page + "/" + page.substring(0, 3) + "Index";
 
-        } catch (AuthenticationException e) {   //认证失败
-
-            request.getSession().setAttribute("msg", "用户名或密码错误");
-        }
-
-        //若登陆失败重定向到登录页面
-        return "redirect:/login.jsp";
     }
 }

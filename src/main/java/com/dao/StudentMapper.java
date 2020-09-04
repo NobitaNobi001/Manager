@@ -7,7 +7,6 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface StudentMapper {
-
     //根据学号来查询学生
     Student selectStudentByStuNumber(Integer stuNumber);
 
@@ -17,7 +16,7 @@ public interface StudentMapper {
     //根据id查询到学生 更换密码
     boolean updateStuPwdByStuNumber(@Param("stuNumber") Integer stuNumber, @Param("password") String password);
 
-    //根据id来查询major专业
+    //根据学号来查询major专业
     String selectMajorBystuNumber(@Param("stuNumber") Integer stuNumber);
 
     // 根据关键字(学号、姓名)查询学生

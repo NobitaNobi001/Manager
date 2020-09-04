@@ -1,36 +1,51 @@
 package com.bean;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.Range;
+
+import javax.validation.constraints.*;
 import java.io.Serializable;
 
 public class Student implements Serializable {
-
     private Integer id;
 
-    // 学号
+    // 学号必须是10位，并且在合适的范围
+    @Max(value = 10,message = "学生学号必须为10位")
+    @Min(value = 10,message = "学生学号必须为10位")
+    @Range(min = 2016000000,max = 2147483647,message = "学生学号必须在合适的范围之内")
     private Integer stuNumber;
 
-    // 密码
+    // 密码在6~16位之间
+    @NotBlank(message = "密码不能为空")
+    @Length(max = 18,min=6,message = "密码长度必须在6~18位之间")
     private String password;
 
     // 姓名
+    @NotBlank(message = "学生姓名不能为空")
     private String stuName;
 
     // 学院id
-    private int collegeId;
+    @NotNull(message = "学生所属的学院不能为空")
+    private Integer collegeId;
 
     // 专业
+    @NotBlank(message = "学生所属的专业不能为空")
     private String major;
 
     // 班级
+    @NotBlank(message = "学生所属的班级不能为空")
     private String className;
 
     // 性别
+    @Length(min = 1,max = 1,message = "性别只能选择男或女")
     private String gender;
 
     // 手机
+    @Pattern(regexp = "/^1(?:3\\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\\d|9\\d)\\d{8}$/",message = "手机号码格式有误")
     private String phone;
 
     // 邮箱地址
+    @Email(message = "邮箱格式不合法")
     private String email;
 
     // 学院对象
@@ -97,11 +112,11 @@ public class Student implements Serializable {
         this.stuName = stuName;
     }
 
-    public int getCollegeId() {
+    public Integer getCollegeId() {
         return collegeId;
     }
 
-    public void setCollegeId(int collegeId) {
+    public void setCollegeId(Integer collegeId) {
         this.collegeId = collegeId;
     }
 

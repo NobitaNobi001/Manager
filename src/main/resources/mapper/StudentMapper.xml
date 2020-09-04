@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.StudentMapper">
+    <cache eviction="FIFO" flushInterval="600000" readOnly="true" size="1024"></cache>
     <resultMap id="WithCreditResultMap" type="com.bean.Student">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
         <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
-        <result column="college_id" property="collegeId"/>
+        <result column="college_id" property="collegeId" jdbcType="INTEGER"/>
         <result column="major" property="major" jdbcType="VARCHAR"/>
         <result column="class_name" property="className" jdbcType="VARCHAR"/>
         <result column="gender" property="gender" jdbcType="CHAR"/>
         <result column="phone" property="phone" jdbcType="VARCHAR"/>
         <result column="email" property="email" jdbcType="VARCHAR"/>
-        <association property="college" select="com.dao.CollegeMapper.selectByPrimaryKey"
-                     column="college_id"></association>
-        <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber"
-                     column="stu_number"></association>
+        <result column="name" property="college.name" jdbcType="VARCHAR"></result>
+        <result column="sum_credit" property="sumCredit" jdbcType="DOUBLE"></result>
     </resultMap>
     <resultMap id="UserNameAndPassword" type="com.bean.Student">
-        <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
         <result column="password" property="password" jdbcType="VARCHAR"/>
     </resultMap>
 
@@ -98,17 +96,28 @@
     id, stu_number, password, stu_name, college_id, major, class_name, gender, phone,
     email
   </sql>
+    <sql id="WithSumcredit_Column_List">
+        s.id,s.stu_number,s.password,s.stu_name,s.college_id,s.major,s.class_name,s.gender,s.phone,s.email,
+        c1.name,c2.sum_credit
+    </sql>
 
     <!--根据学号查找学生的信息-->
     <select id="selectStudentByStuNumber" resultMap="WithCreditResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="Base_Column_List"/>
-        from stu_info where stu_number= #{stu_number,jdbcType=INTEGER}
+        <include refid="WithSumcredit_Column_List"/>
+        FROM stu_info s
+        LEFT JOIN college c1
+        on s.college_id=c1.id
+        join credit c2
+        on s.stu_number=c2.stu_number
+        where s.stu_number=#{stu_number,jdbcType=INTEGER}
     </select>
 
+    <!--根据学号得到密码-->
     <select id="selectUPByStuNumber" resultMap="UserNameAndPassword" parameterType="java.lang.Integer">
         select password from stu_info where stu_number=#{stu_number}
     </select>
+
     <!--完善学生信息-->
     <update id="updateStuInfoById">
         update stu_info
@@ -127,6 +136,7 @@
             id=#{id}
         </where>
     </update>
+
     <!--根据学号修改密码-->
     <update id="updateStuPwdByStuNumber">
         update stu_info set password=#{password} where stu_number=#{stuNumber}
@@ -135,8 +145,9 @@
     <!--根据学生的学号去查询所在的major-->
     <select id="selectMajorBystuNumber" resultType="java.lang.String">
     select major from stu_info where stu_number=#{stuNumber}
-  </select>
+   </select>
 
+    <!--根据关键字查询学生信息 比如学号 学生姓名-->
     <select id="selectStuBykeyword" resultMap="WithCreditResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -148,6 +159,7 @@
             </if>
         </where>
     </select>
+
     <!--下面是逆向工程-->
     <select id="selectByExample" parameterType="com.bean.StudentExample" resultMap="BaseResultMap">
         select
@@ -279,6 +291,7 @@
             )
         </foreach>
     </insert>
+
     <select id="countByExample" parameterType="com.bean.StudentExample" resultType="java.lang.Long">
         select count(*) from stu_info
         <if test="_parameter != null">

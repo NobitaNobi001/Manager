@@ -2,6 +2,7 @@ package com.listener;
 
 import com.bean.College;
 import com.service.CollegeService;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletContextEvent;

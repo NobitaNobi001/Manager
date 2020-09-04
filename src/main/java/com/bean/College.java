@@ -1,10 +1,15 @@
 package com.bean;
 
-public class College {
+import java.io.Serializable;
+
+public class College implements Serializable {
+    // 学院id
     private Integer id;
 
+    // 学院名称
     private String name;
 
+    // 每个学院的申请规则
     private String rule;
 
     public Integer getId() {

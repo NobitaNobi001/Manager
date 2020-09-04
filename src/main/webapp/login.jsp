@@ -22,7 +22,6 @@
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
-    <script type="text/javascript" src="static/layui/layui.js"></script>
 
 </head>
 <body>
@@ -33,16 +32,16 @@
             <div class="title">湖北文理学院创新学分管理系统</div>
         </div>
         <div class="login-form">
-            <form action="user/login" method="post" onsubmit="return check()" role="form">
-                <h4 style="margin-left: 10px">用户登录</h4>
-                <p><font color="red">${msg}</font></p>
+            <form action="user/login" method="post" role="form" class="form-horizontal">
+                <h4>用户登录</h4>
+                <p><font color="red">${requestScope.exception.msg }</font></p>
                 <div class="form-group">
                     <div class="input-group">
                        <span class="input-group-addon">
                      <span class="glyphicon glyphicon-user"></span>
                     </span>
-                        <input type="text" name="number" class="form-control" id="Number"
-                               placeholder="登录账号" autofocus onchange="checkuser()">
+                        <input type="text" name="stuNumber" class="form-control" id="Number"
+                               placeholder="登录账号" autofocus>
                     </div>
                 </div>
                 <div class="form-group">
@@ -51,7 +50,7 @@
                     <span class="glyphicon glyphicon-eye-open" id="eye"></span>
                     </span>
                         <input type="password" name="password" class="form-control" id="password"
-                               placeholder="登录密码" onchange="checkpwd()"/>
+                               placeholder="登录密码"/>
                     </div>
                 </div>
                 <div class="type">
@@ -75,4 +74,50 @@
 </div>
 </body>
 </html>
-<script type="text/javascript" src="static/js/login.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('.login-form form').bootstrapValidator({
+            // 通用提示语
+            message: 'This value is not valid',
+            // 提示字体图标
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            live: 'disabled',
+            fields: {
+                stuNumber: {
+                    validators: {
+                        notEmpty: {
+                            message: '登录账号不能为空'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '登录密码不能为空'
+                        }
+                    }
+                }
+            }
+        });
+    });
+
+
+
+    //显示密码
+    $("#eye").click(function () {
+        var flag = $(this).hasClass("glyphicon-eye-open");
+        if (flag) {
+            $("#eye").removeClass("glyphicon-eye-open");
+            $("#eye").addClass("glyphicon-eye-close");
+            $("form input[name='password']").attr("type", "Text");
+        } else {
+            $("#eye").removeClass("glyphicon-eye-close");
+            $("#eye").addClass("glyphicon-eye-open");
+            $("form input[name='password']").attr("type", "password");
+        }
+    });
+</script>

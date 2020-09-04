@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
  * @author hbk
  * @date 2020/6/24
  **/
-public class jsonUtils {
+public class jsonUtil {
     public static String getJson(Object o) {
         return getJson(o, "yyyy-MM-dd");
     }
