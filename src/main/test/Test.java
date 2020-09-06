@@ -11,7 +11,11 @@ import org.mybatis.generator.internal.DefaultShellCallback;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpRequest;
+import org.springframework.ui.Model;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
@@ -64,4 +68,6 @@ public class Test {
         //System.out.println(Integer.MAX_VALUE);//2147483647
         //System.out.println(Integer.MIN_VALUE);//-2147483648
     }
+    
+
 }

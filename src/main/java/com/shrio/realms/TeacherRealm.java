@@ -2,6 +2,8 @@ package com.shrio.realms;
 
 
 import com.bean.Teacher;
+import com.constant.StringConstant;
+import com.exception.LoginFailedException;
 import com.service.TeacherService;
 import com.shrio.token.LoginToken;
 import org.apache.shiro.SecurityUtils;
@@ -35,12 +37,12 @@ public class TeacherRealm extends AuthorizingRealm {
 
         //用户不存在
         if (teacher == null) {
-            throw new UnknownAccountException("用户不存在");
+            throw new LoginFailedException(StringConstant.ACCOUNT_PASSWORD_ERROR);
         }
 
         //密码错误
         if (!(teacher.getPassword().equals(String.valueOf(token.getPassword())))) {
-            throw new IncorrectCredentialsException("密码错误");
+            throw new LoginFailedException(StringConstant.ACCOUNT_PASSWORD_ERROR);
         }
 
         //1.认证的实体信息
@@ -57,7 +59,7 @@ public class TeacherRealm extends AuthorizingRealm {
         //获取当前用户的session对象
         Session session = currentUser.getSession();
         //将用户信息存入session对象中
-        session.setAttribute("teacher",teacher);
+        session.setAttribute(StringConstant.TEACHER_TYPE,teacher);
 
         //构建AuthenticationInfo对象并返回
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, realmName);

@@ -1,6 +1,7 @@
 package com.listener;
 
 import com.bean.College;
+import com.constant.StringConstant;
 import com.service.CollegeService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -19,7 +20,7 @@ public class ContextListener implements ServletContextListener {
 
         List<College> colleges = collegeService.getColleges();
 
-        servletContextEvent.getServletContext().setAttribute("colleges",colleges);
+        servletContextEvent.getServletContext().setAttribute(StringConstant.PROJECT_INIT_COLLEGES,colleges);
     }
 
     @Override

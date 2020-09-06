@@ -139,7 +139,7 @@
                         },
                         stringLength: {
                             min: 6,
-                            max: 16,
+                            max: 18,
                             message: '密码长度必须在6到16位之间'
                         },
                         different: {

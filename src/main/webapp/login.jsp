@@ -34,7 +34,9 @@
         <div class="login-form">
             <form action="user/login" method="post" role="form" class="form-horizontal">
                 <h4>用户登录</h4>
-                <p><font color="red">${requestScope.exception.msg }</font></p>
+                <div class="form-group">
+                    <p><font color="red">${requestScope.exception.message }</font></p>
+                </div>
                 <div class="form-group">
                     <div class="input-group">
                        <span class="input-group-addon">
@@ -91,6 +93,10 @@
                     validators: {
                         notEmpty: {
                             message: '登录账号不能为空'
+                        },
+                        regexp: {
+                            regexp: /^\d{4,11}$/,
+                            message: '账号格式错误'
                         }
                     }
                 },
@@ -98,6 +104,11 @@
                     validators: {
                         notEmpty: {
                             message: '登录密码不能为空'
+                        },
+                        stringLength: {
+                            min: 6,
+                            max: 18,
+                            message: '密码必须在6~18位之间'
                         }
                     }
                 }

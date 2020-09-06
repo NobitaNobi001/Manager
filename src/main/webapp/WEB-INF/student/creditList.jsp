@@ -68,6 +68,7 @@
                         <a href="javascript:;" class="btn btn-danger">总学分:${sumCredit}</a>
                     </div>
                     <table class="table" border="0" cellspacing="0" cellpadding="0">
+                        <thead>
                         <tr>
                             <th>序号</th>
                             <th style="text-align: center;">类别</th>
@@ -76,32 +77,43 @@
                             <th>审核学分</th>
                             <th>申报状态</th>
                         </tr>
-                        <c:forEach var="record" items="${info.list}" varStatus="s">
+                        </thead>
+                        <tbody>
+                        <c:if test="${empty requestScope.info.list }">
                             <tr>
-                                <td>${s.count+(info.pageNum-1)*5}</td>
-                                <td style="text-align: center;">${record.sort}</td>
-                                <td>${record.applyName}</td>
-                                <td>${record.applyCredit}</td>
-                                <td>${record.auditCredit}</td>
-                                <c:choose>
-                                    <c:when test="${record.auditState=='已审核' && record.auditCredit>0}">
-                                        <td>
-                                            <button class="btn btn-2x" name="state">已通过</button>
-                                        </td>
-                                    </c:when>
-                                    <c:when test="${record.auditState=='未审核'}">
-                                        <td>
-                                            <button class="btn btn-2x" name="state">未审核</button>
-                                        </td>
-                                    </c:when>
-                                    <c:when test="${record.auditState=='已审核' && record.auditCredit==0}">
-                                        <td>
-                                            <button class="btn btn-2x" name="state">未通过</button>
-                                        </td>
-                                    </c:when>
-                                </c:choose>
+                                <td colspan="6" align="center">暂无数据记录</td>
                             </tr>
-                        </c:forEach>
+                        </c:if>
+
+                        <c:if test="${!empty requestScope.info.list }">
+                            <c:forEach var="record" items="${info.list}" varStatus="s">
+                                <tr>
+                                    <td>${s.count+(info.pageNum-1)*5}</td>
+                                    <td style="text-align: center;">${record.sort}</td>
+                                    <td>${record.applyName}</td>
+                                    <td>${record.applyCredit}</td>
+                                    <td>${record.auditCredit}</td>
+                                    <c:choose>
+                                        <c:when test="${record.auditState=='已审核' && record.auditCredit>0}">
+                                            <td>
+                                                <button class="btn btn-2x" name="state">已通过</button>
+                                            </td>
+                                        </c:when>
+                                        <c:when test="${record.auditState=='未审核'}">
+                                            <td>
+                                                <button class="btn btn-2x" name="state">未审核</button>
+                                            </td>
+                                        </c:when>
+                                        <c:when test="${record.auditState=='已审核' && record.auditCredit==0}">
+                                            <td>
+                                                <button class="btn btn-2x" name="state">未通过</button>
+                                            </td>
+                                        </c:when>
+                                    </c:choose>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+                        </tbody>
                     </table>
                     <center>
                         <nav aria-label="Page navigation">

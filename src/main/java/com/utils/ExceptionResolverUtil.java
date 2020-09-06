@@ -3,6 +3,7 @@ package com.utils;
 import com.bean.Msg;
 import com.constant.StringConstant;
 
+import com.exception.LoginFailedException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -22,28 +23,10 @@ import java.io.IOException;
 * */
 @ControllerAdvice
 public class ExceptionResolverUtil {
-    // 用户不存在异常
-    @ExceptionHandler(value = UnknownAccountException.class)
-    public ModelAndView resolveUnknownAccountException(UnknownAccountException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String viewName="redirect:/login";
-        return commonResolver(viewName, exception, request, response);
-    }
-
-    // 密码错误异常
-    @ExceptionHandler(value = IncorrectCredentialsException.class)
-    public ModelAndView resolveIncorrectCredentialsException(IncorrectCredentialsException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String viewName="redirect:/login";
-        return commonResolver(viewName, exception, request, response);
-    }
-
-
-    @ExceptionHandler(value = Exception.class)
-    public ModelAndView UserUpdateOrResolveMathOrNotLoggedOrAssignException(
-            Exception exception,
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws IOException {
-        String viewName = "common/404";
+    // 登录失败异常
+    @ExceptionHandler(value = LoginFailedException.class)
+    public ModelAndView LoginFailedExceptionException(LoginFailedException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String viewName="forward:/login.jsp";
         return commonResolver(viewName, exception, request, response);
     }
 
