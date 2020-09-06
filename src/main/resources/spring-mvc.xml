@@ -55,17 +55,6 @@
         <property name="maxInMemorySize" value="40960"></property>-->
     </bean>
 
-    <!--基于xml的异常映射-->
-    <!--<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"-->
-          <!--id="simpleMappingExceptionResolver">-->
-        <!--<property name="exceptionMappings">-->
-            <!--<props>-->
-                <!--&lt;!&ndash;key属性指定异常全类名&ndash;&gt;-->
-                <!--<prop key="java.lang.Exception">common/error</prop>-->
-            <!--</props>-->
-        <!--</property>-->
-    <!--</bean>-->
-    <!---->
 
     <!--忘记密码页面的拦截器-->
     <mvc:interceptors>

@@ -25,14 +25,14 @@ public class ExceptionResolverUtil {
     // 用户不存在异常
     @ExceptionHandler(value = UnknownAccountException.class)
     public ModelAndView resolveUnknownAccountException(UnknownAccountException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String viewName="/login";
+        String viewName="redirect:/login";
         return commonResolver(viewName, exception, request, response);
     }
 
     // 密码错误异常
     @ExceptionHandler(value = IncorrectCredentialsException.class)
     public ModelAndView resolveIncorrectCredentialsException(IncorrectCredentialsException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String viewName="/login";
+        String viewName="redirect:/login";
         return commonResolver(viewName, exception, request, response);
     }
 
@@ -43,7 +43,7 @@ public class ExceptionResolverUtil {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        String viewName = "common.404";
+        String viewName = "common/404";
         return commonResolver(viewName, exception, request, response);
     }
 
