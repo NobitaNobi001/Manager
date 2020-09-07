@@ -7,17 +7,16 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 
 public class Student implements Serializable {
+    @NotNull
     private Integer id;
 
     // 学号必须是10位，并且在合适的范围
-    @Max(value = 10,message = "学生学号必须为10位")
-    @Min(value = 10,message = "学生学号必须为10位")
-    @Range(min = 2016000000,max = 2147483647,message = "学生学号必须在合适的范围之内")
+    @Range(min = 2016000000,max = 2140000000,message = "学生学号必须在合适的范围之内")
     private Integer stuNumber;
 
     // 密码在6~16位之间
     @NotBlank(message = "密码不能为空")
-    @Length(max = 18,min=6,message = "密码长度必须在6~18位之间")
+    @Size(max = 18,min=6,message = "密码长度必须在6~18位之间")
     private String password;
 
     // 姓名
@@ -37,21 +36,21 @@ public class Student implements Serializable {
     private String className;
 
     // 性别
-    @Length(min = 1,max = 1,message = "性别只能选择男或女")
     private String gender;
 
     // 手机
-    @Pattern(regexp = "/^1(?:3\\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\\d|9\\d)\\d{8}$/",message = "手机号码格式有误")
     private String phone;
 
     // 邮箱地址
-    @Email(message = "邮箱格式不合法")
+    @Email(message = "邮箱地址格式错误")
     private String email;
 
     // 学院对象
+    @NotNull
     private College college;
 
     // 总学分对象
+    @NotNull
     private Double sumCredit;
 
     public Double getSumCredit() {

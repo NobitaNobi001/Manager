@@ -92,6 +92,14 @@ public class CollegeStu {
         this.collegeId = collegeId;
     }
 
+    public String getCollegeName() {
+        return collegeName;
+    }
+
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName;
+    }
+
     public int getStuNumber() {
         return stuNumber;
     }

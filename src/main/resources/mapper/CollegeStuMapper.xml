@@ -129,10 +129,13 @@
 
     <!--根据专业得到班级名-->
     <select id="getAllClass" resultType="java.lang.String">
-        select distinct stu_class from ${tableName} where
-        <if test="major!=null and major!='' and major!='-1'.toString()">
-            major=#{major}
-        </if>
+        select distinct stu_class from ${tableName}
+        <where>
+            <if test="major!=null and major!='' and major!='-1'">
+                major=#{major}
+            </if>
+        </where>
+
         order by stu_class asc
     </select>
 
@@ -181,7 +184,7 @@
             <if test="order=='1'">
                 order by stu_class asc
             </if>
-            <if test="order==2">
+            <if test="order=='2'">
                 order by stu_class desc
             </if>
         </where>

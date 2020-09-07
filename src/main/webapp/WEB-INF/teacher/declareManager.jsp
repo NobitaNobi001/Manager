@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分管理系统</title>
+    <title>湖北文理学院创新实践学分管理系统</title>
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
@@ -58,7 +58,7 @@
                             <button type="button" class="btn btn-default" data-container="body" data-toggle="popover"
                                     data-placement="right" name="picture_btn" id="picture_btn">查看图片
                             </button>
-                                <%--<div class="btn-default"><a tabindex="0" role="button" data-toggle="popover" id="picture_btn">查看图片</a></div>--%>
+                            <%--<div class="btn-default"><a tabindex="0" role="button" data-toggle="popover" id="picture_btn">查看图片</a></div>--%>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -106,7 +106,7 @@
             <div class="top clear">
                 <div class="top-left left">
                     <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分管理系统</div>
+                    <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
                     <a href="teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
@@ -192,25 +192,20 @@
 <%--引入构建分页信息和页码控制的js文件--%>
 <script type="text/javascript" src="static/js/common/tableInfo.js"></script>
 <script type="text/javascript">
-
     //获取学生的学号
     var StuNumber;
-
     //去第一页
     $(function () {
         to_page(1);
     });
-
     //单击搜索按钮后
     $("#search").click(function () {
-
         //正则校验搜索框的输入
         var regKey = /[\u4E00-\u9FA5]/;
         if (!regKey.test($("#keywords").val().trim())) {
             alert("请输入正确的姓名!");
             return false;
         }
-
         $.ajax({
             url: "record/stuRecord",
             type: "GET",
@@ -219,14 +214,12 @@
                 "collegeId": "${teacher.collegeId }"
             },
             success: function (result) {
-
                 //清空table表格样式
                 $("#declare_table tbody").empty();
                 //清空分页条数据
                 $("#page_nav_area").empty();
                 //清空分页信息
                 $("#page_info_area").empty();
-
                 if (result.code == 100) {
                     //1.构建申报管理表格
                     build_declare_table(result);
@@ -243,11 +236,8 @@
                 alert("服务器繁忙!");
             }
         });
-
     })
-
     function to_page(pn) {
-
         $.ajax({
             url: "record/declare",
             type: "GET",
@@ -256,14 +246,12 @@
                 "collegeId": ${teacher.collegeId }
             },
             success: function (result) {
-
                 //清空table表格样式
                 $("#declare_table tbody").empty();
                 //清空分页条数据
                 $("#page_nav_area").empty();
                 //清空分页信息
                 $("#page_info_area").empty();
-
                 if (result.code == 100) {
                     //1.构建申报管理表格
                     build_declare_table(result);
@@ -274,11 +262,9 @@
                 } else if (result.code == 200) {
                     $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#declare_table tbody");
                 }
-
             }
         });
     }
-
     //申报管理表格构建
     function build_declare_table(result) {
         //清空table表格
@@ -287,7 +273,6 @@
         var stuDeclareInfo = result.extend.pageInfo;
         //遍历返回的数据
         $.each(stuDeclareInfo.list, function (index, item) {
-
             //学生申报记录的序号 index是从0开始
             var stuCount = $("<td></td>").append(index + 1 + (stuDeclareInfo.pageNum - 1) * 5);
             //学生学号
@@ -300,7 +285,6 @@
             var applyName = $("<td></td>").append(item.applyName);
             //申报学分
             var applyCredit = $("<td></td>").append(item.applyCredit);
-
             //根据审核状态给审核按钮赋予不同的颜色
             var state_a = $("<a></a>");
             if (item.auditState == "已审核") {     //已审核
@@ -308,13 +292,10 @@
             } else {    //未审核
                 state_a.addClass("btn btn-danger btn-2x");
             }
-
             //审核状态
             var applyState = $("<td></td>").append(state_a.append(item.auditState));
-
             //审核按钮 为审核按钮添加一个自定义的属性来表示当前学生的id
             var auditBtn = $("<td></td>").append($("<a></a>").addClass("btn btn-primary btn-2x audit-btn").attr("audit-id", item.id).append("审核"));
-
             $("<tr></tr>").append(stuCount)
                 .append(stuNumber)
                 .append(stuName)
@@ -326,21 +307,17 @@
                 .appendTo("#declare_table tbody");
         });
     }
-
     //给审核按钮绑定单击事件
     $(document).on("click", ".audit-btn", function () {
-
         //查出对应学生的申报信息
         getStuRecord($(this).attr("audit-id"));
         //把本学生的学分申报记录的id赋给模态框的确定按钮
         $("#stu_audit_btn").attr("audit-id", $(this).attr("audit-id"));
-
         $("#stuWithAudit").modal({
             //设置点击背景模态框不会消失
             backdrop: "static"
         });
     });
-
     //校验审核学分
     function validate_audit_credit() {
         if ($("#audit_credit").val().trim() != "" && $("#audit_credit").val() >= 0) {
@@ -348,15 +325,12 @@
         }
         return false;
     }
-
     //模态框的确定按钮
     $("#stu_audit_btn").click(function () {
-
         if (!validate_audit_credit()) {
             alert("请填写正确的审核学分!");
             return false;
         }
-
         //发送ajax请求更新审核的信息
         $.ajax({
             url: "record/updateRecord/" + $(this).attr("audit-id"),
@@ -368,9 +342,7 @@
                 // "auditState": $("#audit_state option:selected").val()
             },
             success: function (result) {
-
                 if (result.code == 100) {   //成功更新审核信息和总学分
-
                     //关闭模态框
                     $("#stuWithAudit").modal("hide");
                     //回到本页面
@@ -379,26 +351,20 @@
                 if (result.code == 200) {   //失败
                     alert(result.extend.msg);
                 }
-
                 //同时关闭申报图片的显示
-                 $(".popover").popover('hide');
-
+                $(".popover").popover('hide');
             }, error: function () {
                 alert("服务器繁忙!");
             }
         });
     });
-
     //模态框关闭时
     $("#stu_close_btn").click(function () {
-
         //关闭申报图片的显示
         $(".popover").popover('hide');
     });
-
     //定义一个全局变量来表示图片的url
     var url;
-
     //根据申报记录的id获取对应的学生的申报记录
     function getStuRecord(id) {
         $.ajax({
@@ -407,16 +373,13 @@
             success: function (result) {
                 //解析数据 回显到模态框内
                 var stuRecordData = result.extend.stuRecord;
-
                 StuNumber = stuRecordData.stuNumber;
                 //姓名
                 $("#stu_name").val(stuRecordData.stuName);
                 //申报类别
                 $("#sort").val(stuRecordData.sort);
-
                 //申报材料的url
                 url = "applyImg/" + stuRecordData.picture;
-
                 //申报名称
                 $("#apply_name").val(stuRecordData.applyName);
                 //申报学分
@@ -425,14 +388,12 @@
                 $("#apply_words").val(stuRecordData.words.trim() == "" ? "无" : stuRecordData.words);
                 //审核学分
                 $("#audit_credit").val(stuRecordData.auditCredit == 0 ? stuRecordData.applyCredit : stuRecordData.auditCredit);
-
             },
             error: function () {
                 alert("服务器繁忙");
             }
         });
     }
-
     //显示和关闭申报图片
     $("#picture_btn").popover({
         trigger: 'click',
@@ -445,5 +406,4 @@
             return $div;
         }
     });
-
 </script>

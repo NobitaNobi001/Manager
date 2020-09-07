@@ -9,7 +9,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <title>湖北文理学院创新学分管理系统</title>
+    <title>湖北文理学院创新实践学分管理系统</title>
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
     <link rel="icon" type="image/png" href="static/images/logo.png">
@@ -40,7 +40,7 @@
             <div class="top clear">
                 <div class="top-left left">
                     <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分管理系统</div>
+                    <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
                     <a href="admin/admProfile">${admin.adminName}(${admin.adminNumber})</a>
@@ -211,13 +211,21 @@
                         </c:forEach>
                         <c:if test="${empty info.list}">
                             <tr>
-                                <td colspan="9" align="center">
+                                <td colspan="10" align="center">
                                     <div>暂无数据记录</div>
                                 </td>
                             </tr>
                         </c:if>
                         </tbody>
                     </table>
+                    <c:choose>
+                        <c:when test="${empty info.list}">
+                            <nav aria-label="Page navigation">
+                                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 600px">
+                                </div>
+                            </nav>
+                        </c:when>
+                        <c:otherwise>
                     <center>
                         <c:if test="${requestScope.direction=='toSee'}">
                             <nav aria-label="Page navigation">
@@ -299,7 +307,10 @@
                                 </ul>
                             </nav>
                         </c:if>
+
                     </center>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
                 <!-- 学分列表 end -->
             </div>

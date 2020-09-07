@@ -9,7 +9,7 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
-    <title>湖北文理学院创新学分管理系统</title>
+    <title>湖北文理学院创新实践学分管理系统</title>
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
@@ -31,7 +31,7 @@
             <div class="top clear">
                 <div class="top-left left">
                     <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分管理系统</div>
+                    <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
                     <a href="admin/admProfile">${admin.adminName}(${admin.adminNumber})</a>
@@ -317,10 +317,18 @@
                         </tbody>
                     </table>
                     <center>
+                        <c:choose>
+                        <c:when test="${empty requestScope.pageInfo.list}">
+                            <nav aria-label="Page navigation">
+                                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 600px">
+                                </div>
+                            </nav>
+                        </c:when>
+                        <c:otherwise>
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
                                 <li><a href="admin/get/student.html?keyword=${param.keyword }&pageNum=1">首页</a></li>
-                                <c:if test="${info.hasPreviousPage}">
+                                <c:if test="${pageInfo.hasPreviousPage}">
                                     <li>
                                         <a href="admin/get/student.html?keyword=${param.keyword }&pageNum=${pageInfo.prePage }"
                                            aria-label="Previous">
@@ -357,6 +365,8 @@
                             </ul>
                         </nav>
                     </center>
+                    </c:otherwise>
+                    </c:choose>
                 </div>
             </div>
             <!-- 学分列表 end -->
@@ -432,6 +442,7 @@
                 }
             }
         });
+
         // 新增模态框表单验证
         $('#StuAddModal form').bootstrapValidator({
             // 通用提示语
@@ -581,6 +592,7 @@
         var majorCode = $("#checkForm select[name='major']").val();
         getClass(collegeCode, majorCode, "#checkForm select[name='stuClass']", "-1");
     });
+
     //获取学院
     function getColleges(ele) {
         $.ajax({
@@ -598,6 +610,7 @@
             dataType: "json"
         })
     }
+
     // 获取专业
     function getMajor(collegeCode, ele, DefaultValue) {
         $(ele).empty();
@@ -615,6 +628,7 @@
             dataType: "json"
         })
     };
+
     //获取班级
     function getClass(collegeCode, majorCode, ele, DefaultValue) {
         $(ele).empty();
@@ -632,6 +646,7 @@
             dataType: "json"
         })
     };
+
     //获取学生信息的ajax显示在更新模态框中
     function getStu(id) {
         $.ajax({
@@ -654,6 +669,7 @@
             dataType: "json"
         });
     }
+
     // 给编辑按钮绑定单击事件出现模态框
     $(document).on("click", ".edit_btn", function () {
         // 表单重置

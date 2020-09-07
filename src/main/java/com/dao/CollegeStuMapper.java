@@ -48,6 +48,6 @@ public interface CollegeStuMapper {
     // 批量删除
     int deleteStuBatchByList(@Param("tableName") String tableName, @Param("list") List<Integer> list);
 
-    List<CollegeStu> selectInfo(@Param("tableName") String tableName,@Param("major") String major,@Param("stuClass") String stuClass,@Param("order") Integer order);
+    List<CollegeStu> selectInfo(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") String stuClass, @Param("order") Integer order);
 
 }

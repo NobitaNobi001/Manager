@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分管理系统</title>
+    <title>湖北文理学院创新实践学分管理系统</title>
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
@@ -51,7 +51,7 @@
                         <div class="col-sm-4">
                             <%--班级提交id即可--%>
                             <select class="form-control" id="className" name="stuClass">
-
+                                <option value="-1">请选择班级</option>
                             </select>
                         </div>
                     </div>
@@ -83,7 +83,7 @@
             <div class="top clear">
                 <div class="top-left left">
                     <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分管理系统</div>
+                    <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
                     <a href="teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
@@ -266,26 +266,20 @@
 </body>
 </html>
 <script type="text/javascript">
-
     //点击导出按钮弹出模态框
     $("#btn_stuExport").click(function () {
-
         getMajor("#major");
-
         //弹出模态框
         $("#stuWithCondition").modal({
             //设置点击背景模态框不会消失
             backdrop: "static"
         });
     });
-
     //将此学院的所有专业回显到页面上
     function getMajor(ele) {
         //清空原有样式
         $(ele).empty();
-
         $(ele).append($("<option value='-1'>请选择专业</option>"));
-
         $.ajax({
             url: "college/getMajor",
             data: {
@@ -293,7 +287,6 @@
             },
             type: "GET",
             success: function (data) {
-
                 $.each(data, function (index, element) {
                     $(ele).append($("<option></option>").val(element).text(element));
                 });
@@ -304,15 +297,11 @@
             }
         });
     }
-
     //监听学院下拉框的改变
     $("#major").change(function () {
-
         //清空原有样式
         $("#className").empty();
-
         $("#className").append($("<option value='-1'>请选择班级</option>"));
-
         $.ajax({
             url: "college/getClass",
             data: {
@@ -331,10 +320,6 @@
             }
         });
     });
-
     $("#btn_stuExport").click(function () {
-
     });
-
-
 </script>

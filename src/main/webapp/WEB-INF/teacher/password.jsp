@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分管理系统</title>
+    <title>湖北文理学院创新实践学分管理系统</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Expires" content="0">
@@ -26,7 +26,7 @@
             <div class="top clear">
                 <div class="top-left left">
                     <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分管理系统</div>
+                    <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
                     <a href="teacher/teaProfile"
@@ -108,17 +108,14 @@
 </html>
 
 <script type="text/javascript">
-
     //拿到原密码的文本框
     var password = $("input[name='password']");
     //拿到新密码的文本框
     var pass = $("input[name='pass']");
     //拿到新密码重复输入的文本框
     var respass = $("input[name='respass']");
-
     //更新密码
     $("button").click(function () {
-
         //校验原密码输入
         if (!validate_password()) {
             return false;
@@ -131,7 +128,6 @@
         if (!validate_respass()) {
             return false;
         }
-
         //向后台发送请求更新用户密码
         $.ajax({
             url: "teacher/updatePassword/" +${teacher.id },
@@ -146,10 +142,8 @@
                 //如果新密码和原密码不一致
                 if (result.code == 100) {
                     alert("密码修改成功!");
-
                     //刷新当前页面
                     window.location.replace("/login.jsp");
-
                 } else {
                     alert(result.extend.msg);
                 }
@@ -159,9 +153,7 @@
             }
         });
     });
-
     function validate_password() {
-
         //判断密码框的而输入是否为空
         if (password.val().trim() == "") {
             password.next().html("<p style='color: red;'>请输入当前用户密码</p>");
@@ -171,8 +163,6 @@
         }
         return true;
     }
-
-
     //校验新密码和重复输入的密码
     function validate_pass() {
         //判断新密码的格式
@@ -184,8 +174,6 @@
         }
         return false;
     }
-
-
     //校验重复输入的密码
     function validate_respass() {
         if (respass.val().trim() == pass.val().trim()) {
@@ -196,6 +184,4 @@
         }
         return false;
     }
-
-
 </script>

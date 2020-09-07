@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>湖北文理学院创新学分管理系统</title>
+    <title>湖北文理学院创新实践学分管理系统</title>
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
@@ -17,7 +17,7 @@
     <div class="forget">
         <div class="top">
             <div class="logo"><img src="static/images/logo.png" height="120"/></div>
-            <div class="title">湖北文理学院创新学分管理系统</div>
+            <div class="title">湖北文理学院创新实践学分管理系统</div>
         </div>
         <div class="schedule">
             <ul>

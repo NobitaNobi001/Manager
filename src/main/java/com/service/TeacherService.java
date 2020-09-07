@@ -142,6 +142,10 @@ public class TeacherService {
         teacherMapper.insertSelective(teacher);
     }
 
+    public void insertTeacherByExcel(List<Teacher> teachers){
+        //完善批量插入的方法
+    }
+
     /**
      * delete
      */

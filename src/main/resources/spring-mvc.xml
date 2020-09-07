@@ -72,6 +72,12 @@
     -->
     <!--首页-->
     <mvc:view-controller path="student/stuIndex" view-name="student/student"/>
+    <!--学生申报页面-->
+    <mvc:view-controller path="student/applyCredit.html" view-name="student/creditDeclare"/>
+    <!--学生修改信息页面-->
+    <mvc:view-controller path="student/updateInfo.html" view-name="student/profile"/>
+    <!--学生修改密码页面-->
+    <mvc:view-controller path="student/updatePassword.html" view-name="student/password"/>
 
 
     <!--

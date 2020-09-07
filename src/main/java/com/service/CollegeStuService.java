@@ -59,10 +59,9 @@ public class CollegeStuService {
 
     /**
      * 根据督查学院名查询所有学生
-     *
      * @param collegeId 学院id
-     * @param page      当前页
-     * @param pagesize  每一页的记录数
+     * @param page 当前页
+     * @param pagesize 每一页的记录数
      * @return
      */
     public List<Student> selectAllStuByCollegeName(int collegeId, int page, int pagesize) {
@@ -136,3 +135,5 @@ public class CollegeStuService {
         return collegeStus;
     }
 }
+
+

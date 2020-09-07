@@ -55,29 +55,6 @@ public class Record {
     @ColumnWidth(15)
     private String auditState;// 审核状态
 
-    public Record() {
-    }
-
-    public Record(Integer stuNumber, String sort, String applyName, Double applyCredit, Double auditCredit, String auditState) {
-        this.stuNumber = stuNumber;
-        this.sort = sort;
-        this.applyName = applyName;
-        this.applyCredit = applyCredit;
-        this.auditCredit = auditCredit;
-        this.auditState = auditState;
-    }
-
-    public Record(Integer stuNumber, String stuName, String date, String sort, String picture, String applyName, Double applyCredit, String words) {
-        this.stuNumber = stuNumber;
-        this.stuName = stuName;
-        this.date = date;
-        this.sort = sort;
-        this.picture = picture;
-        this.applyName = applyName;
-        this.applyCredit = applyCredit;
-        this.words = words;
-    }
-
     public Integer getId() {
         return id;
     }
