@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -27,7 +28,7 @@ public class UserController {
      * @param type     身份类型
      */
     @PostMapping(value = "/login")
-    public String checkUser(@RequestParam("stuNumber") Integer number, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest request) {
+    public String checkUser(@Valid @RequestParam("stuNumber") Integer number, @RequestParam("password") String password, @RequestParam("type") Integer type, HttpServletRequest request) {
 
         //1、获取实体对象
         Subject subject = SecurityUtils.getSubject();

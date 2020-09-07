@@ -320,7 +320,7 @@
                         <nav aria-label="Page navigation">
                             <ul class="pagination">
                                 <li><a href="admin/get/student.html?keyword=${param.keyword }&pageNum=1">首页</a></li>
-                                <c:if test="${info.hasPreviousPage}">
+                                <c:if test="${pageInfo.hasPreviousPage}">
                                     <li>
                                         <a href="admin/get/student.html?keyword=${param.keyword }&pageNum=${pageInfo.prePage }"
                                            aria-label="Previous">
@@ -432,6 +432,7 @@
                 }
             }
         });
+
         // 新增模态框表单验证
         $('#StuAddModal form').bootstrapValidator({
             // 通用提示语

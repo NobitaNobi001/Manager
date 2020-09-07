@@ -56,7 +56,7 @@ public class StudentService {
      * @param id 主键
      * @return
      */
-    public Student selectByPrimaryKey(Integer id) {
+    public Student selectStuByPrimaryKey(Integer id) {
         return studentMapper.selectByPrimaryKey(id);
     }
 
@@ -66,7 +66,7 @@ public class StudentService {
      * @param stuNumber 学生学号
      * @return
      */
-    public Double selectSumCreditBystuNumber(int stuNumber) {
+    public Double selectSumCreditByStuNumber(Integer stuNumber) {
         return creditMapper.selectBystuNumber(stuNumber);
     }
 
@@ -83,14 +83,11 @@ public class StudentService {
      * @return
      * @throws Exception
      */
-    public List<Record> findAllBystuNumber(int stuNumber, int page, int size) throws Exception {
+    public List<Record> findAllRecordByStuNumber(Integer stuNumber, int page, int size) throws Exception {
         PageHelper.startPage(page, size);
         return recordMapper.findAllBystuNumber(stuNumber);
     }
 
-    /**
-     * update
-     */
 
     /**
      * 根据学号更新密码
@@ -120,11 +117,9 @@ public class StudentService {
      * @param newPwd    新密码
      * @return
      */
-    public boolean updateStuPwd(int stuNumber, String oldPwd, String newPwd) {
-
+    public boolean updateStuPwd(Integer stuNumber, String oldPwd, String newPwd) {
         //从数据库中查出原始密码
         String password = studentMapper.selectUPByStuNumber(stuNumber).getPassword();
-
         if (password.equals(oldPwd)) {      //如果相同就进行密码的更新
             studentMapper.updateStuPwdByStuNumber(stuNumber, newPwd);
             return true;

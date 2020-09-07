@@ -1,192 +1,123 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Expires" content="0">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Cache-control" content="no-cache">
-    <meta http-equiv="Cache" content="no-cache">
-    <title>湖北文理学院创新学分管理系统</title>
-
-    <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
-
-    <link rel="icon" type="image/png" href="static/images/logo.png">
-    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
-
-    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
-    <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
-    <script type="text/javascript" src="static/layer/layer.js"></script>
-</head>
-<body>
-<header>
-    <div id="header">
-        <div class="header">
-            <div class="top clear">
-                <div class="top-left left">
-                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
-                    <div class="title">湖北文理学院创新学分管理系统</div>
-                </div>
-                <div class="top-right right">
-                    <a href="javascript:;">湖北文理学院&nbsp;&nbsp;${student.stuName}(${student.stuNumber})</a>
-                    <a href="logout">退出</a>
-                </div>
-            </div>
-            <div class="menu">
-                <ul>
-                    <li class="title"><a href="javascript:;">学生中心</a></li>
-                    <li><a href="student/stuIndex">首页</a></li>
-                    <li><a href="student/updateInfo/${student.id}">个人信息</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</header>
-<main>
-    <div id="main">
-        <div class="main clear">
-            <div class="main-left left">
-                <ul>
-                    <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="student/viewCredit">学分列表</a></li>
-                    <li><a href="student/applyCredit/${student.id}">学分申报</a></li>
-                    <li class="headline"><a href="javascript:void (0);">账号管理</a></li>
-                    <li><a href="student/updateInfo/${student.id}">修改信息</a></li>
-                    <li><a href="student/updatepwd/${student.id}">修改密码</a></li>
-                </ul>
-            </div>
+<%@include file="/WEB-INF/common/studentHeader.jsp"%>
             <div class="main-right right">
-                <div class="credit">
+                <!--个人信息 start-->
+                <div class="col-lg-8 col-lg-offset-2">
                     <h4>个人信息</h4>
-                    <form action="student/updateStuNullInfo" method="post" class="form">
-                        <input type="hidden" value="${student.id}" name="id">
-                        <div class="row item">
-                            <div class="col col-2 name">姓名</div>
-                            <div class="col col-7 value">
-                                <input type="text" value="${student.stuName}" readonly>
+                    <form class="form-horizontal" action="student/updateStuNullInfo.html" method="post">
+                        <input type="hidden" value="${student.id }" name="id">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">姓名</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" value="${student.stuName }"  readonly >
                             </div>
                         </div>
-                        <div class="row item">
-                            <div class="col col-2 name">院系</div>
-                            <div class="col col-7 value">
-                                <input type="text" value="${student.college.name}" readonly>
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">院系</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" value="${student.college.name }"  readonly>
                             </div>
                         </div>
-                        <div class="row item">
-                            <div class="col col-2 name">班级</div>
-                            <div class="col col-7 value">
-                                <input type="text" value="${student.className}" readonly>
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">班级</label>
+                            <div class="col-lg-9">
+                                <input type="text" class="form-control" value="${student.className }"  readonly>
                             </div>
                         </div>
-                        <div class="row item">
-                            <div class="col col-2 name">性别</div>
-                            <div class="col col-7 value">
-                                <div class="row">
-                                    <label><input type="radio" name="gender" value="男" id="male"/>男</label>
-                                    <label><input type="radio" name="gender" value="女" id="female"/> 女</label>
-                                </div>
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label ">性别</label>
+                            <div class="col-lg-9">
+                            <label class="radio-inline">
+                                    <input type="radio" name="gender" value="男" id="male"/>男
+                            </label>
+                            <label class="radio-inline">
+                                    <input type="radio" name="gender" value="女" id="female"/>女
+                            </label>
                             </div>
                         </div>
-                        <div class="row item">
-                            <div class="col col-2 name">手机号码</div>
-                            <div class="col col-7 value">
-                                <input type="text" name="phone" id="phone" value="${student.phone}"
-                                       onchange="checkPhone(this)"/>
-                                <div class="notice" id="phonemsg">请填写联系电话</div>
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">手机号码</label>
+                            <div class="col-lg-9">
+                                <input type="text" name="phone" class="form-control" value="${student.phone }"  placeholder="请输入手机号码"/>
                             </div>
                         </div>
-                        <div class="row item">
-                            <div class="col col-2 name">电子邮箱</div>
-                            <div class="col col-7 value">
-                                <input type="text" name="email" id="email" value="${student.email}"
-                                       onchange="checkEmail(this)"/>
-                                <div class="notice" id="emailmsg">请填写邮箱地址</div>
+
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">邮箱</label>
+                            <div class="col-lg-9">
+                                <input type="text" name="email" class="form-control" value="${student.email }"  placeholder="请输入邮箱地址"/>
                             </div>
                         </div>
-                        <div class="row item">
-                            <div class="col col-2 name">&nbsp;</div>
-                            <div class="col value">
-                                <button type="button" class="btn btn-primary btn-6x" onclick="check()">提交保存</button>
+
+                        <div class="form-group">
+                            <div class="col-lg-9 col-lg-offset-3">
+                                <button type="submit" class="btn btn-primary"><i
+                                        class="glyphicon glyphicon-ok"></i>提交修改
+                                </button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-</main>
-<footer>
-    <div id="footer">
-        <div class="footer">
-            <div class="copyright">Copyright © 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
-                版权所有
-            </div>
-        </div>
     </div>
-</footer>
+</main>
+<%@include file="/WEB-INF/common/studentFooter.jsp"%>
 </body>
 </html>
 <script type="text/javascript">
-    $(function () {//性别的checked选中
-        var gender = '${student.gender}';
+    $(function () {
+        //性别的checked选中
+        var gender = '${student.gender }';
         if ($("#male").val() == gender) {
             $("#male").prop("checked", "checked");
         } else {
             $("#female").prop("checked", "checked");
         }
+
+
+        $('#credit form').bootstrapValidator({
+            // 通用提示语
+            message: 'This value is not valid',
+            // 提示字体图标
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            // enabled 字段值有变化就触发验证 disabled提交之后才触发
+            live: 'disabled',
+            fields: {
+                phone: {
+                    validators: {
+                        digits: {
+                            message: '手机号码只能输入数字'
+                        },
+                        stringLength: {
+                            min: 11,
+                            max: 11,
+                            message: '手机号只支持支持11位数'
+                        }
+                    }
+                },
+                email: {
+                    validators: {
+                        notEmpty: {
+                            message: '邮箱不能为空'
+                        },
+                        emailAddress: {
+                            message: '邮箱地址格式错误'
+                        }
+                    }
+                }
+            }
+        });
     });
 
-    function checkPhone(node) {
-        var phone = node.value;
-        phone = phone.trim();
-        if (phone != "" || phone.length != 0) {
-            var regExp = /^1(?:3\d|4[4-9]|5[0-35-9]|6[67]|7[013-8]|8\d|9\d)\d{8}$/
-            if (!regExp.test(phone)) {//不合法
-                document.getElementById("phonemsg").innerText = "手机号码格式有误";
-                document.getElementById("phonemsg").style.color = 'red';
-                return false;
-            } else {
-                document.getElementById("phonemsg").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
-                return true;
-            }
-        } else {
-            document.getElementById("phonemsg").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
-            return true;
-        }
-    }
 
-    function checkEmail(node) {
-        var email = node.value;
-        if (email != "" || email.length != 0) {
-            var regExp = /^[A-Za-z0-9-._]+@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,6})$/;
-            if (!regExp.test(email)) {//不合法
-                document.getElementById("emailmsg").innerText = "邮箱地址格式错误";
-                document.getElementById("emailmsg").style.color = 'red';
-                return false;
-            } else {
-                document.getElementById("emailmsg").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
-                return true;
-            }
-        } else {
-            document.getElementById("emailmsg").innerHTML = "&nbsp;&nbsp;&nbsp;&nbsp;";
-            return true;
-        }
-    }
-
-    function check() {
-        var flag = checkEmail(document.getElementById("email")) && checkPhone(document.getElementById("phone"));
-        if (flag) {
-            if ($("input[name='gender']:checked").val() == '${student.gender}' && $("#email").val() == '${student.email}' && $("#phone").val() == '${student.phone}') {
-                alert("您没有修改信息");
-            } else {
-                alert("修改信息成功");
-                document.forms[0].submit();
-            }
-        } else {
-            alert("请填写正确的信息")
-        }
-    }
 </script>

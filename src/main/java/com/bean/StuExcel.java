@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StuExcel {
-
     // 学号
     @ExcelProperty("学号")
     private Integer stuNumber;

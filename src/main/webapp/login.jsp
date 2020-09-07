@@ -22,7 +22,6 @@
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
-
 </head>
 <body>
 <div id="login">
@@ -42,8 +41,7 @@
                        <span class="input-group-addon">
                      <span class="glyphicon glyphicon-user"></span>
                     </span>
-                        <input type="text" name="stuNumber" class="form-control" id="Number"
-                               placeholder="登录账号" autofocus>
+                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" value="2018139047" autofocus>
                     </div>
                 </div>
                 <div class="form-group">
@@ -51,8 +49,7 @@
                           <span class="input-group-addon">
                     <span class="glyphicon glyphicon-eye-open" id="eye"></span>
                     </span>
-                        <input type="password" name="password" class="form-control" id="password"
-                               placeholder="登录密码"/>
+                        <input type="password" name="password" class="form-control" placeholder="登录密码" value="12345678"/>
                     </div>
                 </div>
                 <div class="type">
@@ -94,6 +91,9 @@
                         notEmpty: {
                             message: '登录账号不能为空'
                         },
+                        digits: {
+                            message: '账号只能填写数字'
+                        },
                         regexp: {
                             regexp: /^\d{4,11}$/,
                             message: '账号格式错误'
@@ -122,12 +122,10 @@
     $("#eye").click(function () {
         var flag = $(this).hasClass("glyphicon-eye-open");
         if (flag) {
-            $("#eye").removeClass("glyphicon-eye-open");
-            $("#eye").addClass("glyphicon-eye-close");
+            $("#eye").removeClass("glyphicon-eye-open").addClass("glyphicon-eye-close");
             $("form input[name='password']").attr("type", "Text");
         } else {
-            $("#eye").removeClass("glyphicon-eye-close");
-            $("#eye").addClass("glyphicon-eye-open");
+            $("#eye").removeClass("glyphicon-eye-close").addClass("glyphicon-eye-open");
             $("form input[name='password']").attr("type", "password");
         }
     });
