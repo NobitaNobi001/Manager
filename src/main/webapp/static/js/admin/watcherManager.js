@@ -400,3 +400,7 @@ $("#batch_del_watcher").click(function () {
         })
     }
 });
+
+$("#batch_add_watcher_btn").click(function () {
+
+});

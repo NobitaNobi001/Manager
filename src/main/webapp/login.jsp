@@ -9,7 +9,7 @@
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="Cache" content="no-cache">
 
-    <title>湖北文理学院创新学分管理系统</title>
+    <title>湖北文理学院创新实践学分管理系统</title>
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
@@ -28,7 +28,7 @@
     <div class="login">
         <div class="top">
             <div class="logo"><img src="static/images/logo.png" height="120"/></div>
-            <div class="title">湖北文理学院创新学分管理系统</div>
+            <div class="title">湖北文理学院创新实践学分管理系统</div>
         </div>
         <div class="login-form">
             <form action="user/login" method="post" role="form" class="form-horizontal">
@@ -41,7 +41,7 @@
                        <span class="input-group-addon">
                      <span class="glyphicon glyphicon-user"></span>
                     </span>
-                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" value="2018139047" autofocus>
+                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" autofocus/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -49,7 +49,7 @@
                           <span class="input-group-addon">
                     <span class="glyphicon glyphicon-eye-open" id="eye"></span>
                     </span>
-                        <input type="password" name="password" class="form-control" placeholder="登录密码" value="12345678"/>
+                        <input type="password" name="password" class="form-control" placeholder="登录密码" />
                     </div>
                 </div>
                 <div class="type">
