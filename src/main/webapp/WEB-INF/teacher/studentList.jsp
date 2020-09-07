@@ -28,20 +28,31 @@
                 <h4 class="modal-title">导出数据</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal">
+                <form class="form-horizontal" action="export/exportStu">
                     <div class="form-group">
                         <label for="college_stuList" class="col-sm-2 control-label">学院</label>
                         <div class="col-sm-10">
                             <input type="text" name="college" class="form-control" id="college_stuList"
                                    value="${teacher.college.name }" disabled="disabled"/>
+                            <input type="hidden" name="collegeId" value="${teacher.collegeId }">
                             <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">专业</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="major" name="major">
+
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">班级</label>
                         <div class="col-sm-4">
                             <%--班级提交id即可--%>
-                            <select class="form-control" name="className"></select>
+                            <select class="form-control" id="className" name="stuClass">
+
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -56,13 +67,13 @@
                             </label>
                         </div>
                     </div>
-
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" id="emp_update_btn">导出</button>
+                    </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" id="emp_update_btn">导出</button>
-            </div>
+
         </div>
     </div>
 </div>
@@ -106,21 +117,27 @@
                 <!-- 学分列表 start -->
                 <div class="student">
                     <h4>学生列表</h4>
-                    <form class="form-inline" action="teacher/queryStu" method="post" style="margin-left: 20px; line-height: 72px;">
+                    <form class="form-inline" action="teacher/queryStu" method="post"
+                          style="margin-left: 20px; line-height: 72px;">
                         <div class="form-group">
                             <label for="exampleInputNumber">学号</label>
-                            <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber" placeholder="如:2018111111" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')">
+                            <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber"
+                                   placeholder="如:2018111111" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                                   onafterpaste="this.value=this.value.replace(/\D/g,'')">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputName">姓名</label>
-                            <input type="text" class="form-control" id="exampleInputName" name="stuName" placeholder="如:张三">
+                            <input type="text" class="form-control" id="exampleInputName" name="stuName"
+                                   placeholder="如:张三">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputClass">班级</label>
-                            <input type="text" class="form-control" id="exampleInputClass" name="stuClass" placeholder="如:软工1811">
+                            <input type="text" class="form-control" id="exampleInputClass" name="stuClass"
+                                   placeholder="如:软工1811">
                         </div>
                         <button type="submit" class="btn btn-default">查询</button>
-                        <div class="action form-group" style="text-align: right;margin: 10px 0;padding: 10px 0; float: right">
+                        <div class="action form-group"
+                             style="text-align: right;margin: 10px 0;padding: 10px 0; float: right">
                             <a href="javascript:;" class="btn btn-danger" id="btn_stuExport">导出数据</a>
                         </div>
                     </form>
@@ -148,74 +165,90 @@
                                 <td>${student.sumCredit}</td>
                             </tr>
                         </c:forEach>
+                        <c:if test="${empty info.list}">
+                            <tr>
+                                <td colspan="7">暂无数据记录</td>
+                            </tr>
+                        </c:if>
                         </tbody>
                     </table>
-                    <center>
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li><a href="teacher/stuList?page=1">首页</a></li>
-                                <c:if test="${info.pageNum==1}">
-                                    <li class="disabled">
-                                        <a href="javascript:void(0)" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                </c:if>
-
-                                <c:if test="${info.pageNum!=1}">
-                                    <li>
-                                        <a href="teacher/stuList?page=${info.pageNum-1}" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                </c:if>
-
-                                <c:if test="${info.pages<=5}">
-                                    <c:forEach begin="1" end="${info.pages}" var="i">
-                                        <c:if test="${info.pageNum==i}">
-                                            <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
+                    <c:choose>
+                        <c:when test="${empty info.list}">
+                            <nav aria-label="Page navigation">
+                                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 600px">
+                                </div>
+                            </nav>
+                        </c:when>
+                        <c:otherwise>
+                            <center>
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination">
+                                        <li><a href="teacher/stuList?page=1">首页</a></li>
+                                        <c:if test="${info.pageNum==1}">
+                                            <li class="disabled">
+                                                <a href="javascript:void(0)" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
                                         </c:if>
-                                        <c:if test="${info.pageNum!=i}">
-                                            <li><a href="teacher/stuList?page=${i}">${i}</a></li>
+
+                                        <c:if test="${info.pageNum!=1}">
+                                            <li>
+                                                <a href="teacher/stuList?page=${info.pageNum-1}" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
                                         </c:if>
-                                    </c:forEach>
-                                </c:if>
 
-                                <c:if test="${info.pages>5}">
-                                    <c:forEach begin="1" end="5" var="i">
-                                        <c:if test="${info.pageNum==i}">
-                                            <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                        <c:if test="${info.pages<=5}">
+                                            <c:forEach begin="1" end="${info.pages}" var="i">
+                                                <c:if test="${info.pageNum==i}">
+                                                    <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                                </c:if>
+                                                <c:if test="${info.pageNum!=i}">
+                                                    <li><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                                </c:if>
+                                            </c:forEach>
                                         </c:if>
-                                        <c:if test="${info.pageNum!=i}">
-                                            <li><a href="teacher/stuList?page=${i}">${i}</a></li>
+
+                                        <c:if test="${info.pages>5}">
+                                            <c:forEach begin="1" end="5" var="i">
+                                                <c:if test="${info.pageNum==i}">
+                                                    <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                                </c:if>
+                                                <c:if test="${info.pageNum!=i}">
+                                                    <li><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                                </c:if>
+                                            </c:forEach>
                                         </c:if>
-                                    </c:forEach>
-                                </c:if>
 
 
-                                <c:if test="${info.pageNum==info.pages}">
-                                    <li class="disabled">
-                                        <a href="javascript:void(0)" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </c:if>
+                                        <c:if test="${info.pageNum==info.pages}">
+                                            <li class="disabled">
+                                                <a href="javascript:void(0)" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
 
-                                <c:if test="${info.pageNum!=info.pages}">
-                                    <li>
-                                        <a href="teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </c:if>
+                                        <c:if test="${info.pageNum!=info.pages}">
+                                            <li>
+                                                <a href="teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </c:if>
 
-                                <li><a href="teacher/stuList?page=${info.pages}">末页</a></li>
-                                <span style="font-size:15px;margin-left: 5px;line-height: 34px">
+                                        <li><a href="teacher/stuList?page=${info.pages}">末页</a></li>
+                                        <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
 									</span>
-                            </ul>
-                        </nav>
-                    </center>
+                                    </ul>
+                                </nav>
+                            </center>
+                        </c:otherwise>
+                    </c:choose>
+
                 </div>
             </div>
         </div>
@@ -237,11 +270,71 @@
     //点击导出按钮弹出模态框
     $("#btn_stuExport").click(function () {
 
+        getMajor("#major");
+
         //弹出模态框
         $("#stuWithCondition").modal({
             //设置点击背景模态框不会消失
             backdrop: "static"
         });
-    })
+    });
+
+    //将此学院的所有专业回显到页面上
+    function getMajor(ele) {
+        //清空原有样式
+        $(ele).empty();
+
+        $(ele).append($("<option value='-1'>请选择专业</option>"));
+
+        $.ajax({
+            url: "college/getMajor",
+            data: {
+                "collegeId": ${teacher.collegeId }
+            },
+            type: "GET",
+            success: function (data) {
+
+                $.each(data, function (index, element) {
+                    $(ele).append($("<option></option>").val(element).text(element));
+                });
+            },
+            dataType: "json",
+            error: function () {
+                alert("服务器繁忙!");
+            }
+        });
+    }
+
+    //监听学院下拉框的改变
+    $("#major").change(function () {
+
+        //清空原有样式
+        $("#className").empty();
+
+        $("#className").append($("<option value='-1'>请选择班级</option>"));
+
+        $.ajax({
+            url: "college/getClass",
+            data: {
+                "collegeId":${teacher.collegeId },
+                "major": $("#major").val()
+            },
+            type: "GET",
+            success: function (result) {
+                $.each(result, function (index, element) {
+                    $("#className").append($("<option></option>").val(element).text(element));
+                })
+            },
+            dataType: "json",
+            error: function () {
+                alert("服务器繁忙!");
+            }
+        });
+    });
+
+    $("#btn_stuExport").click(function () {
+
+    });
+
 
 </script>

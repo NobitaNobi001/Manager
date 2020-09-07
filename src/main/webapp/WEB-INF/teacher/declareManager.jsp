@@ -206,7 +206,7 @@
 
         //正则校验搜索框的输入
         var regKey = /[\u4E00-\u9FA5]/;
-        if (regKey.test($("#keywords").val().trim())) {
+        if (!regKey.test($("#keywords").val().trim())) {
             alert("请输入正确的姓名!");
             return false;
         }

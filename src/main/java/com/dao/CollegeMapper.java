@@ -33,4 +33,6 @@ public interface CollegeMapper {
     int updateByPrimaryKeyWithBLOBs(College record);
 
     int updateByPrimaryKey(College record);
+
+    String selectByCollegeId(Integer collegeId);
 }

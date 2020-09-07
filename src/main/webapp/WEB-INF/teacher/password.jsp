@@ -146,8 +146,10 @@
                 //如果新密码和原密码不一致
                 if (result.code == 100) {
                     alert("密码修改成功!");
+
                     //刷新当前页面
-                    window.location.replace("/login.jsp")
+                    window.location.replace("/login.jsp");
+
                 } else {
                     alert(result.extend.msg);
                 }

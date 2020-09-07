@@ -212,7 +212,6 @@
 
     //实现发送倒计时的动态效果
     function sendEmail() {
-        var val = getCookies();
 
         if (timeCalc == 0) {
             send_btn.attr("disabled", false);

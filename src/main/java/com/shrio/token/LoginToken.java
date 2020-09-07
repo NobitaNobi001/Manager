@@ -7,6 +7,10 @@ import org.apache.shiro.authc.UsernamePasswordToken;
  */
 public class LoginToken extends UsernamePasswordToken {
 
+    private String username;
+
+    private String password;
+
     private String loginType;
 
     public LoginToken() {
@@ -14,9 +18,30 @@ public class LoginToken extends UsernamePasswordToken {
 
     public LoginToken(Integer Number, String password, String loginType) {
 
-        super(String.valueOf(Number), password);
+        this.username = String.valueOf(Number);
+
+        this.password = password;
 
         this.loginType = loginType;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @Override
+    public char[] getPassword() {
+        return password.toCharArray();
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getLoginType() {

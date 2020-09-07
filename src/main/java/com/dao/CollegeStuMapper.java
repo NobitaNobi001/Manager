@@ -1,6 +1,7 @@
 package com.dao;
 
 
+import com.bean.CollegeStu;
 import com.bean.Student;
 
 import org.apache.ibatis.annotations.Param;
@@ -46,5 +47,7 @@ public interface CollegeStuMapper {
 
     // 批量删除
     int deleteStuBatchByList(@Param("tableName") String tableName, @Param("list") List<Integer> list);
+
+    List<CollegeStu> selectInfo(@Param("tableName") String tableName,@Param("major") String major,@Param("stuClass") String stuClass,@Param("order") Integer order);
 
 }

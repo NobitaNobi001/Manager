@@ -1,6 +1,7 @@
 
 package com.service;
 
+import com.bean.CollegeStu;
 import com.bean.Student;
 import com.dao.CollegeStuMapper;
 import com.github.pagehelper.PageHelper;
@@ -58,9 +59,10 @@ public class CollegeStuService {
 
     /**
      * 根据督查学院名查询所有学生
+     *
      * @param collegeId 学院id
-     * @param page 当前页
-     * @param pagesize 每一页的记录数
+     * @param page      当前页
+     * @param pagesize  每一页的记录数
      * @return
      */
     public List<Student> selectAllStuByCollegeName(int collegeId, int page, int pagesize) {
@@ -121,5 +123,16 @@ public class CollegeStuService {
         } else {
             return null;
         }
+    }
+
+    public List<CollegeStu> getInfo(Integer collegeId, String major, String stuClass, Integer order) {
+
+        //获取数据库名
+        String tableName = CollegeNameUtil.getTableName(collegeId);
+
+        //查询出此学院所有满足要求的学生
+        List<CollegeStu> collegeStus = collegeStuMapper.selectInfo(tableName, major, stuClass, order);
+
+        return collegeStus;
     }
 }

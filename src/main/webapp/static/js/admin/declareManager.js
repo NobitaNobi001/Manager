@@ -46,6 +46,7 @@ function getMajor(collegeCode) {
         });
     }, 'json');
 };
+
 //获取班级
 function getClass(collegeCode, majorCode) {
     $("select[name='stuClass']").empty();
@@ -60,11 +61,13 @@ function getClass(collegeCode, majorCode) {
         });
     }, 'json');
 };
+
 // 重置新增员工表单的方法
 function reset_form(ele) {
     // 重置表单内容
     $(ele)[0].reset();
 }
+
 // 给导出按钮绑定单击事件出现模态框
 $("#exportData").click(function () {
     // 每次出现模态框都将之前的信息给清空并且将表单样式也清空
