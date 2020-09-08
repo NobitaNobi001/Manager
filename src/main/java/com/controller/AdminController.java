@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.service.*;
 import com.utils.CollegeNameUtil;
+import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,8 +45,6 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private WatcherService watcherService;
-    @Autowired
-    private ObjectMapper objectMapper;
     @Autowired
     private ExportStuListener stuListener;
 
@@ -143,7 +142,7 @@ public class AdminController {
 
 
     /**
-     * @Description: 导出申报记录
+     * @Description: 导出学生申报记录
      * @return: void
      */
     @RequestMapping("/exportStuRecord")
@@ -179,13 +178,13 @@ public class AdminController {
             Map<String, String> map = new HashMap<String, String>();
             map.put("status", "failure");
             map.put("message", "下载文件失败" + e.getMessage());
-            response.getWriter().println(objectMapper.writeValueAsString(map));
+            response.getWriter().println(JsonUtil.getJson(map));
             e.printStackTrace();
         }
     }
 
     /**
-     * @Description:学生列表默认
+     * @Description:学生列表默认分页
      * @return:
      */
     @RequestMapping("/get/student.html")
@@ -249,7 +248,7 @@ public class AdminController {
         boolean flag = !(studentService.checkStudent(stuNumber));
         Map<String, Boolean> map = new HashMap();
         map.put("valid", flag);
-        return objectMapper.writeValueAsString(map);
+        return JsonUtil.getJson(map);
     }
 
 
@@ -284,5 +283,20 @@ public class AdminController {
         // 读
         sheet.doRead();
         return "导入成功";
+    }
+
+    /**
+     * 功能描述:根据id查询学生信息
+     *
+     * @Param:[stuId]
+     * @Return:com.bean.Msg
+     * @Author:h1656
+     * @Date:2020/9/8 16:09
+     */
+    @RequestMapping("/toQueryStuInfoById/{stuID}")
+    @ResponseBody
+    public Msg toQueryStuInfoById(@PathVariable("stuID") Integer stuId) {
+        Student student = studentService.selectStuByPrimaryKey(stuId);
+        return Msg.success().add("student", student);
     }
 }

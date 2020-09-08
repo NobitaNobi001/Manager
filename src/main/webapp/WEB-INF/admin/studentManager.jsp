@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -40,7 +39,7 @@
             </div>
             <div class="menu">
                 <ul>
-                    <li class="title"><a href="javascript:;">管理中心</a></li>
+                    <li class="title"><a href="javascript:void(0)">管理中心</a></li>
                     <li><a href="admin/admIndex">首页</a></li>
                     <li><a href="admin/admProfile">个人信息</a></li>
                 </ul>
@@ -219,7 +218,7 @@
         <div class="main clear">
             <div class="main-left left">
                 <ul>
-                    <li class="headline"><a href="javascript:;">控制中心</a></li>
+                    <li class="headline"><span>控制中心</span></li>
                     <li><a href="admin/toSee/studentRecord.html">申报管理</a></li>
                     <li><a href="admin/get/student.html">学生管理</a></li>
                     <li><a href="admin/teaManager">教师管理</a></li>
@@ -633,10 +632,11 @@
             dataType: "json"
         })
     };
+
     //获取学生信息的ajax显示在更新模态框中
     function getStu(id) {
         $.ajax({
-            url: "student/toQueryStuInfoById/" + id,
+            url: "admin/toQueryStuInfoById/" + id,
             type: "GET",
             success: function (result) {
                 stuDate = result.extend.student;

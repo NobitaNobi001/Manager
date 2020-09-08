@@ -1,6 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
@@ -22,16 +21,6 @@
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
     <script type="text/javascript" src="static/layui/layui.js"></script>
 
-    <%--修改弹出框的默认宽度--%>
-    <style type="text/css">
-        .popover{
-            width: auto;
-            height: auto;
-            max-height: 800px;
-            max-width: 800px;
-        }
-    </style>
-
 </head>
 <body>
 <header>
@@ -43,13 +32,13 @@
                     <div class="title">湖北文理学院创新学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="admin/admProfile">${admin.adminName}(${admin.adminNumber})</a>
+                    <a href="admin/admProfile">${admin.adminName }(${admin.adminNumber })</a>
                     <a href="logout">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
-                    <li class="title"><a href="javascript:;">管理中心</a></li>
+                    <li class="title"><a href="javascript:void(0)">管理中心</a></li>
                     <li><a href="admin/admIndex">首页</a></li>
                     <li><a href="admin/admProfile">个人信息</a></li>
                 </ul>
@@ -116,7 +105,7 @@
         <div class="main clear">
             <div class="main-left left">
                 <ul>
-                    <li class="headline"><a href="javascript:;">控制中心</a></li>
+                    <li class="headline"><span>控制中心</span></li>
                     <li><a href="admin/toSee/studentRecord.html">申报管理</a></li>
                     <li><a href="admin/get/student.html">学生管理</a></li>
                     <li><a href="admin/teaManager">教师管理</a></li>
@@ -219,7 +208,7 @@
                         </tbody>
                     </table>
                     <center>
-                        <c:if test="${requestScope.direction=='toSee'}">
+                        <c:if test="${requestScope.direction=='toSee' && !empty info.list}">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li><a href="admin/toSee/studentRecord.html?page=1">首页</a></li>
@@ -256,7 +245,7 @@
                                 </ul>
                             </nav>
                         </c:if>
-                        <c:if test="${requestScope.direction=='toQuery'}">
+                        <c:if test="${requestScope.direction=='toQuery' &&!empty info.list}">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li>

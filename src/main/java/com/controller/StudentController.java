@@ -33,7 +33,12 @@ public class StudentController {
     private StudentService studentService;
 
     /**
-     修改学生个人信息
+     * 功能描述:学生修改个人信息
+     *
+     * @Param:[student, session]
+     * @Return:java.lang.String
+     * @Author:h1656
+     * @Date:2020/9/8 16:08
      */
     @RequestMapping("/updateStuNullInfo.html")
     public String updateStuNullInfo(Student student, HttpSession session) {
@@ -46,24 +51,33 @@ public class StudentController {
     }
 
     /**
-     * 修改密码
-     */
+     *功能描述:学生修改个人密码
+     *@Param:[stuNumber, oldPassword, newPassword]
+     *@Return:com.bean.Msg
+     *@Author:h1656
+     *@Date:2020/9/8 16:08
+    */
     @PostMapping(value = "/updateStuPassword.html")
     @ResponseBody
     public Msg updateStuPassword(@RequestParam("stuNumber") int stuNumber, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
         if (studentService.updateStuPwd(stuNumber, oldPassword, newPassword)) {//修改密码成功
-            return Msg.success().add("result","修改密码成功，您将返回登录页面");
+            return Msg.success().add("result", "修改密码成功，您将返回登录页面");
         } else {
             return Msg.fail().add("result", "输入的原密码错误,请重新输入");
         }
     }
 
 
-    /*
-    * 去学分申请页面并且存储下拉框属性
-    * */
+    /**
+     * 功能描述:首页到学分申请页  存储下拉框属性
+     *
+     * @Param:[sort, session]
+     * @Return:java.lang.String
+     * @Author:h1656
+     * @Date:2020/9/8 16:07
+     */
     @RequestMapping("/applyCreditWithSort/sort/{sort}/.html")
-    public String applyCredit(@PathVariable("sort") Integer sort,HttpSession session) {
+    public String applyCredit(@PathVariable("sort") Integer sort, HttpSession session) {
         session.setAttribute(StringConstant.APPLY_TYPE, DeclareSortUtil.getApplySort(sort));
         System.out.println(DeclareSortUtil.getApplySort(sort));
         return "student/creditDeclare";
@@ -71,8 +85,12 @@ public class StudentController {
 
 
     /**
-     * 提交学分申请
-     */
+     *功能描述:学生申报创新学分记录
+     *@Param:[stuNumber, stuName, sort, applyName, applyCredit, words, file, request]
+     *@Return:java.lang.String
+     *@Author:h1656
+     *@Date:2020/9/8 16:07
+    */
     @RequestMapping(value = "/apply.html",method = RequestMethod.POST)
     @ResponseBody
     public String apply(
@@ -117,15 +135,19 @@ public class StudentController {
                 // 保存在数据库中
                 studentService.addCreditRecord(record);
             }
-        }catch (Exception e){
-             return JsonUtil.getJson(Msg.fail().add("result", "申报成功,请等待审核"));
+        } catch (Exception e) {
+            return JsonUtil.getJson(Msg.fail().add("result", "申报失败，请重新申报"));
         }
-        return JsonUtil.getJson(Msg.success().add("result", "申报失败，请重新申报"));
+        return JsonUtil.getJson(Msg.success().add("result", "申报成功,请等待审核"));
     }
 
     /**
-     * 学分列表
-     */
+     *功能描述:学生查看创新学分列表
+     *@Param:[page, model, request]
+     *@Return:java.lang.String
+     *@Author:h1656
+    *@Date:2020/9/8 16:07
+    */
     @RequestMapping("/viewCredit.html")
     public String viewCredit(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpServletRequest request) throws Exception {
         // 得到学生对象
@@ -140,25 +162,5 @@ public class StudentController {
         model.addAttribute("sumCredit", sumCredit);
         model.addAttribute("info", info);
         return "student/creditList";
-    }
-
-    // 根据id查询学生信息 未用
-    @RequestMapping("/toQueryStuInfoById/{stuID}")
-    @ResponseBody
-    public Msg toQueryStuInfoById(@PathVariable("stuID") Integer stuId) {
-        Student student = studentService.selectStuByPrimaryKey(stuId);
-        return Msg.success().add("student", student);
-    }
-
-    // 查看学号是否存在  未用
-    @RequestMapping("/checkStuNumberIsExists")
-    @ResponseBody
-    public String checkStuNumberIsExists(@RequestParam("stuNumber") Integer stuNumber) throws JsonProcessingException {
-        boolean flag = !(studentService.checkStudent(stuNumber));
-        Map map = new HashMap();
-        map.put("valid", flag);
-        ObjectMapper objectMapper = new ObjectMapper();
-        String result = objectMapper.writeValueAsString(map);
-        return result;
     }
 }
