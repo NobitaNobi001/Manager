@@ -4,8 +4,6 @@ import com.bean.Msg;
 import com.constant.StringConstant;
 
 import com.exception.LoginFailedException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,7 +37,7 @@ public class ExceptionResolverUtil {
             // 创建ResultEntity对象,将异常信息存放
             Msg.fail().add("failed",exception.getMessage());
             // 转为字符串
-            String json = jsonUtil.getJson(request);
+            String json = JsonUtil.getJson(request);
             // 将字符串返回给浏览器
             response.getWriter().write(json);
             // 由于response已经做出了响应，所以不使用ModelAndView对象

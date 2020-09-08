@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.service.StudentService;
 import com.utils.DeclareSortUtil;
+import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -74,7 +75,16 @@ public class StudentController {
      */
     @RequestMapping(value = "/apply.html",method = RequestMethod.POST)
     @ResponseBody
-    public Msg apply(Record record, @RequestParam("file") CommonsMultipartFile file, HttpServletRequest request){
+    public String apply(
+            @RequestParam("stuNumber") Integer stuNumber,
+            @RequestParam("stuName") String stuName,
+            @RequestParam("sort") String sort,
+            @RequestParam("applyName") String applyName,
+            @RequestParam("applyCredit") Double applyCredit,
+            @RequestParam("words") String words,
+            @RequestParam("file") CommonsMultipartFile file,
+            HttpServletRequest request
+    ){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try{
             // 项目路径
@@ -103,17 +113,14 @@ public class StudentController {
                 Date d = new Date();
                 // 日期格式化
                 String date = sdf.format(d);
-                // 设置日期
-                record.setDate(date);
-                // 设置图片位置
-                record.setPicture(year+"/"+month+"/"+day+"/"+fileName);
+                Record record = new Record(null, stuNumber, stuName, date, sort, year + "/" + month + "/" + day + "/" + fileName, applyName, applyCredit, words, null, null, null);
                 // 保存在数据库中
                 studentService.addCreditRecord(record);
             }
         }catch (Exception e){
-             return Msg.fail().add("result", "申报成功,请等待审核");
+             return JsonUtil.getJson(Msg.fail().add("result", "申报成功,请等待审核"));
         }
-        return Msg.success().add("result", "申报失败，请重新申报");
+        return JsonUtil.getJson(Msg.success().add("result", "申报失败，请重新申报"));
     }
 
     /**
