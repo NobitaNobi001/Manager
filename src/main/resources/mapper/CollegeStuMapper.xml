@@ -15,6 +15,19 @@
         <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber"
                      column="stu_number"></association>
     </resultMap>
+
+    <resultMap id="resultMapWithCredit" type="com.bean.CollegeStu">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
+        <result column="college_id" property="collegeId"/>
+        <result column="stu_class" property="stuClass" jdbcType="VARCHAR"/>
+        <result column="major" property="major"></result>
+        <association property="collegeName" select="com.dao.CollegeMapper.selectByCollegeId"
+                     column="college_id"></association>
+        <association property="sumCredit" select="com.dao.CreditMapper.selectBystuNumber"
+                     column="stu_number"></association>
+    </resultMap>
+
     <insert id="insertSelective">
         insert into ${tableName}
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -116,10 +129,13 @@
 
     <!--根据专业得到班级名-->
     <select id="getAllClass" resultType="java.lang.String">
-        select distinct stu_class from ${tableName} where
-        <if test="major!=null and major!='' and major!='-1'.toString()">
-            major=#{major}
-        </if>
+        select distinct stu_class from ${tableName}
+        <where>
+            <if test="major!=null and major!='' and major!='-1'">
+                major=#{major}
+            </if>
+        </where>
+
         order by stu_class asc
     </select>
 
@@ -155,4 +171,22 @@
         select * from ${tableName} where major = #{major,jdbcType=VARCHAR} and stu_class = #{stuClass}
     </select>
 
+    <!--根据专业、班级和升降序查询-->
+    <select id="selectInfo" resultMap="resultMapWithCredit">
+        select * from ${tableName}
+        <where>
+            <if test="major!='-1'">
+                major = #{major}
+            </if>
+            <if test="stuClass!='-1'">
+                and stu_class = #{stuClass}
+            </if>
+            <if test="order=='1'">
+                order by stu_class asc
+            </if>
+            <if test="order=='2'">
+                order by stu_class desc
+            </if>
+        </where>
+    </select>
 </mapper>

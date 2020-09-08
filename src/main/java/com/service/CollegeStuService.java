@@ -1,6 +1,7 @@
 
 package com.service;
 
+import com.bean.CollegeStu;
 import com.bean.Student;
 import com.dao.CollegeStuMapper;
 import com.github.pagehelper.PageHelper;
@@ -122,4 +123,17 @@ public class CollegeStuService {
             return null;
         }
     }
+
+    public List<CollegeStu> getInfo(Integer collegeId, String major, String stuClass, Integer order) {
+
+        //获取数据库名
+        String tableName = CollegeNameUtil.getTableName(collegeId);
+
+        //查询出此学院所有满足要求的学生
+        List<CollegeStu> collegeStus = collegeStuMapper.selectInfo(tableName, major, stuClass, order);
+
+        return collegeStus;
+    }
 }
+
+

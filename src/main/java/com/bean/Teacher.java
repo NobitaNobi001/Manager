@@ -1,6 +1,7 @@
 package com.bean;
 
 public class Teacher {
+
     private Integer id;
 
     private Integer teaNumber;
