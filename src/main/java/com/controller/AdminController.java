@@ -54,7 +54,7 @@ public class AdminController {
      * 跳转管理员首页
      *
      * @param model
-     * @return  jjhj
+     * @return
      */
     @RequestMapping("/admIndex")
     public String adminIndex(Model model, HttpServletRequest request) {
