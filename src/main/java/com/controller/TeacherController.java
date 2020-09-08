@@ -1,8 +1,12 @@
 package com.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.builder.ExcelReaderBuilder;
+import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.bean.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.listener.ExportTeacherListener;
 import com.service.TeacherService;
 import com.utils.CollegeNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +31,8 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private ExportTeacherListener teacherListener;
 
     /**
      * 学生列表
@@ -283,6 +291,19 @@ public class TeacherController {
         PageInfo pages = new PageInfo(teachers, 5);
 
         return Msg.success().add("pageInfo", pages);
+    }
+
+    @PutMapping("/insertTeacherByExcel")
+    @ResponseBody
+    public Msg insertBatchTeacher(@RequestParam("ExcelFile") MultipartFile uploadExcel) throws IOException {
+        // 工作簿
+        ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), TeacherExcel.class, teacherListener);
+        // 工作表
+        ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
+        // 读
+        sheet.doRead();
+
+        return Msg.success().add("msg","导入成功");
     }
 
 }

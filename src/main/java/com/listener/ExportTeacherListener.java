@@ -32,11 +32,18 @@ public class ExportTeacherListener extends AnalysisEventListener<TeacherExcel> {
         teacher.setTeaName(teacherExcel.getTeaName());
         teacher.setPassword(String.valueOf(teacherExcel.getTeaNumber()));
         teacher.setCollegeId(CollegeNameUtil.getCollegeId(teacherExcel.getCollegeName()));
+        teacher.setGender(teacherExcel.getGender());
+        teacher.setPhone(teacher.getPhone());
+        teacher.setEmail(teacher.getEmail());
         teacher.setTeaPositon(teacherExcel.getTeaPositon());
         teachers.add(teacher);
 
         if(teachers.size()%5==0){
             //执行批量插入语句
+
+            teacherService.insertTeacherByExcel(teachers);
+
+            teachers.clear();
         }
 
     }

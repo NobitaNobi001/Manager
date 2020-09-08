@@ -99,12 +99,13 @@ public class TeacherService {
 
     /**
      * 条件查询
+     *
      * @param collegeId 学院
-     * @param keywords 关键字
+     * @param keywords  关键字
      * @return
      */
-    public List<Teacher> selectTeacherWithCondition(Integer collegeId,String keywords){
-        return teacherMapper.selectTeacherWithCondition(collegeId,keywords);
+    public List<Teacher> selectTeacherWithCondition(Integer collegeId, String keywords) {
+        return teacherMapper.selectTeacherWithCondition(collegeId, keywords);
     }
 
     /**
@@ -122,11 +123,12 @@ public class TeacherService {
 
     /**
      * 根据教工号修改密码
-     * @param number 教工号
+     *
+     * @param number   教工号
      * @param password 密码
      */
-    public void updatePasswordByTeacherNumber(Integer number,String password){
-        teacherMapper.updatePasswordByTeacherNumber(number,password);
+    public void updatePasswordByTeacherNumber(Integer number, String password) {
+        teacherMapper.updatePasswordByTeacherNumber(number, password);
     }
 
     /**
@@ -142,8 +144,19 @@ public class TeacherService {
         teacherMapper.insertSelective(teacher);
     }
 
-    public void insertTeacherByExcel(List<Teacher> teachers){
+    /**
+     * 通过excel批量插入多个教师
+     *
+     * @param teachers
+     */
+    public void insertTeacherByExcel(List<Teacher> teachers) {
         //完善批量插入的方法
+        try {
+            insertTeacherByExcel(teachers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -161,9 +174,10 @@ public class TeacherService {
 
     /**
      * 批量删除教师
+     *
      * @param ids
      */
-    public void batchDeleteTeachers(List<Integer> ids){
+    public void batchDeleteTeachers(List<Integer> ids) {
 
         TeacherExample teacherExample = new TeacherExample();
 
@@ -199,10 +213,10 @@ public class TeacherService {
     }
 
     /**
-     *校验邮箱是否绑定此工号
+     * 校验邮箱是否绑定此工号
      *
      * @param number 工号
-     * @param email 邮箱
+     * @param email  邮箱
      * @return
      */
     public boolean checkEmailByTeacher(Integer number, String email) {

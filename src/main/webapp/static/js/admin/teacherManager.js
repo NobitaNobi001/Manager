@@ -416,6 +416,10 @@ function build_teacher_table(result) {
             .append(teaPostion)
             .append(operateBtn)
             .appendTo("#teacher_info tbody");
-    })
+    });
 
 }
+
+$("#batch_add_teacher_btn").click(function () {
+
+});

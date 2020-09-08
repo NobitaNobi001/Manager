@@ -38,4 +38,6 @@ public interface TeacherMapper {
 
     int updatePasswordByTeacherNumber(@Param("number") Integer number,@Param("password") String password);
 
+    int insertBatchTeacherByExcel(@Param("list") List<Teacher> teachers);
+
 }
