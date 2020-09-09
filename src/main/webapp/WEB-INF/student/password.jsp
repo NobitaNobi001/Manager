@@ -54,6 +54,10 @@
 </html>
 <script type="text/javascript">
     $(function () {
+        var layer=null;
+        layui.use('layer', function(){
+            layer = layui.layer;
+        });
         $('#updatePwdForm').bootstrapValidator({
             // 通用提示语
             message: 'This value is not valid',
@@ -127,6 +131,7 @@
                         async: true,
                         data: $('#updatePwdForm').serialize(),
                         url: $('#updatePwdForm').attr("action"),
+                        dataType: 'json',
                         success: function (data) {
                             if (data.code==100) {
                                 layer.msg(data.extend.result, {time: 2000, icon: 1}, function () {

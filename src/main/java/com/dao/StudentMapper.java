@@ -24,6 +24,10 @@ public interface StudentMapper {
 
     // 批量插入学生
     int insertBatchStuByExcel(@Param("list") List<Student> students);
+
+    // list<Integer>集合封装学生学号得到list<student>
+    List<Student> selectStuByStuNumberList(@Param("list") List<Integer> stuNumbers);
+
     // 下面逆向工程
 
     // 查询学生的数量
@@ -54,4 +58,6 @@ public interface StudentMapper {
     int selectEmailByStudent(@Param("number") Integer number,@Param("email") String email);
 
     int updatePasswordByStudentNumber(@Param("number") Integer number,@Param("password") String password);
+
+
 }

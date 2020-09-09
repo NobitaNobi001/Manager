@@ -188,13 +188,10 @@ public class RecordService {
             List<Student> students = studentMapper.selectStuBykeyword(keyword);
             pageInfo = new PageInfo(students);
         } else {// 学院不为null 学院学生表里面条件查询
+            PageHelper.startPage(pageNum, pageSize);
             String tableName = CollegeNameUtil.getTableName(collegeId);
             List<Integer> stuNumbers = collegeStuMapper.selectStuNumberByKeyword(tableName, major, stuClass, keyword);
-            StudentExample studentExample = new StudentExample();
-            StudentExample.Criteria criteria = studentExample.createCriteria();
-            criteria.andStuNumberIn(stuNumbers);
-            PageHelper.startPage(pageNum, pageSize);
-            List<Student> students = studentMapper.selectByExample(studentExample);
+            List<Student> students=studentMapper.selectStuByStuNumberList(stuNumbers);
             pageInfo = new PageInfo(students);
         }
         return pageInfo;

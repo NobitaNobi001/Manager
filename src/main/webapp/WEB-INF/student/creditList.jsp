@@ -108,16 +108,17 @@
 <%@include file="/WEB-INF/common/studentFooter.jsp"%>
 </body>
 </html>
-<script>
-    var arr = $("button [name='state']");
-
-    $.each(arr, function () {
-        if ($(this).text() == "已通过") {
-            $(this).addClass("btn-success");
-        } else if ($(this).text() == "未审核") {
-            $(this).addClass("btn-primary");
-        } else {
-            $(this).addClass("btn-warning");
-        }
+<script type="text/javascript">
+    $(function () {
+        var arr = $("button[name='state']");
+        $.each(arr, function () {
+            if ($(this).text() == "已通过") {
+                $(this).addClass("btn-success");
+            } else if ($(this).text() == "未审核") {
+                $(this).addClass("btn-primary");
+            } else {
+                $(this).addClass("btn-warning");
+            }
+        })
     })
 </script>

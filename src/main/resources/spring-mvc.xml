@@ -23,9 +23,6 @@
         <property name="suffix" value=".jsp"/>
     </bean>
 
-    <!--配置objectMapper-->
-    <bean class="com.fasterxml.jackson.databind.ObjectMapper" id="objectMapper" scope="singleton"></bean>
-
     <!--将spring无法处理的请求交给tomcat-->
     <mvc:default-servlet-handler/>
 

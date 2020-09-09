@@ -41,7 +41,7 @@
                        <span class="input-group-addon">
                      <span class="glyphicon glyphicon-user"></span>
                     </span>
-                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" autofocus/>
+                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" autofocus value="2018139047"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -49,7 +49,7 @@
                           <span class="input-group-addon">
                     <span class="glyphicon glyphicon-eye-open" id="eye"></span>
                     </span>
-                        <input type="password" name="password" class="form-control" placeholder="登录密码" />
+                        <input type="password" name="password" class="form-control" placeholder="登录密码" value="12345678"/>
                     </div>
                 </div>
                 <div class="type">

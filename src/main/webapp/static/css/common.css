@@ -169,5 +169,30 @@ form.form .item .value .notice{padding: 5px 0;font-size: 12px;line-height: 27px;
 .btn-success:active:focus, .btn-success:active:hover{color: #fff;background-color: #398439;border-color: #255625;}
 .btn-info:active:focus, .btn-info:active:hover{color: #fff;background-color: #269abc;border-color: #1b6d85;}
 .btn-warning:active:focus, .btn-warning:active:hover{color: #fff;background-color: #d58512;border-color: #985f0d;}
-.btn-danger:active:focus, .btn-danger:active:hover{color: #fff;background-color: #ac2925;border-color: #761c19;}
+.btn-danger:active:focus, .btn-danger:active:hover {
+    color: #fff;
+    background-color: #ac2925;
+    border-color: #761c19;
+}
 
+.popover {
+    width: auto;
+    height: auto;
+    max-height: 800px;
+    max-width: 800px;
+}
+.img-box{
+    display: none;
+}
+.img-box img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+
+}
+
+.layui-form-label{
+    width: 90px;
+}

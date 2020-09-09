@@ -10,7 +10,7 @@ import org.springframework.validation.BindingResult;
 * jsr303工具类检查数据是否合法
 * */
 public class CheckBindingResultUtil {
-    public static void checkAbnormalData(BindingResult bindingResult)throws Exception{
+    public static void checkAbnormalData(BindingResult bindingResult){
         if (bindingResult == null) {
             return;
          }

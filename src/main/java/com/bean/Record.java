@@ -4,6 +4,7 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.*;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.hibernate.validator.constraints.Length;
 
 @ContentStyle(horizontalAlignment = HorizontalAlignment.CENTER)
 @HeadRowHeight(30)
@@ -54,6 +55,24 @@ public class Record {
     @ExcelProperty(value = "审核状态", index = 8)
     @ColumnWidth(15)
     private String auditState;// 审核状态
+
+    public Record() {
+    }
+
+    public Record(Integer id, Integer stuNumber, String stuName, String date, String sort, String picture, String applyName, Double applyCredit, String words, Double auditCredit, String auditTea, String auditState) {
+        this.id = id;
+        this.stuNumber = stuNumber;
+        this.stuName = stuName;
+        this.date = date;
+        this.sort = sort;
+        this.picture = picture;
+        this.applyName = applyName;
+        this.applyCredit = applyCredit;
+        this.words = words;
+        this.auditCredit = auditCredit;
+        this.auditTea = auditTea;
+        this.auditState = auditState;
+    }
 
     public Integer getId() {
         return id;

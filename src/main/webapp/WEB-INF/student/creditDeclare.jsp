@@ -6,7 +6,7 @@
                 <div class="credit">
                     <h4>学分申报</h4>
                     <p class="glyphicon glyphicon-question-sign" title="申报帮助" id="applyHelp" style="vertical-align: middle;"></p>
-                    <form action="student/apply.html"  class="layui-form"  id="applyForm">
+                    <form  class="layui-form"  id="applyForm" enctype="multipart/form-data">
                         <input type="hidden" value="${student.stuNumber }" name="stuNumber">
                         <input type="hidden" value="${student.stuName }" name="stuName">
                         <div class="layui-form-item">
@@ -42,7 +42,7 @@
                             <label class="layui-form-label">申报学分</label>
                             <div class="layui-input-block">
                                 <input type="number" name="applyCredit" required lay-verify="required|applyCredit" placeholder="请填写申报学分" autocomplete="off"
-                                       class="layui-input" max="8" min="0.5" step="0.25">
+                                       class="layui-input" max="8" min="0.5" step="0.5">
                             </div>
                         </div>
 
@@ -119,17 +119,16 @@
     let imgfile = null;
     layui.use('upload',function(){
         var upload = layui.upload; //得到 upload 对象
-        var $ = layui.jquery
+        var $ = layui.jquery;
         //创建一个上传组件
         upload.render({
             elem: '#file',
             auto: false,  // 取消自动上传
-            size:1024*10,// 10M
-            field: 'img',//自定义图片参数为img
+            size: 1024*10,// 10M
+            field: 'file',//自定义图片参数为img
             accept: 'images' ,// 允许上传的文件类型
             acceptMime: 'image/*',
-            multiple: false,// 支持多文件上传
-            bindAction: '.layui-btn',
+            multiple: false,// 取消多文件上传
             // 选择文件后的回调函数
             choose:function(obj){
                 obj.preview(function (index, file, result) {
@@ -150,49 +149,54 @@
         form.verify({
             applyName: function (value, item) { //value：表单的值、item：表单的DOM对象
                 if(!value){
-                    return '申报活动名称不能为空'
+                    return '请填写申报活动名称'
                 }
             }
-            , applyCredit: [
-                /^[0-9]{1}(.[0-9])?$/
-                , '申报一次创新学分必须大于0小于8'
-            ]
+            , applyCredit: function (value,item) {
+                if(value<=0){
+                    return "申报创新学分必须大于0小于8,可保留1位小数"
+                }
+                if(value>=8){
+                    return "申报创新学分必须大于0小于8,可保留1位小数"
+                }
+                if(value.toString().length>3){
+                    return "申报创新学分必须大于0小于8,可保留1位小数"
+                }
+            }
         });
 
         //监听提交
         form.on('submit(submitBtn)', function (data) {
-            console.log(data.field,imgfile)
             if(!imgfile){
                 layer.msg('请上传图片');
                 return false
-            }else{
-                //请求接口
-                var formData = new FormData($( "#applyForm" )[0]);
+            } else{
+                var formData  = new FormData();
+                formData .append('stuNumber',$("input[name='stuNumber']").val());
+                formData .append('stuName',$("input[name='stuName']").val());
+                formData .append('sort',$("select[name='sort']").val());
+                formData .append('applyName',$("input[name='applyName']").val());
+                formData .append('applyCredit',$("input[name='applyCredit']").val());
+                formData .append('words', $("textarea[name='words']").val());
+                formData .append('file',imgfile);
                 $.ajax({
-                    cache : true,
-                    type : "post",
                     url : "student/apply.html",
+                    type:"POST",
                     data : formData,
-                    async : false,
-                    contentType: false,   //jax 中 contentType 设置为 false 是为了避免 JQuery 对其操作，从而失去分界符，而使服务器不能正常解析文件
-                    processData: false,   //当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
+                    cache: false,//上传文件无需缓存
+                    contentType: false, //jax 中 contentType 设置为 false 是为了避免 JQuery 对其操作，从而失去分界符，而使服务器不能正常解析文件
+                    processData: false, //当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
+                    dataType: 'json',
                     error : function(request) {
-                        parent.layer.alert("网络超时");
+                        parent.layer.alert("网络超时,请稍后再试");
                     },
                     success : function(data) {
-                        if (data.code == 0) {
-                            parent.layer.msg("操作成功");
-                            parent.reLoad();
-                            //注意这两句
-                            var index = parent.layer.getFrameIndex(window.name);///先得到当前iframe层的索引
-                            parent.layer.close(index);//再执行关闭，保存、修改页面完成时要获取当前页面并关闭回到上级页面（list页面）起到刷新返回功能
-                        } else {
-                            parent.layer.alert(data.msg)
-                        }
+                        var iconCode=data.code==100?1:2;
+                        layer.msg(data.extend.result,{icon:iconCode,time: 3000});
                     }
                 });
             }
-            return false;//阻止表单跳转。如果需要表单跳转，去掉这段即可。
+            return false;//阻止表单跳转
         });
     });
 </script>

@@ -193,13 +193,19 @@ public class AdminService {
      * @param students
      */
     public void insertStuByExcel(List<Student> students) {
-        try {
+            Boolean TableNameIsSame=true;
+            // 得到第一个学生的学院id
+            Integer FirstCollegeId = students.get(0).getCollegeId();
+            // 得到第一个学生应该插入的表名
+            String FirstTableName=CollegeNameUtil.getTableName(FirstCollegeId);
+            // 创建总学分集合
             List<Credit> credits = new ArrayList<>();
-            // 创建学分对象
-            // 截取学号封装密码
+            // 创建学院对象
             for (Student student : students) {
-                String password = student.getStuNumber().toString().substring(4);
-                student.setPassword(password);
+                // 判断要插入的学生的学院是否都相同
+                if(student.getCollegeId()!=FirstCollegeId){
+                    TableNameIsSame=false;
+                }
                 credits.add(new Credit(student.getStuNumber(), 0.0));
             }
             // 插入学生表
@@ -207,13 +213,15 @@ public class AdminService {
             // 插入学分表
             creditMapper.insertBatchCreditByExcel(credits);
             // 插入学院学生表
-            for (Student student : students) {
-                String tableName = CollegeNameUtil.getTableName(student.getCollegeId());
-                collegeStuMapper.insertSelective(tableName, student);
+            // 如果是表名是都是一样的话，那么批量插入学院学生表 否则依次插入学院学生表
+            if(TableNameIsSame==true){
+                collegeStuMapper.insertBatchCollegeStu(FirstTableName,students);
+            }else{
+                for (Student student : students) {
+                    String tableName = CollegeNameUtil.getTableName(student.getCollegeId());
+                    collegeStuMapper.insertSelective(tableName, student);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**

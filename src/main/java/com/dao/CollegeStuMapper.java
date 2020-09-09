@@ -50,4 +50,6 @@ public interface CollegeStuMapper {
 
     List<CollegeStu> selectInfo(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") String stuClass, @Param("order") Integer order);
 
+    // 如果学院名一样的话批量插入学生
+    int insertBatchCollegeStu(@Param("tableName") String firstTableName, @Param("list") List<Student> students);
 }
