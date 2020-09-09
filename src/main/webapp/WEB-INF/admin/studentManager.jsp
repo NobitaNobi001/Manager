@@ -47,6 +47,7 @@
         </div>
     </div>
 </header>
+
 <!-- 添加学生的模态框 -->
 <div class="modal fade" id="StuAddModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -89,14 +90,14 @@
                         <label for="stuNumber_add_input" class="col-sm-2 control-label">学生学号</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" name="stuNumber" id="stuNumber_add_input"
-                                   placeholder="请输入学生学号">
+                                   placeholder="请输入学生学号" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="stuName_add_input" class="col-sm-2 control-label">学生姓名</label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control" name="stuName" id="stuName_add_input"
-                                   placeholder="请输入学生姓名">
+                                   placeholder="请输入学生姓名" autocomplete="off">
                         </div>
                     </div>
                     <div class="form-group">
@@ -492,12 +493,7 @@
                         },
                         regexp: {
                             regexp: /^\d{10}$/,
-                            message: '学号格式错误'
-                        },
-                        stringLength: {
-                            min: 10,
-                            max: 10,
-                            message: '学生学号长度必须为10位'
+                            message: '学号格式错误,必须为10位数字'
                         },
                         remote: {
                             url: "admin/checkStuNumberISExist",
@@ -509,7 +505,7 @@
                 }
             }
         });
-        // getColleges("#checkForm select[name='college']");
+
         layui.use('upload', function () {
             var upload = layui.upload;
             var uploadInst = upload.render({
@@ -524,23 +520,24 @@
                 before: function () {
                     layer.msg('上传中', {icon: 16, shade: 0.01}); // 上传loading
                 },
-                done: function (res) {// 上传完毕回调 res服务器响应信息 index当前文件的索引 upload重新上传的方法
+                done: function (res, index, upload) {// 上传完毕回调 res服务器响应信息 index当前文件的索引 upload重新上传的方法
                     layer.close(layer.index); // 关闭loading
-                    if (res == "导入成功") {
-                        layer.msg("导入成功");
-                        // 重新加载页面
-                        location.reload();
-                    } else {
-                        layer.msg("导入失败，请重新上传")
+                    if (res.code==100) {
+                        layer.msg(res.extend.message,{icon:1,time: 3000},function () {
+                            // 重新加载页面
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(res.extend.message,{icon:2,time: 4000});
                     }
                 },
                 error: function (index, upload) {// 请求异常回调
-                    layer.confirm("上传文件格式错误，请重新上传", {btn: ['重新上传', '取消上传'], skin: 'layui-layer-molv'}, function () {
-                    })
+                    layer.msg("网络请求超时,请稍后再试或联系管理员");
                 }
             });
         });
     });
+
     // 给新增按钮绑定单击事件出现模态框
     $("#stu_add_modal_btn").click(function () {
         // 表单重置
@@ -552,6 +549,7 @@
             backdrop: "static"
         });
     });
+
     // 新增模态框学院改变后重新加载专业
     $("#StuAddModal select[name='collegeId']").change(function () {
         var collegeCode = $("#StuAddModal select[name='collegeId']").val();
@@ -559,12 +557,14 @@
         $("#StuAddModal select[name='className']").empty();
         $("#StuAddModal select[name='className']").append($("<option></option>").val("").text("请选择班级"));
     });
+
     // 新增模态框专业改变后重新加载班级
     $("#StuAddModal select[name='major']").change(function () {
         var collegeCode = $("#StuAddModal select[name='collegeId']").val();
         var majorCode = $("#StuAddModal select[name='major']").val();
         getClass(collegeCode, majorCode, "#StuAddModal select[name='className']", "");
     });
+
     // 修改模态框学院改变后重新加载专业
     $("#StuUpdateModal select[name='collegeId']").change(function () {
         var collegeCode = $("#StuUpdateModal select[name='collegeId']").val();
@@ -572,12 +572,14 @@
         $("#StuUpdateModal select[name='className']").empty();
         $("#StuUpdateModal select[name='className']").append($("<option></option>").val("").text("请选择班级"));
     });
+
     // 修改模态框专业改变后重新加载班级
     $("#StuUpdateModal select[name='major']").change(function () {
         var collegeCode = $("#StuUpdateModal select[name='collegeId']").val();
         var majorCode = $("#StuUpdateModal select[name='major']").val();
         getClass(collegeCode, majorCode, "#StuUpdateModal select[name='className']", "");
     });
+
     //普通表单学院改变后重新加载专业
     $("#checkForm select[name='college']").change(function () {
         var collegeCode = $("#checkForm select[name='college']").val();
@@ -726,6 +728,7 @@
             $.ajax({
                 url: "admin/deleteStu/" + stuNumbers,
                 type: "DELETE",
+                dataType: 'text',
                 success: function (result) {
                     if (result == "删除成功") {
                         layer.msg(result, {icon: 1, time: 2000}, function () {

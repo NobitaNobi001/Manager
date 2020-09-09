@@ -181,3 +181,18 @@ form.form .item .value .notice{padding: 5px 0;font-size: 12px;line-height: 27px;
     max-height: 800px;
     max-width: 800px;
 }
+.img-box{
+    display: none;
+}
+.img-box img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 1px solid #ccc;
+    margin-top: 20px;
+
+}
+
+.layui-form-label{
+    width: 90px;
+}

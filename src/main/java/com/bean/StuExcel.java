@@ -19,7 +19,7 @@ public class StuExcel {
     private String stuName;
 
     // 学院名称
-    @ExcelProperty("学院")
+    @ExcelProperty("院系")
     private String collegeName;
 
     // 专业

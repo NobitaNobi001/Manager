@@ -8,8 +8,6 @@ import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.bean.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.service.*;
 import com.utils.CollegeNameUtil;
@@ -111,21 +109,20 @@ public class AdminController {
 
 
     /**
-     * @Description: 学分记录表默认页面
+     * @Description: 默认的学分记录页面
      * @return:
      */
     @RequestMapping("/toSee/studentRecord.html")
     public String getAllStudentRecord(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model, HttpServletRequest request) {
         List<Record> allRecord = recordService.getAllRecordByAdmin(page, 5);
         PageInfo<Record> info = new PageInfo(allRecord);
-
         request.setAttribute("direction", "toSee");
         model.addAttribute("info", info);
         return "admin/declareManager";
     }
 
     /**
-     * @Description: 根据学院专业班级查到学生id后，查询学生的申报记录
+     * @Description: 条件查询的申报记录页面
      * @return:
      */
     @RequestMapping("/toQuery/studentRecord.html")
@@ -138,6 +135,27 @@ public class AdminController {
         request.setAttribute("stuClass", stuClass);
         model.addAttribute("info", info);
         return "admin/declareManager";
+    }
+
+    /**
+     * @Description:默认的学生列表
+     * @return:
+     */
+    @RequestMapping("/get/student.html")
+    public String getStuPageInfo(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "college", defaultValue = "-1") Integer collegeId, @RequestParam(value = "major", defaultValue = "-1") String major, @RequestParam(value = "stuClass", defaultValue = "-1") Integer stuClass, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize, Model model) {
+        PageInfo<Student> pageInfo = recordService.selectStuBykeyword(pageNum, pageSize, collegeId, major, stuClass, keyword);
+        model.addAttribute("pageInfo", pageInfo);
+        return "admin/studentManager";
+    }
+
+    /**
+     * @Description: 管理员更新学生信息后回到学生列表页面
+     * @return:
+     */
+    @RequestMapping("/updateStu.html")
+    public String updateStu(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, Student student) {
+        adminService.updateStu(student);
+        return "redirect:/admin/get/student.html?keyword=" + keyword + "&pageNum=" + pageNum;
     }
 
 
@@ -183,27 +201,7 @@ public class AdminController {
         }
     }
 
-    /**
-     * @Description:学生列表默认分页
-     * @return:
-     */
-    @RequestMapping("/get/student.html")
-    public String getStuPageInfo(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "college", defaultValue = "-1") Integer collegeId, @RequestParam(value = "major", defaultValue = "-1") String major, @RequestParam(value = "stuClass", defaultValue = "-1") Integer stuClass, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize, Model model) {
-        PageInfo<Student> pageInfo = recordService.selectStuBykeyword(pageNum, pageSize, collegeId, major, stuClass, keyword);
-        model.addAttribute("pageInfo", pageInfo);
-        return "admin/studentManager";
-    }
 
-    /**
-     * @Description: 管理员更新学生信息
-     * @return:
-     */
-    @RequestMapping("/updateStu.html")
-    public String updateStu(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, Student student) {
-        System.out.println(student);
-        adminService.updateStu(student);
-        return "redirect:/admin/get/student.html?+keyword=" + keyword + "&pageNum=" + pageNum;
-    }
 
     /**
      * @Description: 删除学生信息
@@ -244,8 +242,8 @@ public class AdminController {
      */
     @RequestMapping("/checkStuNumberISExist")
     @ResponseBody
-    public String checkStuNumberISExist(@RequestParam("stuNumber") Integer stuNumber) throws JsonProcessingException {
-        boolean flag = !(studentService.checkStudent(stuNumber));
+    public String checkStuNumberISExist(@RequestParam("stuNumber") Integer stuNumber) {
+        boolean flag = studentService.checkStudent(stuNumber);
         Map<String, Boolean> map = new HashMap();
         map.put("valid", flag);
         return JsonUtil.getJson(map);
@@ -257,7 +255,7 @@ public class AdminController {
      * @return:
      */
     @RequestMapping("/insertStuByForm")
-    public String insertStuByForm(Student student) {
+    public String insertStuByForm( Student student) {
         // 获取学号
         Integer stuNumber = student.getStuNumber();
         // 截取学号的后六位生成密码
@@ -275,14 +273,30 @@ public class AdminController {
      */
     @RequestMapping("/insertStuByExcel")
     @ResponseBody
-    public String insertStuByExcel(@RequestParam("ExcelFile") MultipartFile uploadExcel) throws IOException {
-        // 工作簿
-        ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), StuExcel.class, stuListener);
-        // 工作表
-        ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
-        // 读
-        sheet.doRead();
-        return "导入成功";
+    public String insertStuByExcel(@RequestParam("ExcelFile") MultipartFile uploadExcel){
+        // 判断是否为null文件
+        if(uploadExcel.getSize()==0){
+            return JsonUtil.getJson(Msg.fail().add("message", "请选择文件"));
+        }
+        // 判断文件类型是否为xls
+        int begin = uploadExcel.getOriginalFilename().indexOf(".");
+        int last = uploadExcel.getOriginalFilename().length();
+        //获得文件后缀名
+        String suffix = uploadExcel.getOriginalFilename().substring(begin, last);
+        if (!suffix.endsWith(".xls")) {
+            return JsonUtil.getJson(Msg.fail().add("message", "请上传xls文件,且根据模板导入"));
+        }
+        try {
+            // 工作簿
+            ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), StuExcel.class, stuListener);
+            // 工作表
+            ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
+            // 读
+            sheet.doRead();
+            return JsonUtil.getJson(Msg.success().add("message", "导入成功"));
+        } catch (Exception e) {
+            throw  new RuntimeException("导入失败,请查看要导入是学生是否已存在或导出模板错误");
+        }
     }
 
     /**

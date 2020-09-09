@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.StudentMapper">
-    <cache eviction="FIFO" flushInterval="600000" readOnly="true" size="1024"></cache>
+<!--    <cache eviction="FIFO" flushInterval="600000" readOnly="true" size="1024"></cache>-->
     <resultMap id="WithCreditResultMap" type="com.bean.Student">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
@@ -150,12 +150,17 @@
     <!--根据关键字查询学生信息 比如学号 学生姓名-->
     <select id="selectStuBykeyword" resultMap="WithCreditResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from stu_info
+        <include refid="WithSumcredit_Column_List"/>
+
+        FROM stu_info s
+        LEFT JOIN college c1
+        on s.college_id=c1.id
+        join credit c2
+        on s.stu_number=c2.stu_number
         <where>
             <if test="keyword!=null and keyword!=''">
-                stu_number like concat ("%",#{keyword},"%") or
-                stu_name like concat ("%",#{keyword},"%")
+                s.stu_number like concat ("%",#{keyword},"%") or
+                s.stu_name like concat ("%",#{keyword},"%")
             </if>
         </where>
     </select>
@@ -403,6 +408,20 @@
     <select id="selectEmailByStudent" resultType="java.lang.Integer">
         select count(*) from stu_info
         where email = #{email} and stu_number = #{number}
+    </select>
+
+    <select id="selectStuByStuNumberList" resultMap="WithCreditResultMap">
+        select
+        <include refid="WithSumcredit_Column_List"/>
+        FROM stu_info s
+        LEFT JOIN college c1
+        on s.college_id=c1.id
+        join credit c2
+        on s.stu_number=c2.stu_number
+        where s.stu_number in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
     </select>
 
     <update id="updatePasswordByStudentNumber">

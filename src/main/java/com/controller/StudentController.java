@@ -59,11 +59,11 @@ public class StudentController {
     */
     @PostMapping(value = "/updateStuPassword.html")
     @ResponseBody
-    public Msg updateStuPassword(@RequestParam("stuNumber") int stuNumber, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
+    public String updateStuPassword(@RequestParam("stuNumber") int stuNumber, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
         if (studentService.updateStuPwd(stuNumber, oldPassword, newPassword)) {//修改密码成功
-            return Msg.success().add("result", "修改密码成功，您将返回登录页面");
+            return JsonUtil.getJson(Msg.success().add("result", "修改密码成功，您将返回登录页面"));
         } else {
-            return Msg.fail().add("result", "输入的原密码错误,请重新输入");
+            return JsonUtil.getJson(Msg.fail().add("result", "输入的原密码错误,请重新输入"));
         }
     }
 

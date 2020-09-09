@@ -49,6 +49,7 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
     }
 
     private void saveData() {
+        System.out.println(students);
         adminService.insertStuByExcel(students);
         System.out.println("正在读");
     }

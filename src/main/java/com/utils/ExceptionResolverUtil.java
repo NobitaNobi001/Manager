@@ -28,16 +28,25 @@ public class ExceptionResolverUtil {
         return commonResolver(viewName, exception, request, response);
     }
 
+    // 通用异常
+    @ExceptionHandler(value = Exception.class)
+    public ModelAndView Exception(
+            Exception exception,
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        String viewName = "common/404";
+        return commonResolver(viewName, exception, request, response);
+    }
+
     // 将方法封装
     private ModelAndView commonResolver(String viewName, Exception exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 判断当前请求的类型
         boolean isAjaxType = JudgeRequestTypeUtil.getType(request);
         // 如果是ajax请求
         if(isAjaxType){
-            // 创建ResultEntity对象,将异常信息存放
-            Msg.fail().add("failed",exception.getMessage());
             // 转为字符串
-            String json = JsonUtil.getJson(request);
+            String json = JsonUtil.getJson(Msg.fail().add("failed",exception.getMessage()));
             // 将字符串返回给浏览器
             response.getWriter().write(json);
             // 由于response已经做出了响应，所以不使用ModelAndView对象

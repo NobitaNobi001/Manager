@@ -42,7 +42,6 @@ public class CollegeController {
     @RequestMapping(value = "/getColleges", method = RequestMethod.GET)
     @ResponseBody
     public String getColleges() throws JsonProcessingException {
-
         List<College> Allcolleges = collegeService.getColleges();
         String colleges = objectMapper.writeValueAsString(Allcolleges);
         return colleges;

@@ -7,7 +7,6 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 
 public class Student implements Serializable {
-    @NotNull
     private Integer id;
 
     // 学号必须是10位，并且在合适的范围

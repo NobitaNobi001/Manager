@@ -29,9 +29,6 @@ public class ExportController {
     @Autowired
     CollegeStuService collegeStuService;
 
-    @Autowired
-    ObjectMapper objectMapper;
-
     /**
      * 导出学生的学分信息
      * 包括 学院 专业 班级 学号 姓名 总学分

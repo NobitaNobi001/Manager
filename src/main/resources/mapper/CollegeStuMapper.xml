@@ -65,6 +65,27 @@
             </if>
         </trim>
     </insert>
+    <!--如果表名相同的话批量插入学院学生表-->
+    <insert id="insertBatchCollegeStu">
+        insert into ${tableName}
+        (
+            college_id,
+            stu_number,
+            stu_name,
+            major,
+            stu_class
+        )
+        values
+        <foreach collection="list" item="student" index="index" separator=",">
+            (
+                #{student.collegeId},
+                #{student.stuNumber},
+                #{student.stuName},
+                #{student.major},
+                #{student.className}
+            )
+        </foreach>
+    </insert>
 
     <delete id="deleteStuByStuNumber">
     delete from ${tableName}
