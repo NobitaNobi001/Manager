@@ -2,7 +2,6 @@ package com.shrio.realms;
 
 import com.bean.Watcher;
 import com.constant.StringConstant;
-import com.exception.LoginFailedException;
 import com.service.WatcherService;
 import com.shrio.token.LoginToken;
 import org.apache.shiro.SecurityUtils;
@@ -34,12 +33,12 @@ public class WatcherRealm extends AuthorizingRealm {
 
         //用户不存在
         if (watcher == null) {
-            throw new LoginFailedException(StringConstant.ACCOUNT_PASSWORD_ERROR);
+            throw new UnknownAccountException(StringConstant.ACCOUNT_PASSWORD_ERROR);
         }
 
         //密码错误
         if (!(watcher.getPassword().equals(String.valueOf(token.getPassword())))) {
-            throw new LoginFailedException(StringConstant.ACCOUNT_PASSWORD_ERROR);
+            throw new IncorrectCredentialsException(StringConstant.ACCOUNT_PASSWORD_ERROR);
         }
 
         //1.认证的实体信息
