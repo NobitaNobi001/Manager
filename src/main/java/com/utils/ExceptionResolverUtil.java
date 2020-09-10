@@ -3,7 +3,9 @@ package com.utils;
 import com.bean.Msg;
 import com.constant.StringConstant;
 
-import com.exception.LoginFailedException;
+import com.exception.ExportExcelStuException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,12 +23,28 @@ import java.io.IOException;
 * */
 @ControllerAdvice
 public class ExceptionResolverUtil {
-    // 登录失败异常
-    @ExceptionHandler(value = LoginFailedException.class)
-    public ModelAndView LoginFailedExceptionException(LoginFailedException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    //学生导入失败异常
+    @ExceptionHandler(value = ExportExcelStuException.class)
+    public ModelAndView ExportExcelStuException(ExportExcelStuException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String viewName="admin/studentManager";
+        return commonResolver(viewName, exception, request, response);
+    }
+
+
+    //登录异常
+    @ExceptionHandler(value = UnknownAccountException.class)
+    public ModelAndView UnknownAccountException(UnknownAccountException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String viewName="forward:/login.jsp";
         return commonResolver(viewName, exception, request, response);
     }
+
+    //登录异常
+    @ExceptionHandler(value = IncorrectCredentialsException.class)
+    public ModelAndView IncorrectCredentialsException(IncorrectCredentialsException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String viewName="forward:/login.jsp";
+        return commonResolver(viewName, exception, request, response);
+    }
+
 
     // 通用异常
     @ExceptionHandler(value = Exception.class)
@@ -46,7 +64,7 @@ public class ExceptionResolverUtil {
         // 如果是ajax请求
         if(isAjaxType){
             // 转为字符串
-            String json = JsonUtil.getJson(Msg.fail().add("failed",exception.getMessage()));
+            String json = JsonUtil.getJson(Msg.fail().add("message",exception.getMessage()));
             // 将字符串返回给浏览器
             response.getWriter().write(json);
             // 由于response已经做出了响应，所以不使用ModelAndView对象

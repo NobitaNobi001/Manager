@@ -1,6 +1,7 @@
 package com.controller;
 
 
+import com.exception.ExportExcelStuException;
 import com.listener.ExportStuListener;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
@@ -13,6 +14,7 @@ import com.service.*;
 import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,8 +45,9 @@ public class AdminController {
     private AdminService adminService;
     @Autowired
     private WatcherService watcherService;
+
     @Autowired
-    private ExportStuListener stuListener;
+    private ExportStuListener exportStuListener;
 
 
     /**
@@ -275,7 +278,7 @@ public class AdminController {
     @ResponseBody
     public String insertStuByExcel(@RequestParam("ExcelFile") MultipartFile uploadExcel){
         // 判断是否为null文件
-        if(uploadExcel.getSize()==0){
+        if(uploadExcel.getSize()==0||uploadExcel.isEmpty()){
             return JsonUtil.getJson(Msg.fail().add("message", "请选择文件"));
         }
         // 判断文件类型是否为xls
@@ -288,15 +291,21 @@ public class AdminController {
         }
         try {
             // 工作簿
-            ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), StuExcel.class, stuListener);
+            ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), StuExcel.class, exportStuListener);
             // 工作表
             ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
             // 读
             sheet.doRead();
             return JsonUtil.getJson(Msg.success().add("message", "导入成功"));
         } catch (Exception e) {
-            throw  new RuntimeException("导入失败,请查看要导入是学生是否已存在或导出模板错误");
+            int firstIndex = e.getMessage().indexOf("Duplicate entry");
+            int endIndex = e.getMessage().indexOf("for key");
+            String stuNumberIsUsed=e.getMessage().substring(firstIndex+"Duplicate entry".length(), endIndex);
+            if(e instanceof DuplicateKeyException){
+                throw  new ExportExcelStuException("导入失败,Excel中学生学号"+stuNumberIsUsed+"已被使用");
+            }
         }
+        return null;
     }
 
     /**

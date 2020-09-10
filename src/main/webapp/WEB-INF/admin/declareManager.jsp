@@ -62,6 +62,9 @@
                         <div class="col-sm-4">
                             <select class="form-control" name="college">
                                 <option value="-1">不限</option>
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <option value="${college.id }">${college.name }</option>
+                                </c:forEach>
                             </select>
                         </div>
                     </div>

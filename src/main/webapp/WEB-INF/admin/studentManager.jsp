@@ -528,11 +528,13 @@
                             location.reload();
                         });
                     }else{
-                        layer.msg(res.extend.message,{icon:2,time: 4000});
+                        layer.alert(res.extend.message,{icon:2} ,function(index){
+                            layer.close(index);
+                        });
                     }
                 },
                 error: function (index, upload) {// 请求异常回调
-                    layer.msg("网络请求超时,请稍后再试或联系管理员");
+                    layer.msg('网络请求超时',{icon:2});
                 }
             });
         });
