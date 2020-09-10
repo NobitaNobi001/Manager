@@ -34,14 +34,16 @@ public class RecordService {
 
     /**
      * 查出所有记录的数量
+     *
      * @return
      */
-    public Integer selectCountRecord(){
+    public Integer selectCountRecord() {
         return recordMapper.countByExample(null);
     }
 
     /**
      * 查出所有记录数
+     *
      * @return
      */
     public List<Record> selectAllRecords() {
@@ -63,10 +65,11 @@ public class RecordService {
 
     /**
      * 根据学号批量查询出已审核的学生申报记录
+     *
      * @param stuNumbers
      * @return
      */
-    public List<Record> getAllAuditRecords(List<Integer> stuNumbers){
+    public List<Record> getAllAuditRecords(List<Integer> stuNumbers) {
         List<Record> stuRecords = recordMapper.findAllAuditBystuNumbers(stuNumbers);
 
         return stuRecords;
@@ -84,13 +87,13 @@ public class RecordService {
 
     /**
      * 根据主键查找记录
+     *
      * @param id
      * @return
      */
     public Record selectByPrimaryKey(Integer id) {
         return recordMapper.selectByPrimaryKey(id);
     }
-
 
 
     /**
@@ -117,6 +120,7 @@ public class RecordService {
 
     /**
      * 管理员根据学院专业班级查询学分学分列表
+     *
      * @param page
      * @param size
      * @param collegeId
@@ -141,6 +145,7 @@ public class RecordService {
 
     /**
      * 根据学院、专业、班级、审核状态来查询申报记录
+     *
      * @param collegeId
      * @param major
      * @param stuClass
@@ -173,6 +178,7 @@ public class RecordService {
 
     /**
      * 根据学院 专业 班级 关键字(学号、姓名)来查询学生学号
+     *
      * @param pageNum
      * @param pageSize
      * @param collegeId
@@ -191,7 +197,7 @@ public class RecordService {
             PageHelper.startPage(pageNum, pageSize);
             String tableName = CollegeNameUtil.getTableName(collegeId);
             List<Integer> stuNumbers = collegeStuMapper.selectStuNumberByKeyword(tableName, major, stuClass, keyword);
-            List<Student> students=studentMapper.selectStuByStuNumberList(stuNumbers);
+            List<Student> students = studentMapper.selectStuByStuNumberList(stuNumbers);
             pageInfo = new PageInfo(students);
         }
         return pageInfo;

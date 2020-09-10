@@ -95,3 +95,85 @@ $(document).on("click", ".apply-btn", function () {
         }
     });
 });
+
+$("#export_declare_data").click(function () {
+    // 每次出现模态框都将之前的信息给清空并且将表单样式也清空
+    reset_form("#exportStuRecord form");
+
+    getMajor("#major");
+
+    // 弹出模态框之前显示学院班级姓名在下拉列表中
+    // 设置点网页背景不会关闭模态框
+    $("#exportStuRecord").modal({
+        backdrop: "static"
+    });
+});
+
+//将此学院的所有专业回显到页面上
+function getMajor(ele) {
+    //清空原有样式
+    $(ele).empty();
+    $(ele).append($("<option value='-1'>不限</option>"));
+    $.ajax({
+        url: "college/getMajor",
+        data: {
+            "collegeId": $("#college").val()
+        },
+        type: "GET",
+        success: function (data) {
+            $.each(data, function (index, element) {
+                $(ele).append($("<option></option>").val(element).text(element));
+            });
+        },
+        dataType: "json",
+        error: function () {
+            alert("服务器繁忙!");
+        }
+    });
+}
+
+$("#collegeName").change(function () {
+    //清空原有样式
+    $("#major").empty();
+    $("#major").append($("<option value='-1'>不限</option>"));
+    $.ajax({
+        url: "college/getMajor",
+        data: {
+            "collegeId": $("#college").val()
+        },
+        type: "GET",
+        success: function (data) {
+            $.each(data, function (index, element) {
+                $("#major").append($("<option></option>").val(element).text(element));
+            });
+        },
+        dataType: "json",
+        error: function () {
+            alert("服务器繁忙!");
+        }
+    });
+});
+
+//监听学院下拉框的改变
+$("#major").change(function () {
+    //清空原有样式
+    $("#className").empty();
+    $("#className").append($("<option value='-1'>不限</option>"));
+    $.ajax({
+        url: "college/getClass",
+        data: {
+            "collegeId":$("#college").val(),
+            "major": $("#major").val()
+        },
+        type: "GET",
+        success: function (result) {
+            $.each(result, function (index, element) {
+                $("#className").append($("<option></option>").val(element).text(element));
+            })
+        },
+        dataType: "json",
+        error: function () {
+            alert("服务器繁忙!");
+        }
+    });
+});

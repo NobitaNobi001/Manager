@@ -4,8 +4,8 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.bean.Teacher;
 import com.bean.TeacherExcel;
+import com.service.CollegeService;
 import com.service.TeacherService;
-import com.utils.CollegeNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -21,28 +21,39 @@ import java.util.List;
 public class ExportTeacherListener extends AnalysisEventListener<TeacherExcel> {
 
     @Autowired
-    TeacherService teacherService;
+    private TeacherService teacherService;
+
+    @Autowired
+    private CollegeService collegeService;
 
     List<Teacher> teachers = new LinkedList<>();
 
     @Override
     public void invoke(TeacherExcel teacherExcel, AnalysisContext analysisContext) {
+
         Teacher teacher = new Teacher();
+
         teacher.setTeaNumber(teacherExcel.getTeaNumber());
+
         teacher.setTeaName(teacherExcel.getTeaName());
+
         teacher.setPassword(String.valueOf(teacherExcel.getTeaNumber()));
-        teacher.setCollegeId(CollegeNameUtil.getCollegeId(teacherExcel.getCollegeName()));
+
+        teacher.setCollegeId(collegeService.getCollegeIdByName(teacherExcel.getCollegeName()));
+
         teacher.setGender(teacherExcel.getGender());
+
         teacher.setPhone(teacher.getPhone());
+
         teacher.setEmail(teacher.getEmail());
+
         teacher.setTeaPositon(teacherExcel.getTeaPositon());
+
         teachers.add(teacher);
 
-        if(teachers.size()%5==0){
+        if (teachers.size() % 50 == 0) {
             //执行批量插入语句
-
             teacherService.insertTeacherByExcel(teachers);
-
             teachers.clear();
         }
 
@@ -50,6 +61,7 @@ public class ExportTeacherListener extends AnalysisEventListener<TeacherExcel> {
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-
+        teacherService.insertTeacherByExcel(teachers);
+        teachers.clear();
     }
 }

@@ -1,8 +1,12 @@
 package com.controller;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.builder.ExcelReaderBuilder;
+import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.bean.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.listener.ExportWatcherListener;
 import com.service.CollegeService;
 import com.service.CollegeStuService;
 import com.service.WatcherService;
@@ -11,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -23,6 +28,9 @@ public class WatcherController {
 
     @Autowired
     private WatcherService watcherService;
+
+    @Autowired
+    private ExportWatcherListener watcherListener;
 
     /**
      * 更新督察的密码
@@ -214,6 +222,39 @@ public class WatcherController {
         PageInfo pages = new PageInfo(watchers, 5);
 
         return Msg.success().add("pageInfo", pages);
+    }
+
+    @RequestMapping("/insertWatcherByExcel")
+    @ResponseBody
+    public Msg insertBatchWatcher(@RequestParam("ExcelFile") MultipartFile uploadExcel){
+
+        // 判断是否为null文件
+        if (uploadExcel.getSize() == 0) {
+            return Msg.fail().add("message", "请选择文件");
+        }
+        // 判断文件类型是否为xls
+        int begin = uploadExcel.getOriginalFilename().indexOf(".");
+        int last = uploadExcel.getOriginalFilename().length();
+        //获得文件后缀名
+        String suffix = uploadExcel.getOriginalFilename().substring(begin, last);
+        if (!suffix.endsWith(".xls")) {
+            return Msg.fail().add("message", "请上传xls文件,且根据模板导入");
+        }
+
+        try {
+            // 工作簿
+            ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), WatcherExcel.class, watcherListener);
+            // 工作表
+            ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
+
+            // 读
+            sheet.doRead();
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return Msg.success().add("message", "导入成功");
     }
 
 }

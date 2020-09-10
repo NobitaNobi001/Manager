@@ -35,4 +35,8 @@ public interface CollegeMapper {
     int updateByPrimaryKey(College record);
 
     String selectByCollegeId(Integer collegeId);
+
+    String selectNameByCollegeId(Integer id);
+
+    int selectCollegeIdByName(String collegeName);
 }

@@ -316,10 +316,36 @@
         where email = #{email} and watcher_number = #{number}
     </select>
 
-    <update id="updatePasswordByWatcherNumber" >
+    <update id="updatePasswordByWatcherNumber">
         update watcher_info
         set password = #{password,jdbcType=VARCHAR}
         where watcher_number = #{number,jdbcType=INTEGER}
     </update>
 
+    <insert id="insertBatchWatcherByExcel" parameterType="java.util.List">
+
+        insert into watcher_info
+        (
+        watcher_number,
+        watcher_name,
+        password,
+        college_id,
+        gender,
+        phone,
+        email
+        )
+        values
+        <foreach collection="list" item="watcher" separator=",">
+            (
+            #{watcher.watcherNumber},
+            #{watcher.watcherName},
+            #{watcher.password},
+            #{watcher.collegeId},
+            #{watcher.gender},
+            #{watcher.phone},
+            #{watcher.email}
+            )
+        </foreach>
+
+    </insert>
 </mapper>

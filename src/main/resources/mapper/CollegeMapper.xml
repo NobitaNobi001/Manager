@@ -115,6 +115,14 @@
     select name from college where id=#{CollegeId,jdbcType=INTEGER}
   </select>
 
+  <select id="selectNameByCollegeId" resultType="java.lang.String">
+    select name from college where id = #{id}
+  </select>
+
+  <select id="selectCollegeIdByName" resultType="java.lang.Integer">
+    select id from college where name = #{collegeName}
+  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from college
     where id = #{id,jdbcType=INTEGER}

@@ -22,38 +22,37 @@ public class CollegeStu {
     private int collegeId;
 
     //学生学号
-    @ExcelProperty(value = "学号", index = 4)
+    @ExcelProperty(value = "学号", index = 1)
     @ColumnWidth(15)
     private int stuNumber;
 
     //学生姓名
-    @ExcelProperty(value = "姓名", index = 5)
+    @ExcelProperty(value = "姓名", index = 2)
     @ColumnWidth(15)
     private String stuName;
 
     //学生专业
-    @ExcelProperty(value = "专业", index = 2)
+    @ExcelProperty(value = "专业", index = 3)
     @ColumnWidth(15)
     private String major;
 
     //学生班级
-    @ExcelProperty(value = "班级", index = 3)
+    @ExcelProperty(value = "班级", index = 4)
     @ColumnWidth(15)
     private String stuClass;
 
-    @ExcelProperty(value = "年级", index = 1)
-    @ColumnWidth(15)
+    @ExcelIgnore
     //学生年级
     private String stuGrade;
 
     @ExcelIgnore
     private College college;
 
-    @ExcelProperty(value = "学院", index = 0)
+    @ExcelProperty(value = "院系", index = 0)
     @ColumnWidth(30)
     private String collegeName;
 
-    @ExcelProperty(value = "学分", index = 6)
+    @ExcelProperty(value = "学分", index = 5)
     @ColumnWidth(15)
     private double sumCredit;
 

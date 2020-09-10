@@ -36,4 +36,6 @@ public interface WatcherMapper {
     int selectEmailByWatcher(@Param("number") Integer number,@Param("email") String email);
 
     int updatePasswordByWatcherNumber(@Param("number") Integer number,@Param("password") String password);
+
+    int insertBatchWatcherByExcel(@Param("list") List<Watcher> watchers);
 }

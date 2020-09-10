@@ -4,6 +4,7 @@ import com.bean.Msg;
 import com.constant.StringConstant;
 
 import com.exception.LoginFailedException;
+import org.apache.shiro.authc.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,9 +22,16 @@ import java.io.IOException;
 * */
 @ControllerAdvice
 public class ExceptionResolverUtil {
+
     // 登录失败异常
     @ExceptionHandler(value = LoginFailedException.class)
     public ModelAndView LoginFailedExceptionException(LoginFailedException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String viewName="forward:/login.jsp";
+        return commonResolver(viewName, exception, request, response);
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    public ModelAndView AuthenticationException(LoginFailedException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String viewName="forward:/login.jsp";
         return commonResolver(viewName, exception, request, response);
     }
@@ -46,7 +54,7 @@ public class ExceptionResolverUtil {
         // 如果是ajax请求
         if(isAjaxType){
             // 转为字符串
-            String json = JsonUtil.getJson(Msg.fail().add("failed",exception.getMessage()));
+            String json = JsonUtil.getJson(Msg.fail().add("message",exception.getMessage()));
             // 将字符串返回给浏览器
             response.getWriter().write(json);
             // 由于response已经做出了响应，所以不使用ModelAndView对象

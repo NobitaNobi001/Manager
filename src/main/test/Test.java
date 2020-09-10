@@ -1,5 +1,7 @@
 import com.bean.Teacher;
+import com.bean.Watcher;
 import com.dao.TeacherMapper;
+import com.dao.WatcherMapper;
 import com.listener.ContextListener;
 import com.listener.ExportStuListener;
 import org.mybatis.generator.api.MyBatisGenerator;
@@ -34,10 +36,10 @@ public class Test {
     //测试数据库连接
     @org.junit.Test
     public void ConnectionTest() throws SQLException {
-        //DataSource dataSource = atc.getBean(DataSource.class);
-        //System.out.println(dataSource.getConnection());
-        ContextListener bean = atc.getBean(ContextListener.class);
-        System.out.println(bean);
+        DataSource dataSource = atc.getBean(DataSource.class);
+        System.out.println(dataSource.getConnection());
+//        ContextListener bean = atc.getBean(ContextListener.class);
+//        System.out.println(bean);
     }
 
     //测试逆向工程
@@ -67,6 +69,42 @@ public class Test {
     public void testIntegerMax(){
         //System.out.println(Integer.MAX_VALUE);//2147483647
         //System.out.println(Integer.MIN_VALUE);//-2147483648
+    }
+
+    @Autowired
+    private WatcherMapper watcherMapper;
+
+    @org.junit.Test
+    public void testInsertWatcher(){
+
+        Watcher watcher = new Watcher();
+
+        List<Watcher> list = new ArrayList<>();
+
+        watcher.setWatcherName("2018117145");
+        watcher.setWatcherName("喻泽");
+        watcher.setPassword("12345678");
+        watcher.setCollegeId(9);
+        watcher.setGender("男");
+        watcher.setPhone("19986257803");
+        watcher.setEmail("2315905519@qq.com");
+
+        list.add(watcher);
+
+        Watcher watcher1 = new Watcher();
+
+        watcher1.setWatcherName("2018117143");
+        watcher1.setWatcherName("喻泽");
+        watcher1.setPassword("12345678");
+        watcher1.setCollegeId(9);
+        watcher1.setGender("男");
+        watcher1.setPhone("19986257803");
+        watcher1.setEmail("2315905519@qq.com");
+
+        list.add(watcher1);
+
+        watcherMapper.insertBatchWatcherByExcel(list);
+
     }
     
 

@@ -23,7 +23,7 @@
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="profile.html">${watcher.watcherName }(${watcher.watcherNumber })</a>
+                    <a href="watcher/profile">${watcher.watcherName }(${watcher.watcherNumber })</a>
                     <a href="logout">退出</a>
                 </div>
             </div>

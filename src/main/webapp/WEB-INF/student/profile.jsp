@@ -1,9 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="zh-CN">
-<%@include file="/WEB-INF/common/studentHeader.jsp"%>
+<%@include file="/WEB-INF/common/student/studentHeader.jsp"%>
             <div class="main-right right">
                 <!--个人信息 start-->
-                <div class="col-lg-8 col-lg-offset-2">
+                <div class="credit">
                     <h4>个人信息</h4>
                     <form class="form-horizontal" action="student/updateStuNullInfo.html" method="post">
                         <input type="hidden" value="${student.id }" name="id">
@@ -67,7 +67,7 @@
         </div>
     </div>
 </main>
-<%@include file="/WEB-INF/common/studentFooter.jsp"%>
+<%@include file="/WEB-INF/common/student/studentFooter.jsp"%>
 </body>
 </html>
 <script type="text/javascript">

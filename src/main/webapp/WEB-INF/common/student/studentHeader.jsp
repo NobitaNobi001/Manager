@@ -10,13 +10,12 @@
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
-    <link rel="icon" type="image/png" href="static/images/logo.png">
-    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="static/css/student.css"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/layui/css/layui.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.6.2/viewer.css">
-    <link rel="stylesheet" type="text/css" href="static/css/creditDeclare.css"/>
+    <link rel="icon" type="image/png" href="static/images/logo.png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="static/css/student.css"/>
 
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -30,7 +29,7 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
+                    <div class="logo"><img src="../../../static/images/logo.png" height="70"/></div>
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">

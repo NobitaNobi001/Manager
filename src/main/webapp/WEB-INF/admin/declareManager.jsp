@@ -11,9 +11,9 @@
     <title>湖北文理学院创新实践学分管理系统</title>
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="icon" type="image/png" href="static/images/logo.png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
 
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
@@ -62,6 +62,11 @@
                         <div class="col-sm-4">
                             <select class="form-control" name="college">
                                 <option value="-1">不限</option>
+                                <c:forEach items="${applicationScope.colleges }" var="college">
+                                    <c:if test="${college.id ne 19}">
+                                        <option value="${college.id }">${college.name }</option>
+                                    </c:if>
+                                </c:forEach>
                             </select>
                         </div>
                     </div>
@@ -115,51 +120,51 @@
             <div class="main-right right">
                 <!-- 学分列表 start -->
                 <div class="credit">
-                    <h4>学分申报管理</h4>
-                    <form class="form-inline" action="admin/toQuery/studentRecord.html" method="post">
-                        <div class="form-group">
-                            <select name="college" class="form-control">
-                                <option value="-1">请选择学院</option>
-                                <c:forEach items="${applicationScope.colleges }" var="college">
-                                    <c:if test="${college.id ne 19}">
-                                        <option value="${college.id }">${college.name }</option>
-                                    </c:if>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select name="major" class="form-control">
-                                <option value="-1">请选择专业</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select name="stuClass" class="form-control">
-                                <option value="-1">请选择班级</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-default btn-info">查询</button>
-                        </div>
-                    </form>
+                    <h4>申报管理</h4>
                     <div class="action">
+                        <form class="form-inline" action="admin/toQuery/studentRecord.html" method="post" style="float: left;">
+                            <div class="form-group">
+                                <select name="college" class="form-control">
+                                    <option value="-1">请选择学院</option>
+                                    <c:forEach items="${applicationScope.colleges }" var="college">
+                                        <c:if test="${college.id ne 19}">
+                                            <option value="${college.id }">${college.name }</option>
+                                        </c:if>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="major" class="form-control">
+                                    <option value="-1">请选择专业</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="stuClass" class="form-control">
+                                    <option value="-1">请选择班级</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default btn-info">查询</button>
+                            </div>
+                        </form>
                         <div>
                             <button class="btn btn-danger" id="exportData"><i class="glyphicon glyphicon-download-alt">导出申报数据</i>
                             </button>
                         </div>
                     </div>
-                    <table class="table table-hover" border="0" cellspacing="0" cellpadding="0">
+                    <table class="table" border="0" cellspacing="0" cellpadding="0">
                         <thead>
                         <tr>
-                            <td>序号</td>
-                            <td>学生学号</td>
-                            <td>学生姓名</td>
-                            <td>申报类别</td>
-                            <td>申报名称</td>
-                            <td>申报日期</td>
-                            <td>申报材料</td>
-                            <td>申报学分</td>
-                            <td>审核状态</td>
-                            <td>审核学分</td>
+                            <th>序号</th>
+                            <th>学生学号</th>
+                            <th>学生姓名</td>
+                            <th>申报类别</th>
+                            <th>申报名称</th>
+                            <th>申报日期</th>
+                            <th>申报材料</th>
+                            <th>申报学分</th>
+                            <th>审核状态</th>
+                            <th>审核学分</th>
                         </tr>
                         </thead>
                         <tbody>

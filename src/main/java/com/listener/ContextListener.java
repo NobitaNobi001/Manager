@@ -10,6 +10,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.List;
 
+/**
+ * 监听容器启动
+ */
 public class ContextListener implements ServletContextListener {
 
 

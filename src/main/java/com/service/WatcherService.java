@@ -105,6 +105,7 @@ public class WatcherService {
 
     /**
      * 根据督察工号更新密码
+     *
      * @param number
      * @param password
      */
@@ -132,6 +133,21 @@ public class WatcherService {
      */
     public void insertWatcher(Watcher watcher) {
         watcherMapper.insertSelective(watcher);
+    }
+
+    /**
+     * 通过excel批量导入督察
+     * @param watchers
+     */
+    public void insertBatchWatcherByExcel(List<Watcher> watchers) {
+
+        System.out.println(watchers);
+
+        try {
+            watcherMapper.insertBatchWatcherByExcel(watchers);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -169,8 +185,9 @@ public class WatcherService {
 
     /**
      * 督查学院映射到学院学生表，模糊查询
+     *
      * @param collegeId 学院id
-     * @param keyword 关键词
+     * @param keyword   关键词
      * @return
      */
     public List<Student> selectStuBycondition(int collegeId, String keyword) {
@@ -183,8 +200,9 @@ public class WatcherService {
 
     /**
      * 根据督察工号检查是否绑定此邮箱
+     *
      * @param number 工号
-     * @param email 邮箱
+     * @param email  邮箱
      * @return
      */
     public boolean checkEmailByWatcher(Integer number, String email) {

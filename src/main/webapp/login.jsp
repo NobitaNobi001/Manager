@@ -41,7 +41,7 @@
                        <span class="input-group-addon">
                      <span class="glyphicon glyphicon-user"></span>
                     </span>
-                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" autofocus value="2018139047"/>
+                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" autofocus/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -49,7 +49,7 @@
                           <span class="input-group-addon">
                     <span class="glyphicon glyphicon-eye-open" id="eye"></span>
                     </span>
-                        <input type="password" name="password" class="form-control" placeholder="登录密码" value="12345678"/>
+                        <input type="password" name="password" class="form-control" placeholder="登录密码"/>
                     </div>
                 </div>
                 <div class="type">
@@ -61,11 +61,11 @@
                 <div>
                     <button type="submit">登录</button>
                 </div>
-                <div class="forget"><a href="forget/forgetIndex">忘记密码？</a></div>
+                <div class="forget form-group"><a href="forget/forgetIndex">忘记密码？</a></div>
             </form>
         </div>
         <div class="foot">
-            <div class="copyright">Copyright 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+            <div class="copyright" style="box-sizing: content-box;">Copyright 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
                 版权所有
             </div>
         </div>
@@ -91,9 +91,6 @@
                         notEmpty: {
                             message: '登录账号不能为空'
                         },
-                        digits: {
-                            message: '账号只能填写数字'
-                        },
                         regexp: {
                             regexp: /^\d{4,11}$/,
                             message: '账号格式错误'
@@ -106,17 +103,15 @@
                             message: '登录密码不能为空'
                         },
                         stringLength: {
-                            min: 6,
+                            min: 5,
                             max: 18,
-                            message: '密码必须在6~18位之间'
+                            message: '密码必须在5~18位之间'
                         }
                     }
                 }
             }
         });
     });
-
-
 
     //显示密码
     $("#eye").click(function () {

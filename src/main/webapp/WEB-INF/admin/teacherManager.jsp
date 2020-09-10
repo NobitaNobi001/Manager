@@ -18,10 +18,12 @@
     <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="icon" href="static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="static/layui/css/layui.css" media="all">
 
     <%--引入jQuery外部文件--%>
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="static/layui/layui.js"></script>
 </head>
 <body>
 
@@ -255,10 +257,10 @@
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tbody></tbody>
+                        <tbody style="vertical-align: middle;"></tbody>
                     </table>
                 </div>
-                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 600px">
+                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 800px">
                     <%--分页条信息--%>
                     <div id="page_nav_area" style="float:left;"></div>
                     <%--分页文字信息--%>
@@ -288,5 +290,37 @@
 <script type="text/javascript">
     $(function () {
         to_page(1);
+    });
+
+    layui.use('upload', function () {
+        var upload = layui.upload;
+        var uploadInst = upload.render({
+            elem: "#batch_add_teacher_btn", // 绑定元素
+            url: "teacher/insertTeacherByExcel",// 上传接口
+            accept: "file",// 普通文件
+            acceptMime: "application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // 接收的mime类型
+            auto: true,// 自动上传
+            multiple: false,// 取消多文件上传
+            field: "ExcelFile",// 设置字段名
+            exts: 'xls|xlsx',// 允许上传的文件后缀
+            before: function () {
+                layer.msg('上传中', {icon: 16, shade: 0.01}); // 上传loading
+            },
+            done: function (res, index, upload) {// 上传完毕回调 res服务器响应信息 index当前文件的索引 upload重新上传的方法
+                layer.close(layer.index); // 关闭loading
+                if (res.code == 100) {
+                    layer.msg(res.extend.message, {icon: 1, time: 3000}, function () {
+                        // 重新加载页面
+                        location.reload();
+                    });
+                } else {
+                    layer.msg(res.extend.message, {icon: 2, time: 4000});
+                }
+            },
+            error: function (index, upload) {// 请求异常回调
+                layer.msg("网络请求超时,请稍后再试或联系管理员");
+            }
+        });
+
     });
 </script>

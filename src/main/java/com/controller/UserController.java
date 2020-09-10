@@ -39,14 +39,14 @@ public class UserController {
         //3、将用户名 密码 用户类型 封装为一个Token对象
         LoginToken token = new LoginToken(number, password, loginType);
 
-            //4、进行登录认证
-            subject.login(token);
+        //4、进行登录认证
+        subject.login(token);
 
-            //6.将用户类型转换为小写 以便进行页面跳转
-            String page = loginType.toLowerCase();
+        //6.将用户类型转换为小写 以便进行页面跳转
+        String page = loginType.toLowerCase();
 
-            //实现页面的重定向
-            return "redirect:/" + page + "/" + page.substring(0, 3) + "Index";
+        //实现页面的重定向
+        return "redirect:/" + page + "/" + page.substring(0, 3) + "Index";
 
     }
 }

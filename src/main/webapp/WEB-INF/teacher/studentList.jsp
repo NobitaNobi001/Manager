@@ -175,7 +175,7 @@
                     <c:choose>
                         <c:when test="${empty info.list}">
                             <nav aria-label="Page navigation">
-                                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 600px">
+                                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 800px">
                                 </div>
                             </nav>
                         </c:when>
@@ -320,6 +320,5 @@
             }
         });
     });
-    $("#btn_stuExport").click(function () {
-    });
+
 </script>

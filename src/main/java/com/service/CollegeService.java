@@ -24,4 +24,21 @@ public class CollegeService {
         return collegeMapper.selectByExample(null);
     }
 
+    /**
+     * 根据学院id获取学院名称
+     * @param collegeId
+     * @return
+     */
+    public String getNameByCollegeId(Integer collegeId){
+        return collegeMapper.selectNameByCollegeId(collegeId);
+    }
+
+    /**
+     * 根据学院名获取学院id
+     * @param collegeName
+     * @return
+     */
+    public Integer getCollegeIdByName(String collegeName){
+        return collegeMapper.selectCollegeIdByName(collegeName);
+    }
 }

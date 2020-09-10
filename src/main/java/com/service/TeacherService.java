@@ -152,7 +152,7 @@ public class TeacherService {
     public void insertTeacherByExcel(List<Teacher> teachers) {
         //完善批量插入的方法
         try {
-            insertTeacherByExcel(teachers);
+            teacherMapper.insertBatchTeacherByExcel(teachers);
         } catch (Exception e) {
             e.printStackTrace();
         }

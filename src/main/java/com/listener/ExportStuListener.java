@@ -5,6 +5,7 @@ import com.alibaba.excel.event.AnalysisEventListener;
 import com.bean.StuExcel;
 import com.bean.Student;
 import com.service.AdminService;
+import com.service.CollegeService;
 import com.utils.CollegeNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,6 +23,9 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private CollegeService collegeService;
+
     List<Student> students = new ArrayList<>();
 
     // 要读每一行内容，都要调用一次该对象的invoke，在invoke中可以操作要读取的数据
@@ -30,14 +34,13 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
         Student student = new Student();
         student.setStuNumber(stuExcel.getStuNumber());
         student.setStuName(stuExcel.getStuName());
-        student.setCollegeId(CollegeNameUtil.getCollegeId(stuExcel.getCollegeName()));
+        student.setCollegeId(collegeService.getCollegeIdByName(stuExcel.getCollegeName()));
         student.setMajor(stuExcel.getMajor());
         student.setClassName(stuExcel.getClassName());
         student.setPassword(stuExcel.getStuNumber().toString().substring(4));
         students.add(student);
-        if (students.size() % 5 == 0) {// 每5条数据写入一次数据库
+        if (students.size() % 250 == 0) {// 每5条数据写入一次数据库
             saveData();
-            students.clear();
         }
     }
 
@@ -46,11 +49,13 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
     public void doAfterAllAnalysed(AnalysisContext context) {
         // 确保最后遗留的数据也存储到数据库
         saveData();
+
     }
 
     private void saveData() {
         System.out.println(students);
         adminService.insertStuByExcel(students);
-        System.out.println("正在读");
+        students.clear();
+        System.out.println("over");
     }
 }

@@ -18,7 +18,7 @@
 
     <%--修改弹出框的默认宽度--%>
     <style type="text/css">
-        .popover{
+        .popover {
             width: auto;
             height: auto;
             max-height: 800px;
@@ -28,6 +28,70 @@
 
 </head>
 <body>
+<!--导出申报记录模态框-->
+<div class="modal fade" id="exportStuRecord" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">导出申报记录</h4>
+            </div>
+            <form class="form-horizontal" action="admin/exportStuRecord" method="post">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">学院</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="college" id="collegeName">
+                                <c:choose>
+                                    <c:when test="${watcher.collegeId eq 19}">
+                                        <option value="-1">不限</option>
+                                        <c:forEach items="${applicationScope.colleges }" var="college">
+                                            <c:if test="${college.id ne 19}">
+                                                <option value="${college.id }">${college.name }</option>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <option value="${watcher.collegeId }">${watcher.college.name }</option>
+                                    </c:otherwise>
+                                </c:choose>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">专业</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="major" id="major"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">班级</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="stuClass" id="className">
+                                <option value="-1">不限</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审核状态</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" name="auditState">
+                                <option value="-1">不限</option>
+                                <option value="1">已审核</option>
+                                <option value="2">未审核</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" id="export">导出</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <header>
     <div id="header">
         <div class="header">
@@ -44,7 +108,7 @@
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">督查中心</a></li>
-                    <li><a href="watcher/teaIndex">首页</a></li>
+                    <li><a href="watcher/watIndex">首页</a></li>
                     <li><a href="watcher/teaProfile">个人信息</a></li>
                 </ul>
             </div>
@@ -86,7 +150,7 @@
                             </select>
                         </div>
                         <div>
-                            <a href="javascript:;" class="btn btn-danger">导出数据</a>
+                            <button class="btn btn-danger" id="export_declare_data">导出数据</button>
                         </div>
                     </div>
                     <table class="table" border="0" cellspacing="0" cellpadding="0" id="stuDeclare">
@@ -130,6 +194,7 @@
 </html>
 <%--引入构建分页信息和页码控制的js文件--%>
 <script type="text/javascript" src="static/js/common/tableInfo.js"></script>
+<script type="text/javascript" src="static/js/common/prompt.js"></script>
 <script type="text/javascript" src="static/js/watcher/teacherAudit.js"></script>
 <script type="text/javascript">
     $(function () {

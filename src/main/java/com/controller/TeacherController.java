@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import com.listener.ExportTeacherListener;
 import com.service.TeacherService;
 import com.utils.CollegeNameUtil;
+import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -120,7 +121,7 @@ public class TeacherController {
      */
     @PutMapping(value = "/updateInfo/{id}")
     @ResponseBody
-    public Msg updateInfo(Teacher teacher,HttpServletRequest request) {
+    public Msg updateInfo(Teacher teacher, HttpServletRequest request) {
 
         Teacher teacher1 = (Teacher) request.getSession().getAttribute("teacher");
 
@@ -133,7 +134,7 @@ public class TeacherController {
 
             Teacher teacher2 = teacherService.selectTeacherByTeaNumber(teacher1.getTeaNumber());
 
-            request.getSession().setAttribute("teacher",teacher2);
+            request.getSession().setAttribute("teacher", teacher2);
 
             return Msg.success();
         }
@@ -293,17 +294,38 @@ public class TeacherController {
         return Msg.success().add("pageInfo", pages);
     }
 
-    @PutMapping("/insertTeacherByExcel")
+    @RequestMapping("/insertTeacherByExcel")
     @ResponseBody
-    public Msg insertBatchTeacher(@RequestParam("ExcelFile") MultipartFile uploadExcel) throws IOException {
-        // 工作簿
-        ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), TeacherExcel.class, teacherListener);
-        // 工作表
-        ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
-        // 读
-        sheet.doRead();
+    public Msg insertBatchTeacher(@RequestParam("ExcelFile") MultipartFile uploadExcel) {
 
-        return Msg.success().add("msg","导入成功");
+        // 判断是否为null文件
+        if (uploadExcel.getSize() == 0) {
+            return Msg.fail().add("message", "请选择文件");
+        }
+        // 判断文件类型是否为xls
+        int begin = uploadExcel.getOriginalFilename().indexOf(".");
+        int last = uploadExcel.getOriginalFilename().length();
+        //获得文件后缀名
+        String suffix = uploadExcel.getOriginalFilename().substring(begin, last);
+        if (!suffix.endsWith(".xls")) {
+            return Msg.fail().add("message", "请上传xls文件,且根据模板导入");
+        }
+
+        try {
+            // 工作簿
+            ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), TeacherExcel.class, teacherListener);
+            // 工作表
+            ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
+
+            System.out.println(sheet.toString());
+            // 读
+            sheet.doRead();
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return Msg.success().add("message", "导入成功");
     }
 
 }

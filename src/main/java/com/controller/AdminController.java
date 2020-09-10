@@ -1,6 +1,6 @@
 package com.controller;
 
-
+import com.exception.ExportExcelStuException;
 import com.listener.ExportStuListener;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
@@ -13,6 +13,7 @@ import com.service.*;
 import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -88,7 +89,7 @@ public class AdminController {
      */
     @PutMapping(value = "/updateInfo/{id}")
     @ResponseBody
-    public Msg updateInfo(Admin admin,HttpServletRequest request) {
+    public Msg updateInfo(Admin admin, HttpServletRequest request) {
 
         Admin admin1 = (Admin) request.getSession().getAttribute("admin");
 
@@ -101,7 +102,7 @@ public class AdminController {
 
             Admin admin2 = adminService.selectAdminByAdminNumber(admin1.getAdminNumber());
 
-            request.getSession().setAttribute("admin",admin2);
+            request.getSession().setAttribute("admin", admin2);
 
             return Msg.success();
         }
@@ -202,7 +203,6 @@ public class AdminController {
     }
 
 
-
     /**
      * @Description: 删除学生信息
      * @return:
@@ -210,6 +210,7 @@ public class AdminController {
     @RequestMapping(value = "/deleteStu/{StuNumbers}", method = RequestMethod.DELETE)
     @ResponseBody
     public String deleteStu(@PathVariable("StuNumbers") String StuNumbers) {
+        System.out.println(StuNumbers);
         // 判断是批量删除还是单个删除
         if (StuNumbers.contains("-")) {//批量删除
             String[] stuNumber_arr = StuNumbers.split("-");
@@ -255,7 +256,7 @@ public class AdminController {
      * @return:
      */
     @RequestMapping("/insertStuByForm")
-    public String insertStuByForm( Student student) {
+    public String insertStuByForm(Student student) {
         // 获取学号
         Integer stuNumber = student.getStuNumber();
         // 截取学号的后六位生成密码
@@ -273,9 +274,9 @@ public class AdminController {
      */
     @RequestMapping("/insertStuByExcel")
     @ResponseBody
-    public String insertStuByExcel(@RequestParam("ExcelFile") MultipartFile uploadExcel){
+    public String insertStuByExcel(@RequestParam("ExcelFile") MultipartFile uploadExcel) {
         // 判断是否为null文件
-        if(uploadExcel.getSize()==0){
+        if (uploadExcel.getSize() == 0) {
             return JsonUtil.getJson(Msg.fail().add("message", "请选择文件"));
         }
         // 判断文件类型是否为xls
@@ -295,8 +296,17 @@ public class AdminController {
             sheet.doRead();
             return JsonUtil.getJson(Msg.success().add("message", "导入成功"));
         } catch (Exception e) {
-            throw  new RuntimeException("导入失败,请查看要导入是学生是否已存在或导出模板错误");
+            e.printStackTrace();
+            int firstIndex = e.getMessage().indexOf("Duplicate entry");
+            int endIndex = e.getMessage().indexOf("for key");
+            String stuNumberIsUsed = e.getMessage().substring(firstIndex + "Duplicate entry".length(), endIndex);
+            if (e instanceof DuplicateKeyException) {
+                throw new ExportExcelStuException("导入失败,Excel中学生学号" + stuNumberIsUsed + "已被使用");
+            }
+
         }
+
+        return null;
     }
 
     /**

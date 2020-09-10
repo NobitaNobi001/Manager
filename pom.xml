@@ -86,9 +86,9 @@
 
         <!--导入c3p0数据源-->
         <dependency>
-            <groupId>c3p0</groupId>
-            <artifactId>c3p0</artifactId>
-            <version>0.9.1</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.10</version>
         </dependency>
 
         <!--导入mysql驱动-->

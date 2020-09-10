@@ -12,10 +12,10 @@
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
-    <link rel="icon" type="image/png" href="static/images/logo.png">
-    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
+    <link rel="icon" type="image/png" href="static/images/logo.png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="static/layui/css/layui.css" media="all">
 
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
@@ -63,7 +63,7 @@
                         <label class="col-sm-2 control-label" for="addStuCollege">学院</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="collegeId" id="addStuCollege">
-                                <option value="-1">请选择学院</option>
+                                <option value="-1">请选择院系</option>
                                 <c:forEach items="${applicationScope.colleges }" var="college">
                                     <option value="${college.id }">${college.name }</option>
                                 </c:forEach>
@@ -229,55 +229,59 @@
             <div class="main-right right">
                 <!-- 学分列表 start -->
                 <div class="student">
-                    <h4>学生列表</h4>
-                    <form class="form-inline pull-left" action="admin/get/student.html" method="post" id="checkForm">
-                        <div class="form-group">
-                            <select name="college" class="form-control">
-                                <option value="-1">请选择学院</option>
-                                <c:forEach items="${applicationScope.colleges }" var="college">
-                                    <option value="${college.id }">${college.name }</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select name="major" class="form-control">
-                                <option value="-1">请选择专业</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select name="stuClass" class="form-control">
-                                <option value="-1">请选择班级</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="keyword" placeholder="请输入学号/姓名"/>
-                                <span class="input-group-btn">
+                    <h4>学生管理</h4>
+                    <div class="action">
+                        <form class="form-inline pull-left" action="admin/get/student.html" method="post"
+                              id="checkForm">
+                            <div class="form-group">
+                                <select name="college">
+                                    <option value="-1">请选择学院</option>
+                                    <c:forEach items="${applicationScope.colleges }" var="college">
+                                        <option value="${college.id }">${college.name }</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="major">
+                                    <option value="-1">请选择专业</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select name="stuClass">
+                                    <option value="-1">请选择班级</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="keyword" placeholder="请输入学号/姓名"/>
+                                    <span class="input-group-btn">
                                <button type="submit" class="btn btn-warning"><i
                                        class="glyphicon glyphicon-search"></i>查询</button>
                                 </span>
+                                </div>
                             </div>
+                        </form>
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary" id="stu_add_modal_btn"><i
+                                    class="glyphicon glyphicon-plus"></i>新增
+                            </button>
+                            <button type="button" class="btn btn-danger" style="margin-left:10px;"
+                                    id="deleteStu__All_Btn">
+                                <i class="glyphicon glyphicon-trash"></i>删除
+                            </button>
+                            <button type="button" class="btn btn-success" style="margin-left:10px;" id="importExcel"><i
+                                    class="glyphicon glyphicon-upload"></i>导入学生excel
+                            </button>
                         </div>
-                    </form>
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-primary" id="stu_add_modal_btn"><i
-                                class="glyphicon glyphicon-plus"></i>新增
-                        </button>
-                        <button type="button" class="btn btn-danger" style="margin-left:10px;" id="deleteStu__All_Btn">
-                            <i class="glyphicon glyphicon-trash"></i>删除
-                        </button>
-                        <button type="button" class="btn btn-success" style="margin-left:10px;" id="importExcel"><i
-                                class="glyphicon glyphicon-upload"></i>导入学生excel
-                        </button>
                     </div>
-                    <table class="table table-hover" border="0" cellspacing="0" cellpadding="0">
+                    <table class="table" border="0" cellspacing="0" cellpadding="0">
                         <thead>
                         <tr>
-                            <th>#</th>
                             <th><input type='checkbox' id="check_All"/></th>
+                            <th>序号</th>
                             <th>学号</th>
                             <th>姓名</th>
-                            <th>学院</th>
+                            <th>院系</th>
                             <th>专业</th>
                             <th>班级</th>
                             <th>创新总学分</th>
@@ -293,10 +297,10 @@
                         <c:if test="${!empty requestScope.pageInfo.list }">
                             <c:forEach items="${requestScope.pageInfo.list }" var="student" varStatus="index">
                                 <tr>
-                                    <td>${index.count+(pageInfo.pageNum-1)*5 }</td>
                                     <td>
                                         <input type="checkbox" class="check_item">
                                     </td>
+                                    <td>${index.count+(pageInfo.pageNum-1)*5 }</td>
                                     <td>${student.stuNumber }</td>
                                     <td>${student.stuName }</td>
                                     <td>${student.college.name }</td>
@@ -304,12 +308,8 @@
                                     <td>${student.className }</td>
                                     <td>${student.sumCredit }</td>
                                     <td>
-                                        <button class="btn btn-primary btn-xs edit_btn" edit_id="${student.id }"><i
-                                                class=" glyphicon glyphicon-pencil"></i>修改
-                                        </button>
-                                        <button class="btn btn-danger btn-xs delete_btn"><i
-                                                class=" glyphicon glyphicon-remove"></i>删除
-                                        </button>
+                                        <a class="btn btn-primary btn-2x edit_btn" edit_id="${student.id }">编辑</a>
+                                        <a class="btn btn-danger btn-2x delete_btn" style="margin-left: 5px;">删除</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -522,13 +522,13 @@
                 },
                 done: function (res, index, upload) {// 上传完毕回调 res服务器响应信息 index当前文件的索引 upload重新上传的方法
                     layer.close(layer.index); // 关闭loading
-                    if (res.code==100) {
-                        layer.msg(res.extend.message,{icon:1,time: 3000},function () {
+                    if (res.code == 100) {
+                        layer.msg(res.extend.message, {icon: 1, time: 3000}, function () {
                             // 重新加载页面
                             location.reload();
                         });
-                    }else{
-                        layer.msg(res.extend.message,{icon:2,time: 4000});
+                    } else {
+                        layer.msg(res.extend.message, {icon: 2, time: 4000});
                     }
                 },
                 error: function (index, upload) {// 请求异常回调
@@ -720,7 +720,7 @@
         // 学生学号
         var stuNumbers = $(this).parents("tr").find("td:eq(2)").text();
         // confirm
-        layer.confirm("确认删除【" + stuName + "】吗?一经删除有关学生信息将永远销毁", {
+        layer.confirm("确认删除[" + stuName + "]吗?一经删除相关学生信息将无法恢复", {
             btn: ['确认', '再想想'],
             icon: 0,
             skin: 'layui-layer-molv'
@@ -753,7 +753,7 @@
         //去除末尾多余的符号
         stuNames = stuNames.substring(0, stuNames.length - 1);
         stuNumbers = stuNumbers.substring(0, stuNumbers.length - 1);
-        layer.confirm("确认删除【" + stuNames + "】吗?一经删除有关学生信息将不可回撤", {
+        layer.confirm("确认删除[" + stuNames + "]吗?一经删除相关学生信息将无法恢复", {
             btn: ['确认', '再想想'],
             icon: 0,
             skin: 'layui-layer-molv',
