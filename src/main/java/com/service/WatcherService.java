@@ -141,8 +141,6 @@ public class WatcherService {
      */
     public void insertBatchWatcherByExcel(List<Watcher> watchers) {
 
-        System.out.println(watchers);
-
         try {
             watcherMapper.insertBatchWatcherByExcel(watchers);
         } catch (Exception e) {

@@ -95,6 +95,16 @@ public class AdminController {
 
         Admin admin1 = (Admin) request.getSession().getAttribute("admin");
 
+        if("".equals(admin.getEmail())||"".equals(admin.getPhone())||"".equals(admin.getGender())){
+            adminService.updateAdmin(admin);
+
+            Admin admin2 = adminService.selectAdminByAdminNumber(admin1.getAdminNumber());
+
+            request.getSession().setAttribute("admin", admin2);
+
+            return Msg.success();
+        }
+
         //如果要修改的电话号码和邮箱都是相同的
         if (admin1.getEmail().equals(admin.getEmail()) && admin1.getPhone().equals(admin.getPhone()) && admin.getGender().equals(admin.getGender())) {
             return Msg.fail().add("msg", "要修改的信息和原信息相同!");
@@ -311,7 +321,6 @@ public class AdminController {
             }
 
         }
-
         return null;
     }
 

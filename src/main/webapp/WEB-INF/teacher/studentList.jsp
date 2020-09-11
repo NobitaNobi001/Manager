@@ -205,27 +205,36 @@
                                             </li>
                                         </c:if>
 
-                                        <c:if test="${info.pages<=5}">
-                                            <c:forEach begin="1" end="${info.pages}" var="i">
-                                                <c:if test="${info.pageNum==i}">
-                                                    <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
-                                                </c:if>
-                                                <c:if test="${info.pageNum!=i}">
-                                                    <li><a href="teacher/stuList?page=${i}">${i}</a></li>
-                                                </c:if>
-                                            </c:forEach>
-                                        </c:if>
+                                        <%--<c:if test="${info.pages<=5}">--%>
+                                            <%--<c:forEach begin="1" end="${info.pages}" var="i">--%>
+                                                <%--<c:if test="${info.pageNum==i}">--%>
+                                                    <%--<li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>--%>
+                                                <%--</c:if>--%>
+                                                <%--<c:if test="${info.pageNum!=i}">--%>
+                                                    <%--<li><a href="teacher/stuList?page=${i}">${i}</a></li>--%>
+                                                <%--</c:if>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</c:if>--%>
 
-                                        <c:if test="${info.pages>5}">
-                                            <c:forEach begin="1" end="5" var="i">
-                                                <c:if test="${info.pageNum==i}">
-                                                    <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
-                                                </c:if>
-                                                <c:if test="${info.pageNum!=i}">
-                                                    <li><a href="teacher/stuList?page=${i}">${i}</a></li>
-                                                </c:if>
-                                            </c:forEach>
-                                        </c:if>
+                                        <c:forEach items="${info.navigatepageNums }" var="i">
+                                            <c:if test="${info.pageNum==i}">
+                                                <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                            </c:if>
+                                            <c:if test="${info.pageNum!=i}">
+                                                <li><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                            </c:if>
+                                        </c:forEach>
+
+                                        <%--<c:if test="${info.pages>5}">--%>
+                                            <%--<c:forEach begin="1" end="5" var="i">--%>
+                                                <%--<c:if test="${info.pageNum==i}">--%>
+                                                    <%--<li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>--%>
+                                                <%--</c:if>--%>
+                                                <%--<c:if test="${info.pageNum!=i}">--%>
+                                                    <%--<li><a href="teacher/stuList?page=${i}">${i}</a></li>--%>
+                                                <%--</c:if>--%>
+                                            <%--</c:forEach>--%>
+                                        <%--</c:if>--%>
 
 
                                         <c:if test="${info.pageNum==info.pages}">

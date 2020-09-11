@@ -130,8 +130,20 @@ public class TeacherController {
 
         Teacher teacher1 = (Teacher) request.getSession().getAttribute("teacher");
 
+        if("".equals(teacher.getEmail())||"".equals(teacher.getPhone())||"".equals(teacher.getGender())){
+
+            teacherService.updateTeacher(teacher);
+
+            Teacher teacher2 = teacherService.selectTeacherByTeaNumber(teacher1.getTeaNumber());
+
+            request.getSession().setAttribute("teacher", teacher2);
+
+            return Msg.success();
+
+        }
+
         //如果要修改的电话号码和邮箱都是相同的
-        if (teacher1.getEmail().equals(teacher.getEmail()) && teacher1.getPhone().equals(teacher.getPhone()) && teacher1.getGender().equals(teacher.getGender())) {
+        if (teacher.getEmail().equals(teacher1.getEmail()) && teacher.getPhone().equals(teacher1.getPhone()) && teacher.getGender().equals(teacher1.getGender())) {
             return Msg.fail().add("msg", "要修改的信息和原信息相同!");
         } else {
             //否则更新信息

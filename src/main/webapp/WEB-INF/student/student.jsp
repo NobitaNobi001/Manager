@@ -10,7 +10,8 @@
                         <div class="username">${student.stuName }</div>
                     </div>
                     <div class="department"><span>${student.college.name }</span></div>
-                    <div class="major"><span>${student.className }</span></div>
+                    <div class="major"><span>${student.major}</span></div>
+                    <div class="className"><span>${student.className }</span></div>
                 </div>
                 <!-- 学分申请 start -->
                 <div class="declare">

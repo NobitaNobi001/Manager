@@ -255,22 +255,18 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="keyword" placeholder="请输入学号/姓名"/>
                                     <span class="input-group-btn">
-                               <button type="submit" class="btn btn-warning"><i
-                                       class="glyphicon glyphicon-search"></i>查询</button>
+                               <button type="submit" class="btn btn-warning">查询</button>
                                 </span>
                                 </div>
                             </div>
                         </form>
                         <div class="pull-right">
-                            <button type="button" class="btn btn-primary" id="stu_add_modal_btn"><i
-                                    class="glyphicon glyphicon-plus"></i>新增
+                            <button type="button" class="btn btn-primary" id="stu_add_modal_btn">新增学生</button>
+                            <button type="button" class="btn btn-danger"
+                                    id="deleteStu__All_Btn">删除学生
                             </button>
-                            <button type="button" class="btn btn-danger" style="margin-left:10px;"
-                                    id="deleteStu__All_Btn">
-                                <i class="glyphicon glyphicon-trash"></i>删除
-                            </button>
-                            <button type="button" class="btn btn-success" style="margin-left:10px;" id="importExcel"><i
-                                    class="glyphicon glyphicon-upload"></i>导入学生excel
+                            <button type="button" class="btn btn-success" id="importExcel">
+                                导入学生
                             </button>
                         </div>
                     </div>
@@ -744,6 +740,7 @@
     });
     // 批量删除
     $("#deleteStu__All_Btn").click(function () {
+
         var stuNames = "";
         var stuNumbers = "";
         $.each($(".check_item:checked"), function () {
@@ -753,6 +750,10 @@
         //去除末尾多余的符号
         stuNames = stuNames.substring(0, stuNames.length - 1);
         stuNumbers = stuNumbers.substring(0, stuNumbers.length - 1);
+
+        if (stuNumbers == "") {
+            layer.alert("请选择需要删除的学生!");
+        }
         layer.confirm("确认删除[" + stuNames + "]吗?一经删除相关学生信息将无法恢复", {
             btn: ['确认', '再想想'],
             icon: 0,

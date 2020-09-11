@@ -9,28 +9,28 @@
                         <input type="hidden" value="${student.id }" name="id">
                         <div class="form-group">
                             <label class="col-lg-3 control-label">姓名</label>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <input type="text" class="form-control" value="${student.stuName }"  readonly >
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">院系</label>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <input type="text" class="form-control" value="${student.college.name }"  readonly>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">班级</label>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <input type="text" class="form-control" value="${student.className }"  readonly>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label ">性别</label>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                             <label class="radio-inline">
                                     <input type="radio" name="gender" value="男" id="male"/>男
                             </label>
@@ -42,14 +42,14 @@
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">手机号码</label>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <input type="text" name="phone" class="form-control" value="${student.phone }"  placeholder="请输入手机号码"/>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-lg-3 control-label">邮箱</label>
-                            <div class="col-lg-3">
+                            <div class="col-lg-4">
                                 <input type="text" name="email" class="form-control" value="${student.email }"  placeholder="请输入邮箱地址"/>
                             </div>
                         </div>

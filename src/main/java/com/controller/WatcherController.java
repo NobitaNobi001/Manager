@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.bean.*;
+import com.exception.ImportExcelStuException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.listener.ExportWatcherListener;
@@ -12,6 +13,7 @@ import com.service.CollegeStuService;
 import com.service.WatcherService;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -141,8 +143,6 @@ public class WatcherController {
 
         watcher.setPassword(String.valueOf(watcher.getWatcherNumber()));
 
-        System.out.println(10/0);
-
         watcherService.insertWatcher(watcher);
 
         return Msg.success();
@@ -249,12 +249,20 @@ public class WatcherController {
 
             // 读
             sheet.doRead();
+            return Msg.success().add("message", "导入成功");
         } catch (Exception e) {
+
             watcherListener.getWatchers().clear();
             e.printStackTrace();
+            int firstIndex = e.getMessage().indexOf("Duplicate entry");
+            int endIndex = e.getMessage().indexOf("for key");
+            String watcherNumberIsUsed = e.getMessage().substring(firstIndex + "Duplicate entry".length(), endIndex);
+            if (e instanceof DuplicateKeyException) {
+                throw new ImportExcelStuException("导入失败,Excel中督察学号" + watcherNumberIsUsed + "已被使用");
+            }
         }
 
-        return Msg.success().add("message", "导入成功");
+        return null;
     }
 
 }
