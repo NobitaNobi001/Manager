@@ -2,7 +2,6 @@ package com.shrio.realms;
 
 import com.bean.Student;
 import com.constant.StringConstant;
-import com.exception.LoginFailedException;
 import com.service.StudentService;
 import com.shrio.token.LoginToken;
 import org.apache.shiro.SecurityUtils;

@@ -3,7 +3,6 @@ package com.shrio.realms;
 
 import com.bean.Teacher;
 import com.constant.StringConstant;
-import com.exception.LoginFailedException;
 import com.service.TeacherService;
 import com.shrio.token.LoginToken;
 import org.apache.shiro.SecurityUtils;

@@ -3,7 +3,6 @@ package com.shrio.realms;
 import com.bean.Admin;
 
 import com.constant.StringConstant;
-import com.exception.LoginFailedException;
 import com.service.AdminService;
 import com.shrio.token.LoginToken;
 import org.apache.shiro.SecurityUtils;
@@ -13,7 +12,6 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class AdminRealm extends AuthorizingRealm {

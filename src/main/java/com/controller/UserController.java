@@ -36,6 +36,7 @@ public class UserController {
         //2、根据前台传入的值获取用户类型
         String loginType = UserTypeUtil.getUserType(type);
 
+
         //3、将用户名 密码 用户类型 封装为一个Token对象
         LoginToken token = new LoginToken(number, password, loginType);
 
