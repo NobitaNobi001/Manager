@@ -28,6 +28,14 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
 
     List<Student> students = new ArrayList<>();
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
     // 要读每一行内容，都要调用一次该对象的invoke，在invoke中可以操作要读取的数据
     @Override
     public void invoke(StuExcel stuExcel, AnalysisContext context) {
@@ -49,7 +57,7 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
     public void doAfterAllAnalysed(AnalysisContext context) {
         // 确保最后遗留的数据也存储到数据库
         saveData();
-
+        students.clear();
     }
 
     private void saveData() {

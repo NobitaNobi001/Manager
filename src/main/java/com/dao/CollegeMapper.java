@@ -38,5 +38,5 @@ public interface CollegeMapper {
 
     String selectNameByCollegeId(Integer id);
 
-    int selectCollegeIdByName(String collegeName);
+    Integer selectCollegeIdByName(@Param("collegeName") String collegeName);
 }

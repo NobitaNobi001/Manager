@@ -1,5 +1,6 @@
 import com.bean.Teacher;
 import com.bean.Watcher;
+import com.dao.CollegeMapper;
 import com.dao.TeacherMapper;
 import com.dao.WatcherMapper;
 import com.listener.ContextListener;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Test {
 
@@ -104,6 +106,15 @@ public class Test {
         list.add(watcher1);
 
         watcherMapper.insertBatchWatcherByExcel(list);
+
+    }
+
+    @Autowired
+    private CollegeMapper collegeMapper;
+
+    @org.junit.Test
+    public void testCollege(){
+        System.out.println(collegeMapper.selectCollegeIdByName("计算机工程学院"));
 
     }
     

@@ -82,7 +82,7 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="static/images/logo.png" height="70"/></div>
+                    <div class="logo"><img src="static/images/logo.png" height="70" style="margin-top: 40px"/></div>
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
@@ -131,9 +131,14 @@
                                    placeholder="如:张三">
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputMajor">专业</label>
+                            <input type="text" class="form-control" id="exampleInputMajor" name="major"
+                                   placeholder="如:软件工程">
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputClass">班级</label>
                             <input type="text" class="form-control" id="exampleInputClass" name="stuClass"
-                                   placeholder="如:软工1811">
+                                   placeholder="如:1811">
                         </div>
                         <button type="submit" class="btn btn-default">查询</button>
                         <div class="action form-group"

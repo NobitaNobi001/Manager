@@ -3,8 +3,10 @@ package com.utils;
 import com.bean.Msg;
 import com.constant.StringConstant;
 
-import com.exception.LoginFailedException;
-import org.apache.shiro.authc.AuthenticationException;
+import com.exception.ImportExcelStuException;
+import com.exception.ExportStuException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,23 +20,38 @@ import java.io.IOException;
  * @date 2020/7/20
  **/
 /*
-* 这个类用来注解式声明异常处理类
-* */
+ * 这个类用来注解式声明异常处理类
+ * */
 @ControllerAdvice
 public class ExceptionResolverUtil {
 
     // 登录失败异常
-    @ExceptionHandler(value = LoginFailedException.class)
-    public ModelAndView LoginFailedExceptionException(LoginFailedException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @ExceptionHandler(value = UnknownAccountException.class)
+    public ModelAndView UnknownAccountException(UnknownAccountException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String viewName="forward:/login.jsp";
         return commonResolver(viewName, exception, request, response);
     }
 
-    @ExceptionHandler(value = AuthenticationException.class)
-    public ModelAndView AuthenticationException(LoginFailedException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @ExceptionHandler(value = IncorrectCredentialsException.class)
+    public ModelAndView IncorrectCredentialsException(IncorrectCredentialsException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String viewName="forward:/login.jsp";
         return commonResolver(viewName, exception, request, response);
     }
+
+    // 导入学生excel异常
+    @ExceptionHandler(value = ImportExcelStuException.class)
+    public ModelAndView ImportExcelStuException(ImportExcelStuException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String viewName="admin/studentManager";
+        return commonResolver(viewName, exception, request, response);
+    }
+
+    // 导出学生excel异常
+    @ExceptionHandler(value = ExportStuException.class)
+    public ModelAndView ExportExcelStuException(ExportStuException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String viewName="admin/declareManager";
+        return commonResolver(viewName, exception, request, response);
+    }
+
 
     // 通用异常
     @ExceptionHandler(value = Exception.class)

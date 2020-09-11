@@ -52,7 +52,6 @@
         <property name="maxInMemorySize" value="40960"></property>-->
     </bean>
 
-
     <!--忘记密码页面的拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>

@@ -61,4 +61,12 @@ public class ExportWatcherListener extends AnalysisEventListener<WatcherExcel> {
         watcherService.insertBatchWatcherByExcel(watchers);
         watchers.clear();
     }
+
+    public List<Watcher> getWatchers() {
+        return watchers;
+    }
+
+    public void setWatchers(List<Watcher> watchers) {
+        this.watchers = watchers;
+    }
 }

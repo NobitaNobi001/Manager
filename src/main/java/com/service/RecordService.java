@@ -100,13 +100,16 @@ public class RecordService {
      * @Description: 管理员查看学分列表，默认记录表里面时间倒序从上到下
      * @return:
      */
-    public List<Record> getAllRecordByAdmin(Integer page, Integer size) {
+    public PageInfo<Record> getAllRecordByAdmin(Integer page, Integer size) {
+        PageInfo<Record> info = null;
         PageHelper.startPage(page, size);
         RecordExample recordExample = new RecordExample();
         recordExample.setOrderByClause("date DESC");
         List<Record> records = recordMapper.selectByExample(recordExample);
-        return records;
+        info = new PageInfo<>(records);
+        return info;
     }
+
 
     /**
      * 根据学生姓名进行查询
@@ -128,20 +131,26 @@ public class RecordService {
      * @param stuClass
      * @return
      */
-    public List<Record> getAllRecordByAdminQuery(Integer page, int size, Integer collegeId, String major, Integer stuClass) {
+    public PageInfo<Record> getAllRecordByAdminQuery(Integer page, int size, Integer collegeId, String major, Integer stuClass) {
+        PageInfo<Record> pageInfo = null;
         if (collegeId != -1) {// 学院不为空
             String tableName = CollegeNameUtil.getTableName(collegeId);
             List<Integer> list = collegeStuMapper.selectStuNumber(tableName, major, stuClass);
+            if (list.isEmpty()) {
+                return null;
+            }
             RecordExample recordExample = new RecordExample();
             RecordExample.Criteria criteria = recordExample.createCriteria();
             criteria.andStuNumberIn(list);
             PageHelper.startPage(page, size);
             List<Record> records = recordMapper.selectByExample(recordExample);
-            return records;
+            pageInfo = new PageInfo<>(records);
+            return pageInfo;
         } else {// 学院为空的话默认从数据库查询
             return getAllRecordByAdmin(page, size);
         }
     }
+
 
     /**
      * 根据学院、专业、班级、审核状态来查询申报记录
@@ -153,10 +162,13 @@ public class RecordService {
      * @return
      */
     public List<Record> getAllRecordToExport(Integer collegeId, String major, Integer stuClass, String auditState) {
-        List<Record> records = new ArrayList<>();
+        List<Record> records = null;
         if (collegeId != -1 && !("-1".equals(auditState))) {// 学院不为空 审核状态不为空
             String tableName = CollegeNameUtil.getTableName(collegeId);
             List<Integer> list = collegeStuMapper.selectStuNumber(tableName, major, stuClass);
+            if (list.isEmpty()) {
+                return records;
+            }
             RecordExample recordExample = new RecordExample();
             RecordExample.Criteria criteria = recordExample.createCriteria();
             criteria.andStuNumberIn(list);
@@ -166,6 +178,9 @@ public class RecordService {
         } else if (collegeId != -1 && "-1".equals(auditState)) {// 学院不为空的话审核状态为空
             String tableName = CollegeNameUtil.getTableName(collegeId);
             List<Integer> list = collegeStuMapper.selectStuNumber(tableName, major, stuClass);
+            if (list.isEmpty()) {
+                return records;
+            }
             RecordExample recordExample = new RecordExample();
             RecordExample.Criteria criteria = recordExample.createCriteria();
             criteria.andStuNumberIn(list);
@@ -175,6 +190,7 @@ public class RecordService {
         }
         return records;
     }
+
 
     /**
      * 根据学院 专业 班级 关键字(学号、姓名)来查询学生学号
@@ -197,11 +213,15 @@ public class RecordService {
             PageHelper.startPage(pageNum, pageSize);
             String tableName = CollegeNameUtil.getTableName(collegeId);
             List<Integer> stuNumbers = collegeStuMapper.selectStuNumberByKeyword(tableName, major, stuClass, keyword);
+            if (stuNumbers.isEmpty()) {
+                return pageInfo;
+            }
             List<Student> students = studentMapper.selectStuByStuNumberList(stuNumbers);
             pageInfo = new PageInfo(students);
         }
         return pageInfo;
     }
+
 
     /**
      * update

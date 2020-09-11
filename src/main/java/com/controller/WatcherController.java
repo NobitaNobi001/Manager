@@ -250,7 +250,7 @@ public class WatcherController {
             // 读
             sheet.doRead();
         } catch (Exception e) {
-
+            watcherListener.getWatchers().clear();
             e.printStackTrace();
         }
 

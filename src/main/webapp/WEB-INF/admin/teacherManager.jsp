@@ -314,7 +314,7 @@
                         location.reload();
                     });
                 } else {
-                    layer.msg(res.extend.message, {icon: 2, time: 4000});
+                    layer.alert(res.extend.message, {icon: 2});
                 }
             },
             error: function (index, upload) {// 请求异常回调

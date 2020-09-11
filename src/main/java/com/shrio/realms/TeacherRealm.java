@@ -37,12 +37,12 @@ public class TeacherRealm extends AuthorizingRealm {
 
         //用户不存在
         if (teacher == null) {
-            throw new LoginFailedException(StringConstant.ACCOUNT_PASSWORD_ERROR);
+            throw new UnknownAccountException(StringConstant.ACCOUNT_PASSWORD_ERROR);
         }
 
         //密码错误
         if (!(teacher.getPassword().equals(String.valueOf(token.getPassword())))) {
-            throw new LoginFailedException(StringConstant.ACCOUNT_PASSWORD_ERROR);
+            throw new IncorrectCredentialsException(StringConstant.ACCOUNT_PASSWORD_ERROR);
         }
 
         //1.认证的实体信息

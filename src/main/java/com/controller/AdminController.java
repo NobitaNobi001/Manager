@@ -1,6 +1,7 @@
 package com.controller;
 
-import com.exception.ExportExcelStuException;
+import com.exception.ImportExcelStuException;
+import com.exception.ExportStuException;
 import com.listener.ExportStuListener;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
@@ -14,6 +15,7 @@ import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.BadSqlGrammarException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -115,12 +117,12 @@ public class AdminController {
      */
     @RequestMapping("/toSee/studentRecord.html")
     public String getAllStudentRecord(@RequestParam(value = "page", defaultValue = "1") Integer page, Model model, HttpServletRequest request) {
-        List<Record> allRecord = recordService.getAllRecordByAdmin(page, 5);
-        PageInfo<Record> info = new PageInfo(allRecord);
+        PageInfo<Record> info = recordService.getAllRecordByAdmin(page, 5);
         request.setAttribute("direction", "toSee");
         model.addAttribute("info", info);
         return "admin/declareManager";
     }
+
 
     /**
      * @Description: 条件查询的申报记录页面
@@ -128,8 +130,7 @@ public class AdminController {
      */
     @RequestMapping("/toQuery/studentRecord.html")
     public String getStudentRecordByFormSelect(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "college", required = false) Integer collegeId, @RequestParam(value = "major", required = false) String major, @RequestParam(value = "stuClass", required = false) Integer stuClass, Model model, HttpServletRequest request) {
-        List<Record> allRecordByadminQuery = recordService.getAllRecordByAdminQuery(page, 5, collegeId, major, stuClass);
-        PageInfo<Record> info = new PageInfo(allRecordByadminQuery);
+        PageInfo<Record> info = recordService.getAllRecordByAdminQuery(page, 5, collegeId, major, stuClass);
         request.setAttribute("direction", "toQuery");
         request.setAttribute("college", collegeId);
         request.setAttribute("major", major);
@@ -137,6 +138,7 @@ public class AdminController {
         model.addAttribute("info", info);
         return "admin/declareManager";
     }
+
 
     /**
      * @Description:默认的学生列表
@@ -169,7 +171,7 @@ public class AdminController {
         try {
             String collegeName = "";
             ExcelWriterSheetBuilder sheet = null;
-            response.setContentType("application/vnd.ms-excel");
+            response.setContentType("applicationnd.ms-excel");
             response.setCharacterEncoding("utf-8");
             String fileName = URLEncoder.encode("湖北文理学院创新学分申报表", "UTF-8");
             response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
@@ -178,7 +180,7 @@ public class AdminController {
             ExcelWriterBuilder writeWordBook = EasyExcel.write(outputStream, Record.class);
             // 获取工作表对象
             if (collegeId != -1) {
-                collegeName = CollegeNameUtil.getTableName(collegeId);
+                collegeName = CollegeNameUtil.getCollegeName(collegeId);
             }
             if (collegeName != "") {
                 sheet = writeWordBook.sheet(collegeName);
@@ -190,7 +192,10 @@ public class AdminController {
             // 写
             sheet.doWrite(records);
         } catch (Exception e) {
-            // 重置response
+            if (e instanceof BadSqlGrammarException) {
+                throw new ExportStuException("下载文件失败,导出条件有误");
+            }
+/*
             response.reset();
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
@@ -198,7 +203,7 @@ public class AdminController {
             map.put("status", "failure");
             map.put("message", "下载文件失败" + e.getMessage());
             response.getWriter().println(JsonUtil.getJson(map));
-            e.printStackTrace();
+            e.printStackTrace();*/
         }
     }
 
@@ -296,12 +301,13 @@ public class AdminController {
             sheet.doRead();
             return JsonUtil.getJson(Msg.success().add("message", "导入成功"));
         } catch (Exception e) {
+            stuListener.getStudents().clear();
             e.printStackTrace();
             int firstIndex = e.getMessage().indexOf("Duplicate entry");
             int endIndex = e.getMessage().indexOf("for key");
             String stuNumberIsUsed = e.getMessage().substring(firstIndex + "Duplicate entry".length(), endIndex);
             if (e instanceof DuplicateKeyException) {
-                throw new ExportExcelStuException("导入失败,Excel中学生学号" + stuNumberIsUsed + "已被使用");
+                throw new ImportExcelStuException("导入失败,Excel中学生学号" + stuNumberIsUsed + "已被使用");
             }
 
         }

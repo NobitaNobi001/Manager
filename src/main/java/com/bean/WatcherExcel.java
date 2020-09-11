@@ -16,7 +16,7 @@ public class WatcherExcel {
     @ExcelProperty("姓名")
     private String watcherName;
 
-    @ExcelProperty("学院")
+    @ExcelProperty("院系")
     private String collegeName;
 
     @ExcelProperty("性别")

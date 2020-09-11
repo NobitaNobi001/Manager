@@ -131,5 +131,67 @@ public class CollegeNameUtil {
         }
         return collegeId;
     }
+
+    public static String getCollegeName(int id) {
+        String collegeName="";
+        switch (id) {
+            case 1:
+                collegeName = "马克思主义学院";
+                break;
+            case 2:
+                collegeName = "政法学院";
+                break;
+            case 3:
+                collegeName = "教育学院";
+                break;
+            case 4:
+                collegeName = "体育学院";
+                break;
+            case 5:
+                collegeName = "文学与传媒学院";
+                break;
+            case 6:
+                collegeName = "外国语学院";
+                break;
+            case 7:
+                collegeName = "数学与统计学院";
+                break;
+            case 8:
+                collegeName = "物理与电子工程学院";
+                break;
+            case 9:
+                collegeName = "计算机工程学院";
+                break;
+            case 10:
+                collegeName = "汽车与交通工程学院";
+                break;
+            case 11:
+                collegeName = "机械工程学院";
+                break;
+            case 12:
+                collegeName = "土木工程与建筑学院";
+                break;
+            case 13:
+                collegeName = "食品科学技术学院化学工程学院";
+                break;
+            case 14:
+                collegeName = "医学院";
+                break;
+            case 15:
+                collegeName = "资源环境与旅游学院";
+                break;
+            case 16:
+                collegeName = "经济管理学院";
+                break;
+            case 17:
+                collegeName = "美术学院";
+                break;
+            case 18:
+                collegeName = "音乐与舞蹈学院";
+                break;
+        }
+        return collegeName;
+    }
+
 }
 

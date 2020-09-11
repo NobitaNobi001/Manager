@@ -41,7 +41,8 @@
                        <span class="input-group-addon">
                      <span class="glyphicon glyphicon-user"></span>
                     </span>
-                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" autofocus/>
+                        <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" autocomplete="off"
+                               autofocus/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -49,7 +50,8 @@
                           <span class="input-group-addon">
                     <span class="glyphicon glyphicon-eye-open" id="eye"></span>
                     </span>
-                        <input type="password" name="password" class="form-control" placeholder="登录密码"/>
+                        <input type="password" name="password" class="form-control" placeholder="登录密码"
+                               autocomplete="off"/>
                     </div>
                 </div>
                 <div class="type">
@@ -65,7 +67,8 @@
             </form>
         </div>
         <div class="foot">
-            <div class="copyright" style="box-sizing: content-box;">Copyright 2020 Hubei University of Arts and Science. All Rights Reserved. 湖北文理学院
+            <div class="copyright" style="padding-top: 230px;">Copyright 2020 Hubei University of Arts and Science. All
+                Rights Reserved. 湖北文理学院
                 版权所有
             </div>
         </div>
@@ -73,55 +76,4 @@
 </div>
 </body>
 </html>
-<script type="text/javascript">
-    $(function () {
-        $('.login-form form').bootstrapValidator({
-            // 通用提示语
-            message: 'This value is not valid',
-            // 提示字体图标
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            live: 'disabled',
-            fields: {
-                stuNumber: {
-                    validators: {
-                        notEmpty: {
-                            message: '登录账号不能为空'
-                        },
-                        regexp: {
-                            regexp: /^\d{4,11}$/,
-                            message: '账号格式错误'
-                        }
-                    }
-                },
-                password: {
-                    validators: {
-                        notEmpty: {
-                            message: '登录密码不能为空'
-                        },
-                        stringLength: {
-                            min: 5,
-                            max: 18,
-                            message: '密码必须在5~18位之间'
-                        }
-                    }
-                }
-            }
-        });
-    });
-
-    //显示密码
-    $("#eye").click(function () {
-        var flag = $(this).hasClass("glyphicon-eye-open");
-        if (flag) {
-            $("#eye").removeClass("glyphicon-eye-open").addClass("glyphicon-eye-close");
-            $("form input[name='password']").attr("type", "Text");
-        } else {
-            $("#eye").removeClass("glyphicon-eye-close").addClass("glyphicon-eye-open");
-            $("form input[name='password']").attr("type", "password");
-        }
-    });
-</script>
+<script type="text/javascript" src="static/js/login.js"></script>

@@ -25,7 +25,6 @@
 					<div class="txt">Not Found</div>
 					<div>4</div>
 				</div>
-				<div class="notice">系统提示消息：${requestScope.exception.message}</div>
 				<div class="btn">
 					<a href="/logout">返回登录页</a>
 					<a href="javascript:;" onclick="history.back();">返回上一页</a>

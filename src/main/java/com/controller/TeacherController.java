@@ -7,6 +7,7 @@ import com.bean.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.listener.ExportTeacherListener;
+import com.service.CollegeService;
 import com.service.TeacherService;
 import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
@@ -32,6 +33,10 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private CollegeService collegeService;
+
     @Autowired
     private ExportTeacherListener teacherListener;
 
@@ -321,7 +326,7 @@ public class TeacherController {
             // 读
             sheet.doRead();
         } catch (Exception e) {
-
+            teacherListener.getTeachers().clear();
             e.printStackTrace();
         }
 

@@ -64,4 +64,12 @@ public class ExportTeacherListener extends AnalysisEventListener<TeacherExcel> {
         teacherService.insertTeacherByExcel(teachers);
         teachers.clear();
     }
+
+    public List<Teacher> getTeachers() {
+        return teachers;
+    }
+
+    public void setTeachers(List<Teacher> teachers) {
+        this.teachers = teachers;
+    }
 }
