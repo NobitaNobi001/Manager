@@ -47,6 +47,7 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
         student.setClassName(stuExcel.getClassName());
         student.setPassword(stuExcel.getStuNumber().toString().substring(4));
         students.add(student);
+
         if (students.size() % 250 == 0) {// 每5条数据写入一次数据库
             saveData();
         }
@@ -56,14 +57,13 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
         // 确保最后遗留的数据也存储到数据库
-        saveData();
-        students.clear();
+        if (students.size() != 0) {
+            saveData();
+        }
     }
 
     private void saveData() {
-        System.out.println(students);
         adminService.insertStuByExcel(students);
         students.clear();
-        System.out.println("over");
     }
 }

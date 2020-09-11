@@ -64,7 +64,7 @@
                         <div class="username">${teacher.teaName }</div>
                     </div>
                     <div class="department"><span>${teacher.college.name }</span></div>
-                    <div class="major"><span>${teacher.teaPositon }</span></div>
+                    <div class="major"><span>${teacher.teaPositon==""?"无":teacher.teaPositon}</span></div>
                 </div>
             </div>
         </div>

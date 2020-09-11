@@ -58,7 +58,10 @@ public class ExportWatcherListener extends AnalysisEventListener<WatcherExcel> {
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        watcherService.insertBatchWatcherByExcel(watchers);
+        if (watchers.size() != 0) {
+            watcherService.insertBatchWatcherByExcel(watchers);
+        }
+
         watchers.clear();
     }
 

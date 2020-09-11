@@ -61,7 +61,11 @@ public class ExportTeacherListener extends AnalysisEventListener<TeacherExcel> {
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext analysisContext) {
-        teacherService.insertTeacherByExcel(teachers);
+
+        if(teachers.size()!=0){
+            teacherService.insertTeacherByExcel(teachers);
+        }
+
         teachers.clear();
     }
 

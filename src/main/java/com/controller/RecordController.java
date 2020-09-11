@@ -160,6 +160,10 @@ public class RecordController {
         //根据学号进行申报记录的查出
         List<Record> stuRecords = recordService.getAllRecords(stuNumbers);
 
+        if (stuRecords.size() == 0) {
+            return Msg.fail();
+        }
+
         //使用pageInfo包装查询后的结果
         PageInfo page = new PageInfo(stuRecords, 5);
 
