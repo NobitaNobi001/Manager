@@ -188,72 +188,44 @@
                             <center>
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination">
-                                        <li><a href="teacher/stuList?page=1">首页</a></li>
-                                        <c:if test="${info.pageNum==1}">
-                                            <li class="disabled">
-                                                <a href="javascript:void(0)" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </a>
-                                            </li>
-                                        </c:if>
+                                        <li>
+                                            <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=1">首页</a>
+                                        </li>
 
-                                        <c:if test="${info.pageNum!=1}">
+                                        <c:if test="${info.hasPreviousPage}">
                                             <li>
-                                                <a href="teacher/stuList?page=${info.pageNum-1}" aria-label="Previous">
+                                                <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.prePage}"
+                                                   aria-label="Previous">
                                                     <span aria-hidden="true">&laquo;</span>
                                                 </a>
                                             </li>
                                         </c:if>
-
-                                        <%--<c:if test="${info.pages<=5}">--%>
-                                            <%--<c:forEach begin="1" end="${info.pages}" var="i">--%>
-                                                <%--<c:if test="${info.pageNum==i}">--%>
-                                                    <%--<li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>--%>
-                                                <%--</c:if>--%>
-                                                <%--<c:if test="${info.pageNum!=i}">--%>
-                                                    <%--<li><a href="teacher/stuList?page=${i}">${i}</a></li>--%>
-                                                <%--</c:if>--%>
-                                            <%--</c:forEach>--%>
-                                        <%--</c:if>--%>
 
                                         <c:forEach items="${info.navigatepageNums }" var="i">
                                             <c:if test="${info.pageNum==i}">
-                                                <li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                                <li class="active"><a
+                                                        href="teacher/stuList?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${i}">${i}</a>
+                                                </li>
                                             </c:if>
                                             <c:if test="${info.pageNum!=i}">
-                                                <li><a href="teacher/stuList?page=${i}">${i}</a></li>
+                                                <li>
+                                                    <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${i}">${i}</a>
+                                                </li>
                                             </c:if>
                                         </c:forEach>
 
-                                        <%--<c:if test="${info.pages>5}">--%>
-                                            <%--<c:forEach begin="1" end="5" var="i">--%>
-                                                <%--<c:if test="${info.pageNum==i}">--%>
-                                                    <%--<li class="active"><a href="teacher/stuList?page=${i}">${i}</a></li>--%>
-                                                <%--</c:if>--%>
-                                                <%--<c:if test="${info.pageNum!=i}">--%>
-                                                    <%--<li><a href="teacher/stuList?page=${i}">${i}</a></li>--%>
-                                                <%--</c:if>--%>
-                                            <%--</c:forEach>--%>
-                                        <%--</c:if>--%>
-
-
-                                        <c:if test="${info.pageNum==info.pages}">
-                                            <li class="disabled">
-                                                <a href="javascript:void(0)" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </a>
-                                            </li>
-                                        </c:if>
-
-                                        <c:if test="${info.pageNum!=info.pages}">
+                                        <c:if test="${info.hasNextPage}">
                                             <li>
-                                                <a href="teacher/stuList?page=${info.pageNum+1}" aria-label="Next">
+                                                <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.nextPage}"
+                                                   aria-label="Next">
                                                     <span aria-hidden="true">&raquo;</span>
                                                 </a>
                                             </li>
                                         </c:if>
 
-                                        <li><a href="teacher/stuList?page=${info.pages}">末页</a></li>
+                                        <li>
+                                            <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.pages}">末页</a>
+                                        </li>
                                         <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
 									</span>

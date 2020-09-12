@@ -152,7 +152,6 @@
     <select id="selectStuBykeyword" resultMap="WithCreditResultMap">
         select
         <include refid="WithSumcredit_Column_List"/>
-
         FROM stu_info s
         LEFT JOIN college c1
         on s.college_id=c1.id

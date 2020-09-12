@@ -50,9 +50,7 @@ public class TeacherController {
      */
     @RequestMapping("/stuList")
     public String stuList(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
-
         Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
-
         //查询教师的学院id得到学院表名称
         String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
         List<Student> students = teacherService.selectStuByCollegeName(tableName, page, 5);
@@ -78,6 +76,7 @@ public class TeacherController {
     @RequestMapping("/queryStu")
     public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String stuName, @RequestParam("stuClass") String stuClass, @RequestParam("major") String major, Model model, HttpServletRequest request) {
 
+        System.out.println(stuNumber);
         Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
 
         String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
