@@ -19,6 +19,10 @@
             max-height: 800px;
             max-width: 800px;
         }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: middle;
+        }
     </style>
 
     <%--引入jQuery外部文件--%>

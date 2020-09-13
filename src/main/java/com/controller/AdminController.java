@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import com.service.*;
 import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
+import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -168,7 +169,8 @@ public class AdminController {
     @RequestMapping("/updateStu.html")
     public String updateStu(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, Student student) {
         adminService.updateStu(student);
-        return "redirect:/admin/get/student.html?keyword=" + keyword + "&pageNum=" + pageNum;
+        Student student1 = studentService.selectStuByPrimaryKey(student.getId());
+        return "redirect:admin/get/student.html?keyword=" + keyword + "&college=" + student1.getCollege() + "&major=" + student1.getMajor() + "&stuClass=" + student1.getClass() + "&pageNum=" + pageNum;
     }
 
 

@@ -16,6 +16,15 @@
                      column="stu_number"></association>
     </resultMap>
 
+    <resultMap id="WithCreditResultMap" type="com.bean.Student">
+        <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
+        <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
+        <result column="major" property="major" jdbcType="VARCHAR"/>
+        <result column="class_name" property="className" jdbcType="VARCHAR"/>
+        <result column="sum_credit" property="sumCredit" jdbcType="DOUBLE"></result>
+        <result column="name" property="college.name" jdbcType="VARCHAR"></result>
+    </resultMap>
+
     <resultMap id="resultMapWithCredit" type="com.bean.CollegeStu">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
@@ -115,21 +124,23 @@
     </select>
 
     <!--条件查询学生列表stuName stuNumber stuClass-->
-    <select id="selectStuByCondition" resultMap="BaseResultMap">
-        select * from ${tableName}
+    <select id="selectStuByCondition" resultMap="WithCreditResultMap">
+        select c1.stu_number,c1.stu_name,c1.major,c1.stu_class,c2.sum_credit ,c3.name from ${tableName} c1
+        LEFT JOIN credit c2 on c1.stu_number=c2.stu_number
+        join college c3 on c1.college_id=c3.id
         <bind name="_stuName" value=" '%'+stuName+'%' "/>
         <where>
             <if test="stuNumber!=null">
-                stu_number=#{stuNumber}
+                c1.stu_number=#{stuNumber}
             </if>
-            <if test="stuName!=null and stuName!=&quot;&quot;">
-                and stu_name like #{_stuName}
+            <if test="stuName!=null and stuName!=''">
+                and c1.stu_name like #{_stuName}
             </if>
-            <if test="stuClass!=null and stuClass!=&quot;&quot;">
-                and stu_class=#{stuClass}
+            <if test="stuClass!=null and stuClass!=''">
+                and c1.stu_class=#{stuClass}
             </if>
-            <if test="major!=null and major!=&quot;&quot;">
-                and major=#{major}
+            <if test="major!=null and major!=''">
+                and c1.major=#{major}
             </if>
         </where>
     </select>
@@ -156,7 +167,6 @@
                 major=#{major}
             </if>
         </where>
-
         order by stu_class asc
     </select>
 
@@ -179,11 +189,11 @@
                 major=#{major} and
             </if>
             <if test="stuClass!=null and stuClass!='' and stuClass!='-1'.toString() ">
-                stu_class=#{stuClass}
+                stu_class=#{stuClass} and
             </if>
             <if test="keyword!=null and keyword!=''">
-                or stu_number like concat ("%",#{keyword},"%") or
-                stu_name like concat ("%",#{keyword},"%")
+                (stu_number like concat ("%",#{keyword},"%") or
+                stu_name like concat ("%",#{keyword},"%"))
             </if>
         </trim>
     </select>

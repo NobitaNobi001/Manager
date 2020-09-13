@@ -16,4 +16,7 @@ public class StringConstant {
     public static final String PROJECT_INIT_COLLEGES="colleges";
     public static final String APPLY_TYPE="applySort";
 
+    public static final String MAX_VALUE="2147483647";
+
+
 }

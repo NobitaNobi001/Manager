@@ -18,6 +18,12 @@
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="static/layui/css/layui.css" media="all">
 
+    <style type="text/css">
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: middle;
+        }
+    </style>
+
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
@@ -63,9 +69,11 @@
                         <label class="col-sm-2 control-label" for="addStuCollege">学院</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="collegeId" id="addStuCollege">
-                                <option value="-1">请选择院系</option>
+                                <option value="-1">请选择学院</option>
                                 <c:forEach items="${applicationScope.colleges }" var="college">
-                                    <option value="${college.id }">${college.name }</option>
+                                    <c:if test="${college.id ne 19}">
+                                        <option value="${college.id }">${college.name }</option>
+                                    </c:if>
                                 </c:forEach>
                             </select>
                         </div>
@@ -145,7 +153,9 @@
                             <select class="form-control" name="collegeId" id="updateStuCollege">
                                 <option value="-1">请选择学院</option>
                                 <c:forEach items="${applicationScope.colleges }" var="college">
-                                    <option value="${college.id }">${college.name }</option>
+                                    <c:if test="${college.id ne 19}">
+                                        <option value="${college.id }">${college.name }</option>
+                                    </c:if>
                                 </c:forEach>
                             </select>
                         </div>
@@ -231,13 +241,14 @@
                 <div class="student">
                     <h4>学生管理</h4>
                     <div class="action">
-                        <form class="form-inline pull-left" action="admin/get/student.html" method="post"
-                              id="checkForm">
+                        <form class="form-inline pull-left" action="admin/get/student.html" method="get" id="checkForm">
                             <div class="form-group">
                                 <select name="college">
                                     <option value="-1">请选择学院</option>
                                     <c:forEach items="${applicationScope.colleges }" var="college">
-                                        <option value="${college.id }">${college.name }</option>
+                                        <c:if test="${college.id ne 19}">
+                                            <option value="${college.id }">${college.name }</option>
+                                        </c:if>
                                     </c:forEach>
                                 </select>
                             </div>
@@ -320,46 +331,48 @@
                                 </div>
                             </nav>
                         </c:when>
-                        <c:otherwise>
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li><a href="admin/get/student.html?keyword=${param.keyword }&pageNum=1">首页</a></li>
-                                <c:if test="${pageInfo.hasPreviousPage}">
+                            <c:otherwise>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
                                     <li>
-                                        <a href="admin/get/student.html?keyword=${param.keyword }&pageNum=${pageInfo.prePage }"
-                                           aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
+                                        <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=1">首页</a>
                                     </li>
-                                </c:if>
+                                    <c:if test="${pageInfo.hasPreviousPage}">
+                                        <li>
+                                            <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.prePage }"
+                                               aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+                                    </c:if>
 
-                                <c:forEach items="${pageInfo.navigatepageNums }" var="page">
+                                    <c:forEach items="${pageInfo.navigatepageNums }" var="page">
                                     <c:if test="${page==pageInfo.pageNum }">
                                         <li class="active"><a href="#">${page }</a></li>
                                     </c:if>
-                                    <c:if test="${page!=pageInfo.pageNum }">
-                                        <li>
-                                            <a href="admin/get/student.html?keyword=${param.keyword }&pageNum=${page }">${page }</a>
-                                        </li>
-                                    </c:if>
+                                        <c:if test="${page!=pageInfo.pageNum }">
+                                            <li>
+                                                <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${page }">${page }</a>
+                                            </li>
+                                        </c:if>
                                 </c:forEach>
 
-                                <c:if test="${pageInfo.hasNextPage}">
+                                    <c:if test="${pageInfo.hasNextPage}">
+                                        <li>
+                                            <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.nextPage }"
+                                               aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </c:if>
                                     <li>
-                                        <a href="admin/get/student.html?keyword=${param.keyword }&pageNum=${pageInfo.nextPage }"
-                                           aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
+                                        <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.pages }">末页</a>
                                     </li>
-                                </c:if>
-                                <li>
-                                    <a href="admin/get/student.html?keyword=${param.keyword }&pageNum=${pageInfo.pages }">末页</a>
-                                </li>
-                                <span style="font-size:15px;margin-left: 5px;line-height: 34px">
+                                    <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${pageInfo.pageNum }页，共${pageInfo.pages }页(共${pageInfo.total }条记录)
 								</span>
-                            </ul>
-                        </nav>
+                                </ul>
+                            </nav>
                     </center>
                     </c:otherwise>
                     </c:choose>
@@ -539,8 +552,6 @@
         // 表单重置
         $("#StuAddModal form")[0].reset();
         $('#StuAddModal form').data('bootstrapValidator').resetForm(true);
-        //查出学院显示在模态框的下拉列表中
-        getColleges("#StuAddModal select[name='collegeId']");
         $("#StuAddModal").modal({
             backdrop: "static"
         });
@@ -589,24 +600,6 @@
         var majorCode = $("#checkForm select[name='major']").val();
         getClass(collegeCode, majorCode, "#checkForm select[name='stuClass']", "-1");
     });
-
-    //获取学院
-    function getColleges(ele) {
-        $.ajax({
-            url: "college/getColleges",
-            type: "GET",
-            success: function (result) {
-                // 显示学院信息在下拉列表中
-                $.each(result, function (index, element) {
-                    if (element.id != 19) {
-                        $(ele).append($("<option></option>").val(element.id).text(element.name));
-                    }
-                });
-            },
-            async: false,
-            dataType: "json"
-        })
-    }
 
     // 获取专业
     function getMajor(collegeCode, ele, DefaultValue) {
@@ -672,14 +665,13 @@
         // 表单重置
         $("#StuUpdateModal form")[0].reset();
         $('#StuUpdateModal form').data('bootstrapValidator').resetForm(true);
-        //查出学院、专业、班级显示在模态框的下拉列表中
-        getColleges("#StuUpdateModal select[name='collegeId']");
         //查出学生信息显示在模态框中
         getStu($(this).attr("edit_id"));
         $("#StuUpdateModal").modal({
             backdrop: "static"
         });
     });
+
     // 点击编辑模态框中的密码输入框后面的小眼睛将password改为text
     $("#eye").click(function () {
         var flag = $(this).hasClass("glyphicon-eye-open");
@@ -740,7 +732,6 @@
     });
     // 批量删除
     $("#deleteStu__All_Btn").click(function () {
-
         var stuNames = "";
         var stuNumbers = "";
         $.each($(".check_item:checked"), function () {
@@ -752,7 +743,7 @@
         stuNumbers = stuNumbers.substring(0, stuNumbers.length - 1);
 
         if (stuNumbers == "") {
-            layer.alert("请选择需要删除的学生!");
+            layer.alert("请选择需要删除的学生!", {icon: 2});
         }
         layer.confirm("确认删除[" + stuNames + "]吗?一经删除相关学生信息将无法恢复", {
             btn: ['确认', '再想想'],

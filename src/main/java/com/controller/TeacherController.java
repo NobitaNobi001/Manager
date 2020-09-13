@@ -4,6 +4,8 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.bean.*;
+import com.constant.StringConstant;
+import com.exception.OutMaxException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.listener.ExportTeacherListener;
@@ -52,7 +54,6 @@ public class TeacherController {
     public String stuList(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
 
         Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
-
         //查询教师的学院id得到学院表名称
         String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
         List<Student> students = teacherService.selectStuByCollegeName(tableName, page, 5);
@@ -76,13 +77,23 @@ public class TeacherController {
      * @return
      */
     @RequestMapping("/queryStu")
-    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam("stuNumber") Integer stuNumber, @RequestParam("stuName") String stuName, @RequestParam("stuClass") String stuClass, @RequestParam("major") String major, Model model, HttpServletRequest request) {
+    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam("stuNumber") String stuNumber, @RequestParam("stuName") String stuName, @RequestParam("stuClass") String stuClass, @RequestParam("major") String major, Model model, HttpServletRequest request) {
+
+        System.out.println(stuNumber);
+
+        if(stuNumber.compareTo(StringConstant.MAX_VALUE)>0||stuNumber.length()>StringConstant.MAX_VALUE.length()){
+            throw new OutMaxException("超出了Integer类型的上限");
+        }
+
+        Integer stuNumber1 = Integer.valueOf(stuNumber);
 
         Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
 
+        System.out.println(teacher);
+
         String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
 
-        List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber, stuName, stuClass, page, 5, major);
+        List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber1, stuName, stuClass, page, 5, major);
 
         PageInfo<Record> info = new PageInfo(students);
 
