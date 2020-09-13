@@ -24,6 +24,11 @@
             max-height: 800px;
             max-width: 800px;
         }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: middle;
+        }
+
     </style>
 
 </head>
@@ -78,8 +83,8 @@
                         <div class="col-sm-4">
                             <select class="form-control" name="auditState">
                                 <option value="-1">不限</option>
-                                <option value="1">已审核</option>
-                                <option value="2">未审核</option>
+                                <option value="已审核">已审核</option>
+                                <option value="未审核">未审核</option>
                             </select>
                         </div>
                     </div>
@@ -171,7 +176,7 @@
                         <tbody></tbody>
                     </table>
                 </div>
-                <div style="height:74px; line-height:74px;margin: 0 auto; width: 600px">
+                <div style="height:74px; line-height:74px;margin: 0 auto; width: 800px">
                     <%--分页条信息--%>
                     <div id="page_nav_area" style="float:left;"></div>
                     <%--分页文字信息--%>

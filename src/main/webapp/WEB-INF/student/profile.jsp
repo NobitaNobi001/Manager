@@ -5,7 +5,7 @@
                 <!--个人信息 start-->
                 <div class="credit">
                     <h4>个人信息</h4>
-                    <form class="form-horizontal" action="student/updateStuNullInfo.html" method="post">
+                    <form class="form-horizontal form" action="student/updateStuNullInfo.html" method="post">
                         <input type="hidden" value="${student.id }" name="id">
                         <div class="form-group">
                             <label class="col-lg-3 control-label">姓名</label>

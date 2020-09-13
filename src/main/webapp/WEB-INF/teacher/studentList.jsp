@@ -12,6 +12,12 @@
     <link rel="icon" href="static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
 
+    <style type="text/css">
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: middle;
+        }
+    </style>
+
     <%--引入jQuery外部文件--%>
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>

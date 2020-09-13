@@ -5,7 +5,7 @@
                 <!-- 修改密码 start -->
                 <div class="credit">
                     <h4>修改密码</h4>
-                    <form class="form-horizontal" id="updatePwdForm" action="student/updateStuPassword.html">
+                    <form class="form-horizontal form" id="updatePwdForm" action="student/updateStuPassword.html">
                         <input type="hidden" name="stuNumber" value="${student.stuNumber }">
                         <div class="form-group">
                             <label class="col-lg-3 control-label">原密码</label>

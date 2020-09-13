@@ -17,6 +17,21 @@
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="static/css/student.css"/>
 
+    <style type="text/css">
+        .layui-input-inline {
+            width: 75%;
+        }
+
+        .layui-input, .layui-textarea {
+            width: 70%;
+        }
+
+        .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
+            vertical-align: middle;
+        }
+
+    </style>
+
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
@@ -29,7 +44,8 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="../../../static/images/logo.png" height="70" style="margin-top: 40px;"/></div>
+                    <div class="logo"><img src="../../../static/images/logo.png" height="70" style="margin-top: 40px;"/>
+                    </div>
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">

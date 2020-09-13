@@ -117,7 +117,7 @@ function getMajor(ele) {
     $.ajax({
         url: "college/getMajor",
         data: {
-            "collegeId": $("#college").val()
+            "collegeId": $("#collegeName").val()
         },
         type: "GET",
         success: function (data) {
@@ -135,11 +135,12 @@ function getMajor(ele) {
 $("#collegeName").change(function () {
     //清空原有样式
     $("#major").empty();
+    $("#className").empty();
     $("#major").append($("<option value='-1'>不限</option>"));
     $.ajax({
         url: "college/getMajor",
         data: {
-            "collegeId": $("#college").val()
+            "collegeId": $("#collegeName").val()
         },
         type: "GET",
         success: function (data) {
@@ -162,7 +163,7 @@ $("#major").change(function () {
     $.ajax({
         url: "college/getClass",
         data: {
-            "collegeId":$("#college").val(),
+            "collegeId":$("#collegeName").val(),
             "major": $("#major").val()
         },
         type: "GET",
