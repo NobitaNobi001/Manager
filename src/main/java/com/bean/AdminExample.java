@@ -633,6 +633,76 @@ public class AdminExample {
             addCriterion("email not between", value1, value2, "email");
             return (Criteria) this;
         }
+
+        public Criteria andIsSuperIsNull() {
+            addCriterion("is_super is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperIsNotNull() {
+            addCriterion("is_super is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperEqualTo(String value) {
+            addCriterion("is_super =", value, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperNotEqualTo(String value) {
+            addCriterion("is_super <>", value, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperGreaterThan(String value) {
+            addCriterion("is_super >", value, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperGreaterThanOrEqualTo(String value) {
+            addCriterion("is_super >=", value, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperLessThan(String value) {
+            addCriterion("is_super <", value, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperLessThanOrEqualTo(String value) {
+            addCriterion("is_super <=", value, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperLike(String value) {
+            addCriterion("is_super like", value, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperNotLike(String value) {
+            addCriterion("is_super not like", value, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperIn(List<String> values) {
+            addCriterion("is_super in", values, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperNotIn(List<String> values) {
+            addCriterion("is_super not in", values, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperBetween(String value1, String value2) {
+            addCriterion("is_super between", value1, value2, "isSuper");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsSuperNotBetween(String value1, String value2) {
+            addCriterion("is_super not between", value1, value2, "isSuper");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

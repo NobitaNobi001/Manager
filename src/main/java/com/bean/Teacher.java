@@ -1,7 +1,6 @@
 package com.bean;
 
 public class Teacher {
-
     private Integer id;
 
     private Integer teaNumber;
@@ -20,10 +19,9 @@ public class Teacher {
 
     private String email;
 
-    private College college;
+    private String auditGrade;
 
-    public Teacher() {
-    }
+    private College college;
 
     public Integer getId() {
         return id;
@@ -97,6 +95,14 @@ public class Teacher {
         this.email = email == null ? null : email.trim();
     }
 
+    public String getAuditGrade() {
+        return auditGrade;
+    }
+
+    public void setAuditGrade(String auditGrade) {
+        this.auditGrade = auditGrade == null ? null : auditGrade.trim();
+    }
+
     public College getCollege() {
         return college;
     }
@@ -104,5 +110,4 @@ public class Teacher {
     public void setCollege(College college) {
         this.college = college;
     }
-
 }

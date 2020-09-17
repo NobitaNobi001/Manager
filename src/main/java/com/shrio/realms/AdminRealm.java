@@ -54,8 +54,17 @@ public class AdminRealm extends AuthorizingRealm {
         Subject currentUser = SecurityUtils.getSubject();
         //获取当前用户的session对象
         Session session = currentUser.getSession();
-        //将用户信息存入session对象中
-        session.setAttribute(StringConstant.ADMIN_TYPE,admin);
+
+        //区分是超级管理员还是学院管理员 1为超级管理员 0为学院管理员
+        if ("1".equals(admin.getIsSuper())) {
+            //将用户信息存入session对象中
+            session.setAttribute(StringConstant.ADMIN_TYPE, admin);
+            session.setAttribute("url","admin/index");
+        } else if ("0".equals(admin.getIsSuper())) {
+            session.setAttribute(StringConstant.ADMINS_TYPE, admin);
+            session.setAttribute("url","admins/index");
+        }
+
 
         //构建AuthenticationInfo对象并返回
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, realmName);

@@ -1,37 +1,38 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dao.AdminMapper">
     <resultMap id="BaseResultMap" type="com.bean.Admin">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="admin_number" property="adminNumber" jdbcType="INTEGER"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="admin_name" property="adminName" jdbcType="VARCHAR"/>
-        <result column="college_id" property="collegeId" jdbcType="INTEGER"/>
-        <result column="gender" property="gender" jdbcType="CHAR"/>
-        <result column="phone" property="phone" jdbcType="VARCHAR"/>
-        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="admin_number" jdbcType="INTEGER" property="adminNumber"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="admin_name" jdbcType="VARCHAR" property="adminName"/>
+        <result column="college_id" jdbcType="INTEGER" property="collegeId"/>
+        <result column="gender" jdbcType="CHAR" property="gender"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="is_super" jdbcType="CHAR" property="isSuper"/>
     </resultMap>
-
     <resultMap id="AdminWithCollege" type="com.bean.Admin">
-        <id column="id" property="id" jdbcType="INTEGER"/>
-        <result column="admin_number" property="adminNumber" jdbcType="INTEGER"/>
-        <result column="password" property="password" jdbcType="VARCHAR"/>
-        <result column="admin_name" property="adminName" jdbcType="VARCHAR"/>
-        <result column="college_id" property="collegeId" jdbcType="INTEGER"/>
-        <result column="gender" property="gender" jdbcType="CHAR"/>
-        <result column="phone" property="phone" jdbcType="VARCHAR"/>
-        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="admin_number" jdbcType="INTEGER" property="adminNumber"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="admin_name" jdbcType="VARCHAR" property="adminName"/>
+        <result column="college_id" jdbcType="INTEGER" property="collegeId"/>
+        <result column="gender" jdbcType="CHAR" property="gender"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="is_super" jdbcType="CHAR" property="isSuper"/>
         <!--指定联合查询出的学院字段的封装-->
-        <association property="college" javaType="com.bean.College">
-            <id column="id" property="id" jdbcType="INTEGER"/>
-            <result column="name" property="name" jdbcType="VARCHAR"/>
+        <association javaType="com.bean.College" property="college">
+            <id column="id" jdbcType="INTEGER" property="id"/>
+            <result column="name" jdbcType="VARCHAR" property="name"/>
         </association>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
                 <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
                         <foreach collection="criteria.criteria" item="criterion">
                             <choose>
                                 <when test="criterion.noValue">
@@ -45,7 +46,7 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
                                              separator=",">
                                         #{listItem}
                                     </foreach>
@@ -61,7 +62,7 @@
         <where>
             <foreach collection="example.oredCriteria" item="criteria" separator="or">
                 <if test="criteria.valid">
-                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
                         <foreach collection="criteria.criteria" item="criterion">
                             <choose>
                                 <when test="criterion.noValue">
@@ -75,7 +76,7 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
                                              separator=",">
                                         #{listItem}
                                     </foreach>
@@ -88,22 +89,12 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, admin_number, password, admin_name, college_id, gender, phone, email
+    id, admin_number, password, admin_name, college_id, gender, phone, email, is_super
   </sql>
     <sql id="WithCollege_Column_List">
-    a.id, admin_number, password, admin_name, a.college_id, gender,  phone, email,c.id,c.name
+    a.id, admin_number, password, admin_name, a.college_id, gender,  phone, email,is_super,c.id,c.name
 </sql>
-
-    <!--根据管理员账号查询信息-->
-    <select id="selectAdminByAdminNumber" resultMap="AdminWithCollege" parameterType="java.lang.Integer">
-        select
-        <include refid="WithCollege_Column_List"/>
-        from admin_info a
-        left join college c on a.`college_id`=c.`id`
-        where admin_number= #{admin_number,jdbcType=INTEGER}
-    </select>
-
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.AdminExample">
+    <select id="selectByExample" parameterType="com.bean.AdminExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
@@ -117,14 +108,12 @@
             order by ${orderByClause}
         </if>
     </select>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from admin_info
         where id = #{id,jdbcType=INTEGER}
     </select>
-
-
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from admin_info
     where id = #{id,jdbcType=INTEGER}
@@ -138,10 +127,10 @@
     <insert id="insert" parameterType="com.bean.Admin">
     insert into admin_info (id, admin_number, password,
       admin_name, college_id, gender,
-      phone, email)
+      phone, email, is_super)
     values (#{id,jdbcType=INTEGER}, #{adminNumber,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR},
       #{adminName,jdbcType=VARCHAR}, #{collegeId,jdbcType=INTEGER}, #{gender,jdbcType=CHAR},
-      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
+      #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{isSuper,jdbcType=CHAR})
   </insert>
     <insert id="insertSelective" parameterType="com.bean.Admin">
         insert into admin_info
@@ -170,6 +159,9 @@
             <if test="email != null">
                 email,
             </if>
+            <if test="isSuper != null">
+                is_super,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -195,6 +187,9 @@
             </if>
             <if test="email != null">
                 #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="isSuper != null">
+                #{isSuper,jdbcType=CHAR},
             </if>
         </trim>
     </insert>
@@ -231,6 +226,9 @@
             <if test="record.email != null">
                 email = #{record.email,jdbcType=VARCHAR},
             </if>
+            <if test="record.isSuper != null">
+                is_super = #{record.isSuper,jdbcType=CHAR},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -245,7 +243,8 @@
         college_id = #{record.collegeId,jdbcType=INTEGER},
         gender = #{record.gender,jdbcType=CHAR},
         phone = #{record.phone,jdbcType=VARCHAR},
-        email = #{record.email,jdbcType=VARCHAR}
+        email = #{record.email,jdbcType=VARCHAR},
+        is_super = #{record.isSuper,jdbcType=CHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -274,6 +273,9 @@
             <if test="email != null">
                 email = #{email,jdbcType=VARCHAR},
             </if>
+            <if test="isSuper != null">
+                is_super = #{isSuper,jdbcType=CHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -285,16 +287,27 @@
       college_id = #{collegeId,jdbcType=INTEGER},
       gender = #{gender,jdbcType=CHAR},
       phone = #{phone,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR}
+      email = #{email,jdbcType=VARCHAR},
+      is_super = #{isSuper,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <!--根据管理员账号查询信息-->
+    <select id="selectAdminByAdminNumber" parameterType="java.lang.Integer" resultMap="AdminWithCollege">
+        select
+        <include refid="WithCollege_Column_List"/>
+        from admin_info a
+        left join college c on a.`college_id`=c.`id`
+        where admin_number= #{admin_number,jdbcType=INTEGER}
+    </select>
+
 
     <select id="selectEmailByAdmin" resultType="java.lang.Integer">
         select count(*) from admin_info
         where email = #{email} and admin_number = #{number}
     </select>
 
-    <update id="updatePasswordByAdminNumber" >
+    <update id="updatePasswordByAdminNumber">
         update admin_info
         set password = #{password,jdbcType=VARCHAR}
         where admin_number = #{number,jdbcType=INTEGER}

@@ -1,6 +1,5 @@
 package com.bean;
 
-
 public class Admin {
     private Integer id;
 
@@ -18,15 +17,9 @@ public class Admin {
 
     private String email;
 
+    private String isSuper;
+
     private College college;
-
-    public College getCollege() {
-        return college;
-    }
-
-    public void setCollege(College college) {
-        this.college = college;
-    }
 
     public Integer getId() {
         return id;
@@ -90,5 +83,21 @@ public class Admin {
 
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
+    }
+
+    public String getIsSuper() {
+        return isSuper;
+    }
+
+    public void setIsSuper(String isSuper) {
+        this.isSuper = isSuper == null ? null : isSuper.trim();
+    }
+
+    public College getCollege() {
+        return college;
+    }
+
+    public void setCollege(College college) {
+        this.college = college;
     }
 }

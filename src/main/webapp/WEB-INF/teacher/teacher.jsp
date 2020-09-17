@@ -35,7 +35,7 @@
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="teacher/teaIndex">首页</a></li>
+                    <li><a href="teacher/index">首页</a></li>
                     <li><a href="teacher/teaProfile">个人信息</a></li>
                 </ul>
             </div>

@@ -31,7 +31,7 @@
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">督查中心</a></li>
-                    <li><a href="watcher/watIndex">首页</a></li>
+                    <li><a href="wacther/index">首页</a></li>
                     <li><a href="watcher/watProfile">个人信息</a></li>
                 </ul>
             </div>

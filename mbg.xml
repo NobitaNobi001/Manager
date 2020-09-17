@@ -52,13 +52,15 @@
         <!--<table tableName="watcher_info" domainObjectName="Watcher"></table>-->
 
         <!--&lt;!&ndash;学院表&ndash;&gt;-->
-        <table tableName="college" domainObjectName="College"></table>
+        <!--<table tableName="college" domainObjectName="College"></table>-->
 
         <!--&lt;!&ndash;&lt;!&ndash;申报信息表&ndash;&gt;&ndash;&gt;-->
         <!--<table tableName="credit_record" domainObjectName="Record"></table>-->
 
         <!--&lt;!&ndash;&lt;!&ndash;学分表&ndash;&gt;&ndash;&gt;-->
         <!--<table tableName="credit" domainObjectName="Credit"></table>-->
+
+        <table tableName="sort" domainObjectName="Sort"></table>
 
         <!--&lt;!&ndash;学院学生表&ndash;&gt;-->
         <!--<table tableName="college_stu_01" domainObjectName="College_mks"></table>-->

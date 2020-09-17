@@ -703,6 +703,76 @@ public class TeacherExample {
             addCriterion("email not between", value1, value2, "email");
             return (Criteria) this;
         }
+
+        public Criteria andAuditGradeIsNull() {
+            addCriterion("audit_grade is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeIsNotNull() {
+            addCriterion("audit_grade is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeEqualTo(String value) {
+            addCriterion("audit_grade =", value, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeNotEqualTo(String value) {
+            addCriterion("audit_grade <>", value, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeGreaterThan(String value) {
+            addCriterion("audit_grade >", value, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeGreaterThanOrEqualTo(String value) {
+            addCriterion("audit_grade >=", value, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeLessThan(String value) {
+            addCriterion("audit_grade <", value, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeLessThanOrEqualTo(String value) {
+            addCriterion("audit_grade <=", value, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeLike(String value) {
+            addCriterion("audit_grade like", value, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeNotLike(String value) {
+            addCriterion("audit_grade not like", value, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeIn(List<String> values) {
+            addCriterion("audit_grade in", values, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeNotIn(List<String> values) {
+            addCriterion("audit_grade not in", values, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeBetween(String value1, String value2) {
+            addCriterion("audit_grade between", value1, value2, "auditGrade");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditGradeNotBetween(String value1, String value2) {
+            addCriterion("audit_grade not between", value1, value2, "auditGrade");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

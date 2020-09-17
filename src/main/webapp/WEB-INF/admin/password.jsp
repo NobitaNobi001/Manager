@@ -1,3 +1,6 @@
+<%--
+    管理员修改密码
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -52,24 +55,40 @@
                 </ul>
             </div>
             <div class="main-right right">
-                <ul class="manager">
-                    <li style="background: rgba(0, 153, 255, .1);color: #09f;">
-                        <div class="number">${records }</div>
-                        <div class="title">申报数量</div>
-                    </li>
-                    <li style="background: rgba(0, 153, 0, .1);color: #090;">
-                        <div class="number">${students }</div>
-                        <div class="title">学生</div>
-                    </li>
-                    <li style="background: rgba(255, 153, 0, .1);color: #f90;">
-                        <div class="number">${teachers }</div>
-                        <div class="title">教师</div>
-                    </li>
-                    <li style="background: rgba(255, 0, 0, .1);color: #f00;">
-                        <div class="number">${watchers }</div>
-                        <div class="title">督查</div>
-                    </li>
-                </ul>
+                <!-- 修改密码 start -->
+                <div class="credit">
+                    <h4>修改密码</h4>
+                    <form action="" method="post" class="form">
+                        <div class="row item">
+                            <div class="col col-2 name">原密码</div>
+                            <div class="col col-7 value">
+                                <input type="text" name="password">
+                                <div class="notice">请输入当前用户密码</div>
+                            </div>
+                        </div>
+                        <div class="row item">
+                            <div class="col col-2 name">新密码</div>
+                            <div class="col col-7 value">
+                                <input type="text" name="pass">
+                                <div class="notice">请填写新密码</div>
+                            </div>
+                        </div>
+                        <div class="row item">
+                            <div class="col col-2 name">重复密码</div>
+                            <div class="col col-7 value">
+                                <input type="text" name="respass">
+                                <div class="notice">请再次填写新密码</div>
+                            </div>
+                        </div>
+                        <div class="row item">
+                            <div class="col col-2 name">&nbsp;</div>
+                            <div class="col value">
+                                <button type="button" class="btn btn-primary btn-6x">提交绑定</button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- 修改密码 end -->
+                </div>
             </div>
         </div>
     </div>
