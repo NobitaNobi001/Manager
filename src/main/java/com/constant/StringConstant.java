@@ -13,6 +13,7 @@ public class StringConstant {
     public static final String TEACHER_TYPE="teacher";
     public static final String WATCHER_TYPE="watcher";
     public static final String ADMIN_TYPE="admin";
+    public static final String ADMINS_TYPE="admins";
     public static final String PROJECT_INIT_COLLEGES="colleges";
     public static final String APPLY_TYPE="applySort";
 

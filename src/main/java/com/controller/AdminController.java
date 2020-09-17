@@ -32,7 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * 超级管理员控制器
+ */
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -57,8 +59,8 @@ public class AdminController {
      * @param model
      * @return
      */
-    @RequestMapping("/admIndex")
-    public String adminIndex(Model model, HttpServletRequest request) {
+    @RequestMapping("/index")
+    public String adminIndex(Model model) {
 
         //查询出申报记录数量
         Integer records = recordService.selectCountRecord();

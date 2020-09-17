@@ -47,7 +47,7 @@ public class StudentController {
         Student stu = studentService.selectStuByPrimaryKey(student.getId());
         session.setAttribute(StringConstant.STUDENT_TYPE,stu);
         // 返回学生首页
-        return "redirect:/student/stuIndex";
+        return "redirect:/student/index";
     }
 
     /**

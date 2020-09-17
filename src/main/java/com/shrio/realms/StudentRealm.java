@@ -61,6 +61,7 @@ public class StudentRealm extends AuthorizingRealm {
         Session session = currentUser.getSession();
         //将用户信息存入session对象中
         session.setAttribute(StringConstant.STUDENT_TYPE,student);
+        session.setAttribute("url","student/index");
 
         //构建AuthenticationInfo对象并返回
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, realmName);

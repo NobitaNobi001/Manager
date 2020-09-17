@@ -13,21 +13,21 @@
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
-    <link rel="icon" type="image/png" href="../static/images/logo.png">
-    <link rel="stylesheet" type="text/css" href="../static/css/common.css"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/login.css"/>
+    <link rel="icon" type="image/png" href="static/images/logo.png">
+    <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="static/css/login.css"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../static/bootstrapvalidator/css/bootstrapValidator.css"/>
+    <link rel="stylesheet" type="text/css" href="static/bootstrapvalidator/css/bootstrapValidator.css"/>
 
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="../static/bootstrapvalidator/js/bootstrapValidator.js"></script>
+    <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
 </head>
 <body>
 <div id="login">
     <div class="login">
         <div class="top">
-            <div class="logo"><img src="../static/images/logo.png" height="120"/></div>
+            <div class="logo"><img src="static/images/logo.png" height="120"/></div>
             <div class="title">湖北文理学院创新实践学分管理系统</div>
         </div>
         <div class="login-form">

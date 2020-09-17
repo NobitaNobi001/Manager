@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dao.SortMapper" >
+  <resultMap id="BaseResultMap" type="com.bean.Sort" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="sort_01" property="sort01" jdbcType="DOUBLE" />
+    <result column="sort_02" property="sort02" jdbcType="DOUBLE" />
+    <result column="sort_03" property="sort03" jdbcType="DOUBLE" />
+    <result column="sort_04" property="sort04" jdbcType="DOUBLE" />
+    <result column="sort_05" property="sort05" jdbcType="DOUBLE" />
+    <result column="sort_06" property="sort06" jdbcType="DOUBLE" />
+    <result column="sort_07" property="sort07" jdbcType="DOUBLE" />
+    <result column="sort_08" property="sort08" jdbcType="DOUBLE" />
+    <result column="sort_09" property="sort09" jdbcType="DOUBLE" />
+    <result column="sort_10" property="sort10" jdbcType="DOUBLE" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, sort_01, sort_02, sort_03, sort_04, sort_05, sort_06, sort_07, sort_08, sort_09, 
+    sort_10
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.bean.SortExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from sort
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from sort
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sort
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.bean.SortExample" >
+    delete from sort
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.bean.Sort" >
+    insert into sort (id, sort_01, sort_02, 
+      sort_03, sort_04, sort_05, 
+      sort_06, sort_07, sort_08, 
+      sort_09, sort_10)
+    values (#{id,jdbcType=INTEGER}, #{sort01,jdbcType=DOUBLE}, #{sort02,jdbcType=DOUBLE}, 
+      #{sort03,jdbcType=DOUBLE}, #{sort04,jdbcType=DOUBLE}, #{sort05,jdbcType=DOUBLE}, 
+      #{sort06,jdbcType=DOUBLE}, #{sort07,jdbcType=DOUBLE}, #{sort08,jdbcType=DOUBLE}, 
+      #{sort09,jdbcType=DOUBLE}, #{sort10,jdbcType=DOUBLE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.bean.Sort" >
+    insert into sort
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sort01 != null" >
+        sort_01,
+      </if>
+      <if test="sort02 != null" >
+        sort_02,
+      </if>
+      <if test="sort03 != null" >
+        sort_03,
+      </if>
+      <if test="sort04 != null" >
+        sort_04,
+      </if>
+      <if test="sort05 != null" >
+        sort_05,
+      </if>
+      <if test="sort06 != null" >
+        sort_06,
+      </if>
+      <if test="sort07 != null" >
+        sort_07,
+      </if>
+      <if test="sort08 != null" >
+        sort_08,
+      </if>
+      <if test="sort09 != null" >
+        sort_09,
+      </if>
+      <if test="sort10 != null" >
+        sort_10,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sort01 != null" >
+        #{sort01,jdbcType=DOUBLE},
+      </if>
+      <if test="sort02 != null" >
+        #{sort02,jdbcType=DOUBLE},
+      </if>
+      <if test="sort03 != null" >
+        #{sort03,jdbcType=DOUBLE},
+      </if>
+      <if test="sort04 != null" >
+        #{sort04,jdbcType=DOUBLE},
+      </if>
+      <if test="sort05 != null" >
+        #{sort05,jdbcType=DOUBLE},
+      </if>
+      <if test="sort06 != null" >
+        #{sort06,jdbcType=DOUBLE},
+      </if>
+      <if test="sort07 != null" >
+        #{sort07,jdbcType=DOUBLE},
+      </if>
+      <if test="sort08 != null" >
+        #{sort08,jdbcType=DOUBLE},
+      </if>
+      <if test="sort09 != null" >
+        #{sort09,jdbcType=DOUBLE},
+      </if>
+      <if test="sort10 != null" >
+        #{sort10,jdbcType=DOUBLE},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.bean.SortExample" resultType="java.lang.Integer" >
+    select count(*) from sort
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update sort
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.sort01 != null" >
+        sort_01 = #{record.sort01,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort02 != null" >
+        sort_02 = #{record.sort02,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort03 != null" >
+        sort_03 = #{record.sort03,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort04 != null" >
+        sort_04 = #{record.sort04,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort05 != null" >
+        sort_05 = #{record.sort05,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort06 != null" >
+        sort_06 = #{record.sort06,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort07 != null" >
+        sort_07 = #{record.sort07,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort08 != null" >
+        sort_08 = #{record.sort08,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort09 != null" >
+        sort_09 = #{record.sort09,jdbcType=DOUBLE},
+      </if>
+      <if test="record.sort10 != null" >
+        sort_10 = #{record.sort10,jdbcType=DOUBLE},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update sort
+    set id = #{record.id,jdbcType=INTEGER},
+      sort_01 = #{record.sort01,jdbcType=DOUBLE},
+      sort_02 = #{record.sort02,jdbcType=DOUBLE},
+      sort_03 = #{record.sort03,jdbcType=DOUBLE},
+      sort_04 = #{record.sort04,jdbcType=DOUBLE},
+      sort_05 = #{record.sort05,jdbcType=DOUBLE},
+      sort_06 = #{record.sort06,jdbcType=DOUBLE},
+      sort_07 = #{record.sort07,jdbcType=DOUBLE},
+      sort_08 = #{record.sort08,jdbcType=DOUBLE},
+      sort_09 = #{record.sort09,jdbcType=DOUBLE},
+      sort_10 = #{record.sort10,jdbcType=DOUBLE}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.bean.Sort" >
+    update sort
+    <set >
+      <if test="sort01 != null" >
+        sort_01 = #{sort01,jdbcType=DOUBLE},
+      </if>
+      <if test="sort02 != null" >
+        sort_02 = #{sort02,jdbcType=DOUBLE},
+      </if>
+      <if test="sort03 != null" >
+        sort_03 = #{sort03,jdbcType=DOUBLE},
+      </if>
+      <if test="sort04 != null" >
+        sort_04 = #{sort04,jdbcType=DOUBLE},
+      </if>
+      <if test="sort05 != null" >
+        sort_05 = #{sort05,jdbcType=DOUBLE},
+      </if>
+      <if test="sort06 != null" >
+        sort_06 = #{sort06,jdbcType=DOUBLE},
+      </if>
+      <if test="sort07 != null" >
+        sort_07 = #{sort07,jdbcType=DOUBLE},
+      </if>
+      <if test="sort08 != null" >
+        sort_08 = #{sort08,jdbcType=DOUBLE},
+      </if>
+      <if test="sort09 != null" >
+        sort_09 = #{sort09,jdbcType=DOUBLE},
+      </if>
+      <if test="sort10 != null" >
+        sort_10 = #{sort10,jdbcType=DOUBLE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.bean.Sort" >
+    update sort
+    set sort_01 = #{sort01,jdbcType=DOUBLE},
+      sort_02 = #{sort02,jdbcType=DOUBLE},
+      sort_03 = #{sort03,jdbcType=DOUBLE},
+      sort_04 = #{sort04,jdbcType=DOUBLE},
+      sort_05 = #{sort05,jdbcType=DOUBLE},
+      sort_06 = #{sort06,jdbcType=DOUBLE},
+      sort_07 = #{sort07,jdbcType=DOUBLE},
+      sort_08 = #{sort08,jdbcType=DOUBLE},
+      sort_09 = #{sort09,jdbcType=DOUBLE},
+      sort_10 = #{sort10,jdbcType=DOUBLE}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

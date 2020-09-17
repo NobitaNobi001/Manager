@@ -48,8 +48,8 @@
         <!--请求的编码格式，必须要和jsp的pageEncoding属性一致，以便正确的读取表单的内容,默认为ISO-8859-1-->
         <property name="defaultEncoding" value="utf-8"></property>
         <!--上传文件大小上限,单位为字节(10485760=10M=1024*1024*10)-->
-<!--        <property name="maxUploadSize" value="10485760"></property>
-        <property name="maxInMemorySize" value="40960"></property>-->
+        <!--        <property name="maxUploadSize" value="10485760"></property>
+                <property name="maxInMemorySize" value="40960"></property>-->
     </bean>
 
     <!--忘记密码页面的拦截器-->
@@ -64,13 +64,11 @@
     </mvc:interceptors>
 
 
-
-
     <!--
         1、学生页面
     -->
     <!--首页-->
-    <mvc:view-controller path="student/stuIndex" view-name="student/student"/>
+    <mvc:view-controller path="student/index" view-name="student/student"/>
     <!--学生申报页面-->
     <mvc:view-controller path="student/applyCredit.html" view-name="student/creditDeclare"/>
     <!--学生修改信息页面-->
@@ -83,7 +81,7 @@
         2、教师页面
     -->
     <!--首页-->
-    <mvc:view-controller path="teacher/teaIndex" view-name="teacher/teacher"/>
+    <mvc:view-controller path="teacher/index" view-name="teacher/teacher"/>
     <!--学分审核页面-->
     <mvc:view-controller path="teacher/declareManager" view-name="teacher/declareManager"/>
     <!--个人信息页面-->
@@ -95,7 +93,7 @@
         3、督察页面
     -->
     <!--首页-->
-    <mvc:view-controller path="watcher/watIndex" view-name="watcher/watcher"/>
+    <mvc:view-controller path="watcher/index" view-name="watcher/watcher"/>
     <!--教师审核-->
     <mvc:view-controller path="watcher/watAudit" view-name="watcher/teacherAudit"/>
     <!--个人信息-->
@@ -104,10 +102,10 @@
     <mvc:view-controller path="watcher/watPassword" view-name="watcher/password"/>
 
     <!--
-        4、管理员页面
+        4、超级管理员页面
     -->
     <!--首页-->
-    <!--<mvc:view-controller path="admin/admIndex" view-name="admin/admin"/>-->
+    <!--<mvc:view-controller path="admin/index" view-name="admin/admin"/>-->
     <!--申报管理-->
     <!--学生管理-->
     <mvc:view-controller path="admin/stuManager" view-name="admin/studentManager"/>
@@ -115,11 +113,34 @@
     <mvc:view-controller path="admin/teaManager" view-name="admin/teacherManager"/>
     <!--督察管理-->
     <mvc:view-controller path="admin/watManager" view-name="admin/watcherManager"/>
+    <!--学院管理-->
+    <mvc:view-controller path="admin/admManager" view-name="admin/adminManager"/>
+    <!--学分概览-->
+    <mvc:view-controller path="admin/situation" view-name="admin/totalSituation"/>
     <!--个人信息-->
     <mvc:view-controller path="admin/admProfile" view-name="admin/profile"/>
+    <!--修改密码-->
+    <mvc:view-controller path="admin/password" view-name="admin/password"/>
+
 
     <!--
-        5、忘记密码页面
+        5、二级学院管理员页面
+    -->
+    <!--首页-->
+    <mvc:view-controller path="admins/index" view-name="admins/admins"/>
+    <!--审核教师管理-->
+    <mvc:view-controller path="admins/auditTeacherManager" view-name="admins/auditTeacherManager"/>
+    <!--申报规则管理-->
+    <mvc:view-controller path="admins/ruleManager" view-name="admins/declareRules"/>
+    <!--学分概览-->
+    <mvc:view-controller path="admins/situation" view-name="admins/totalSituation"/>
+    <!--个人信息-->
+    <mvc:view-controller path="admins/profile" view-name="admins/profile"/>
+    <!--修改密码-->
+    <mvc:view-controller path="admins/password" view-name="admins/password"/>
+
+    <!--
+        6、忘记密码页面
     -->
     <!--首页-->
     <mvc:view-controller path="forget/forgetIndex" view-name="forget/forget"/>

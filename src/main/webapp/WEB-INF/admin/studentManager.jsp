@@ -46,7 +46,7 @@
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:void(0)">管理中心</a></li>
-                    <li><a href="admin/admIndex">首页</a></li>
+                    <li><a href="admin/index">首页</a></li>
                     <li><a href="admin/admProfile">个人信息</a></li>
                 </ul>
             </div>
@@ -229,11 +229,16 @@
         <div class="main clear">
             <div class="main-left left">
                 <ul>
-                    <li class="headline"><span>控制中心</span></li>
+                    <li class="headline"><a href="javascript:;">控制中心</a></li>
                     <li><a href="admin/toSee/studentRecord.html">申报管理</a></li>
                     <li><a href="admin/get/student.html">学生管理</a></li>
                     <li><a href="admin/teaManager">教师管理</a></li>
                     <li><a href="admin/watManager">督查管理</a></li>
+                    <li><a href="admin/admManager">学院管理</a></li>
+                    <li><a href="admin/situation">学分概览</a></li>
+                    <li class="headline"><span>账号管理</span></li>
+                    <li><a href="admin/admProfile">个人信息</a></li>
+                    <li><a href="admin/password">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
@@ -744,6 +749,7 @@
 
         if (stuNumbers == "") {
             layer.alert("请选择需要删除的学生!", {icon: 2});
+            return false;
         }
         layer.confirm("确认删除[" + stuNames + "]吗?一经删除相关学生信息将无法恢复", {
             btn: ['确认', '再想想'],

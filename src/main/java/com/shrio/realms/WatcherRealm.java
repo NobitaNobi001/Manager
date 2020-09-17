@@ -57,6 +57,7 @@ public class WatcherRealm extends AuthorizingRealm {
         Session session = currentUser.getSession();
         //将用户信息存入session对象中
         session.setAttribute(StringConstant.WATCHER_TYPE, watcher);
+        session.setAttribute("url","watcher/index");
 
         //构建AuthenticationInfo对象并返回
         SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(principal, credentials, realmName);

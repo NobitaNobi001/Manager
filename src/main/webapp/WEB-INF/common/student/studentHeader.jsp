@@ -44,7 +44,7 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="../../../static/images/logo.png" height="70" style="margin-top: 40px;"/>
+                    <div class="logo"><img src="static/images/logo.png" height="70" style="margin-top: 40px;"/>
                     </div>
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
@@ -56,7 +56,7 @@
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:void(0);">学生中心</a></li>
-                    <li><a href="student/stuIndex">首页</a></li>
+                    <li><a href="student/index">首页</a></li>
                     <li><a href="student/updateInfo.html">个人信息</a></li>
                 </ul>
             </div>

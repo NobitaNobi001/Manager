@@ -50,13 +50,13 @@ layui.use('form', function () {
         }
         , applyCredit: function (value, item) {
             if (value <= 0) {
-                return "申报创新学分必须大于0小于8,可保留1位小数"
+                return "申报创新学分必须大于0小于8,可保留2位小数"
             }
             if (value >= 8) {
-                return "申报创新学分必须大于0小于8,可保留1位小数"
+                return "申报创新学分必须大于0小于8,可保留2位小数"
             }
-            if (value.toString().length > 3) {
-                return "申报创新学分必须大于0小于8,可保留1位小数"
+            if (value.toString().length > 4) {
+                return "申报创新学分必须大于0小于8,可保留2位小数"
             }
         }
     });

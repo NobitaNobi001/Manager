@@ -5,6 +5,7 @@ import com.shrio.token.LoginToken;
 import com.utils.UserTypeUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Collection;
+import java.util.Iterator;
 
 @Controller
 @RequestMapping("/user")
@@ -42,11 +45,10 @@ public class UserController {
         //4、进行登录认证
         subject.login(token);
 
-        //6.将用户类型转换为小写 以便进行页面跳转
-        String page = loginType.toLowerCase();
-
+        String url = (String) subject.getSession().getAttribute("url");
+        System.out.println("---" + url);
         //实现页面的重定向
-        return "redirect:/" + page + "/" + page.substring(0, 3) + "Index";
+        return "redirect:/" + url;
 
     }
 }
