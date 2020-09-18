@@ -215,8 +215,8 @@
                         style="vertical-align: middle;color: red">提示:密码重置后默认是学号后6位</span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="submit" class="btn btn-primary" id="stu_save_update_btn">更新</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>
         </div>

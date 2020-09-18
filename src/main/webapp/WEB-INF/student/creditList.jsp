@@ -14,10 +14,11 @@
             <tr>
                 <th>序号</th>
                 <th style="text-align: center;">类别</th>
-                <th>名称</th>
-                <th>申请学分</th>
+                <th>活动名称</th>
+                <th>申报材料</th>
+                <th>申报学分</th>
                 <th>审核学分</th>
-                <th>申报状态</th>
+                <th>审核状态</th>
             </tr>
             </thead>
             <tbody>
@@ -33,6 +34,12 @@
                         <td>${s.count+(info.pageNum-1)*5}</td>
                         <td style="text-align: center;">${record.sort}</td>
                         <td>${record.applyName}</td>
+                        <td>
+                            <button type="button" class="btn btn-default apply-btn" data-container="body"
+                                    data-toggle="popover"
+                                    data-placement="top" url="applyImg/${record.picture }">查看图片
+                            </button>
+                        </td>
                         <td>${record.applyCredit}</td>
                         <td>${record.auditCredit}</td>
                         <c:choose>
@@ -214,7 +221,6 @@
                     parent.layer.alert("网络超时,请稍后再试");
                 },
                 success: function (data) {
-                    console.log(data[0].sort);
                     // 解析模态框里面的数据
                     var sortValues = $("input[name='sortValue']");
                     for (var i = 0; i < sortValues.length; i++) {
@@ -241,6 +247,22 @@
                 keyboard: true
             })
         });
+
+        //显示申报图片
+        $(document).on("click", ".apply-btn", function () {
+            $(this).popover({
+                trigger: 'click',
+                html: true,
+                content: function () {
+                    var url = $(this).attr("url");
+                    var $div = $("<div style='width: 500px; height:300px;'></div>");
+                    var $img = $("<img style='width: 500px; height:300px;'/>");
+                    $img.attr("src", url);
+                    $img.appendTo($div);
+                    return $div;
+                }
+            });
+        })
 
     })
 </script>

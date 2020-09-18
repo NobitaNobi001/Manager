@@ -46,6 +46,7 @@ public class ExportStuListener extends AnalysisEventListener<StuExcel> {
         student.setMajor(stuExcel.getMajor());
         student.setClassName(stuExcel.getClassName());
         student.setPassword(stuExcel.getStuNumber().toString().substring(4));
+        student.setStuGrade(stuExcel.getStuNumber().toString().substring(0, 4));
         students.add(student);
 
         if (students.size() % 250 == 0) {// 每5条数据写入一次数据库
