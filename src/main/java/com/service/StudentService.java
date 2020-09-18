@@ -1,5 +1,6 @@
 package com.service;
 
+import com.bean.CreditDetail;
 import com.bean.Record;
 import com.bean.Student;
 import com.bean.StudentExample;
@@ -7,10 +8,12 @@ import com.dao.CreditMapper;
 import com.dao.RecordMapper;
 import com.dao.StudentMapper;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 学生相关操作的业务层
@@ -83,9 +86,10 @@ public class StudentService {
      * @return
      * @throws Exception
      */
-    public List<Record> findAllRecordByStuNumber(Integer stuNumber, int page, int size) throws Exception {
+    public PageInfo<Record> findAllRecordByStuNumber(Integer stuNumber, int page, int size) throws Exception {
         PageHelper.startPage(page, size);
-        return recordMapper.findAllBystuNumber(stuNumber);
+        // 封装成pageInfo
+        return new PageInfo(recordMapper.findAllBystuNumber(stuNumber));
     }
 
 
@@ -170,5 +174,11 @@ public class StudentService {
 
         return studentMapper.countByExample(studentExample) == 0;
 
+    }
+
+    public List<CreditDetail> selectCreditRecordGroupBySort(Integer stuNumber) {
+        // 根据类别分组查询已审核的审核的申报记录
+        List<CreditDetail> list = recordMapper.selectCreditRecordGroupBySort(stuNumber);
+        return list;
     }
 }

@@ -54,17 +54,7 @@ public class ExceptionResolverUtil {
     }
 
 
-    // 通用异常
-//    @ExceptionHandler(value = Exception.class)
-//    public ModelAndView Exception(
-//            Exception exception,
-//            HttpServletRequest request,
-//            HttpServletResponse response
-//    ) throws IOException {
-//        String viewName = "common/404";
-//        return commonResolver(viewName, exception, request, response);
-//    }
-
+  // 通用异常
     @ExceptionHandler(value = RuntimeException.class)
     public ModelAndView Exception(
             Exception exception,
@@ -75,6 +65,7 @@ public class ExceptionResolverUtil {
         return commonResolver(viewName, exception, request, response);
     }
 
+    // 超出数据异常
     @ExceptionHandler(value = OutMaxException.class)
     public ModelAndView OutMaxException(
             Exception exception,
