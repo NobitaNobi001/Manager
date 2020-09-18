@@ -4,6 +4,10 @@
          version="2.5">
 
     <display-name>Archetype Created Web Application</display-name>
+    <!--页面开始界面-->
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
 
     <!--启动spring的容器-->
     <context-param>

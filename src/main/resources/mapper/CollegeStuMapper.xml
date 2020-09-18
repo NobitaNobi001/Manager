@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.CollegeStuMapper">
-
-
     <resultMap id="BaseResultMap" type="com.bean.Student">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
@@ -55,6 +53,9 @@
             <if test="student.className != null">
                 stu_class,
             </if>
+            <if test="student.stuGrade != null">
+                stu_grade,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="student.collegeId != null">
@@ -72,26 +73,31 @@
             <if test="student.className != null">
                 #{student.className,jdbcType=VARCHAR},
             </if>
+            <if test="student.stuGrade != null">
+                #{student.stuGrade,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
     <!--如果表名相同的话批量插入学院学生表-->
     <insert id="insertBatchCollegeStu">
         insert into ${tableName}
         (
-            college_id,
-            stu_number,
-            stu_name,
-            major,
-            stu_class
+        college_id,
+        stu_number,
+        stu_name,
+        major,
+        stu_class,
+        stu_grade
         )
         values
         <foreach collection="list" item="student" index="index" separator=",">
             (
-                #{student.collegeId},
-                #{student.stuNumber},
-                #{student.stuName},
-                #{student.major},
-                #{student.className}
+            #{student.collegeId},
+            #{student.stuNumber},
+            #{student.stuName},
+            #{student.major},
+            #{student.className},
+            #{student.stuGrade}
             )
         </foreach>
     </insert>
