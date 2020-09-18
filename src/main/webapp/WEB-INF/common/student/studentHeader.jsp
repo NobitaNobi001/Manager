@@ -22,6 +22,10 @@
             width: 75%;
         }
 
+        .layui-form-select .layui-edge {
+            right: 200px;
+        }
+
         .layui-input, .layui-textarea {
             width: 70%;
         }
@@ -32,9 +36,9 @@
 
     </style>
 
-    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.js"></script>
+    <script type="text/javascript" src="static/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
     <script type="text/javascript" src="static/layui/layui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.6.2/viewer.common.min.js"></script>
 </head>

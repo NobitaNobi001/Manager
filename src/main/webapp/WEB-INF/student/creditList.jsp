@@ -7,7 +7,7 @@
     <div class="credit">
         <h4>我的学分</h4>
         <div class="action" style="text-align: right;margin: 10px 0;padding: 10px 0;">
-            <a href="javascript:void(0);" class="btn btn-danger">总学分:${sumCredit}</a>
+            <button id="seeSumCredit" class="btn btn-danger">总学分:${sumCredit}</button>
         </div>
         <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>
@@ -106,10 +106,92 @@
 </div>
 </main>
 <%@include file="/WEB-INF/common/student/studentFooter.jsp" %>
+<!--创新实践学分明细模态框-->
+<div class="modal fade" id="SumCreditDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">创新实践学分各申报类别得分情况</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">大学生学科竞赛活动(含大学生创新创业训练项目):</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="大学生学科竞赛活动(含大学生创新创业训练项目)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">大学生文体竞赛活动:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="大学生文体竞赛活动">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">创新创业实践训练(课程):</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="创新创业实践训练(课程)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">论文、专利、作品发表:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="论文、专利、作品发表">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">职业(等级)证书:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="职业(等级)证书">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">参与教师科研(或实验室工作):</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="参与教师科研(或实验室工作)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">社会实践(调查):</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="社会实践(调查)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">读书活动:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="读书活动">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">学生工作与社团活动:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="学生工作与社团活动">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">专业认定的其他创新实践活动:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="专业认定的其他创新实践活动">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">总学分:${sumCredit}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--创新实践学分明细模态框-->
 </body>
 </html>
 <script type="text/javascript">
     $(function () {
+        var layer = layui.layer;
         var arr = $("button[name='state']");
         $.each(arr, function () {
             if ($(this).text() == "已通过") {
@@ -119,6 +201,46 @@
             } else {
                 $(this).addClass("btn-warning");
             }
-        })
+        });
+
+        function sumCreditDetail(stuNumber) {
+            // 发送ajax请求
+            $.ajax({
+                url: "student/checkCreditDetail",
+                type: "POST",
+                data: {"stuNumber": stuNumber},
+                dataType: 'json',
+                error: function (request) {
+                    parent.layer.alert("网络超时,请稍后再试");
+                },
+                success: function (data) {
+                    console.log(data[0].sort);
+                    // 解析模态框里面的数据
+                    var sortValues = $("input[name='sortValue']");
+                    for (var i = 0; i < sortValues.length; i++) {
+                        for (var j = 0; j < data.length; j++) {
+                            if ($(sortValues[i]).attr("sort") == data[j].sort) {
+                                $(sortValues[i]).val(data[j].sumUp);
+                                break;
+                            }
+                        }
+                        if ($(sortValues[i]).val() == "") {
+                            $(sortValues[i]).val(0);
+                        }
+                    }
+                }
+            });
+        }
+
+        // 显示创新学分明细模态框
+        $("#seeSumCredit").click(function () {
+            // 发送请求查看明细
+            sumCreditDetail(${sessionScope.student.stuNumber});
+            $("#SumCreditDetail").modal({
+                backdrop: "static",
+                keyboard: true
+            })
+        });
+
     })
 </script>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dao.StudentMapper">
-<!--    <cache eviction="FIFO" flushInterval="600000" readOnly="true" size="1024"></cache>-->
+    <!--    <cache eviction="FIFO" flushInterval="600000" readOnly="true" size="1024"></cache>-->
     <resultMap id="WithCreditResultMap" type="com.bean.Student">
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
@@ -15,8 +15,21 @@
         <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="name" property="college.name" jdbcType="VARCHAR"></result>
         <result column="sum_credit" property="sumCredit" jdbcType="DOUBLE"></result>
+    </resultMap>
+    <resultMap id="WithCollegeResultMap" type="com.bean.Student">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="stu_name" property="stuName" jdbcType="VARCHAR"/>
+        <result column="college_id" property="collegeId" jdbcType="INTEGER"/>
+        <result column="major" property="major" jdbcType="VARCHAR"/>
+        <result column="class_name" property="className" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="CHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
         <result column="name" property="college.name" jdbcType="VARCHAR"></result>
     </resultMap>
+
     <resultMap id="UserNameAndPassword" type="com.bean.Student">
         <result column="password" property="password" jdbcType="VARCHAR"/>
     </resultMap>
@@ -102,15 +115,18 @@
         c1.name,c2.sum_credit
     </sql>
 
+    <sql id="WithCollege_Column_List">
+        s.id,s.stu_number,s.password,s.stu_name,s.college_id,s.major,s.class_name,s.gender,s.phone,s.email,
+        c1.name
+    </sql>
+
     <!--根据学号查找学生的信息-->
-    <select id="selectStudentByStuNumber" resultMap="WithCreditResultMap" parameterType="java.lang.Integer">
+    <select id="selectStudentByStuNumber" resultMap="WithCollegeResultMap" parameterType="java.lang.Integer">
         select
-        <include refid="WithSumcredit_Column_List"/>
+        <include refid="WithCollege_Column_List"/>
         FROM stu_info s
         LEFT JOIN college c1
         on s.college_id=c1.id
-        join credit c2
-        on s.stu_number=c2.stu_number
         where s.stu_number=#{stu_number,jdbcType=INTEGER}
     </select>
 

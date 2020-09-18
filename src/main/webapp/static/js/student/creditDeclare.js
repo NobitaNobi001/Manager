@@ -43,20 +43,25 @@ layui.use('upload', function () {
 layui.use('form', function () {
     var form = layui.form;
     form.verify({
-        applyName: function (value, item) { //value：表单的值、item：表单的DOM对象
+        sort: function (value) {
+            if (value == 0 || value == null) {
+                return '请选择申报类别';
+            }
+        },
+        applyName: function (value) { //value：表单的值、item：表单的DOM对象
             if (!value) {
-                return '请填写申报活动名称'
+                return '请填写申报活动名称';
             }
         }
-        , applyCredit: function (value, item) {
+        , applyCredit: function (value) {
             if (value <= 0) {
-                return "申报创新学分必须大于0小于8,可保留2位小数"
+                return "申报创新学分必须大于0小于8,可保留2位小数";
             }
             if (value >= 8) {
-                return "申报创新学分必须大于0小于8,可保留2位小数"
+                return "申报创新学分必须大于0小于8,可保留2位小数";
             }
             if (value.toString().length > 4) {
-                return "申报创新学分必须大于0小于8,可保留2位小数"
+                return "申报创新学分必须大于0小于8,可保留2位小数";
             }
         }
     });
@@ -88,7 +93,9 @@ layui.use('form', function () {
                 },
                 success: function (data) {
                     var iconCode = data.code == 100 ? 1 : 2;
-                    layer.msg(data.extend.result, {icon: iconCode, time: 3000});
+                    layer.msg(data.extend.result, {icon: iconCode, time: 3000}, function () {
+                        window.location.href = "student/viewCredit.html";
+                    });
                 }
             });
         }

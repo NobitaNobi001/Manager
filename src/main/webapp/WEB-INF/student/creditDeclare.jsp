@@ -15,8 +15,8 @@
             <div class="layui-form-item row item layui-input-inline">
                 <label class="layui-form-label">申报类别</label>
                 <div class="layui-input-block">
-                    <select name="sort" lay-verify="required">
-                        <option value=""></option>
+                    <select name="sort" lay-verify="required|sort" required>
+                        <option value="0">请选择申报类别</option>
                         <option value="大学生学科竞赛活动(含大学生创新创业训练项目)">大学生学科竞赛活动(含大学生创新创业训练项目)</option>
                         <option value="大学生文体竞赛活动">大学生文体竞赛活动</option>
                         <option value="创新创业实践训练(课程)">创新创业实践训练(课程)</option>
