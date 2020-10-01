@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="zh-CN">
@@ -336,48 +337,48 @@
                                 </div>
                             </nav>
                         </c:when>
-                            <c:otherwise>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
+                        <c:otherwise>
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=1">首页</a>
+                                </li>
+                                <c:if test="${pageInfo.hasPreviousPage}">
                                     <li>
-                                        <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=1">首页</a>
+                                        <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.prePage }"
+                                           aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
                                     </li>
-                                    <c:if test="${pageInfo.hasPreviousPage}">
-                                        <li>
-                                            <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.prePage }"
-                                               aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
+                                </c:if>
 
-                                    <c:forEach items="${pageInfo.navigatepageNums }" var="page">
+                                <c:forEach items="${pageInfo.navigatepageNums }" var="page">
                                     <c:if test="${page==pageInfo.pageNum }">
                                         <li class="active"><a href="#">${page }</a></li>
                                     </c:if>
-                                        <c:if test="${page!=pageInfo.pageNum }">
-                                            <li>
-                                                <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${page }">${page }</a>
-                                            </li>
-                                        </c:if>
-                                </c:forEach>
-
-                                    <c:if test="${pageInfo.hasNextPage}">
+                                    <c:if test="${page!=pageInfo.pageNum }">
                                         <li>
-                                            <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.nextPage }"
-                                               aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
+                                            <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${page }">${page }</a>
                                         </li>
                                     </c:if>
+                                </c:forEach>
+
+                                <c:if test="${pageInfo.hasNextPage}">
                                     <li>
-                                        <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.pages }">末页</a>
+                                        <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.nextPage }"
+                                           aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
                                     </li>
-                                    <span style="font-size:15px;margin-left: 5px;line-height: 34px">
+                                </c:if>
+                                <li>
+                                    <a href="admin/get/student.html?keyword=${param.keyword }&college=${param.college }&major=${param.major}&stuClass=${param.stuClass }&pageNum=${pageInfo.pages }">末页</a>
+                                </li>
+                                <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${pageInfo.pageNum }页，共${pageInfo.pages }页(共${pageInfo.total }条记录)
 								</span>
-                                </ul>
-                            </nav>
+                            </ul>
+                        </nav>
                     </center>
                     </c:otherwise>
                     </c:choose>
@@ -456,7 +457,6 @@
                 }
             }
         });
-
         // 新增模态框表单验证
         $('#StuAddModal form').bootstrapValidator({
             // 通用提示语
@@ -519,7 +519,6 @@
                 }
             }
         });
-
         layui.use('upload', function () {
             var upload = layui.upload;
             var uploadInst = upload.render({
@@ -551,7 +550,6 @@
             });
         });
     });
-
     // 给新增按钮绑定单击事件出现模态框
     $("#stu_add_modal_btn").click(function () {
         // 表单重置
@@ -561,7 +559,6 @@
             backdrop: "static"
         });
     });
-
     // 新增模态框学院改变后重新加载专业
     $("#StuAddModal select[name='collegeId']").change(function () {
         var collegeCode = $("#StuAddModal select[name='collegeId']").val();
@@ -569,14 +566,12 @@
         $("#StuAddModal select[name='className']").empty();
         $("#StuAddModal select[name='className']").append($("<option></option>").val("").text("请选择班级"));
     });
-
     // 新增模态框专业改变后重新加载班级
     $("#StuAddModal select[name='major']").change(function () {
         var collegeCode = $("#StuAddModal select[name='collegeId']").val();
         var majorCode = $("#StuAddModal select[name='major']").val();
         getClass(collegeCode, majorCode, "#StuAddModal select[name='className']", "");
     });
-
     // 修改模态框学院改变后重新加载专业
     $("#StuUpdateModal select[name='collegeId']").change(function () {
         var collegeCode = $("#StuUpdateModal select[name='collegeId']").val();
@@ -584,14 +579,12 @@
         $("#StuUpdateModal select[name='className']").empty();
         $("#StuUpdateModal select[name='className']").append($("<option></option>").val("").text("请选择班级"));
     });
-
     // 修改模态框专业改变后重新加载班级
     $("#StuUpdateModal select[name='major']").change(function () {
         var collegeCode = $("#StuUpdateModal select[name='collegeId']").val();
         var majorCode = $("#StuUpdateModal select[name='major']").val();
         getClass(collegeCode, majorCode, "#StuUpdateModal select[name='className']", "");
     });
-
     //普通表单学院改变后重新加载专业
     $("#checkForm select[name='college']").change(function () {
         var collegeCode = $("#checkForm select[name='college']").val();
@@ -605,7 +598,6 @@
         var majorCode = $("#checkForm select[name='major']").val();
         getClass(collegeCode, majorCode, "#checkForm select[name='stuClass']", "-1");
     });
-
     // 获取专业
     function getMajor(collegeCode, ele, DefaultValue) {
         $(ele).empty();
@@ -623,7 +615,6 @@
             dataType: "json"
         })
     };
-
     //获取班级
     function getClass(collegeCode, majorCode, ele, DefaultValue) {
         $(ele).empty();
@@ -641,7 +632,6 @@
             dataType: "json"
         })
     };
-
     //获取学生信息的ajax显示在更新模态框中
     function getStu(id) {
         $.ajax({
@@ -664,7 +654,6 @@
             dataType: "json"
         });
     }
-
     // 给编辑按钮绑定单击事件出现模态框
     $(document).on("click", ".edit_btn", function () {
         // 表单重置
@@ -676,7 +665,6 @@
             backdrop: "static"
         });
     });
-
     // 点击编辑模态框中的密码输入框后面的小眼睛将password改为text
     $("#eye").click(function () {
         var flag = $(this).hasClass("glyphicon-eye-open");
@@ -746,7 +734,6 @@
         //去除末尾多余的符号
         stuNames = stuNames.substring(0, stuNames.length - 1);
         stuNumbers = stuNumbers.substring(0, stuNumbers.length - 1);
-
         if (stuNumbers == "") {
             layer.alert("请选择需要删除的学生!", {icon: 2});
             return false;

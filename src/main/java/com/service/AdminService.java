@@ -46,6 +46,23 @@ public class AdminService {
     }
 
     /**
+     * 查询出所有管理员
+     * @return
+     */
+    public List<Admin> selectAdmins() {
+        return adminMapper.selectByExample(null);
+    }
+
+    /**
+     * 根据管理员id查询单个管理员
+     * @param id
+     * @return
+     */
+    public Admin selectAdminById(Integer id){
+        return adminMapper.selectByPrimaryKey(id);
+    }
+
+    /**
      * update
      */
 
@@ -81,7 +98,8 @@ public class AdminService {
 
     /**
      * 根据管理员账号更新密码
-     * @param number 管理员工号
+     *
+     * @param number   管理员工号
      * @param password 密码
      */
     public void updatePasswordByAdminNumber(Integer number, String password) {
@@ -168,11 +186,37 @@ public class AdminService {
     }
 
     /**
+     * 删除单个管理员
+     *
+     * @param id 管理员id
+     */
+    public void deleteAdmin(Integer id) {
+        adminMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 批量删除教师
+     * @param ids
+     */
+    public void deleteBatchAdmin(List<Integer> ids){
+
+        AdminExample example = new AdminExample();
+
+        AdminExample.Criteria criteria = example.createCriteria();
+
+        criteria.andIdIn(ids);
+
+        adminMapper.deleteByExample(example);
+
+    }
+
+    /**
      * insert
      */
 
     /**
      * 通过模态框中的表单新增学生
+     *
      * @param student
      */
     public void insertStuByForm(Student student) {
@@ -189,39 +233,62 @@ public class AdminService {
     }
 
     /**
+     * 新增单个管理员
+     * @param admin
+     */
+    public void insertAdmin(Admin admin){
+        adminMapper.insertSelective(admin);
+    }
+
+    /**
      * 通过excel新增学生
+     *
      * @param students
      */
     public void insertStuByExcel(List<Student> students) {
-            Boolean TableNameIsSame=true;
-            // 得到第一个学生的学院id
-            Integer FirstCollegeId = students.get(0).getCollegeId();
-            // 得到第一个学生应该插入的表名
-            String FirstTableName=CollegeNameUtil.getTableName(FirstCollegeId);
-            // 创建总学分集合
-            List<Credit> credits = new ArrayList<>();
-            // 创建学院对象
+        Boolean TableNameIsSame = true;
+        // 得到第一个学生的学院id
+        Integer FirstCollegeId = students.get(0).getCollegeId();
+        // 得到第一个学生应该插入的表名
+        String FirstTableName = CollegeNameUtil.getTableName(FirstCollegeId);
+        // 创建总学分集合
+        List<Credit> credits = new ArrayList<>();
+        // 创建学院对象
+        for (Student student : students) {
+            // 判断要插入的学生的学院是否都相同
+            if (student.getCollegeId() != FirstCollegeId) {
+                TableNameIsSame = false;
+            }
+            credits.add(new Credit(student.getStuNumber(), 0.0));
+        }
+        // 插入学生表
+        studentMapper.insertBatchStuByExcel(students);
+        // 插入学分表
+        creditMapper.insertBatchCreditByExcel(credits);
+        // 插入学院学生表
+        // 如果是表名是都是一样的话，那么批量插入学院学生表 否则依次插入学院学生表
+        if (TableNameIsSame == true) {
+            collegeStuMapper.insertBatchCollegeStu(FirstTableName, students);
+        } else {
             for (Student student : students) {
-                // 判断要插入的学生的学院是否都相同
-                if(student.getCollegeId()!=FirstCollegeId){
-                    TableNameIsSame=false;
-                }
-                credits.add(new Credit(student.getStuNumber(), 0.0));
+                String tableName = CollegeNameUtil.getTableName(student.getCollegeId());
+                collegeStuMapper.insertSelective(tableName, student);
             }
-            // 插入学生表
-            studentMapper.insertBatchStuByExcel(students);
-            // 插入学分表
-            creditMapper.insertBatchCreditByExcel(credits);
-            // 插入学院学生表
-            // 如果是表名是都是一样的话，那么批量插入学院学生表 否则依次插入学院学生表
-            if(TableNameIsSame==true){
-                collegeStuMapper.insertBatchCollegeStu(FirstTableName,students);
-            }else{
-                for (Student student : students) {
-                    String tableName = CollegeNameUtil.getTableName(student.getCollegeId());
-                    collegeStuMapper.insertSelective(tableName, student);
-                }
-            }
+        }
+    }
+
+    /**
+     * 通过Excel批量插入管理员
+     * @param admins
+     */
+    public void insertBatchAdmin(List<Admin> admins){
+
+        try{
+            adminMapper.insertBatchAdminByExcel(admins);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -247,8 +314,9 @@ public class AdminService {
 
     /**
      * 校验督察账号是否绑定此邮箱
+     *
      * @param number 督察账号
-     * @param email 邮箱
+     * @param email  邮箱
      * @return
      */
     public boolean checkEmailByAdmin(Integer number, String email) {

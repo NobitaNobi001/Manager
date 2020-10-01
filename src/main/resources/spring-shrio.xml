@@ -98,8 +98,8 @@
     -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login.jsp"/>
-        <property name="unauthorizedUrl" value="/login.jsp"/>
+        <property name="loginUrl" value="/index.jsp"/>
+        <property name="unauthorizedUrl" value="/index.jsp"/>
 
         <!--配置哪些页面需要受保护 以及需要的权限-->
         <!--
@@ -122,6 +122,7 @@
                 /student/** = authc
                 /teacher/** = authc
                 /admin/** = authc
+                /admins/** = authc
                 /watcher/** = authc
 
                 /logout = logout

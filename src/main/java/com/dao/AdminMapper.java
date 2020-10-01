@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface AdminMapper {
+
     int countByExample(AdminExample example);
 
     int deleteByExample(AdminExample example);
@@ -33,4 +34,6 @@ public interface AdminMapper {
     int selectEmailByAdmin(@Param("number") Integer number,@Param("email") String email);
 
     int updatePasswordByAdminNumber(@Param("number") Integer number,@Param("password") String password);
+
+    int insertBatchAdminByExcel(@Param("list") List<Admin> list);
 }
