@@ -99,19 +99,19 @@
   </sql>
 
     <!--将所有的教师进行查出-->
-    <select id="selectByExample" parameterType="com.bean.TeacherExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="com.bean.TeacherExample" resultMap="teacherWithCollege">
         select
-        <if test="distinct">
-            distinct
-        </if>
-        <include refid="Base_Column_List"/>
-        from tea_info
+        <if test="distinct">distinct</if>
+
+        <include refid="WithCollege_Column_List"/>
+        from tea_info t left join college c on t.`college_id`=c.`id`
         <if test="_parameter != null">
+
             <include refid="Example_Where_Clause"/>
+
         </if>
-        <if test="orderByClause != null">
-            order by ${orderByClause}
-        </if>
+
+        <if test="orderByClause != null">order by ${orderByClause}</if>
     </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select

@@ -106,4 +106,3 @@
 </body>
 </html>
 <script type="text/javascript" src="static/js/student/creditDeclare.js"></script>
-

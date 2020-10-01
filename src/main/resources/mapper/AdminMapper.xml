@@ -94,13 +94,13 @@
     <sql id="WithCollege_Column_List">
     a.id, admin_number, password, admin_name, a.college_id, gender,  phone, email,is_super,c.id,c.name
 </sql>
-    <select id="selectByExample" parameterType="com.bean.AdminExample" resultMap="BaseResultMap">
+    <select id="selectByExample" parameterType="com.bean.AdminExample" resultMap="AdminWithCollege">
         select
         <if test="distinct">
             distinct
         </if>
-        <include refid="Base_Column_List"/>
-        from admin_info
+        <include refid="WithCollege_Column_List"/>
+        from admin_info a left join college c on a.`college_id`=c.`id`
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
@@ -312,4 +312,30 @@
         set password = #{password,jdbcType=VARCHAR}
         where admin_number = #{number,jdbcType=INTEGER}
     </update>
+
+    <insert id="insertBatchAdminByExcel" parameterType="java.util.List">
+        insert into admin_info
+        (
+        admin_number,
+        admin_name,
+        password,
+        college_id,
+        gender,
+        is_super,
+        phone,
+        email
+
+        )
+        values
+        <foreach collection="list" item="admin" separator=",">
+            #{admin.adminNumber},
+            #{admin.adminName},
+            #{admin.password},
+            #{admin.collegeId},
+            #{admin.gender},
+            #{admin.isSuper},
+            #{admin.phone},
+            #{admin.email}
+        </foreach>
+    </insert>
 </mapper>

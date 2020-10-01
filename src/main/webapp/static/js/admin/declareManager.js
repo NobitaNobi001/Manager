@@ -1,3 +1,4 @@
+
 // 给审核按钮添加样式
 var arr = $("button[name='state']");
 $.each(arr, function () {

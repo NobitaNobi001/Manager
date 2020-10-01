@@ -57,7 +57,7 @@ public class StudentController {
      *@Return:com.bean.Msg
      *@Author:h1656
      *@Date:2020/9/8 16:08
-    */
+     */
     @PostMapping(value = "/updateStuPassword.html")
     @ResponseBody
     public String updateStuPassword(@RequestParam("stuNumber") int stuNumber, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
@@ -91,7 +91,7 @@ public class StudentController {
      *@Return:java.lang.String
      *@Author:h1656
      *@Date:2020/9/8 16:07
-    */
+     */
     @RequestMapping(value = "/apply.html",method = RequestMethod.POST)
     @ResponseBody
     public String apply(
@@ -107,7 +107,7 @@ public class StudentController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try{
             // 项目路径
-           String BasePath=request.getServletContext().getRealPath("/applyImg");
+            String BasePath=request.getServletContext().getRealPath("/applyImg");
             if(!file.isEmpty()) {
                 // 创建日历对象
                 Calendar now = Calendar.getInstance();
@@ -147,8 +147,8 @@ public class StudentController {
      *@Param:[page, model, request]
      *@Return:java.lang.String
      *@Author:h1656
-    *@Date:2020/9/8 16:07
-    */
+     *@Date:2020/9/8 16:07
+     */
     @RequestMapping("/viewCredit.html")
     public String viewCredit(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpServletRequest request) throws Exception {
         // 得到学生对象

@@ -30,6 +30,6 @@ public class StuExcel {
     @ExcelProperty("班级")
     private String className;
 
-    @ExcelProperty("年级")
-    private String grade;
+//    @ExcelProperty("年级")
+//    private String grade;
 }

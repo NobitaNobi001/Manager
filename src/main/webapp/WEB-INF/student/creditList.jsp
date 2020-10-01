@@ -209,7 +209,6 @@
                 $(this).addClass("btn-warning");
             }
         });
-
         function sumCreditDetail(stuNumber) {
             // 发送ajax请求
             $.ajax({
@@ -237,7 +236,6 @@
                 }
             });
         }
-
         // 显示创新学分明细模态框
         $("#seeSumCredit").click(function () {
             // 发送请求查看明细
@@ -247,7 +245,6 @@
                 keyboard: true
             })
         });
-
         //显示申报图片
         $(document).on("click", ".apply-btn", function () {
             $(this).popover({
@@ -263,6 +260,5 @@
                 }
             });
         })
-
     })
 </script>

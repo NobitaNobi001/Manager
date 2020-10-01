@@ -140,7 +140,7 @@ $(document).on("click", ".edit-btn", function () {
 });
 
 //校验修改信息时的表单
-function validat_update_form() {
+function validate_update_form() {
 
     //1.校验姓名是否为空输入
     if ($("#teacherName_update_input").val().trim() == "") {
@@ -183,7 +183,7 @@ function validat_update_form() {
 $("#teacher_update_btn").click(function () {
 
     //1.校验表单数据
-    if (!validat_update_form()) {
+    if (!validate_update_form()) {
         return false;
     }
 
@@ -419,7 +419,3 @@ function build_teacher_table(result) {
     });
 
 }
-
-$("#batch_add_teacher_btn").click(function () {
-
-});

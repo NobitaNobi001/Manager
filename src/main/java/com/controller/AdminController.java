@@ -2,6 +2,8 @@ package com.controller;
 
 import com.exception.ImportExcelStuException;
 import com.exception.ExportStuException;
+import com.github.pagehelper.PageHelper;
+import com.listener.ExportAdminListener;
 import com.listener.ExportStuListener;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
@@ -51,6 +53,8 @@ public class AdminController {
     private WatcherService watcherService;
     @Autowired
     private ExportStuListener stuListener;
+    @Autowired
+    private ExportAdminListener adminListener;
 
 
     /**
@@ -98,7 +102,7 @@ public class AdminController {
 
         Admin admin1 = (Admin) request.getSession().getAttribute("admin");
 
-        if("".equals(admin.getEmail())||"".equals(admin.getPhone())||"".equals(admin.getGender())){
+        if ("".equals(admin.getEmail()) || "".equals(admin.getPhone()) || "".equals(admin.getGender())) {
             adminService.updateAdmin(admin);
 
             Admin admin2 = adminService.selectAdminByAdminNumber(admin1.getAdminNumber());
@@ -342,4 +346,153 @@ public class AdminController {
         Student student = studentService.selectStuByPrimaryKey(stuId);
         return Msg.success().add("student", student);
     }
+
+    /**
+     * 查询出所有管理员
+     * @param pn
+     * @return
+     */
+    @GetMapping("/admins")
+    @ResponseBody
+    public Msg getAdmins(@RequestParam("pn") Integer pn) {
+
+        PageHelper.startPage(pn, 5);
+
+        List<Admin> admins = adminService.selectAdmins();
+
+        if (admins.size() != 0) {
+            PageInfo page = new PageInfo(admins, 5);
+            return Msg.success().add("pageInfo", page);
+        }
+        return Msg.fail();
+    }
+
+    /**
+     * 根据id查询单个管理员
+     * @param id
+     * @return
+     */
+    @GetMapping("/admin/{id}")
+    @ResponseBody
+    public Msg getAdmin(@PathVariable("id") Integer id){
+
+        Admin admin = adminService.selectAdminById(id);
+
+        return Msg.success().add("adminInfo",admin);
+
+    }
+
+
+    /**
+     * 删除管理员 单个和批量
+     * @param id
+     * @return
+     */
+    @DeleteMapping("/admin/{id}")
+    @ResponseBody
+    public Msg deleteAdmin(@PathVariable("id") String id){
+
+        if(id.contains("-")){
+
+            List<Integer> delete_ids = new ArrayList<>();
+
+            String[] ids = id.split("-");
+
+            for(String temp : ids){
+                delete_ids.add(Integer.parseInt(temp));
+            }
+            adminService.deleteBatchAdmin(delete_ids);
+
+        }else{
+
+            adminService.deleteAdmin(Integer.parseInt(id));
+        }
+
+        return Msg.success();
+    }
+
+    /**
+     * 修改单个管理员的信息
+     * @param admin
+     * @return
+     */
+    @PutMapping("/admin/{id}")
+    @ResponseBody
+    public Msg updateAdmin(Admin admin){
+
+        adminService.updateAdmin(admin);
+
+        return Msg.success();
+    }
+
+    /**
+     * 插入单个管理员
+     * @param admin
+     * @return
+     */
+    @PostMapping("/admin")
+    @ResponseBody
+    public Msg insertAdmin(Admin admin){
+
+        admin.setPassword(String.valueOf(admin.getAdminNumber()));
+        adminService.insertAdmin(admin);
+
+        return Msg.success();
+    }
+
+    /**
+     * 校验管理员账号是否存在
+     * @param adminNumber
+     * @return
+     */
+    @PostMapping("/checkAdmin")
+    @ResponseBody
+    public Msg checkAdmin(@RequestParam("adminNumber") Integer adminNumber){
+
+        boolean flag = adminService.checkAdmin(adminNumber);
+
+        if(flag){
+            return Msg.success();
+        }else{
+            return Msg.fail().add("msg","管理员账号已存在");
+        }
+    }
+
+
+    @RequestMapping("/insertAdminByExcel")
+    @ResponseBody
+    public Msg insertBatchAdmin(@RequestParam("ExcelFile") MultipartFile uploadExcel) {
+
+        // 判断是否为null文件
+        if (uploadExcel.getSize() == 0) {
+            return Msg.fail().add("message", "请选择文件");
+        }
+        // 判断文件类型是否为xls
+        int begin = uploadExcel.getOriginalFilename().indexOf(".");
+        int last = uploadExcel.getOriginalFilename().length();
+        //获得文件后缀名
+        String suffix = uploadExcel.getOriginalFilename().substring(begin, last);
+        if (!suffix.endsWith(".xls")) {
+            return Msg.fail().add("message", "请上传xls文件,且根据模板导入");
+        }
+
+        try {
+            // 工作簿
+            ExcelReaderBuilder readWorkBook = EasyExcel.read(uploadExcel.getInputStream(), AdminExcel.class, adminListener);
+            // 工作表
+            ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
+
+            System.out.println(sheet.toString());
+            // 读
+            sheet.doRead();
+
+        } catch (Exception e) {
+            adminListener.getAdmins().clear();
+            e.printStackTrace();
+            return Msg.fail();
+        }
+
+        return Msg.success().add("message", "导入成功");
+    }
+
 }

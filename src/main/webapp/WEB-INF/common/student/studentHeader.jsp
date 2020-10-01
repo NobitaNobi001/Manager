@@ -21,19 +21,15 @@
         .layui-input-inline {
             width: 75%;
         }
-
         .layui-form-select .layui-edge {
             right: 200px;
         }
-
         .layui-input, .layui-textarea {
             width: 70%;
         }
-
         .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
             vertical-align: middle;
         }
-
     </style>
 
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.min.js"></script>
@@ -80,4 +76,3 @@
                     <li><a href="student/updatePassword.html">修改密码</a></li>
                 </ul>
             </div>
-
