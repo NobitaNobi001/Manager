@@ -28,7 +28,7 @@ $(function () {
                     stringLength: {
                         min: 11,
                         max: 11,
-                        message: '手机号只支持支持11位数'
+                        message: '手机号只支持11位数'
                     }
                 }
             },

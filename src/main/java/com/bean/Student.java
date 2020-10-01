@@ -1,3 +1,4 @@
+
 package com.bean;
 
 import org.hibernate.validator.constraints.Length;
@@ -52,6 +53,17 @@ public class Student implements Serializable {
     @NotNull
     private Double sumCredit;
 
+    @NotBlank
+    private String stuGrade;
+
+    public String getStuGrade() {
+        return stuGrade;
+    }
+
+    public void setStuGrade(String stuGrade) {
+        this.stuGrade = stuGrade;
+    }
+
     public Double getSumCredit() {
         return sumCredit;
     }
@@ -66,16 +78,6 @@ public class Student implements Serializable {
 
     public void setCollege(College college) {
         this.college = college;
-    }
-
-    public Student() {
-    }
-
-    public Student(Integer id, String gender, String phone, String email) {
-        this.id = id;
-        this.gender = gender;
-        this.phone = phone;
-        this.email = email;
     }
 
     public Integer getId() {
@@ -173,6 +175,7 @@ public class Student implements Serializable {
                 ", email='" + email + '\'' +
                 ", college=" + college +
                 ", sumCredit=" + sumCredit +
+                ", stuGrade='" + stuGrade + '\'' +
                 '}';
     }
 }

@@ -1,3 +1,4 @@
+
 // 给审核按钮添加样式
 var arr = $("button[name='state']");
 $.each(arr, function () {
@@ -72,7 +73,6 @@ function reset_form(ele) {
 $("#exportData").click(function () {
     // 每次出现模态框都将之前的信息给清空并且将表单样式也清空
     reset_form("#exportStuRecord form");
-    // 弹出模态框之前显示学院班级姓名在下拉列表中
     // 设置点网页背景不会关闭模态框
     $("#exportStuRecord").modal({
         backdrop: "static"

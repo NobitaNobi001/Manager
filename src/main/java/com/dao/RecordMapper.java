@@ -1,5 +1,6 @@
 package com.dao;
 
+import com.bean.CreditDetail;
 import com.bean.Record;
 import com.bean.RecordExample;
 import java.util.List;
@@ -37,5 +38,7 @@ public interface RecordMapper {
     List<Record> selectByStuName(String stuName);
 
     List<Record> findAllAuditBystuNumbers(@Param("stuNumbers") List<Integer> stuNumbers);
+
+    List<CreditDetail> selectCreditRecordGroupBySort(Integer stuNumber);
 
 }

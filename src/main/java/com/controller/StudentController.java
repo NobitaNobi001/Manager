@@ -1,5 +1,6 @@
 package com.controller;
 
+import com.bean.CreditDetail;
 import com.bean.Msg;
 import com.bean.Record;
 import com.bean.Student;
@@ -56,7 +57,7 @@ public class StudentController {
      *@Return:com.bean.Msg
      *@Author:h1656
      *@Date:2020/9/8 16:08
-    */
+     */
     @PostMapping(value = "/updateStuPassword.html")
     @ResponseBody
     public String updateStuPassword(@RequestParam("stuNumber") int stuNumber, @RequestParam("oldPassword") String oldPassword, @RequestParam("newPassword") String newPassword) {
@@ -90,7 +91,7 @@ public class StudentController {
      *@Return:java.lang.String
      *@Author:h1656
      *@Date:2020/9/8 16:07
-    */
+     */
     @RequestMapping(value = "/apply.html",method = RequestMethod.POST)
     @ResponseBody
     public String apply(
@@ -103,10 +104,10 @@ public class StudentController {
             @RequestParam("file") CommonsMultipartFile file,
             HttpServletRequest request
     ){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try{
             // 项目路径
-           String BasePath=request.getServletContext().getRealPath("/applyImg");
+            String BasePath=request.getServletContext().getRealPath("/applyImg");
             if(!file.isEmpty()) {
                 // 创建日历对象
                 Calendar now = Calendar.getInstance();
@@ -138,7 +139,7 @@ public class StudentController {
         } catch (Exception e) {
             return JsonUtil.getJson(Msg.fail().add("result", "申报失败，请重新申报"));
         }
-        return JsonUtil.getJson(Msg.success().add("result", "申报成功,请等待审核"));
+        return JsonUtil.getJson(Msg.success().add("result", "申报成功,请等待审核,即将返回学分列表页面"));
     }
 
     /**
@@ -146,21 +147,27 @@ public class StudentController {
      *@Param:[page, model, request]
      *@Return:java.lang.String
      *@Author:h1656
-    *@Date:2020/9/8 16:07
-    */
+     *@Date:2020/9/8 16:07
+     */
     @RequestMapping("/viewCredit.html")
     public String viewCredit(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpServletRequest request) throws Exception {
         // 得到学生对象
-        Student student= (Student) request.getSession().getAttribute(StringConstant.STUDENT_TYPE);
+        Student student = (Student) request.getSession().getAttribute(StringConstant.STUDENT_TYPE);
         // 查询学分列表
-        List<Record> list = studentService.findAllRecordByStuNumber(student.getStuNumber(), page, 5);
-        // 封装成pageInfo
-        PageInfo<Record> info = new PageInfo(list);
-
+        PageInfo<Record> info = studentService.findAllRecordByStuNumber(student.getStuNumber(), page, 5);
         //查询总学分
         Double sumCredit = studentService.selectSumCreditByStuNumber(student.getStuNumber());
         model.addAttribute("sumCredit", sumCredit);
         model.addAttribute("info", info);
         return "student/creditList";
+    }
+
+    // 查看创新总学分明细
+    @RequestMapping("/checkCreditDetail")
+    @ResponseBody
+    public String checkCreditDetail(@RequestParam("stuNumber") Integer stuNumber) {
+        List<CreditDetail> list = studentService.selectCreditRecordGroupBySort(stuNumber);
+        String json = JsonUtil.getJson(list);
+        return json;
     }
 }

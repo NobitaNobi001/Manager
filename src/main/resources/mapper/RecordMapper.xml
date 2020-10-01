@@ -342,7 +342,8 @@
 
     <!--根据学号查询学生的所有申报记录-->
     <select id="findAllBystuNumber" resultType="com.bean.Record">
-    select apply_name,sort,apply_credit,audit_credit,audit_state from credit_record where stu_number=#{stuNumber} order by date desc
+    select apply_name,sort,apply_credit,audit_credit,audit_state,picture from credit_record
+    where stu_number=#{stuNumber} order by audit_state asc,date desc
   </select>
 
     <!--根据学号查询学生的所有申报记录 审核状态升序-->
@@ -375,6 +376,14 @@
     <!--根据学生姓名查询学生的申报记录-->
     <select id="selectByStuName" resultType="com.bean.Record">
         select * from credit_record where stu_name = #{stuName,jdbcType=VARCHAR}  order by audit_state desc
+    </select>
+
+
+    <!--申报类别活动明细表-->
+    <select id="selectCreditRecordGroupBySort" resultType="com.bean.CreditDetail">
+        select sum(apply_credit) sumUp,sort
+        from credit_record where stu_number=#{stuNumber} and audit_state!='未审核'
+        GROUP BY sort;
     </select>
 
 </mapper>

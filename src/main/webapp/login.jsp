@@ -76,4 +76,4 @@
 </div>
 </body>
 </html>
-<script type="text/javascript" src="../static/js/login.js"></script>
+<script type="text/javascript" src="static/js/login.js"></script>

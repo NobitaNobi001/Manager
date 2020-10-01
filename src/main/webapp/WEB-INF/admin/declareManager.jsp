@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="zh-CN">
@@ -104,8 +105,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     <button type="submit" class="btn btn-primary" id="export">导出</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </form>
         </div>
@@ -231,89 +232,89 @@
                             </nav>
                         </c:when>
                         <c:otherwise>
-                    <center>
-                        <c:if test="${requestScope.direction=='toSee' && !empty info.list}">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <li><a href="admin/toSee/studentRecord.html?page=1">首页</a></li>
-                                    <c:if test="${info.hasPreviousPage}">
-                                        <li>
-                                            <a href="admin/toSee/studentRecord.html?page=${info.prePage}"
-                                               aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
+                            <center>
+                                <c:if test="${requestScope.direction=='toSee' && !empty info.list}">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            <li><a href="admin/toSee/studentRecord.html?page=1">首页</a></li>
+                                            <c:if test="${info.hasPreviousPage}">
+                                                <li>
+                                                    <a href="admin/toSee/studentRecord.html?page=${info.prePage}"
+                                                       aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                            </c:if>
 
-                                    <c:forEach items="${info.navigatepageNums}" var="page">
-                                        <c:if test="${page==info.pageNum}">
-                                            <li class="active"><a href="#">${page}</a></li>
-                                        </c:if>
-                                        <c:if test="${page!=info.pageNum}">
-                                            <li><a href="admin/toSee/studentRecord.html?page=${page}">${page}</a></li>
-                                        </c:if>
-                                    </c:forEach>
+                                            <c:forEach items="${info.navigatepageNums}" var="page">
+                                                <c:if test="${page==info.pageNum}">
+                                                    <li class="active"><a href="#">${page}</a></li>
+                                                </c:if>
+                                                <c:if test="${page!=info.pageNum}">
+                                                    <li><a href="admin/toSee/studentRecord.html?page=${page}">${page}</a></li>
+                                                </c:if>
+                                            </c:forEach>
 
-                                    <c:if test="${pageInfo.hasNextPage}">
-                                        <li>
-                                            <a href="admin/toSee/studentRecord.html?page=${info.nextPage}"
-                                               aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
-                                    <li><a href="admin/toSee/studentRecord.html?page=${info.pages}">末页</a></li>
-                                    <span style="font-size:15px;margin-left: 5px;line-height: 34px">
+                                            <c:if test="${pageInfo.hasNextPage}">
+                                                <li>
+                                                    <a href="admin/toSee/studentRecord.html?page=${info.nextPage}"
+                                                       aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                            <li><a href="admin/toSee/studentRecord.html?page=${info.pages}">末页</a></li>
+                                            <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页(共${info.total}条记录)
 									</span>
-                                </ul>
-                            </nav>
-                        </c:if>
-                        <c:if test="${requestScope.direction=='toQuery' &&!empty info.list}">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <li>
-                                        <a href="admin/toQuery/studentRecord.html?page=1&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}">首页</a>
-                                    </li>
-                                    <c:if test="${info.hasPreviousPage}">
-                                        <li>
-                                            <a href="admin/toQuery/studentRecord.html?page=${info.prePage}&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}"
-                                               aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
-
-                                    <c:forEach items="${info.navigatepageNums}" var="page">
-                                        <c:if test="${page==info.pageNum}">
-                                            <li class="active"><a href="#">${page}</a></li>
-                                        </c:if>
-                                        <c:if test="${page!=info.pageNum}">
+                                        </ul>
+                                    </nav>
+                                </c:if>
+                                <c:if test="${requestScope.direction=='toQuery' &&!empty info.list}">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
                                             <li>
-                                                <a href="admin/toQuery/studentRecord.html?page=${page}&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}">${page}</a>
+                                                <a href="admin/toQuery/studentRecord.html?page=1&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}">首页</a>
                                             </li>
-                                        </c:if>
-                                    </c:forEach>
+                                            <c:if test="${info.hasPreviousPage}">
+                                                <li>
+                                                    <a href="admin/toQuery/studentRecord.html?page=${info.prePage}&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}"
+                                                       aria-label="Previous">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                            </c:if>
 
-                                    <c:if test="${pageInfo.hasNextPage}">
-                                        <li>
-                                            <a href="admin/toQuery/studentRecord.html?page=${info.nextPage}&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}"
-                                               aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                    </c:if>
-                                    <li>
-                                        <a href="admin/toQuery/studentRecord.html?page=${info.pages}&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}">末页</a>
-                                    </li>
-                                    <span style="font-size:15px;margin-left: 5px;line-height: 34px">
+                                            <c:forEach items="${info.navigatepageNums}" var="page">
+                                                <c:if test="${page==info.pageNum}">
+                                                    <li class="active"><a href="#">${page}</a></li>
+                                                </c:if>
+                                                <c:if test="${page!=info.pageNum}">
+                                                    <li>
+                                                        <a href="admin/toQuery/studentRecord.html?page=${page}&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}">${page}</a>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
+
+                                            <c:if test="${pageInfo.hasNextPage}">
+                                                <li>
+                                                    <a href="admin/toQuery/studentRecord.html?page=${info.nextPage}&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}"
+                                                       aria-label="Next">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            </c:if>
+                                            <li>
+                                                <a href="admin/toQuery/studentRecord.html?page=${info.pages}&college=${requestScope.college}&major=${requestScope.major}&stuClass=${requestScope.stuClass}">末页</a>
+                                            </li>
+                                            <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页(共${info.total}条记录)
 									</span>
-                                </ul>
-                            </nav>
-                        </c:if>
+                                        </ul>
+                                    </nav>
+                                </c:if>
 
-                    </center>
+                            </center>
                         </c:otherwise>
                     </c:choose>
                 </div>

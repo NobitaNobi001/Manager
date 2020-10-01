@@ -29,13 +29,13 @@ public class ExceptionResolverUtil {
     // 登录失败异常
     @ExceptionHandler(value = UnknownAccountException.class)
     public ModelAndView UnknownAccountException(UnknownAccountException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String viewName = "forward:/index.jsp";
+        String viewName = "forward:/login.jsp";
         return commonResolver(viewName, exception, request, response);
     }
 
     @ExceptionHandler(value = IncorrectCredentialsException.class)
     public ModelAndView IncorrectCredentialsException(IncorrectCredentialsException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String viewName = "forward:/index.jsp";
+        String viewName = "forward:/login.jsp";
         return commonResolver(viewName, exception, request, response);
     }
 
@@ -55,16 +55,6 @@ public class ExceptionResolverUtil {
 
 
     // 通用异常
-//    @ExceptionHandler(value = Exception.class)
-//    public ModelAndView Exception(
-//            Exception exception,
-//            HttpServletRequest request,
-//            HttpServletResponse response
-//    ) throws IOException {
-//        String viewName = "common/404";
-//        return commonResolver(viewName, exception, request, response);
-//    }
-
     @ExceptionHandler(value = RuntimeException.class)
     public ModelAndView Exception(
             Exception exception,
@@ -75,6 +65,7 @@ public class ExceptionResolverUtil {
         return commonResolver(viewName, exception, request, response);
     }
 
+    // 超出数据异常
     @ExceptionHandler(value = OutMaxException.class)
     public ModelAndView OutMaxException(
             Exception exception,

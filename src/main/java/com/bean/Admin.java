@@ -100,4 +100,20 @@ public class Admin {
     public void setCollege(College college) {
         this.college = college;
     }
+
+    @Override
+    public String toString() {
+        return "Admin{" +
+                "id=" + id +
+                ", adminNumber=" + adminNumber +
+                ", password='" + password + '\'' +
+                ", adminName='" + adminName + '\'' +
+                ", collegeId=" + collegeId +
+                ", gender='" + gender + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", isSuper='" + isSuper + '\'' +
+                ", college=" + college +
+                '}';
+    }
 }
