@@ -162,6 +162,7 @@
                 s.stu_name like concat ("%",#{keyword},"%")
             </if>
         </where>
+        order by s.stu_number asc
     </select>
 
     <!--下面是逆向工程-->
@@ -421,6 +422,7 @@
         <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
             #{item}
         </foreach>
+        order by s.stu_number asc
     </select>
 
     <update id="updatePasswordByStudentNumber">

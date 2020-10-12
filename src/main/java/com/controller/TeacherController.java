@@ -81,7 +81,7 @@ public class TeacherController {
 
         System.out.println(stuNumber);
 
-        if(stuNumber.compareTo(StringConstant.MAX_VALUE)>0||stuNumber.length()>StringConstant.MAX_VALUE.length()){
+        if (stuNumber.compareTo(StringConstant.MAX_VALUE) > 0 || stuNumber.length() > StringConstant.MAX_VALUE.length()) {
             throw new OutMaxException("超出了Integer类型的上限");
         }
 
@@ -141,7 +141,7 @@ public class TeacherController {
 
         Teacher teacher1 = (Teacher) request.getSession().getAttribute("teacher");
 
-        if("".equals(teacher.getEmail())||"".equals(teacher.getPhone())||"".equals(teacher.getGender())){
+        if ("".equals(teacher.getEmail()) || "".equals(teacher.getPhone()) || "".equals(teacher.getGender())) {
 
             teacherService.updateTeacher(teacher);
 
@@ -225,7 +225,6 @@ public class TeacherController {
 
         teacher.setPassword(String.valueOf(teacher.getTeaNumber()));
         teacherService.insertTeacher(teacher);
-
         return Msg.success();
 
     }
@@ -356,4 +355,28 @@ public class TeacherController {
         return Msg.success().add("message", "导入成功");
     }
 
+    /**
+     * 根据学院查询出教师
+     *
+     * @param pn
+     * @param collegeId
+     * @return
+     */
+    @GetMapping("/teacherCondition")
+    @ResponseBody
+    public Msg selectTeacherWithCollege(@RequestParam("pn") Integer pn, @RequestParam("collegeId") Integer collegeId) {
+
+        //设置起始页码和页面记录数量
+        PageHelper.startPage(pn, 5);
+
+        List<Teacher> teachers = teacherService.selectTeacherWithCollege(collegeId);
+
+        if (teachers.size() == 0) {
+            return Msg.fail();
+        }
+        //包装数据
+        PageInfo pages = new PageInfo(teachers, 5);
+
+        return Msg.success().add("pageInfo", pages);
+    }
 }

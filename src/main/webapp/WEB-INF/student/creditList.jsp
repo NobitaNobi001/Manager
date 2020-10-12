@@ -7,7 +7,7 @@
     <div class="credit">
         <h4>我的学分</h4>
         <div class="action" style="text-align: right;margin: 10px 0;padding: 10px 0;">
-            <button id="seeSumCredit" class="btn btn-danger">总学分:${sumCredit}</button>
+            <button id="seeSumCredit" class="btn btn-danger" title="点击显示各类明细">总学分:${sumCredit}</button>
         </div>
         <table class="table" border="0" cellspacing="0" cellpadding="0">
             <thead>

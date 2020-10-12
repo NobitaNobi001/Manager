@@ -24,6 +24,124 @@
 
 </head>
 <body>
+<%--显示详细信息的模态框--%>
+<div class="modal fade" id="RecordInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">申报记录</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table" border="0" cellspacing="0" cellpadding="0" id="record_table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>申报日期</th>
+                        <th>申报类别</th>
+                        <th>申报名称</th>
+                        <th>申报学分</th>
+                        <th>审核学分</th>
+                        <th>审核状态</th>
+                        <th>审核教师</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <div>
+                    <%--分页条信息--%>
+                    <div id="page_nav_area"></div>
+                    <%--分页文字信息--%>
+                    <div id="page_info_area"></div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer"></div>
+    </div>
+</div>
+
+<!--创新实践学分明细模态框-->
+<div class="modal fade" id="SumCreditDetailDemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">学分分布情况</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">大学生学科竞赛活动(含大学生创新创业训练项目):</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="大学生学科竞赛活动(含大学生创新创业训练项目)" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">大学生文体竞赛活动:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="大学生文体竞赛活动" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">创新创业实践训练(课程):</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="创新创业实践训练(课程)" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">论文、专利、作品发表:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="论文、专利、作品发表" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">职业(等级)证书:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="职业(等级)证书" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">参与教师科研(或实验室工作):</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="参与教师科研(或实验室工作)" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">社会实践(调查):</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="社会实践(调查)" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">读书活动:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="读书活动" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">学生工作与社团活动:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="学生工作与社团活动" readonly/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-6 control-label">专业认定的其他创新实践活动:</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" name="sortValue" sort="专业认定的其他创新实践活动" readonly/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%--导出数据时的模态框--%>
 <div class="modal fade" id="stuWithCondition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -162,6 +280,7 @@
                             <th>专业</th>
                             <th>班级</th>
                             <th>学分</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -174,6 +293,8 @@
                                 <td>${student.major}</td>
                                 <td>${student.className}</td>
                                 <td>${student.sumCredit}</td>
+                                <td><a class="btn btn-success clear_btn" stu_number="${student.stuNumber}">学分明细</a>
+                                    <a class="btn btn-danger all_record" stu_number="${student.stuNumber}">申报记录</a></td>
                             </tr>
                         </c:forEach>
                         <c:if test="${empty info.list}">
@@ -257,6 +378,7 @@
 </footer>
 </body>
 </html>
+<script type="text/javascript" src="static/js/common/tableInfo.js"></script>
 <script type="text/javascript">
     //点击导出按钮弹出模态框
     $("#btn_stuExport").click(function () {
@@ -267,6 +389,7 @@
             backdrop: "static"
         });
     });
+
     //将此学院的所有专业回显到页面上
     function getMajor(ele) {
         //清空原有样式
@@ -289,6 +412,7 @@
             }
         });
     }
+
     //监听学院下拉框的改变
     $("#major").change(function () {
         //清空原有样式
@@ -312,5 +436,130 @@
             }
         });
     });
+
+    var stuNumber;
+
+    $(document).on("click", ".all_record", function () {
+
+        stuNumber = $(this).attr("stu_number");
+
+        to_page(1);
+
+        $("#RecordInfo").modal({
+            backdrop: "static"
+        })
+    });
+
+    function to_page(pn) {
+        $.ajax({
+            url: "record/allRecord",
+            data: {
+                "pn": pn,
+                "stuNumber": stuNumber
+            },
+            type: "GET",
+            success: function (result) {
+
+                $("#record_table tbody").empty();
+                $("#page_nav_area").empty();
+                $("#page_info_area").empty();
+
+                if (result.code == 100) {
+                    //1.构建申报记录表格
+                    build_record_table(result);
+                    //2.构建分页条
+                    build_page_nav(result);
+                    //3.构建分页信息
+                    build_page_info(result);
+                } else {
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#record_table tbody");
+                }
+            }
+        })
+    }
+
+    //构建申报信息表格
+    function build_record_table(result) {
+        //获得查询出的所有信息
+        var records = result.extend.pageInfo;
+
+        $.each(records.list, function (index, item) {
+
+            //序号
+            var count = $("<td></td>").append(index + 1 + (records.pageNum - 1) * 5);
+            //申报日期
+            var applyDate = $("<td></td>").append(item.date);
+            //申报类别
+            var sort = $("<td></td>").append(item.sort);
+            //申报名称
+            var name = $("<td></td>").append(item.applyName);
+            //申报学分
+            var applyCredit = $("<td></td>").append(item.applyCredit);
+            //审核学分
+            var auditCredit = $("<td></td>").append(item.auditCredit);
+            //审核状态
+            //根据审核状态给审核按钮赋予不同的颜色
+            var state_a = $("<a></a>");
+            if (item.auditState == "已审核") {     //已审核
+                state_a.addClass("btn btn-success btn-2x");
+            } else {    //未审核
+                state_a.addClass("btn btn-danger btn-2x");
+            }
+            //审核状态
+            var auditState = $("<td></td>").append(state_a.append(item.auditState));
+            //审核教师
+            var teacher = $("<td></td>").append(item.auditTea == null ? "无" : item.auditTea);
+
+
+            $("<tr></tr>")
+                .append(count)
+                .append(applyDate)
+                .append(sort)
+                .append(name)
+                .append(applyCredit)
+                .append(auditCredit)
+                .append(auditState)
+                .append(teacher)
+                .appendTo("#record_table tbody");
+        });
+
+        function sumCreditDetail(stuNumber) {
+            // 发送ajax请求
+            $.ajax({
+                url: "student/checkCreditDetail",
+                type: "POST",
+                data: {"stuNumber": stuNumber},
+                dataType: 'json',
+                error: function (request) {
+                    parent.layer.alert("网络超时,请稍后再试");
+                },
+                success: function (data) {
+                    // 解析模态框里面的数据
+                    var sortValues = $("input[name='sortValue']");
+                    for (var i = 0; i < sortValues.length; i++) {
+                        for (var j = 0; j < data.length; j++) {
+                            if ($(sortValues[i]).attr("sort") == data[j].sort) {
+                                $(sortValues[i]).val(data[j].sumUp);
+                                break;
+                            }
+                        }
+                        if ($(sortValues[i]).val() == "") {
+                            $(sortValues[i]).val(0);
+                        }
+                    }
+                }
+            });
+        }
+
+        // 显示创新学分明细模态框
+        $(document).on("click", ".clear_btn", function () {
+            // 发送请求查看明细
+            sumCreditDetail($(this).attr("stu_number"));
+
+            $("#SumCreditDetailDemo").modal({
+                backdrop: "static"
+            });
+        });
+    }
 
 </script>

@@ -109,6 +109,16 @@ public class TeacherService {
     }
 
     /**
+     * 查询出这个学院的所有教师
+     *
+     * @param collegeId
+     * @return
+     */
+    public List<Teacher> selectTeacherWithCollege(Integer collegeId) {
+        return teacherMapper.selectTeachersWithCollegeId(collegeId);
+    }
+
+    /**
      * update
      */
 
@@ -130,6 +140,15 @@ public class TeacherService {
     public void updatePasswordByTeacherNumber(Integer number, String password) {
         teacherMapper.updatePasswordByTeacherNumber(number, password);
     }
+
+    /**
+     * 根据主键更新教师的审核年级
+     * @param id
+     * @param auditGrade
+     */
+    public void updateAuditGradeWithPrimaryKey(Integer id,String auditGrade){
+        teacherMapper.updateAuditGradeByPrimaryKey(auditGrade,id)
+;    }
 
     /**
      * insert

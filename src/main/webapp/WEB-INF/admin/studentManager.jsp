@@ -70,7 +70,7 @@
                         <label class="col-sm-2 control-label" for="addStuCollege">学院</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="collegeId" id="addStuCollege">
-                                <option value="-1">请选择学院</option>
+                                <option value="-1" selected="selected">请选择学院</option>
                                 <c:forEach items="${applicationScope.colleges }" var="college">
                                     <c:if test="${college.id ne 19}">
                                         <option value="${college.id }">${college.name }</option>
@@ -133,7 +133,6 @@
 </div>
 <!--添加学生模态框-->
 
-
 <!-- 修改学生信息的模态框 -->
 <div class="modal fade" id="StuUpdateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -152,7 +151,7 @@
                         <label class="col-sm-2 control-label" for="updateStuCollege">学院</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="collegeId" id="updateStuCollege">
-                                <option value="-1">请选择学院</option>
+                                <%--<option value="-1">请选择学院</option>--%>
                                 <c:forEach items="${applicationScope.colleges }" var="college">
                                     <c:if test="${college.id ne 19}">
                                         <option value="${college.id }">${college.name }</option>

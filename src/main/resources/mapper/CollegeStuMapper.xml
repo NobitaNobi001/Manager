@@ -119,6 +119,14 @@
         select stu_number from ${tableName}
     </select>
 
+    <select id="selectStuNumberWithGrade" resultType="java.lang.Integer">
+        select stu_number from ${tableName} where stu_grade = #{auditGrade,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getAllGrade" resultType="java.lang.String">
+        select distinct stu_grade from ${tableName}
+    </select>
+
     <!--根据学院名来查找学生姓名-->
     <select id="selectStuNameWithCollegeId" resultType="java.lang.String">
         select stu_name from ${tableName}

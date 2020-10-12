@@ -342,9 +342,9 @@
 
     <!--根据学号查询学生的所有申报记录-->
     <select id="findAllBystuNumber" resultType="com.bean.Record">
-    select apply_name,sort,apply_credit,audit_credit,audit_state,picture from credit_record
-    where stu_number=#{stuNumber} order by audit_state asc,date desc
-  </select>
+        select <include refid="Base_Column_List"></include> from credit_record
+        where stu_number=#{stuNumber} order by audit_state asc,date desc
+    </select>
 
     <!--根据学号查询学生的所有申报记录 审核状态升序-->
     <select id="findAllBystuNumbers" resultType="com.bean.Record">
@@ -378,12 +378,34 @@
         select * from credit_record where stu_name = #{stuName,jdbcType=VARCHAR}  order by audit_state desc
     </select>
 
-
     <!--申报类别活动明细表-->
     <select id="selectCreditRecordGroupBySort" resultType="com.bean.CreditDetail">
         select sum(apply_credit) sumUp,sort
         from credit_record where stu_number=#{stuNumber} and audit_state!='未审核'
         GROUP BY sort;
     </select>
+
+    <!--所有学院各类活动总分-->
+    <select id="selectCreditProfile" resultType="com.bean.CreditDetail">
+    select sum(apply_credit) sumUp,sort
+    from credit_record where audit_state!='未审核'
+    GROUP BY sort;
+    </select>
+
+    <!--单个学院各类活动总分-->
+    <select id="selectCreditProfileWithCollege" resultType="com.bean.CreditDetail">
+        select sum(apply_credit) sumUp,sort
+        from credit_record
+        <where>
+            stu_number in
+            <foreach collection="stuNumbers" item="stuNumber" separator=","
+                     open="(" close=")">
+                #{stuNumber}
+            </foreach>
+            and audit_state = "已审核"
+        </where>
+        GROUP BY sort;
+    </select>
+
 
 </mapper>

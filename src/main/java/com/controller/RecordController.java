@@ -144,10 +144,15 @@ public class RecordController {
      */
     @RequestMapping(value = "/declare", method = RequestMethod.GET)
     @ResponseBody
-    public Msg declareInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId) {
+    public Msg declareInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") int collegeId, @RequestParam("auditGrade") String auditGrade) {
+
+        //如果未给该教师分配审核年级
+        if ("-1".equals(auditGrade)) {
+            return Msg.fail();
+        }
 
         //将对应学院的学生学号进行查出
-        List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeId(collegeId);
+        List<Integer> stuNumbers = collegeStuService.selectStuNumberWithCollegeIdAndGrade(collegeId, auditGrade);
 
         //如果学号为空
         if (stuNumbers.size() == 0) {
@@ -181,7 +186,7 @@ public class RecordController {
      */
     @RequestMapping(value = "/auditInfo", method = RequestMethod.GET)
     @ResponseBody
-    public Msg auditInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam(value = "collegeId",defaultValue = "-1") int collegeId) {
+    public Msg auditInfo(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam(value = "collegeId", defaultValue = "-1") int collegeId) {
 
         //当选择了查询的学院学生申报记录
         if (collegeId != -1) {
@@ -216,5 +221,24 @@ public class RecordController {
 
         return Msg.success().add("pageInfo", page);
 
+    }
+
+    @GetMapping("/allRecord")
+    @ResponseBody
+    public Msg getRecordByStuNumber(@RequestParam("pn") Integer pn, Integer stuNumber) {
+
+        //设置起始页码以及每页的记录条数
+        PageHelper.startPage(pn, 5);
+
+        List<Record> stuRecords = recordService.selectAllRecordsByStuNumber(stuNumber);
+
+        if (stuRecords.size() == 0) {
+            return Msg.fail();
+        }
+
+        //使用pageInfo包装查询后的结果
+        PageInfo page = new PageInfo(stuRecords, 5);
+
+        return Msg.success().add("pageInfo", page);
     }
 }

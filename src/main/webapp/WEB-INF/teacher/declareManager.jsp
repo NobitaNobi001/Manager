@@ -13,7 +13,7 @@
 
     <%--修改弹出框的默认宽度--%>
     <style type="text/css">
-        .popover{
+        .popover {
             width: auto;
             height: auto;
             max-height: 800px;
@@ -143,7 +143,7 @@
             <div class="main-right right">
                 <!-- 学分列表 start -->
                 <div class="student">
-                    <h4>学分申报审核列表</h4>
+                    <h4>审核管理</h4>
                     <div class="action">
                         <div>
                             <select name="department">
@@ -241,13 +241,21 @@
             }
         });
     })
+
     function to_page(pn) {
+
+        if(${teacher.auditGrade==""}){
+            $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#declare_table tbody");
+            return false;
+        }
+
         $.ajax({
             url: "record/declare",
             type: "GET",
             data: {
                 "pn": pn,
-                "collegeId": ${teacher.collegeId }
+                "collegeId": ${teacher.collegeId },
+                "auditGrade":${teacher.auditGrade==""?"-1":teacher.auditGrade}
             },
             success: function (result) {
                 //清空table表格样式
@@ -269,6 +277,7 @@
             }
         });
     }
+
     //申报管理表格构建
     function build_declare_table(result) {
         //清空table表格
@@ -311,6 +320,7 @@
                 .appendTo("#declare_table tbody");
         });
     }
+
     //给审核按钮绑定单击事件
     $(document).on("click", ".audit-btn", function () {
         //查出对应学生的申报信息
@@ -322,6 +332,7 @@
             backdrop: "static"
         });
     });
+
     //校验审核学分
     function validate_audit_credit() {
         if ($("#audit_credit").val().trim() != "" && $("#audit_credit").val() >= 0) {
@@ -329,6 +340,7 @@
         }
         return false;
     }
+
     //模态框的确定按钮
     $("#stu_audit_btn").click(function () {
         if (!validate_audit_credit()) {
@@ -369,6 +381,7 @@
     });
     //定义一个全局变量来表示图片的url
     var url;
+
     //根据申报记录的id获取对应的学生的申报记录
     function getStuRecord(id) {
         $.ajax({
@@ -398,6 +411,7 @@
             }
         });
     }
+
     //显示和关闭申报图片
     $("#picture_btn").popover({
         trigger: 'click',
