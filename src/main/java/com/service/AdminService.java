@@ -63,6 +63,24 @@ public class AdminService {
     }
 
     /**
+     * 条件查询
+     * @param collegeId
+     * @param keywords
+     * @return
+     */
+    public List<Admin> selectAdminWithCondition(Integer collegeId, String keywords){
+        return adminMapper.selectAdminWithCondition(collegeId,keywords);
+    }
+
+    /**
+     * 查询出管理员的数量
+     * @return
+     */
+    public Integer selectCountAdmin(){
+        return adminMapper.countByExample(null);
+    }
+
+    /**
      * update
      */
 

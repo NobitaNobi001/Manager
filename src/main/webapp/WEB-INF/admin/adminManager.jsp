@@ -178,9 +178,7 @@
                             <select class="form-control" name="collegeId">
                                 <option value="-1">请选择院系</option>
                                 <c:forEach items="${applicationScope.colleges }" var="college">
-                                    <c:if test="${college.id ne 19}">
-                                        <option value="${college.id }">${college.name }</option>
-                                    </c:if>
+                                    <option value="${college.id }">${college.name }</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -249,7 +247,7 @@
                                 </c:forEach>
                             </select>
                             <input type="text" name="keywords" id="keywords" placeholder="请输入管理员姓名" value=""/>
-                            <button onclick="" class="btn btn-primary">搜索</button>
+                            <button onclick="to_page_condition(1)" class="btn btn-primary">搜索</button>
                         </div>
                         <div style="margin-left: 280px;">
                             <button class="btn btn-primary" id="add_admin_btn">新增管理员</button>
@@ -295,6 +293,7 @@
 </body>
 </html>
 <script type="text/javascript" src="static/js/common/tableInfo.js"></script>
+<script type="text/javascript" src="static/js/common/tableCondition.js"></script>
 <script type="text/javascript" src="static/js/common/prompt.js"></script>
 <script type="text/javascript">
     $(function () {
@@ -329,6 +328,42 @@
                 alert("服务器繁忙!");
             }
         });
+    }
+
+    //条件查询+模糊查询
+    function to_page_condition(pn) {
+
+        $.ajax({
+            url: "admin/searchAdmins",
+            data: {
+                "pn": pn,
+                "collegeId": $("#college").val(),
+                "keywords": $("#keywords").val()
+            },
+            success: function (result) {
+
+                if (result.code == 100) {   //查询出了数据
+                    //1.构建管理员信息表格
+                    build_admin_table(result);
+                    //2.构建分页条
+                    build_page_nav_condition(result);
+                    //3.构建分页信息
+                    build_page_info(result);
+                } else {
+                    //清空table表格样式
+                    $("#admin_info tbody").empty();
+                    //清空分页信息
+                    $("#page_info_area").empty();
+                    //清空分页导航栏
+                    $("#page_nav_area").empty();
+
+                    $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#admin_info tbody");
+                }
+
+            }, error: function () {
+                alert("服务器繁忙!");
+            }
+        })
     }
 
     function build_admin_table(result) {
@@ -532,7 +567,11 @@
                 //1、关闭对话框
                 $("#AdminUpdateModal").modal('hide');
                 //2、回到本页面
-                to_page(currentPage);
+                if ($("#college").val() == -1 && $("#keywords").val().trim() == "") {
+                    to_page(currentPage);
+                } else {
+                    to_page_condition(currentPage);
+                }
             },
             error: function () {
                 alert("服务器繁忙!");

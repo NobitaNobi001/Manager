@@ -78,6 +78,9 @@ public class AdminController {
         //查询出督察数量
         Integer watchers = watcherService.selectCountWatcher();
 
+        //查询出管理员数量
+        Integer admins = adminService.selectCountAdmin();
+
         //申报记录数量
         model.addAttribute("records", records);
         //教师数量
@@ -86,6 +89,8 @@ public class AdminController {
         model.addAttribute("students", students);
         //督察数量
         model.addAttribute("watchers", watchers);
+        //管理员数量
+        model.addAttribute("admins",admins);
 
         return "admin/admin";
     }
@@ -285,6 +290,7 @@ public class AdminController {
         // 截取学号的后六位生成密码
         String password = stuNumber.toString().substring(4);
         student.setPassword(password);
+        student.setStuGrade(String.valueOf(stuNumber).substring(0, 4));
         // service插入
         adminService.insertStuByForm(student);
         // 返回页面的最后一页
@@ -349,6 +355,7 @@ public class AdminController {
 
     /**
      * 查询出所有管理员
+     *
      * @param pn
      * @return
      */
@@ -369,41 +376,43 @@ public class AdminController {
 
     /**
      * 根据id查询单个管理员
+     *
      * @param id
      * @return
      */
     @GetMapping("/admin/{id}")
     @ResponseBody
-    public Msg getAdmin(@PathVariable("id") Integer id){
+    public Msg getAdmin(@PathVariable("id") Integer id) {
 
         Admin admin = adminService.selectAdminById(id);
 
-        return Msg.success().add("adminInfo",admin);
+        return Msg.success().add("adminInfo", admin);
 
     }
 
 
     /**
      * 删除管理员 单个和批量
+     *
      * @param id
      * @return
      */
     @DeleteMapping("/admin/{id}")
     @ResponseBody
-    public Msg deleteAdmin(@PathVariable("id") String id){
+    public Msg deleteAdmin(@PathVariable("id") String id) {
 
-        if(id.contains("-")){
+        if (id.contains("-")) {
 
             List<Integer> delete_ids = new ArrayList<>();
 
             String[] ids = id.split("-");
 
-            for(String temp : ids){
+            for (String temp : ids) {
                 delete_ids.add(Integer.parseInt(temp));
             }
             adminService.deleteBatchAdmin(delete_ids);
 
-        }else{
+        } else {
 
             adminService.deleteAdmin(Integer.parseInt(id));
         }
@@ -413,12 +422,13 @@ public class AdminController {
 
     /**
      * 修改单个管理员的信息
+     *
      * @param admin
      * @return
      */
     @PutMapping("/admin/{id}")
     @ResponseBody
-    public Msg updateAdmin(Admin admin){
+    public Msg updateAdmin(Admin admin) {
 
         adminService.updateAdmin(admin);
 
@@ -427,12 +437,13 @@ public class AdminController {
 
     /**
      * 插入单个管理员
+     *
      * @param admin
      * @return
      */
     @PostMapping("/admin")
     @ResponseBody
-    public Msg insertAdmin(Admin admin){
+    public Msg insertAdmin(Admin admin) {
 
         admin.setPassword(String.valueOf(admin.getAdminNumber()));
         adminService.insertAdmin(admin);
@@ -442,19 +453,20 @@ public class AdminController {
 
     /**
      * 校验管理员账号是否存在
+     *
      * @param adminNumber
      * @return
      */
     @PostMapping("/checkAdmin")
     @ResponseBody
-    public Msg checkAdmin(@RequestParam("adminNumber") Integer adminNumber){
+    public Msg checkAdmin(@RequestParam("adminNumber") Integer adminNumber) {
 
         boolean flag = adminService.checkAdmin(adminNumber);
 
-        if(flag){
+        if (flag) {
             return Msg.success();
-        }else{
-            return Msg.fail().add("msg","管理员账号已存在");
+        } else {
+            return Msg.fail().add("msg", "管理员账号已存在");
         }
     }
 
@@ -493,6 +505,65 @@ public class AdminController {
         }
 
         return Msg.success().add("message", "导入成功");
+    }
+
+    /**
+     * @param pn        页码
+     * @param collegeId 学院id
+     * @param keywords  关键字
+     * @return
+     */
+    @GetMapping("/searchAdmins")
+    @ResponseBody
+    public Msg findAdmins(@RequestParam(value = "pn", defaultValue = "1") Integer pn, @RequestParam("collegeId") Integer collegeId, @RequestParam("keywords") String keywords) {
+        //设置起始页码和页面记录数量
+        PageHelper.startPage(pn, 5);
+
+        //根据条件查询出所有教师
+        List<Admin> admins = adminService.selectAdminWithCondition(collegeId, keywords);
+
+        System.out.println("---------" + admins);
+
+        if (admins.size() == 0) {
+            return Msg.fail();
+        }
+        //包装数据
+        PageInfo pages = new PageInfo(admins, 5);
+
+        return Msg.success().add("pageInfo", pages);
+    }
+
+    /**
+     * 更新管理员密码
+     *
+     * @param oldPass 旧密码
+     * @param newPass 新密码
+     * @param resPass 重复输入的密码
+     * @param request
+     * @return
+     */
+    @PutMapping(value = "/updatePassword/{id}")
+    @ResponseBody
+    public Msg updatePassword(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass, @RequestParam("resPass") String resPass, HttpServletRequest request) {
+
+        Admin admin = (Admin) request.getSession().getAttribute("admin");
+
+        if (!(newPass.equals(resPass))) {
+            return Msg.fail().add("msg", "两次密码输入不一致!");
+        } else if (!(admin.getPassword().equals(oldPass))) {
+            return Msg.fail().add("msg", "原密码输入错误!");
+        } else {
+            adminService.updateAdmin(admin);
+            return Msg.success();
+        }
+    }
+
+    @RequestMapping("/getCreditProfile")
+    @ResponseBody
+    public String getCreditProfile(@RequestParam(value = "collegeId",defaultValue = "-1") int collegeId){
+        // 哪一类创新活动得分多，哪一类得分少
+        List<CreditDetail> creditProfile = recordService.getCreditProfile(collegeId);
+        return JsonUtil.getJson(creditProfile);
     }
 
 }

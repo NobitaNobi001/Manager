@@ -69,6 +69,10 @@
                         <div class="number">${watchers }</div>
                         <div class="title">督查</div>
                     </li>
+                    <li style="background: rgba(153, 153, 0, .1);color: #990;">
+                        <div class="number">${admins }</div>
+                        <div class="title">管理员</div>
+                    </li>
                 </ul>
             </div>
         </div>

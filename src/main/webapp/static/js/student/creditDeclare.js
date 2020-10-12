@@ -93,10 +93,16 @@ layui.use('form', function () {
                     parent.layer.alert("网络超时,请稍后再试");
                 },
                 success: function (data) {
-                    var iconCode = data.code == 100 ? 1 : 2;
-                    layer.msg(data.extend.result, {icon: iconCode, time: 3000}, function () {
-                        window.location.href = "student/viewCredit.html";
-                    });
+                    if(data.code==100){
+                        layer.msg(data.extend.result, {icon: 1, time: 3000}, function () {
+                            window.location.href = "student/viewCredit.html";
+                        });
+                    }else{
+                        layer.msg(data.extend.result, {icon: 2, time: 3000}, function () {
+                            location.reload();
+                        });
+                    }
+
                 }
             });
         }

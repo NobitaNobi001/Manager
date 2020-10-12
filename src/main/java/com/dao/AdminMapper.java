@@ -36,4 +36,6 @@ public interface AdminMapper {
     int updatePasswordByAdminNumber(@Param("number") Integer number,@Param("password") String password);
 
     int insertBatchAdminByExcel(@Param("list") List<Admin> list);
+
+    List<Admin> selectAdminWithCondition(@Param("collegeId") Integer collegeId,@Param("keywords") String keywords);
 }

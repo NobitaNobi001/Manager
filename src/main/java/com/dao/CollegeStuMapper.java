@@ -13,6 +13,9 @@ public interface CollegeStuMapper {
     //根据学院id查询对应学院的学号
     List<Integer> selectStuNumberWithCollegeName(@Param("tableName") String tableName);
 
+    //根据学院id和审核年级查出相应的学号
+    List<Integer> selectStuNumberWithGrade(@Param("tableName") String tableName,@Param("auditGrade") String auditGrade);
+
     //条件查询学生列表
     List<Student> selectStuByCondition(@Param("tableName") String tableName, @Param("stuNumber") Integer stuNumber, @Param("stuName") String stuName, @Param("stuClass") String stuClass, @Param("major") String major);
 
@@ -52,4 +55,6 @@ public interface CollegeStuMapper {
 
     // 如果学院名一样的话批量插入学生
     int insertBatchCollegeStu(@Param("tableName") String firstTableName, @Param("list") List<Student> students);
+
+    List<String> getAllGrade(@Param("tableName") String tableName);
 }

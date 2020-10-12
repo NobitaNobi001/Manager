@@ -12,6 +12,9 @@
     <link rel="icon" href="static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="static/css/manager.css"/>
+
+    <%--引入jQuery外部文件--%>
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
 </head>
 <body>
 <header>
@@ -55,38 +58,35 @@
                 <!-- 学分申报 start -->
                 <div class="credit">
                     <h4>个人信息</h4>
-                    <form action="" method="post" class="form">
+                    <form action="#" method="post" class="form">
                         <div class="row item">
                             <div class="col col-2 name">姓名</div>
                             <div class="col col-7 value">
-                                <input type="text" name="username">
-                                <div class="notice">请填写真实姓名</div>
+                                <input type="text" name="username" value="${admins.adminName }" readonly>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">性别</div>
                             <div class="col col-7 value">
                                 <div class="row">
-                                    <label><input type="radio" name="gender" value="1" checked="checked"/> 男 </label>
-                                    <label><input type="radio" name="gender" value="2"/> 女 </label>
+                                    <label><input type="radio" name="gender" value="男"/> 男 </label>
+                                    <label><input type="radio" name="gender" value="女"/> 女 </label>
                                 </div>
-                                <div class="notice">请选择性别</div>
                             </div>
                         </div>
                         <div class="row item">
                             <div class="col col-2 name">手机号码</div>
                             <div class="col col-7 value">
-                                <input type="text" name="telephone"/>
+                                <input type="text" name="telephone" value="${admins.phone }"
+                                       onchange="validate_phone()"/>
                                 <div class="notice">请填写联系电话</div>
                             </div>
                         </div>
                         <div class="row item">
-                            <div class="col col-2 name">院系</div>
-                            <div class="col col-5 value">
-                                <select name="department">
-                                    <option value="0">请选择所在院系</option>
-                                </select>
-                                <div class="notice">请选择所在院系</div>
+                            <div class="col col-2 name">邮箱</div>
+                            <div class="col col-7 value">
+                                <input type="text" name="email" value="${admins.email }" onchange="validate_email()"/>
+                                <div class="notice">请填写邮箱</div>
                             </div>
                         </div>
                         <div class="row item">
@@ -114,3 +114,96 @@
 </footer>
 </body>
 </html>
+<script type="text/javascript">
+    //获取手机号文本框
+    var phone = $("input[name='telephone']");
+    //获取邮箱文本框
+    var email = $("input[name='email']");
+
+    //页面加载完成后就调用
+    $(function () {
+        //性别文本框设置性别
+        //获取性别文本框
+        $("input[type='radio'][name='gender'][value='${admins.gender }']").attr("checked", true);
+
+    });
+
+    //更新个人信息
+    $("button").click(function () {
+
+        //校验电话号码的输入
+        if (!validate_phone()) {
+            return false;
+        }
+
+        //校验邮箱的输入
+        if (!validate_email()) {
+            return false;
+        }
+
+        $.ajax({
+            url: "admins/updateInfo/" +${admins.id },
+            type: "PUT",
+            data: {
+                "gender": $("input[type='radio']:checked").val(),
+                "phone": phone.val(),
+                "email": email.val()
+            },
+            success: function (result) {
+                if (result.code == 100) {
+                    alert("修改成功");
+                    window.location.reload();
+                } else {
+                    alert(result.extend.msg);
+                    window.location.reload();
+                }
+            },
+            error: function () {
+                alert("服务器繁忙");
+            }
+        });
+
+    });
+
+    //校验手机号格式
+    function validate_phone() {
+
+        //定义验证手机号的正则表达式
+        var regPhone = /^[1][0-9]{10}/;
+
+        //如果输入值满足正则表达式
+        if (regPhone.test(phone.val())) {
+            phone.next().html("&nbsp;");
+            return true;
+        } else {  //反之
+
+            if (phone.val().trim() == "") {
+                return true;
+            }
+
+            phone.next().html("<p style='color: red;'>格式错误</p>");
+        }
+        return false;
+    }
+
+    //校验邮箱格式
+    function validate_email() {
+
+        //定义验证邮箱的正则表达式
+        var regEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
+
+        //如果输入值满足正则表达式
+        if (regEmail.test(email.val())) {
+            email.next().html("&nbsp;");
+            return true;
+        } else {  //反之
+
+            if (email.val().trim() == "") {
+                return true;
+            }
+            email.next().html("<p style='color: red;'>邮箱格式错误</p>");
+        }
+        return false;
+    }
+
+</script>

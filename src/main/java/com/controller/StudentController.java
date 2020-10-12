@@ -104,7 +104,7 @@ public class StudentController {
             @RequestParam("file") CommonsMultipartFile file,
             HttpServletRequest request
     ){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try{
             // 项目路径
             String BasePath=request.getServletContext().getRealPath("/applyImg");

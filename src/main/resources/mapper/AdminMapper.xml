@@ -324,10 +324,10 @@
         is_super,
         phone,
         email
-
         )
         values
         <foreach collection="list" item="admin" separator=",">
+            (
             #{admin.adminNumber},
             #{admin.adminName},
             #{admin.password},
@@ -336,6 +336,23 @@
             #{admin.isSuper},
             #{admin.phone},
             #{admin.email}
+            )
         </foreach>
     </insert>
+
+    <!--条件查询-->
+    <select id="selectAdminWithCondition" resultMap="AdminWithCollege">
+        select
+        <include refid="WithCollege_Column_List"/>
+        from admin_info a
+        left join college c on a.`college_id`=c.`id`
+        <where>
+            <if test="collegeId != -1">
+                and a.`college_id` = #{collegeId}
+            </if>
+            <if test="keywords != null">
+                and admin_name like concat('%',#{keywords},'%')
+            </if>
+        </where>
+    </select>
 </mapper>

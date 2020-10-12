@@ -55,6 +55,7 @@
     <!--忘记密码页面的拦截器-->
     <mvc:interceptors>
         <mvc:interceptor>
+            <!--忘记密码页面的拦截器-->
             <mvc:mapping path="/forget/**"/>
             <mvc:exclude-mapping path="/forget/forgetIndex"/>
             <mvc:exclude-mapping path="/forget/checkCode"/>
