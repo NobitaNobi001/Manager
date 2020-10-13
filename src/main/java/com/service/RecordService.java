@@ -95,6 +95,15 @@ public class RecordService {
         return recordMapper.selectByPrimaryKey(id);
     }
 
+    /**
+     * 根据学号查询出所有申报记录
+     *
+     * @param stuNumber
+     * @return
+     */
+    public List<Record> selectAllRecordsByStuNumber(Integer stuNumber) {
+        return recordMapper.findAllBystuNumber(stuNumber);
+    }
 
     /**
      * @Description: 管理员查看学分列表，默认记录表里面时间倒序从上到下
@@ -220,6 +229,27 @@ public class RecordService {
             pageInfo = new PageInfo(students);
         }
         return pageInfo;
+    }
+
+    /**
+     * 查出所有创新类别的总学分
+     * @param collegeId
+     * @return
+     */
+    public List<CreditDetail> getCreditProfile(int collegeId) {
+        if (collegeId == -1) {
+            return recordMapper.selectCreditProfile();
+        } else {
+            // 得到表名
+            String tableName = CollegeNameUtil.getTableName(collegeId);
+            //查看对应学院的学员的id
+            List<Integer> stuNumberList = collegeStuMapper.selectStuNumberWithCollegeName(tableName);
+            if (stuNumberList.size() == 0) {
+                return null;
+            }
+            return recordMapper.selectCreditProfileWithCollege(stuNumberList);
+        }
+
     }
 
 

@@ -119,6 +119,11 @@
         from tea_info
         where id = #{id,jdbcType=INTEGER}
     </select>
+
+    <select id="selectTeachersWithCollegeId" parameterType="java.lang.Integer" resultType="com.bean.Teacher">
+        select * from tea_info where college_id = #{collegeId,jdbcType=INTEGER}
+    </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tea_info
     where id = #{id,jdbcType=INTEGER}
@@ -348,6 +353,10 @@
         update tea_info
         set password = #{password,jdbcType=VARCHAR}
         where tea_number = #{number,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateAuditGradeByPrimaryKey">
+        update tea_info set audit_grade = #{auditGrade,jdbcType=VARCHAR} where id = #{id,jdbcType=INTEGER};
     </update>
 
     <insert id="insertBatchTeacherByExcel" parameterType="java.util.List">

@@ -62,7 +62,7 @@ public class ExportAdminListener extends AnalysisEventListener<AdminExcel> {
 
         admin.setEmail(adminExcel.getEmail());
 
-        System.out.println(admin.toString());
+        System.out.println("------"+admin.toString());
 
         admins.add(admin);
 

@@ -41,4 +41,9 @@ public interface RecordMapper {
 
     List<CreditDetail> selectCreditRecordGroupBySort(Integer stuNumber);
 
+    // 查看所有学院的创新学分比例图
+    List<CreditDetail> selectCreditProfile();
+
+    // 查看某一个学院的创新学分比例图
+    List<CreditDetail> selectCreditProfileWithCollege(@Param(("stuNumbers")) List<Integer> stuNumberList);
 }

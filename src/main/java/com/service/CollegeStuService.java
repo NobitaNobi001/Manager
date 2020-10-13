@@ -58,6 +58,22 @@ public class CollegeStuService {
     }
 
     /**
+     * 根据学院和审核年级查询
+     * @param collegeId
+     * @param auditGrade
+     * @return
+     */
+    public List<Integer> selectStuNumberWithCollegeIdAndGrade(int collegeId,String auditGrade){
+        //获取表名
+        String tableName = CollegeNameUtil.getTableName(collegeId);
+
+        List<Integer> stuNumbers = collegeStuMapper.selectStuNumberWithGrade(tableName,auditGrade);
+
+        return stuNumbers;
+    }
+
+
+    /**
      * 根据督查学院名查询所有学生
      * @param collegeId 学院id
      * @param page 当前页
@@ -124,6 +140,29 @@ public class CollegeStuService {
         }
     }
 
+    /**
+     * 根据学院id获取到此学院所有年级
+     * @param collegeId
+     * @return
+     */
+    public List<String> getAllGrade(Integer collegeId){
+        String tableName = CollegeNameUtil.getTableName(collegeId);
+        if(!"".equals(tableName)){
+            List<String> allGrade = collegeStuMapper.getAllGrade(tableName);
+            return allGrade;
+        }else{
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param collegeId
+     * @param major
+     * @param stuClass
+     * @param order
+     * @return
+     */
     public List<CollegeStu> getInfo(Integer collegeId, String major, String stuClass, Integer order) {
 
         //获取数据库名

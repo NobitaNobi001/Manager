@@ -5,6 +5,7 @@ import com.bean.TeacherExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.omg.CORBA.INTERNAL;
+import sun.rmi.log.LogInputStream;
 
 public interface TeacherMapper {
 
@@ -38,6 +39,10 @@ public interface TeacherMapper {
 
     int updatePasswordByTeacherNumber(@Param("number") Integer number,@Param("password") String password);
 
+    int updateAuditGradeByPrimaryKey(@Param("auditGrade") String auditGrade,@Param("id") Integer id);
+
     int insertBatchTeacherByExcel(@Param("list") List<Teacher> teachers);
+
+    List<Teacher> selectTeachersWithCollegeId(Integer collegeId);
 
 }
