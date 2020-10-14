@@ -234,4 +234,13 @@
             </if>
         </where>
     </select>
+
+    <select id="selectStuNumberWithCollegeAndGrade" resultType="java.lang.Integer">
+        select stu_number from ${tableName}
+        <trim prefix="where" suffixOverrides="and">
+            <if test="grade!=null and grade!='' and grade!='-1'.toString() ">
+                stu_grade=#{grade}
+            </if>
+        </trim>
+    </select>
 </mapper>

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.service.StudentService;
+import com.utils.CollegeNameUtil;
 import com.utils.DeclareSortUtil;
 import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,9 @@ public class StudentController {
         studentService.updateStuInfoById(student);
         // 修改完信息之后重新存入session中
         Student stu = studentService.selectStuByPrimaryKey(student.getId());
-        session.setAttribute(StringConstant.STUDENT_TYPE,stu);
+        String collegeName = CollegeNameUtil.getCollegeName(stu.getCollegeId());
+        stu.getCollege().setName(collegeName);
+        session.setAttribute(StringConstant.STUDENT_TYPE, stu);
         // 返回学生首页
         return "redirect:/student/index";
     }
@@ -100,7 +103,7 @@ public class StudentController {
             @RequestParam("sort") String sort,
             @RequestParam("applyName") String applyName,
             @RequestParam("applyCredit") Double applyCredit,
-            @RequestParam("words") String words,
+            @RequestParam(value = "words", defaultValue = "") String words,
             @RequestParam("file") CommonsMultipartFile file,
             HttpServletRequest request
     ){
@@ -109,6 +112,10 @@ public class StudentController {
             // 项目路径
             String BasePath=request.getServletContext().getRealPath("/applyImg");
             if(!file.isEmpty()) {
+                // 创建日期
+                Date d = new Date();
+                // 日期格式化
+                String date = sdf.format(d);
                 // 创建日历对象
                 Calendar now = Calendar.getInstance();
                 // 获取年月日
@@ -116,9 +123,13 @@ public class StudentController {
                 int month = now.get(Calendar.MONDAY) + 1;//0~11
                 int day = now.get(Calendar.DAY_OF_MONTH);
                 // 创建3级目录
-                String RealPath=BasePath+"/"+year+"/"+month+"/"+day; // 文件真实路径
+                String RealPath = BasePath + "/" + year + "/" + month + "/" + day; // 文件真实路径
                 // 数据库中文件名
                 String fileName = UUID.randomUUID().toString() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                // 创建记录对象
+                Record record = new Record(null, stuNumber, stuName, date, sort, year + "/" + month + "/" + day + "/" + fileName, applyName, applyCredit, words, null, null, null);
+                // 保存在数据库中
+                studentService.addCreditRecord(record);
                 // 在系统中创建图片文件
                 File fi = new File(RealPath, fileName);       //将path路径与图片名称联系在一起
                 // 判断是否存在path路径下的文件夹
@@ -128,15 +139,9 @@ public class StudentController {
                 }
                 // 上传图片
                 file.transferTo(fi);
-                // 创建日期
-                Date d = new Date();
-                // 日期格式化
-                String date = sdf.format(d);
-                Record record = new Record(null, stuNumber, stuName, date, sort, year + "/" + month + "/" + day + "/" + fileName, applyName, applyCredit, words, null, null, null);
-                // 保存在数据库中
-                studentService.addCreditRecord(record);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             return JsonUtil.getJson(Msg.fail().add("result", "申报失败，请重新申报"));
         }
         return JsonUtil.getJson(Msg.success().add("result", "申报成功,请等待审核,即将返回学分列表页面"));

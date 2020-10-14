@@ -1,10 +1,13 @@
 package com.controller;
 
 import com.bean.Admin;
+import com.bean.CreditDetail;
 import com.bean.Msg;
 import com.service.AdminService;
 import com.service.CollegeStuService;
+import com.service.RecordService;
 import com.service.TeacherService;
+import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +31,25 @@ public class AdminsController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private RecordService recordService;
+
+
+    @RequestMapping("/getCreditProfileWithGrade")
+    @ResponseBody
+    public String getCreditProfile(
+            @RequestParam(value = "collegeId") int collegeId,
+            @RequestParam(value = "Grade", defaultValue = "-1") String Grade
+    ) {
+        // 哪一类创新活动得分多，哪一类得分少
+        List<CreditDetail> creditProfile = recordService.getCreditProfileWithGrade(collegeId, Grade);
+        return JsonUtil.getJson(creditProfile);
+    }
+
+
     /**
      * 获取一个学院中所有不重复的年级
+     *
      * @param collegeId
      * @return
      */

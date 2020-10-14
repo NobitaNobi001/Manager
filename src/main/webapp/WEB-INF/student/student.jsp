@@ -80,7 +80,7 @@
     $(function () {
         var stuName = '${student.stuName}';
         $('.avatar .head').append(stuName.substr(stuName.length - 1, 1));
-    })
+    });
 
     // 学分申报类型鼠标悬浮效果
     $("div [name='declareSort']").hover(function () {

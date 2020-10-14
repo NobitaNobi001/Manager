@@ -93,6 +93,7 @@ public class TeacherService {
      * @return
      */
     public List<Student> selectStuByCondition(String tableName, Integer stuNumber, String stuName, String stuClass, int page, int size, String major) {
+        System.out.println("条件查询");
         PageHelper.startPage(page, size);
         return collegeStuMapper.selectStuByCondition(tableName, stuNumber, stuName, stuClass, major);
     }

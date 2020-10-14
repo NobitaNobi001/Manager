@@ -1,3 +1,4 @@
+import com.bean.Student;
 import com.bean.Teacher;
 import com.bean.Watcher;
 import com.dao.CollegeMapper;
@@ -19,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.File;
 import java.io.IOException;
@@ -117,6 +119,6 @@ public class Test {
         System.out.println(collegeMapper.selectCollegeIdByName("计算机工程学院"));
 
     }
-    
+
 
 }

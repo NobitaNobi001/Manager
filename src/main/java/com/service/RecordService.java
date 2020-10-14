@@ -41,6 +41,39 @@ public class RecordService {
         return recordMapper.countByExample(null);
     }
 
+
+    /*
+     * 带年级的查出所有创新类别的总学分
+     * */
+    public List<CreditDetail> getCreditProfileWithGrade(int collegeId, String Grade) {
+        // 得到表名
+        String tableName = CollegeNameUtil.getTableName(collegeId);
+        //查看对应学院对应年级的学员的学号
+        List<Integer> stuNumberList = collegeStuMapper.selectStuNumberWithCollegeAndGrade(tableName, Grade);
+        if (stuNumberList.size() == 0) {
+            return null;
+        }
+        return recordMapper.selectCreditProfileWithCollege(stuNumberList);
+    }
+
+    /*
+     * 查出所有创新类别的总学分
+     * */
+    public List<CreditDetail> getCreditProfile(int collegeId) {
+        if (collegeId == -1) {
+            return recordMapper.selectCreditProfile();
+        } else {
+            // 得到表名
+            String tableName = CollegeNameUtil.getTableName(collegeId);
+            //查看对应学院的学员的id
+            List<Integer> stuNumberList = collegeStuMapper.selectStuNumberWithCollegeName(tableName);
+            if (stuNumberList.size() == 0) {
+                return null;
+            }
+            return recordMapper.selectCreditProfileWithCollege(stuNumberList);
+        }
+    }
+
     /**
      * 查出所有记录数
      *
@@ -231,27 +264,6 @@ public class RecordService {
         return pageInfo;
     }
 
-    /**
-     * 查出所有创新类别的总学分
-     * @param collegeId
-     * @return
-     */
-    public List<CreditDetail> getCreditProfile(int collegeId) {
-        if (collegeId == -1) {
-            return recordMapper.selectCreditProfile();
-        } else {
-            // 得到表名
-            String tableName = CollegeNameUtil.getTableName(collegeId);
-            //查看对应学院的学员的id
-            List<Integer> stuNumberList = collegeStuMapper.selectStuNumberWithCollegeName(tableName);
-            if (stuNumberList.size() == 0) {
-                return null;
-            }
-            return recordMapper.selectCreditProfileWithCollege(stuNumberList);
-        }
-
-    }
-
 
     /**
      * update
@@ -263,7 +275,6 @@ public class RecordService {
      * @param record
      */
     public void updateRecord(Record record) {
-
         recordMapper.updateByPrimaryKeySelective(record);
     }
 }
