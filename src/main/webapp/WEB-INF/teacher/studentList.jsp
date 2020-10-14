@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="icon" href="static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="static/layui/css/layui.css" media="all">
+
 
     <style type="text/css">
         .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
@@ -20,6 +22,7 @@
 
     <%--引入jQuery外部文件--%>
     <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.js"></script>
+    <script type="text/javascript" src="static/layui/layui.js"></script>
     <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 </head>
@@ -242,7 +245,7 @@
                 <div class="student">
                     <h4>学生列表</h4>
                     <form class="form-inline" action="teacher/queryStu" method="post"
-                          style="margin-left: 20px; line-height: 72px;">
+                          style="margin-left: 20px; line-height: 72px;" id="QueryForm">
                         <div class="form-group">
                             <label for="exampleInputNumber">学号</label>
                             <input type="text" class="form-control" id="exampleInputNumber" name="stuNumber"
@@ -264,7 +267,7 @@
                             <input type="text" class="form-control" id="exampleInputClass" name="stuClass"
                                    placeholder="如:1811">
                         </div>
-                        <button type="submit" class="btn btn-default">查询</button>
+                        <button type="button" id="submitBtn" class="btn btn-default">查询</button>
                         <div class="action form-group"
                              style="text-align: right;margin: 10px 0;padding: 10px 0; float: right">
                             <a href="javascript:;" class="btn btn-danger" id="btn_stuExport">导出数据</a>
@@ -380,6 +383,9 @@
 </html>
 <script type="text/javascript" src="static/js/common/tableInfo.js"></script>
 <script type="text/javascript">
+    layui.use('layer', function () {
+        layer = layui.layer;
+    });
     //点击导出按钮弹出模态框
     $("#btn_stuExport").click(function () {
         getMajor("#major");
@@ -562,4 +568,25 @@
         });
     }
 
+
+    $("input[name='stuNumber']").blur(function checkStuNumber() {
+        if (this.value > 2147483647) {
+            this.value = '';
+            layer.msg("你要查找的范围过大,请输入合理的范围", {icon: 0});
+            return false;
+        } else if (this.value < -2147483648) {
+            this.value = '';
+            layer.msg("你要查找的范围过小,请输入合理的范围", {icon: 0});
+            return false;
+        } else {
+            return true;
+        }
+    });
+
+
+    $("#submitBtn").click(function () {
+        if ($("input[name='stuNumber']")[0].blur() == true) {
+            $("#QueryForm")[0].submit();
+        }
+    })
 </script>

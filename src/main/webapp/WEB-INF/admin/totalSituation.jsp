@@ -65,12 +65,12 @@
                     <li><a href="admin/password">修改密码</a></li>
                 </ul>
             </div>
-            <div class="main-right right" >
-                <div  id="picture" style="width:1080px;height: 600px">
+            <div class="main-right right">
+                <div id="picture" style="width:1080px;height: 600px">
 
                 </div>
                 <div class="selectDiv">
-                    <form class="form-inline" action="admins/getCreditProfile">
+                    <form class="form-inline">
                         <select name="college" class="form-control">
                             <option value="-1">请选择学院</option>
                             <c:forEach items="${applicationScope.colleges }" var="college">

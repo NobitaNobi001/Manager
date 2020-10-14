@@ -57,4 +57,6 @@ public interface CollegeStuMapper {
     int insertBatchCollegeStu(@Param("tableName") String firstTableName, @Param("list") List<Student> students);
 
     List<String> getAllGrade(@Param("tableName") String tableName);
+
+    List<Integer> selectStuNumberWithCollegeAndGrade(@Param("tableName") String firstTableName, @Param("grade") String Grade);
 }

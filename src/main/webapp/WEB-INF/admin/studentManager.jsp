@@ -70,7 +70,7 @@
                         <label class="col-sm-2 control-label" for="addStuCollege">学院</label>
                         <div class="col-sm-8">
                             <select class="form-control" name="collegeId" id="addStuCollege">
-                                <option value="-1" selected="selected">请选择学院</option>
+                                <option value="">请选择学院</option>
                                 <c:forEach items="${applicationScope.colleges }" var="college">
                                     <c:if test="${college.id ne 19}">
                                         <option value="${college.id }">${college.name }</option>

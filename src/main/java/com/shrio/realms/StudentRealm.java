@@ -34,6 +34,7 @@ public class StudentRealm extends AuthorizingRealm {
 
         //根据用户名进行查询stuNumber对应的记录
         Student student = studentService.selectStudentByStuNumber(Integer.valueOf(token.getUsername()));
+        System.out.println(student);
 
         //用户不存在
         if (student == null) {

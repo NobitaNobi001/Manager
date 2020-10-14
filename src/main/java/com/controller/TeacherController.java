@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,23 +78,13 @@ public class TeacherController {
      * @return
      */
     @RequestMapping("/queryStu")
-    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam("stuNumber") String stuNumber, @RequestParam("stuName") String stuName, @RequestParam("stuClass") String stuClass, @RequestParam("major") String major, Model model, HttpServletRequest request) {
-
-        System.out.println(stuNumber);
-
-        if (stuNumber.compareTo(StringConstant.MAX_VALUE) > 0 || stuNumber.length() > StringConstant.MAX_VALUE.length()) {
-            throw new OutMaxException("超出了Integer类型的上限");
-        }
-
-        Integer stuNumber1 = Integer.valueOf(stuNumber);
+    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(value = "stuNumber", required = false) Integer stuNumber, @RequestParam(value = "stuName", required = false) String stuName, @RequestParam(value = "stuClass", required = false) String stuClass, @RequestParam(value = "major", required = false) String major, Model model, HttpServletRequest request) {
 
         Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
 
-        System.out.println(teacher);
-
         String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
 
-        List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber1, stuName, stuClass, page, 5, major);
+        List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber, stuName, stuClass, page, 5, major);
 
         PageInfo<Record> info = new PageInfo(students);
 
