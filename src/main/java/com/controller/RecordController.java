@@ -8,6 +8,8 @@ import com.github.pagehelper.PageInfo;
 import com.service.CollegeStuService;
 import com.service.CreditService;
 import com.service.RecordService;
+import com.service.SortService;
+import com.utils.SortUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,8 @@ public class RecordController {
     private CreditService creditService;
     @Autowired
     private CollegeStuService collegeStuService;
+    @Autowired
+    private SortService sortService;
 
     /**
      * 查询学生的申报信息
@@ -52,7 +56,7 @@ public class RecordController {
      */
     @RequestMapping(value = "/updateRecord/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public Msg updateStuRecord(@RequestParam("auditCredit") double auditCredit, @RequestParam("auditTea") String auditTea, @PathVariable("id") Integer id) {
+    public Msg updateStuRecord(@RequestParam("auditCredit") double auditCredit, @RequestParam("auditTea") String auditTea, @RequestParam("collegeId") Integer collegeId, @RequestParam("sort") String sort, @PathVariable("id") Integer id) {
 
         //根据主键查找学生的申报记录
         Record record = recordService.selectByPrimaryKey(id);
@@ -60,8 +64,18 @@ public class RecordController {
         //根据学号查询该学生的总学分
         double sum_credit = creditService.selectCreditByStuNumber(record.getStuNumber());
 
+        //查出这个类别学生已审核的所有学分
+        double sum = recordService.getHaveCredit(sort, record.getStuNumber());
+
+        //获取此类别的学分上限
+        double max = SortUtil.getMaxByName(sort, sortService.getSort(collegeId));
+
         //如果是第一次审核
         if (record.getAuditState().equals("未审核") && auditCredit >= 0) {
+
+            if (auditCredit > max) {
+                return Msg.fail().add("msg", "此类别学分获取最多为" + max + "分");
+            }
 
             //修改审核状态
             record.setAuditState("已审核");
@@ -92,6 +106,9 @@ public class RecordController {
             double temp = record.getAuditCredit();
 
             //修改本条记录的审核学分与审核教师
+            if (sum - temp + auditCredit > max) {
+                return Msg.fail().add("msg", (max - sum) <= 0 ? "该类别所获学分已达上限" : "该类别可获学分为" + (max - sum));
+            }
             record.setAuditCredit(auditCredit);
             record.setAuditTea(auditTea);
 

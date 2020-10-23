@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 public interface SortMapper {
+
     int countByExample(SortExample example);
 
     int deleteByExample(SortExample example);

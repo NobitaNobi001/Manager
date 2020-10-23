@@ -51,7 +51,7 @@ public class StudentController {
         stu.getCollege().setName(collegeName);
         session.setAttribute(StringConstant.STUDENT_TYPE, stu);
         // 返回学生首页
-        return "redirect:/student/index";
+        return "student/index";
     }
 
     /**
@@ -83,7 +83,7 @@ public class StudentController {
     @RequestMapping("/applyCreditWithSort/sort/{sort}/.html")
     public String applyCredit(@PathVariable("sort") Integer sort, HttpSession session) {
         session.setAttribute(StringConstant.APPLY_TYPE, DeclareSortUtil.getApplySort(sort));
-        System.out.println(DeclareSortUtil.getApplySort(sort));
+//        System.out.println(DeclareSortUtil.getApplySort(sort));
         return "student/creditDeclare";
     }
 

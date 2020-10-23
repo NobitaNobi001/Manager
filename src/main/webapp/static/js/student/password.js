@@ -80,7 +80,7 @@ $(function () {
                     success: function (data) {
                         if (data.code==100) {
                             layer.msg(data.extend.result, {time: 2000, icon: 1}, function () {
-                                window.location.replace("/login.jsp");
+                                window.location.replace("${pageContext.request.contextPath }/login.jsp");
                             });
                         } else {
                             layer.msg(data.extend.result, {time: 2000, icon: 2});

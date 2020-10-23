@@ -5,6 +5,9 @@
 		<meta charset="utf-8">
 		<title>404</title>
 	</head>
+
+	<base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
+
 	<body>
 		<style type="text/css">
 			*{margin: 0;padding: 0;}
@@ -26,7 +29,7 @@
 					<div>4</div>
 				</div>
 				<div class="btn">
-					<a href="/logout">返回登录页</a>
+					<a href="logout">返回登录页</a>
 					<a href="javascript:;" onclick="history.back();">返回上一页</a>
 				</div>
 			</div>

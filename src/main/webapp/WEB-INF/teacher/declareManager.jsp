@@ -352,10 +352,10 @@
             url: "record/updateRecord/" + $(this).attr("audit-id"),
             type: "PUT",
             data: {
-                // "stuNumber": StuNumber,
                 "auditCredit": $("#audit_credit").val(),
-                "auditTea": "${teacher.teaName }"
-                // "auditState": $("#audit_state option:selected").val()
+                "auditTea": "${teacher.teaName }",
+                "collegeId":${teacher.collegeId },
+                "sort": $("#sort").val()
             },
             success: function (result) {
                 if (result.code == 100) {   //成功更新审核信息和总学分

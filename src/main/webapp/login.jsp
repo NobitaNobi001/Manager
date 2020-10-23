@@ -42,7 +42,7 @@
                      <span class="glyphicon glyphicon-user"></span>
                     </span>
                         <input type="text" name="stuNumber" class="form-control" placeholder="登录账号" autocomplete="off"
-                               autofocus value="2018139047"/>
+                               autofocus/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -51,7 +51,7 @@
                     <span class="glyphicon glyphicon-eye-open" id="eye"></span>
                     </span>
                         <input type="password" name="password" class="form-control" placeholder="登录密码"
-                               autocomplete="off" value="12345678"/>
+                               autocomplete="off"/>
                     </div>
                 </div>
                 <div class="type">
