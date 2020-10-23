@@ -42,9 +42,13 @@ public class RecordService {
     }
 
 
-    /*
+    /**
      * 带年级的查出所有创新类别的总学分
-     * */
+     *
+     * @param collegeId
+     * @param Grade
+     * @return
+     */
     public List<CreditDetail> getCreditProfileWithGrade(int collegeId, String Grade) {
         // 得到表名
         String tableName = CollegeNameUtil.getTableName(collegeId);
@@ -56,9 +60,12 @@ public class RecordService {
         return recordMapper.selectCreditProfileWithCollege(stuNumberList);
     }
 
-    /*
+    /**
      * 查出所有创新类别的总学分
-     * */
+     *
+     * @param collegeId
+     * @return
+     */
     public List<CreditDetail> getCreditProfile(int collegeId) {
         if (collegeId == -1) {
             return recordMapper.selectCreditProfile();
@@ -262,6 +269,31 @@ public class RecordService {
             pageInfo = new PageInfo(students);
         }
         return pageInfo;
+    }
+
+    /**
+     * 获取此学生该类别已获得的总学分
+     *
+     * @param sort
+     * @param stuNumber
+     * @return
+     */
+    public double getHaveCredit(String sort, Integer stuNumber) {
+
+        //查出该学号学生的所有已经审核的此类别获取学分总数
+        List<Double> credits = recordMapper.selectAllCreditBySort(sort, stuNumber);
+
+        double sum = 0;
+
+        if (credits.size() == 0) {
+            return 0;
+        } else {
+            for (double temp : credits) {
+                sum += temp;
+            }
+        }
+
+        return sum;
     }
 
 

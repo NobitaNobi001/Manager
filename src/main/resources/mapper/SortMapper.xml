@@ -303,4 +303,5 @@
       sort_10 = #{sort10,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
 </mapper>

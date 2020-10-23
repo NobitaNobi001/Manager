@@ -380,21 +380,21 @@
 
     <!--申报类别活动明细表-->
     <select id="selectCreditRecordGroupBySort" resultType="com.bean.CreditDetail">
-        select sum(apply_credit) sumUp,sort
+        select sum(audit_credit) sumUp,sort
         from credit_record where stu_number=#{stuNumber} and audit_state!='未审核'
         GROUP BY sort;
     </select>
 
     <!--所有学院各类活动总分-->
     <select id="selectCreditProfile" resultType="com.bean.CreditDetail">
-    select sum(apply_credit) sumUp,sort
+    select sum(audit_credit) sumUp,sort
     from credit_record where audit_state!='未审核'
     GROUP BY sort;
     </select>
 
     <!--单个学院各类活动总分-->
     <select id="selectCreditProfileWithCollege" resultType="com.bean.CreditDetail">
-        select sum(apply_credit) sumUp,sort
+        select sum(audit_credit) sumUp,sort
         from credit_record
         <where>
             stu_number in
@@ -405,6 +405,11 @@
             and audit_state = "已审核"
         </where>
         GROUP BY sort;
+    </select>
+
+    <select id="selectAllCreditBySort" resultType="java.lang.Double">
+        select
+        audit_credit from  credit_record where sort = #{sort} and stu_number = #{stuNumber} and audit_state = "已审核"
     </select>
 
 

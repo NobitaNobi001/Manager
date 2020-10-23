@@ -141,6 +141,7 @@
         var grade = $("select[name='Grade']").val();
         display('${admins.collegeId}', grade);
         if (grade != -1) {
+            subtextString = '${admins.college.name}';
             subtextString = subtextString + grade;
         }
     });

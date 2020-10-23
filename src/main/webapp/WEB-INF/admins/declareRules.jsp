@@ -9,11 +9,44 @@
 
     <base href="http://${pageContext.request.serverName }:${pageContext.request.serverPort }${pageContext.request.contextPath }/"/>
 
+    <link rel="stylesheet" href="webjars/bootstrap/3.3.5/css/bootstrap.min.css"/>
     <link rel="icon" href="static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="static/css/manager.css"/>
+
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="webjars/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 </head>
 <body>
+<div class="modal fade" id="ruleUpdateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">设置上限</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+
+                    <div class="form-group">
+                        <label for="sort_rule" class="col-sm-2 control-label">类别上限</label>
+                        <div class="col-sm-10">
+                            <input type="number" name="sort" class="form-control" id="sort_rule" min="0" max="8"
+                                   step="0.5"/>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="sort_close_btn">关闭</button>
+                <button type="button" class="btn btn-primary" id="sort_update_btn">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
 <header>
     <div id="header">
         <div class="header">
@@ -52,7 +85,23 @@
                 </ul>
             </div>
             <div class="main-right right">
+                <div class="student">
+                    <h4>申报规则</h4>
+                    <div class="action"></div>
+                    <table class="table" border="0" cellspacing="0" cellpadding="0" id="rule_table">
+                        <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>类别</th>
+                            <th>审核上限</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -69,3 +118,113 @@
 </footer>
 </body>
 </html>
+<script type="text/javascript">
+
+    $(function () {
+
+        getSort();
+    });
+
+    var arr = new Array("大学生学科竞赛活动(含大学生创新创业训练项目)", "大学生文体竞赛活动", "创新创业实践训练(课程)", "论文、专利、作品发表", "职业(等级)证书"
+        , "参与教师科研(或实验室工作)", "社会实践(调查)", "读书活动", "学生工作与社团活动", "专业认定的其他创新实践活动");
+
+    function getSort() {
+
+        $.ajax({
+            url: "sort/sort",
+            data: {
+                "collegeId":${admins.collegeId}
+            },
+            type: "GET",
+            success: function (result) {
+
+                var i = 1;
+                var sort = result.extend.sort;
+                $.each(sort, function (index, item) {
+
+                    //当结果index不为id时
+                    if (index != "id") {
+                        var count = $("<td></td>").append(i);
+                        var sort = $("<td></td>").append(arr[i - 1]);
+                        var max = $("<td></td>").append(item);
+                        var editBtn = $("<td></td>").append($("<a>编辑</a>").addClass("btn btn-primary btn-2x edit-btn").attr("sort-id", i));
+
+                        i++;
+
+                        $("<tr></tr>")
+                            .append(count)
+                            .append(sort)
+                            .append(max)
+                            .append(editBtn)
+                            .appendTo("#rule_table tbody");
+
+                    }
+                });
+            },
+            error: function () {
+                alert("服务器繁忙!");
+            }
+        });
+    }
+
+    //给编辑按钮添加单击事件
+    $(document).on("click", ".edit-btn", function () {
+
+        $("#sort_rule").empty();
+        $("#sort_update_btn").attr("sort-id", $(this).attr("sort-id"));
+
+        $("#ruleUpdateModal").modal({
+            backdrop: "static"
+        });
+    });
+
+    function validate_rule_grade() {
+
+        //控制输入文本框的格式
+        if ($("#sort_rule").val().trim() == "" || $("#sort_rule").val() < 0) {
+            return false;
+        }
+
+        return true;
+    }
+
+    //给模态框的更新按钮添加单击事件
+    $("#sort_update_btn").click(function () {
+
+        //验证数据的输入是否合法
+        if (!validate_rule_grade()) {
+            alert("输入有误!");
+            return false;
+        }
+
+        //发送请求进行更新
+        $.ajax({
+            url: "sort/sort",
+            type: "PUT",
+            data: {
+                "collegeId":${admins.collegeId },
+                "sort": $("#sort_rule").val(),
+                "sortId": $(this).attr("sort-id")
+            },
+            success: function (result) {
+
+                if (result.code == 100) {
+
+                    //关闭模态框
+                    $("#ruleUpdateModal").modal("hide");
+
+                    window.location.reload();
+
+                }
+
+            },
+            error: function () {
+                alert("服务器繁忙!");
+            }
+        })
+
+
+    })
+
+
+</script>
