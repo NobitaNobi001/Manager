@@ -28,7 +28,7 @@
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
+                    <a href="teacher/teaProfile">${teacher.college.name }&nbsp;&nbsp;${teacher.teaName }(${teacher.teaNumber })</a>
                     <a href="logout">退出</a>
                 </div>
             </div>
@@ -48,8 +48,7 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="teacher/stuList">学生列表</a></li>
-                    <li><a href="teacher/declareManager">申报管理</a></li>
+                    <li><a href="teacher/declareManager">审核管理</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="teacher/teaProfile">个人信息</a></li>
                     <li><a href="teacher/teaPassword">修改密码</a></li>

@@ -62,6 +62,17 @@
             <mvc:exclude-mapping path="/forget/checkUser"/>
             <bean class="com.interceptor.ForgetInterceptor"/>
         </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/forget/forgetPassword"/>
+            <bean class="com.interceptor.ForgetCheckInterceptor"/>
+        </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/forget/forgetDone"/>
+            <bean class="com.interceptor.ForgetPasswordInterceptor"/>
+        </mvc:interceptor>
+
     </mvc:interceptors>
 
 

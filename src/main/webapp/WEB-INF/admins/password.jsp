@@ -32,8 +32,8 @@
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="admins/profile">${admins.adminName}(${admins.adminNumber})</a>
-                    <a href="logout">退出</a>
+                    <a href="admins/profile" style="font-size: 14px; color: #337ab7;">${admins.college.name }&nbsp;&nbsp;${admins.adminName}(${admins.adminNumber})</a>
+                    <a href="logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">
@@ -54,6 +54,7 @@
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
                     <li><a href="admins/auditTeacherManager">审核管理</a></li>
                     <li><a href="admins/ruleManager">审核规则</a></li>
+                    <li><a href="admins/stuList">学生列表</a></li>
                     <li><a href="admins/situation">学分概览</a></li>
                     <li class="headline"><span>账号管理</span></li>
                     <li><a href="admins/profile">个人信息</a></li>

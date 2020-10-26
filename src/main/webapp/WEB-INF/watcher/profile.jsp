@@ -24,14 +24,14 @@
                 </div>
                 <div class="top-right right">
                     <a href="watcher/watProfile"
-                       style="font-size: 14px; color: #337ab7;">${watcher.watcherName }(${watcher.watcherNumber })</a>
+                       style="font-size: 14px; color: #337ab7;">${watcher.college.name }&nbsp;&nbsp;${watcher.watcherName }(${watcher.watcherNumber })</a>
                     <a href="logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
                     <li class="title"><a href="javascript:;">督查中心</a></li>
-                    <li><a href="wacther/index">首页</a></li>
+                    <li><a href="watcher/index">首页</a></li>
                     <li><a href="watcher/watProfile">个人信息</a></li>
                 </ul>
             </div>

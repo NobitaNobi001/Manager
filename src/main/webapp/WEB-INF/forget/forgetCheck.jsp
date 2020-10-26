@@ -18,6 +18,7 @@
         <div class="top">
             <div class="logo"><img src="static/images/logo.png" height="120"/></div>
             <div class="title">湖北文理学院创新实践学分管理系统</div>
+            <a href="logout" class="btn btn-danger" style="position: absolute;right: 10px; top: 35px;">退出</a>
         </div>
         <div class="schedule">
             <ul>

@@ -72,7 +72,7 @@ public class ExceptionResolverUtil {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        String viewName = "teacher/studentList";
+        String viewName = "admins/studentList";
         return commonResolver(viewName, exception, request, response);
     }
 

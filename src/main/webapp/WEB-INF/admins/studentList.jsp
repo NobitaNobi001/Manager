@@ -160,16 +160,24 @@
                         <label for="college_stuList" class="col-sm-2 control-label">学院</label>
                         <div class="col-sm-10">
                             <input type="text" name="college" class="form-control" id="college_stuList"
-                                   value="${teacher.college.name }" disabled="disabled"/>
-                            <input type="hidden" name="collegeId" value="${teacher.collegeId }">
+                                   value="${admins.college.name }" disabled="disabled"/>
+                            <input type="hidden" name="collegeId" value="${admins.collegeId }">
                             <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">年级</label>
+                        <div class="col-sm-4">
+                            <select class="form-control" id="grade" name="grade">
+                                <option value="-1">不限</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">专业</label>
                         <div class="col-sm-4">
                             <select class="form-control" id="major" name="major">
-
+                                <option value="-1">不限</option>
                             </select>
                         </div>
                     </div>
@@ -178,7 +186,7 @@
                         <div class="col-sm-4">
                             <%--班级提交id即可--%>
                             <select class="form-control" id="className" name="stuClass">
-                                <option value="-1">请选择班级</option>
+                                <option value="-1">不限</option>
                             </select>
                         </div>
                     </div>
@@ -209,19 +217,19 @@
         <div class="header">
             <div class="top clear">
                 <div class="top-left left">
-                    <div class="logo"><img src="static/images/logo.png" height="70" style="margin-top: 40px"/></div>
+                    <div class="logo"><img src="static/images/logo.png" height="70" style="margin-top: 40px;"/></div>
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
-                    <a href="logout">退出</a>
+                    <a href="admins/profile" style="font-size: 14px; color: #337ab7;">${admins.college.name }&nbsp;&nbsp;${admins.adminName}(${admins.adminNumber})</a>
+                    <a href="logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">
                 <ul>
-                    <li class="title"><a href="javascript:;">个人中心</a></li>
-                    <li><a href="teacher/index">首页</a></li>
-                    <li><a href="teacher/teaProfile">个人信息</a></li>
+                    <li class="title"><a href="javascript:;">管理中心</a></li>
+                    <li><a href="admins/index">首页</a></li>
+                    <li><a href="admins/profile">个人信息</a></li>
                 </ul>
             </div>
         </div>
@@ -233,18 +241,20 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="teacher/stuList">学生列表</a></li>
-                    <li><a href="teacher/declareManager">申报管理</a></li>
-                    <li class="headline"><a href="javascript:;">账号设置</a></li>
-                    <li><a href="teacher/teaProfile">个人信息</a></li>
-                    <li><a href="teacher/teaPassword">修改密码</a></li>
+                    <li><a href="admins/auditTeacherManager">审核管理</a></li>
+                    <li><a href="admins/ruleManager">审核规则</a></li>
+                    <li><a href="admins/stuList">学生列表</a></li>
+                    <li><a href="admins/situation">学分概览</a></li>
+                    <li class="headline"><span>账号管理</span></li>
+                    <li><a href="admins/profile">个人信息</a></li>
+                    <li><a href="admins/password">修改密码</a></li>
                 </ul>
             </div>
             <div class="main-right right">
                 <!-- 学分列表 start -->
                 <div class="student">
                     <h4>学生列表</h4>
-                    <form class="form-inline" action="teacher/queryStu" method="post"
+                    <form class="form-inline" action="admins/queryStu" method="post"
                           style="margin-left: 20px; line-height: 72px;" id="QueryForm">
                         <div class="form-group">
                             <label for="exampleInputNumber">学号</label>
@@ -319,12 +329,12 @@
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination">
                                         <li>
-                                            <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=1">首页</a>
+                                            <a href="admins/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=1">首页</a>
                                         </li>
 
                                         <c:if test="${info.hasPreviousPage}">
                                             <li>
-                                                <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.prePage}"
+                                                <a href="admins/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.prePage}"
                                                    aria-label="Previous">
                                                     <span aria-hidden="true">&laquo;</span>
                                                 </a>
@@ -334,19 +344,19 @@
                                         <c:forEach items="${info.navigatepageNums }" var="i">
                                             <c:if test="${info.pageNum==i}">
                                                 <li class="active"><a
-                                                        href="teacher/stuList?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${i}">${i}</a>
+                                                        href="admins/stuList?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${i}">${i}</a>
                                                 </li>
                                             </c:if>
                                             <c:if test="${info.pageNum!=i}">
                                                 <li>
-                                                    <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${i}">${i}</a>
+                                                    <a href="admins/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${i}">${i}</a>
                                                 </li>
                                             </c:if>
                                         </c:forEach>
 
                                         <c:if test="${info.hasNextPage}">
                                             <li>
-                                                <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.nextPage}"
+                                                <a href="admins/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.nextPage}"
                                                    aria-label="Next">
                                                     <span aria-hidden="true">&raquo;</span>
                                                 </a>
@@ -354,7 +364,7 @@
                                         </c:if>
 
                                         <li>
-                                            <a href="teacher/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.pages}">末页</a>
+                                            <a href="admins/queryStu?stuNumber=${param.stuNumber}&stuName=${param.stuName}&stuClass=${param.stuClass}&major=${param.major}&page=${info.pages}">末页</a>
                                         </li>
                                         <span style="font-size:15px;margin-left: 5px;line-height: 34px">
 										当前第${info.pageNum}页，共${info.pages}页，(${info.total}条记录)
@@ -388,7 +398,9 @@
     });
     //点击导出按钮弹出模态框
     $("#btn_stuExport").click(function () {
-        getMajor("#major");
+
+        getGrade("#grade");
+        // getMajor("#major");
         //弹出模态框
         $("#stuWithCondition").modal({
             //设置点击背景模态框不会消失
@@ -396,15 +408,14 @@
         });
     });
 
-    //将此学院的所有专业回显到页面上
-    function getMajor(ele) {
+    function getGrade(ele) {
         //清空原有样式
         $(ele).empty();
-        $(ele).append($("<option value='-1'>请选择专业</option>"));
+        $(ele).append($("<option value='-1'>不限</option>"));
         $.ajax({
-            url: "college/getMajor",
+            url: "college/grade",
             data: {
-                "collegeId": ${teacher.collegeId }
+                "collegeId": ${admins.collegeId }
             },
             type: "GET",
             success: function (data) {
@@ -419,15 +430,39 @@
         });
     }
 
+    //监听年级改变
+    $("#grade").change(function () {
+        $("#major").empty();
+        $("#major").append($("<option value='-1'>不限</option>"));
+
+        $.ajax({
+            url: "college/getMajor",
+            data: {
+                "collegeId": ${admins.collegeId },
+                "grade": $("#grade").val()
+            },
+            type: "GET",
+            success: function (data) {
+                $.each(data, function (index, element) {
+                    $("#major").append($("<option></option>").val(element).text(element));
+                });
+            },
+            dataType: "json",
+            error: function () {
+                alert("服务器繁忙!");
+            }
+        });
+    });
+
     //监听学院下拉框的改变
     $("#major").change(function () {
         //清空原有样式
         $("#className").empty();
-        $("#className").append($("<option value='-1'>请选择班级</option>"));
+        $("#className").append($("<option value='-1'>不限</option>"));
         $.ajax({
             url: "college/getClass",
             data: {
-                "collegeId":${teacher.collegeId },
+                "collegeId":${admins.collegeId },
                 "major": $("#major").val()
             },
             type: "GET",
@@ -441,19 +476,6 @@
                 alert("服务器繁忙!");
             }
         });
-    });
-
-    var stuNumber;
-
-    $(document).on("click", ".all_record", function () {
-
-        stuNumber = $(this).attr("stu_number");
-
-        to_page(1);
-
-        $("#RecordInfo").modal({
-            backdrop: "static"
-        })
     });
 
     function to_page(pn) {
@@ -528,6 +550,7 @@
                 .append(teacher)
                 .appendTo("#record_table tbody");
         });
+    }
 
         function sumCreditDetail(stuNumber) {
             // 发送ajax请求
@@ -557,6 +580,19 @@
             });
         }
 
+        var stuNumber;
+
+        $(document).on("click", ".all_record", function () {
+
+            stuNumber = $(this).attr("stu_number");
+
+            to_page(1);
+
+            $("#RecordInfo").modal({
+                backdrop: "static"
+            })
+        });
+
         // 显示创新学分明细模态框
         $(document).on("click", ".clear_btn", function () {
             // 发送请求查看明细
@@ -566,8 +602,6 @@
                 backdrop: "static"
             });
         });
-    }
-
 
     $("input[name='stuNumber']").blur(function checkStuNumber() {
         if (this.value > 2147483647) {
@@ -588,5 +622,6 @@
         if ($("input[name='stuNumber']")[0].blur() == true) {
             $("#QueryForm")[0].submit();
         }
-    })
+    });
+
 </script>

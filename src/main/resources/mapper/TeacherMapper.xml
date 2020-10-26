@@ -28,6 +28,7 @@
         <association javaType="com.bean.College" property="college">
             <id column="id" jdbcType="INTEGER" property="id"/>
             <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="rule" jdbcType="VARCHAR" property="rule"/>
         </association>
     </resultMap>
     <sql id="Example_Where_Clause">
@@ -95,7 +96,7 @@
     audit_grade
   </sql>
     <sql id="WithCollege_Column_List">
-    t.id, tea_number, password, tea_name, t.college_id, gender, tea_positon, phone, email,audit_grade,c.id,c.name
+    t.id, tea_number, password, tea_name, t.college_id, gender, tea_positon, phone, email,audit_grade,c.id,c.name,c.rule
   </sql>
 
     <!--将所有的教师进行查出-->

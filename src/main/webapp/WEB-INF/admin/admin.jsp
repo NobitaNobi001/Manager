@@ -20,8 +20,8 @@
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="admin/admProfile">${admin.adminName}(${admin.adminNumber})</a>
-                    <a href="logout">退出</a>
+                    <a href="admin/admProfile" style="font-size: 14px; color: #337ab7;">${admin.adminName}(${admin.adminNumber})</a>
+                    <a href="logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
             <div class="menu">
@@ -54,23 +54,23 @@
             <div class="main-right right">
                 <ul class="manager">
                     <li style="background: rgba(0, 153, 255, .1);color: #09f;">
-                        <div class="number">${records }</div>
+                        <div class="number"><a href="admin/toSee/studentRecord.html">${records }</a></div>
                         <div class="title">申报数量</div>
                     </li>
                     <li style="background: rgba(0, 153, 0, .1);color: #090;">
-                        <div class="number">${students }</div>
+                        <div class="number"><a href="admin/get/student.html" >${students }</a></div>
                         <div class="title">学生</div>
                     </li>
                     <li style="background: rgba(255, 153, 0, .1);color: #f90;">
-                        <div class="number">${teachers }</div>
+                        <div class="number"><a href="admin/teaManager">${teachers }</a></div>
                         <div class="title">教师</div>
                     </li>
                     <li style="background: rgba(255, 0, 0, .1);color: #f00;">
-                        <div class="number">${watchers }</div>
+                        <div class="number"><a href="admin/watManager">${watchers }</a></div>
                         <div class="title">督查</div>
                     </li>
                     <li style="background: rgba(153, 153, 0, .1);color: #990;">
-                        <div class="number">${admins }</div>
+                        <div class="number"><a href="admin/admManager">${admins }</a></div>
                         <div class="title">管理员</div>
                     </li>
                 </ul>

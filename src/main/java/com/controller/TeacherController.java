@@ -38,60 +38,7 @@ public class TeacherController {
     private TeacherService teacherService;
 
     @Autowired
-    private CollegeService collegeService;
-
-    @Autowired
     private ExportTeacherListener teacherListener;
-
-    /**
-     * 学生列表
-     *
-     * @param page
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping("/stuList")
-    public String stuList(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
-
-        Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
-        //查询教师的学院id得到学院表名称
-        String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
-        List<Student> students = teacherService.selectStuByCollegeName(tableName, page, 5);
-        PageInfo<Record> info = new PageInfo(students);
-        model.addAttribute("info", info);
-
-        //跳转到stuList页面
-        return "teacher/studentList";
-    }
-
-    /**
-     * 条件查询学生
-     *
-     * @param page
-     * @param stuNumber
-     * @param stuName
-     * @param stuClass
-     * @param major
-     * @param model
-     * @param request
-     * @return
-     */
-    @RequestMapping("/queryStu")
-    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(value = "stuNumber", required = false) Integer stuNumber, @RequestParam(value = "stuName", required = false) String stuName, @RequestParam(value = "stuClass", required = false) String stuClass, @RequestParam(value = "major", required = false) String major, Model model, HttpServletRequest request) {
-
-        Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
-
-        String tableName = CollegeNameUtil.getTableName(teacher.getCollegeId());
-
-        List<Student> students = teacherService.selectStuByCondition(tableName, stuNumber, stuName, stuClass, page, 5, major);
-
-        PageInfo<Record> info = new PageInfo(students);
-
-        model.addAttribute("info", info);
-
-        return "teacher/studentList";
-    }
 
 
     /**

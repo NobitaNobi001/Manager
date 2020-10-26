@@ -31,19 +31,20 @@ public class CollegeStu {
     @ColumnWidth(15)
     private String stuName;
 
+    //学生年级
+    @ExcelProperty(value = "年级",index = 3)
+    @ColumnWidth(15)
+    private String stuGrade;
+
     //学生专业
-    @ExcelProperty(value = "专业", index = 3)
+    @ExcelProperty(value = "专业", index = 4)
     @ColumnWidth(15)
     private String major;
 
     //学生班级
-    @ExcelProperty(value = "班级", index = 4)
+    @ExcelProperty(value = "班级", index = 5)
     @ColumnWidth(15)
     private String stuClass;
-
-    @ExcelIgnore
-    //学生年级
-    private String stuGrade;
 
     @ExcelIgnore
     private College college;
@@ -52,7 +53,7 @@ public class CollegeStu {
     @ColumnWidth(30)
     private String collegeName;
 
-    @ExcelProperty(value = "学分", index = 5)
+    @ExcelProperty(value = "学分", index = 6)
     @ColumnWidth(15)
     private double sumCredit;
 

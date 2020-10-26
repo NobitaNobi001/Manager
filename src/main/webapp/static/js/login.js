@@ -30,7 +30,7 @@ $(function () {
                     stringLength: {
                         min: 5,
                         max: 18,
-                        message: '密码必须在5~18位之间'
+                        message: '密码输入错误'
                     }
                 }
             }

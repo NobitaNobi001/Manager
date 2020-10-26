@@ -27,6 +27,7 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="stu_number" property="stuNumber" jdbcType="INTEGER"/>
         <result column="college_id" property="collegeId"/>
+        <result column="stu_grade" property="stuGrade" jdbcType="VARCHAR"/>
         <result column="stu_class" property="stuClass" jdbcType="VARCHAR"/>
         <result column="major" property="major"></result>
         <association property="collegeName" select="com.dao.CollegeMapper.selectByCollegeId"
@@ -124,7 +125,7 @@
     </select>
 
     <select id="getAllGrade" resultType="java.lang.String">
-        select distinct stu_grade from ${tableName}
+        select distinct stu_grade from ${tableName} order by stu_grade asc
     </select>
 
     <!--根据学院名来查找学生姓名-->
@@ -171,6 +172,17 @@
     <!--根据表名得到不重复的专业字段-->
     <select id="getAllMajor" resultType="java.lang.String">
         select distinct major from ${tableName} order by major asc
+    </select>
+
+    <!--根据年级得到专业名-->
+    <select id="getAllMajorWithGrade" resultType="java.lang.String">
+        select distinct major from ${tableName}
+        <where>
+            <if test="grade!=null and grade!='' and grade!='-1'">
+                stu_grade=#{grade}
+            </if>
+        </where>
+        order by major asc
     </select>
 
     <!--根据专业得到班级名-->
@@ -220,17 +232,20 @@
     <select id="selectInfo" resultMap="resultMapWithCredit">
         select * from ${tableName}
         <where>
+            <if test="grade!='-1'">
+                and stu_grade = #{grade}
+            </if>
             <if test="major!='-1'">
-                major = #{major}
+                and major = #{major}
             </if>
             <if test="stuClass!='-1'">
                 and stu_class = #{stuClass}
             </if>
             <if test="order=='1'">
-                order by stu_class asc
+                order by stu_number asc
             </if>
             <if test="order=='2'">
-                order by stu_class desc
+                order by stu_number desc
             </if>
         </where>
     </select>

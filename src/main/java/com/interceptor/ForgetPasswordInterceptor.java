@@ -6,23 +6,18 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- * 忘记密码页面的拦截器
- */
-public class ForgetInterceptor implements HandlerInterceptor {
+public class ForgetPasswordInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
-        Integer forgetNumber = (Integer) httpServletRequest.getSession().getAttribute("forget_number");
+        String temp = (String) httpServletRequest.getSession().getAttribute("password");
 
-        //如果session域中没有忘记密码的账号就进行拦截
-        if (forgetNumber == null) {
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/forget/forgetIndex");
+        if (!("pass".equals(temp))) {
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/forget/forgetPassword");
             return false;
         }
 
-        //放行
         return true;
     }
 

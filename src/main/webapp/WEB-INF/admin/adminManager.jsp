@@ -75,18 +75,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">类型</label>
-                        <div class="col-sm-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="isSuper" id="is_super1_update_input" value="1"
-                                       checked="checked"/>超级管理员
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="isSuper" id="is_super2_update_input" value="0"/>学院管理员
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label for="email_update_input" class="col-sm-2 control-label">邮箱</label>
                         <div class="col-sm-10">
                             <input type="text" name="email" class="form-control"
@@ -156,18 +144,6 @@
                             </label>
                             <label class="radio-inline">
                                 <input type="radio" name="gender" id="gender2_add_input" value="女"/>女
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">类型</label>
-                        <div class="col-sm-10">
-                            <label class="radio-inline">
-                                <input type="radio" name="isSuper" id="is_super1_add_input" value="1"
-                                       checked="checked"/>超级管理员
-                            </label>
-                            <label class="radio-inline">
-                                <input type="radio" name="isSuper" id="is_super2_add_input" value="0"/>学院管理员
                             </label>
                         </div>
                     </div>

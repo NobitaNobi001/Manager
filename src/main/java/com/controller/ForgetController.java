@@ -169,22 +169,28 @@ public class ForgetController {
         if (userType.equals("Student")) {
 
             flag = studentService.checkEmailByStudent(Integer.valueOf(number), email);
-
+            request.getSession().setAttribute("checkEmail","pass");
         } else if (userType.equals("Teacher")) {
 
             flag = teacherService.checkEmailByTeacher(Integer.valueOf(number), email);
+            request.getSession().setAttribute("checkEmail","pass");
 
         } else if (userType.equals("Watcher")) {
 
             flag = watcherService.checkEmailByWatcher(Integer.valueOf(number), email);
+            request.getSession().setAttribute("checkEmail","pass");
         } else {
 
             flag = adminService.checkEmailByAdmin(Integer.valueOf(number), email);
+            request.getSession().setAttribute("checkEmail","pass");
         }
+
+
 
         if (!flag) {
             return Msg.success();
         } else {
+            request.getSession().setAttribute("checkEmail","fail");
             return Msg.fail().add("msg", "邮箱和账号不对应");
         }
     }
@@ -252,8 +258,7 @@ public class ForgetController {
         String sessionCaptcha = (String) request.getSession().getAttribute("checkCode");
 
         //2.如果验证码正确
-        if (sessionCaptcha.equals(captcha)) {
-
+        if (captcha.equals(sessionCaptcha)) {
             return Msg.success();
         }
 
@@ -281,18 +286,20 @@ public class ForgetController {
         if (userType.equals("Student")) {
 
             studentService.updatePasswordByStudentNumber(number, password);
+            request.getSession().setAttribute("password","pass");
 
         } else if (userType.equals("Teacher")) {
 
             teacherService.updatePasswordByTeacherNumber(number, password);
-
+            request.getSession().setAttribute("password","pass");
         } else if (userType.equals("Watcher")) {
 
             watcherService.updatePasswordByWatcherNumber(number, password);
-
+            request.getSession().setAttribute("password","pass");
         } else {
 
             adminService.updatePasswordByAdminNumber(number, password);
+            request.getSession().setAttribute("password","pass");
         }
 
         return Msg.success();

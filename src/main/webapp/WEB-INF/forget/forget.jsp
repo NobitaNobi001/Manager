@@ -18,6 +18,7 @@
         <div class="top">
             <div class="logo"><img src="static/images/logo.png" height="120"/></div>
             <div class="title">湖北文理学院创新实践学分管理系统</div>
+            <a href="logout" class="btn btn-danger" style="position: absolute;right: 10px; top: 35px;">退出</a>
         </div>
         <div class="schedule">
             <ul>
@@ -49,10 +50,12 @@
             </div>
             <div class="item">
                 <div class="title">身份</div>
+                <div style="line-height: 40px;">
                 <label><input type="radio" name="type" id="type1" value="1" checked="checked"/>学生</label>
                 <label><input type="radio" name="type" id="type2" value="2"/>教师</label>
                 <label><input type="radio" name="type" id="type3" value="3"/>督查</label>
                 <label><input type="radio" name="type" id="type4" value="4"/>管理员</label>
+                </div>
             </div>
             <div class="item">
                 <div class="title">验证码</div>

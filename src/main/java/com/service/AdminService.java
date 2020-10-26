@@ -2,6 +2,7 @@ package com.service;
 
 import com.bean.*;
 import com.dao.*;
+import com.github.pagehelper.PageHelper;
 import com.utils.CollegeNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -78,6 +79,36 @@ public class AdminService {
      */
     public Integer selectCountAdmin(){
         return adminMapper.countByExample(null);
+    }
+
+    /**
+     * 条件查询学生列表
+     *
+     * @param tableName 学院
+     * @param stuNumber 学生学号
+     * @param stuName   学生姓名
+     * @param stuClass  学生班级
+     * @param page      起始页
+     * @param size      一页显示的数据量
+     * @param major     学生专业
+     * @return
+     */
+    public List<Student> selectStuByCondition(String tableName, Integer stuNumber, String stuName, String stuClass, int page, int size, String major) {
+        PageHelper.startPage(page, size);
+        return collegeStuMapper.selectStuByCondition(tableName, stuNumber, stuName, stuClass, major);
+    }
+
+    /**
+     * 查询所在学院的学生列表
+     *
+     * @param tableName
+     * @param page
+     * @param size
+     * @return
+     */
+    public List<Student> selectStuByCollegeName(String tableName, int page, int size) {
+        PageHelper.startPage(page, size);
+        return collegeStuMapper.selectAllStuByCollegeName(tableName);
     }
 
     /**

@@ -7,22 +7,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 忘记密码页面的拦截器
+ * 拦截直接不输入短信验证码就到修改密码的页面
  */
-public class ForgetInterceptor implements HandlerInterceptor {
+public class ForgetCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
-        Integer forgetNumber = (Integer) httpServletRequest.getSession().getAttribute("forget_number");
+        String temp = (String) httpServletRequest.getSession().getAttribute("checkEmail");
 
-        //如果session域中没有忘记密码的账号就进行拦截
-        if (forgetNumber == null) {
-            httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/forget/forgetIndex");
+        if(!("pass".equals(temp))){
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath()+"/forget/forgetCheck");
             return false;
         }
 
-        //放行
         return true;
     }
 
