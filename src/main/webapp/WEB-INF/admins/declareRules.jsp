@@ -47,6 +47,26 @@
         </div>
     </div>
 </div>
+
+<%--设置申报规则的模态框--%>
+<div class="modal fade" id="ruleSetting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">设置规则</h4>
+            </div>
+            <div class="modal-body">
+                <textarea class="form-control" id="rule_content" rows="20" style="min-width: 90%">${admins.college.rule }</textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="rule_close_btn">关闭</button>
+                <button type="button" class="btn btn-primary" id="rule_update_btn">确认</button>
+            </div>
+        </div>
+    </div>
+</div>
 <header>
     <div id="header">
         <div class="header">
@@ -56,7 +76,7 @@
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="admins/profile">${admins.adminName}(${admins.adminNumber})</a>
+                    <a href="admins/profile">${admins.college.name }&nbsp;&nbsp;${admins.adminName}(${admins.adminNumber})</a>
                     <a href="logout">退出</a>
                 </div>
             </div>
@@ -78,6 +98,7 @@
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
                     <li><a href="admins/auditTeacherManager">审核管理</a></li>
                     <li><a href="admins/ruleManager">审核规则</a></li>
+                    <li><a href="admins/stuList">学生列表</a></li>
                     <li><a href="admins/situation">学分概览</a></li>
                     <li class="headline"><span>账号管理</span></li>
                     <li><a href="admins/profile">个人信息</a></li>
@@ -86,8 +107,10 @@
             </div>
             <div class="main-right right">
                 <div class="student">
-                    <h4>申报规则</h4>
-                    <div class="action"></div>
+                    <h4>审核规则</h4>
+                    <div class="action">
+                        <button class="btn btn-success" id="setRule">规则说明</button>
+                    </div>
                     <table class="table" border="0" cellspacing="0" cellpadding="0" id="rule_table">
                         <thead>
                         <tr>
@@ -166,6 +189,35 @@
             }
         });
     }
+
+    //设置规则说明
+    $("#setRule").click(function () {
+
+        $("#ruleSetting").modal({
+            backdrop:"static"
+        });
+    });
+
+    //更新审核规则
+    $("#rule_update_btn").click(function () {
+
+        $.ajax({
+            url:"college/rule",
+            type:"PUT",
+            data:{
+                "collegeId":${admins.collegeId },
+                "rule":$("#rule_content").val()
+            },
+            success:function () {
+
+                $("#ruleSetting").modal("hide");
+            },
+            error:function () {
+                alert("服务器繁忙!");
+            }
+        })
+
+    });
 
     //给编辑按钮添加单击事件
     $(document).on("click", ".edit-btn", function () {

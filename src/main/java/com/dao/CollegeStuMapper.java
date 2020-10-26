@@ -31,6 +31,8 @@ public interface CollegeStuMapper {
     //根据学院查到专业
     List<String> getAllMajor(@Param("tableName") String tableName);
 
+    List<String> getAllMajorWithGrade(@Param("tableName") String tableName,@Param("grade") String grade);
+
     // 查询所在学院的班级
     List<String> getAllClass(@Param("tableName") String tableName, @Param("major") String major);
 
@@ -51,7 +53,7 @@ public interface CollegeStuMapper {
     // 批量删除
     int deleteStuBatchByList(@Param("tableName") String tableName, @Param("list") List<Integer> list);
 
-    List<CollegeStu> selectInfo(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") String stuClass, @Param("order") Integer order);
+    List<CollegeStu> selectInfo(@Param("tableName") String tableName, @Param("grade") String grade,@Param("major") String major, @Param("stuClass") String stuClass, @Param("order") Integer order);
 
     // 如果学院名一样的话批量插入学生
     int insertBatchCollegeStu(@Param("tableName") String firstTableName, @Param("list") List<Student> students);

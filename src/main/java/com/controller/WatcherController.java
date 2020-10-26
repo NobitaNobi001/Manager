@@ -68,12 +68,24 @@ public class WatcherController {
      */
     @PutMapping(value = "/updateInfo/{id}")
     @ResponseBody
-    public Msg updateInfo(Watcher watcher,HttpServletRequest request) {
+    public Msg updateInfo(Watcher watcher, HttpServletRequest request) {
 
         Watcher watcher1 = watcherService.selectByPrimaryKey(watcher.getId());
 
+        if ("".equals(watcher.getEmail()) || "".equals(watcher.getPhone()) || "".equals(watcher.getGender())) {
+
+            watcherService.updateWatcher(watcher);
+
+            Watcher watcher2 = watcherService.selectWatcherByWatcherNumber(watcher1.getWatcherNumber());
+
+            request.getSession().setAttribute("watcher", watcher2);
+
+            return Msg.success();
+
+        }
+
+        //如果要修改的电话号码和邮箱都是相同的
         if (watcher.getEmail().equals(watcher1.getEmail()) && watcher.getPhone().equals(watcher1.getPhone()) && watcher.getGender().equals(watcher1.getGender())) {
-            //如果要修改的电话号码和邮箱都是相同的
             return Msg.fail().add("msg", "要修改的信息和原信息相同!");
         } else {
             //否则更新信息
@@ -81,7 +93,7 @@ public class WatcherController {
 
             Watcher watcher2 = watcherService.selectWatcherByWatcherNumber(watcher1.getWatcherNumber());
 
-            request.getSession().setAttribute("watcher",watcher2);
+            request.getSession().setAttribute("watcher", watcher2);
 
             return Msg.success();
         }
@@ -226,7 +238,7 @@ public class WatcherController {
 
     @RequestMapping("/insertWatcherByExcel")
     @ResponseBody
-    public Msg insertBatchWatcher(@RequestParam("ExcelFile") MultipartFile uploadExcel){
+    public Msg insertBatchWatcher(@RequestParam("ExcelFile") MultipartFile uploadExcel) {
 
         // 判断是否为null文件
         if (uploadExcel.getSize() == 0) {

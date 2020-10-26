@@ -6,14 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.service.CollegeService;
 import com.service.CollegeStuService;
+import com.service.TeacherService;
 import com.service.WatcherService;
+import com.utils.CollegeNameUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -31,6 +30,9 @@ public class CollegeController {
     @Autowired
     private WatcherService watcherService;
 
+    @Autowired
+    private TeacherService teacherService;
+
     ObjectMapper objectMapper = new ObjectMapper();
 
 
@@ -47,22 +49,35 @@ public class CollegeController {
         return colleges;
     }
 
+    /**
+     * 获得所有年级
+     * @param collegeId
+     * @return
+     * @throws JsonProcessingException
+     */
+    @GetMapping("/grade")
+    @ResponseBody
+    public String getGrade(Integer collegeId) throws JsonProcessingException{
+        List<String> allGrade = collegeStuService.getAllGrade(collegeId);
+        return objectMapper.writeValueAsString(allGrade);
+    }
+
     /*
      * 得到所有专业
      * */
-    @RequestMapping(value = "/getMajor", method = RequestMethod.GET)
+    @GetMapping("/getMajor")
     @ResponseBody
-    public String getAllMajor(Integer collegeId) throws JsonProcessingException {
-        List<String> allMajor = collegeStuService.getAllMajor(collegeId);
+    public String getAllMajor(Integer collegeId,String grade) throws JsonProcessingException {
+        List<String> allMajor = collegeStuService.getAllMajorWithGrade(collegeId,grade);
         return objectMapper.writeValueAsString(allMajor);
     }
 
     /*
      * 得到所在专业所有班级
      * */
-    @RequestMapping(value = "/getClass", method = RequestMethod.GET)
+    @GetMapping("/getClass")
     @ResponseBody
-    public String getAllMajor(Integer collegeId, String major) throws JsonProcessingException {
+    public String getAllClass(Integer collegeId, String major) throws JsonProcessingException {
         List<String> allClass = collegeStuService.getAllClass(collegeId, major);
         return objectMapper.writeValueAsString(allClass);
     }
@@ -99,6 +114,7 @@ public class CollegeController {
 
     /**
      * 根据学院 专业 班级来查询所有学生
+     *
      * @param college
      * @param major
      * @param stuClass
@@ -110,6 +126,38 @@ public class CollegeController {
         List<Student> students = collegeStuService.selectAllStuByCollegeName(college, 1, 5);
 
         return Msg.success().add("students", students);
+    }
+
+    /**
+     * 获取此学院的申报规则
+     *
+     * @param collegeId
+     * @return
+     */
+    @GetMapping("/rule")
+    @ResponseBody
+    public Msg getRule(@RequestParam("collegeId") Integer collegeId) {
+        return Msg.success().add("rule", collegeService.getAll(collegeId));
+    }
+
+    @PutMapping("/rule")
+    @ResponseBody
+    public Msg updateRule(@RequestParam("collegeId") Integer collegeId, @RequestParam("rule") String rule, HttpServletRequest request) {
+
+        College college = new College();
+        college.setId(collegeId);
+        college.setName(CollegeNameUtil.getCollegeName(collegeId));
+        college.setRule(rule);
+
+        collegeService.updateCollegeRule(college);
+
+        Teacher teacher = (Teacher) request.getSession().getAttribute("teacher");
+
+        teacher.setCollege(college);
+
+        request.getSession().setAttribute("teacher", teacher);
+
+        return Msg.success();
     }
 
 }

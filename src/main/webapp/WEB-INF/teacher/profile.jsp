@@ -22,7 +22,7 @@
                 </div>
                 <div class="top-right right">
                     <a href="teacher/teaProfile"
-                       style="font-size: 14px; color: #337ab7;">${teacher.teaName }(${teacher.teaNumber })</a>
+                       style="font-size: 14px; color: #337ab7;">${teacher.college.name }&nbsp;&nbsp;${teacher.teaName }(${teacher.teaNumber })</a>
                     <a href="logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>
@@ -42,8 +42,7 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="teacher/stuList">学生列表</a></li>
-                    <li><a href="teacher/declareManager">申报管理</a></li>
+                    <li><a href="teacher/declareManager">审核管理</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="teacher/teaProfile">个人信息</a></li>
                     <li class=""><a href="teacher/teaPassword">修改密码</a></li>

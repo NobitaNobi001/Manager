@@ -118,7 +118,7 @@ public class AdminController {
         }
 
         //如果要修改的电话号码和邮箱都是相同的
-        if (admin1.getEmail().equals(admin.getEmail()) && admin1.getPhone().equals(admin.getPhone()) && admin.getGender().equals(admin.getGender())) {
+        if (admin.getEmail().equals(admin1.getEmail()) && admin.getPhone().equals(admin1.getPhone()) && admin.getGender().equals(admin1.getGender())) {
             return Msg.fail().add("msg", "要修改的信息和原信息相同!");
         } else {
             //否则更新信息
@@ -196,7 +196,7 @@ public class AdminController {
             ExcelWriterSheetBuilder sheet = null;
             response.setContentType("applicationnd.ms-excel");
             response.setCharacterEncoding("utf-8");
-            String fileName = URLEncoder.encode("湖北文理学院创新学分申报表", "UTF-8");
+            String fileName = URLEncoder.encode("湖北文理学院创新实践学分申报表", "UTF-8");
             response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
             ServletOutputStream outputStream = response.getOutputStream();
             // 创建工作簿
@@ -446,6 +446,7 @@ public class AdminController {
     public Msg insertAdmin(Admin admin) {
 
         admin.setPassword(String.valueOf(admin.getAdminNumber()));
+        admin.setIsSuper("0");
         adminService.insertAdmin(admin);
 
         return Msg.success();
@@ -522,7 +523,6 @@ public class AdminController {
         //根据条件查询出所有教师
         List<Admin> admins = adminService.selectAdminWithCondition(collegeId, keywords);
 
-        System.out.println("---------" + admins);
 
         if (admins.size() == 0) {
             return Msg.fail();

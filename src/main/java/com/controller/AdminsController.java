@@ -1,15 +1,16 @@
 package com.controller;
 
-import com.bean.Admin;
-import com.bean.CreditDetail;
-import com.bean.Msg;
+import com.bean.*;
+import com.github.pagehelper.PageInfo;
 import com.service.AdminService;
 import com.service.CollegeStuService;
 import com.service.RecordService;
 import com.service.TeacherService;
+import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,56 @@ public class AdminsController {
     @Autowired
     private RecordService recordService;
 
+
+    /**
+     * 学生列表
+     *
+     * @param page
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/stuList")
+    public String stuList(@RequestParam(name = "page", defaultValue = "1") int page, HttpServletRequest request, Model model) {
+
+        Admin admin = (Admin) request.getSession().getAttribute("admins");
+        //查询教师的学院id得到学院表名称
+        String tableName = CollegeNameUtil.getTableName(admin.getCollegeId());
+        List<Student> students = adminService.selectStuByCollegeName(tableName, page, 5);
+        PageInfo<Record> info = new PageInfo(students);
+        model.addAttribute("info", info);
+
+        //跳转到stuList页面
+        return "admins/studentList";
+    }
+
+    /**
+     * 条件查询学生
+     *
+     * @param page
+     * @param stuNumber
+     * @param stuName
+     * @param stuClass
+     * @param major
+     * @param model
+     * @param request
+     * @return
+     */
+    @RequestMapping("/queryStu")
+    public String queryStu(@RequestParam(name = "page", defaultValue = "1") int page, @RequestParam(value = "stuNumber", required = false) Integer stuNumber, @RequestParam(value = "stuName", required = false) String stuName, @RequestParam(value = "stuClass", required = false) String stuClass, @RequestParam(value = "major", required = false) String major, Model model, HttpServletRequest request) {
+
+        Admin admin = (Admin) request.getSession().getAttribute("admins");
+
+        String tableName = CollegeNameUtil.getTableName(admin.getCollegeId());
+
+        List<Student> students = adminService.selectStuByCondition(tableName, stuNumber, stuName, stuClass, page, 5, major);
+
+        PageInfo<Record> info = new PageInfo(students);
+
+        model.addAttribute("info", info);
+
+        return "admins/studentList";
+    }
 
     @RequestMapping("/getCreditProfileWithGrade")
     @ResponseBody
@@ -128,7 +179,7 @@ public class AdminsController {
         }
 
         //如果要修改的电话号码和邮箱都是相同的
-        if (admin1.getEmail().equals(admin.getEmail()) && admin1.getPhone().equals(admin.getPhone()) && admin.getGender().equals(admin.getGender())) {
+        if (admin.getEmail().equals(admin1.getEmail()) && admin.getPhone().equals(admin1.getPhone()) && admin.getGender().equals(admin1.getGender())) {
             return Msg.fail().add("msg", "要修改的信息和原信息相同!");
         } else {
             //否则更新信息

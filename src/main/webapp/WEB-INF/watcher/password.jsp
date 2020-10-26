@@ -30,7 +30,7 @@
                 </div>
                 <div class="top-right right">
                     <a href="watcher/watProfile"
-                       style="font-size: 14px; color: #337ab7;">${watcher.watcherName }(${watcher.watcherNumber })</a>
+                       style="font-size: 14px; color: #337ab7;">${watcher.college.name }&nbsp;&nbsp;${watcher.watcherName }(${watcher.watcherNumber })</a>
                     <a href="logout" style="font-size: 14px; color: #337ab7;">退出</a>
                 </div>
             </div>

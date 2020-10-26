@@ -38,7 +38,8 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">审核学分</h4>
+                <h4 class="modal-title">审核学分<p class="glyphicon glyphicon-question-sign" title="申报帮助" id="applyHelp"
+                                               style="vertical-align: middle; float: right;"></p></h4>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal">
@@ -104,6 +105,25 @@
         </div>
     </div>
 </div>
+
+<!--申报帮助模态框-->
+<div class="modal fade" id="applyHelpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">申报帮助</h4>
+            </div>
+            <div class="modal-body">
+                <p id="applyContent"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
 <header>
     <div id="header">
         <div class="header">
@@ -113,7 +133,7 @@
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="teacher/teaProfile">${teacher.teaName }(${teacher.teaNumber })</a>
+                    <a href="teacher/teaProfile">${teacher.college.name }&nbsp;&nbsp;${teacher.teaName }(${teacher.teaNumber })</a>
                     <a href="logout">退出</a>
                 </div>
             </div>
@@ -133,8 +153,7 @@
             <div class="main-left left">
                 <ul>
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
-                    <li><a href="teacher/stuList">学生列表</a></li>
-                    <li><a href="teacher/declareManager">申报管理</a></li>
+                    <li><a href="teacher/declareManager">审核管理</a></li>
                     <li class="headline"><a href="javascript:;">账号设置</a></li>
                     <li><a href="teacher/teaProfile">个人信息</a></li>
                     <li><a href="teacher/teaPassword">修改密码</a></li>
@@ -240,11 +259,44 @@
                 alert("服务器繁忙!");
             }
         });
-    })
+    });
+
+    // 点击问号弹出模态框
+    $("#applyHelp").click(function () {
+
+        getRule();
+
+        $("#applyHelpModal").modal({
+            backdrop: "static"
+        });
+
+    });
+
+    //发送ajax请求获取申报
+    function getRule() {
+
+        $.ajax({
+            url: "college/rule",
+            type: "GET",
+            data: {
+                "collegeId":${teacher.collegeId }
+            },
+            success: function (result) {
+                if (result.extend.rule.rule == null) {
+                    $("#applyContent").text("暂无申报规则");
+                }else{
+                    $("#applyContent").text(result.extend.rule.rule);
+                }
+            },
+            error: function () {
+                alert("服务器繁忙!");
+            }
+        });
+    }
 
     function to_page(pn) {
 
-        if(${teacher.auditGrade==""}){
+        if (${teacher.auditGrade==null}) {
             $("<tr></tr>").append($("<td></td>").append("暂无数据记录").attr("align", "center").attr("colspan", "10")).appendTo("#declare_table tbody");
             return false;
         }
@@ -255,7 +307,7 @@
             data: {
                 "pn": pn,
                 "collegeId": ${teacher.collegeId },
-                "auditGrade":${teacher.auditGrade==""?"-1":teacher.auditGrade}
+                "auditGrade":${teacher.auditGrade==null?"-1":teacher.auditGrade}
             },
             success: function (result) {
                 //清空table表格样式

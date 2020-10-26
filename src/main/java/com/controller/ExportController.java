@@ -38,16 +38,7 @@ public class ExportController {
      * @param order     顺序
      */
     @RequestMapping("/exportStu")
-    public void exportStu(HttpServletResponse response, @RequestParam Integer collegeId, @RequestParam(defaultValue = "-1") String major, @RequestParam(defaultValue = "-1") String stuClass, @RequestParam Integer order) throws IOException {
-
-        System.out.println(collegeId);
-        System.out.println(major);
-        System.out.println(stuClass);
-        System.out.println(order);
-        System.out.println(collegeStuService.getInfo(collegeId, major, stuClass, order));
-
-        //获取表名
-//        String collegeName = CollegeNameUtil.getTableName(collegeId);
+    public void exportStu(HttpServletResponse response, @RequestParam Integer collegeId,@RequestParam(defaultValue = "-1") String grade, @RequestParam(defaultValue = "-1") String major, @RequestParam(defaultValue = "-1") String stuClass, @RequestParam Integer order) throws IOException {
 
         try {
             ExcelWriterSheetBuilder sheet = null;
@@ -67,7 +58,7 @@ public class ExportController {
 
             sheet = writeWordBook.sheet("学生学分信息");
 
-            List<CollegeStu> collegeStus = collegeStuService.getInfo(collegeId, major, stuClass, order);
+            List<CollegeStu> collegeStus = collegeStuService.getInfo(collegeId,grade, major, stuClass, order);
 
             //将信息写入到工作表
             sheet.doWrite(collegeStus);

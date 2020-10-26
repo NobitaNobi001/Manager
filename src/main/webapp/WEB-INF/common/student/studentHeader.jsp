@@ -49,7 +49,7 @@
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="javascript:void(0);">湖北文理学院&nbsp;&nbsp;${student.stuName }(${student.stuNumber })</a>
+                    <a href="javascript:void(0);">${student.college.name }&nbsp;&nbsp;${student.stuName }(${student.stuNumber })</a>
                     <a href="logout">退出</a>
                 </div>
             </div>

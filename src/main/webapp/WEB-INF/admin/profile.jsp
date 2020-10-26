@@ -150,6 +150,7 @@
                 "email": email.val()
             },
             success: function (result) {
+                console.log(result);
                 if (result.code == 100) {
                     alert("修改成功");
                     window.location.reload();

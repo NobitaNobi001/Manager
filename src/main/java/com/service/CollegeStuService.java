@@ -124,6 +124,22 @@ public class CollegeStuService {
     }
 
     /**
+     * 根据年级得到专业名
+     * @param collegeId
+     * @param grade
+     * @return
+     */
+    public List<String> getAllMajorWithGrade(Integer collegeId,String grade){
+        String tableName = CollegeNameUtil.getTableName(collegeId);
+        if (!"".equals(tableName)) {
+            List<String> allMajor = collegeStuMapper.getAllMajorWithGrade(tableName,grade);
+            return allMajor;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 获取到所有班级
      *
      * @param collegeId
@@ -158,18 +174,19 @@ public class CollegeStuService {
     /**
      *
      * @param collegeId
+     * @param grade
      * @param major
      * @param stuClass
      * @param order
      * @return
      */
-    public List<CollegeStu> getInfo(Integer collegeId, String major, String stuClass, Integer order) {
+    public List<CollegeStu> getInfo(Integer collegeId, String grade,String major, String stuClass, Integer order) {
 
         //获取数据库名
         String tableName = CollegeNameUtil.getTableName(collegeId);
 
         //查询出此学院所有满足要求的学生
-        List<CollegeStu> collegeStus = collegeStuMapper.selectInfo(tableName, major, stuClass, order);
+        List<CollegeStu> collegeStus = collegeStuMapper.selectInfo(tableName, grade,major, stuClass, order);
 
         return collegeStus;
     }

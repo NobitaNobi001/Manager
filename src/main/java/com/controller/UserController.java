@@ -46,7 +46,7 @@ public class UserController {
         subject.login(token);
 
         String url = (String) subject.getSession().getAttribute("url");
-        System.out.println("---" + url);
+
         //实现页面的重定向
         return "redirect:/" + url;
 

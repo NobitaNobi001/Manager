@@ -63,7 +63,7 @@
                     <div class="title">湖北文理学院创新实践学分管理系统</div>
                 </div>
                 <div class="top-right right">
-                    <a href="admins/profile">${admins.adminName}(${admins.adminNumber})</a>
+                    <a href="admins/profile">${admins.college.name }&nbsp;&nbsp;${admins.adminName}(${admins.adminNumber})</a>
                     <a href="logout">退出</a>
                 </div>
             </div>
@@ -85,6 +85,7 @@
                     <li class="headline"><a href="javascript:;">控制中心</a></li>
                     <li><a href="admins/auditTeacherManager">审核管理</a></li>
                     <li><a href="admins/ruleManager">审核规则</a></li>
+                    <li><a href="admins/stuList">学生列表</a></li>
                     <li><a href="admins/situation">学分概览</a></li>
                     <li class="headline"><span>账号管理</span></li>
                     <li><a href="admins/profile">个人信息</a></li>
@@ -184,7 +185,7 @@
             //姓名
             var name = $("<td></td>").append(item.teaName);
             //职位
-            var position = $("<td></td>").append(item.teaPositon);
+            var position = $("<td></td>").append(item.teaPositon == "" ? "无" : item.teaPositon);
             //审核年级
             var grade = $("<td></td>").append(item.auditGrade == null ? "无" : item.auditGrade);
             //操作
@@ -205,7 +206,7 @@
     //给编辑按钮添加单击事件
     $(document).on("click", ".edit-btn", function () {
 
-        $("#audit_grade_btn").attr("edit-id",$(this).attr("edit-id"));
+        $("#audit_grade_btn").attr("edit-id", $(this).attr("edit-id"));
 
         getGrade();
 
@@ -224,11 +225,11 @@
             },
             type: "GET",
             success: function (result) {
-                if(result.code==100){
+                if (result.code == 100) {
                     $.each(result.extend.grades, function (index, element) {
                         $("#audit_grade").append($("<option></option>").val(element).text(element));
                     });
-                }else{
+                } else {
                     $("#audit_grade").append($("<option></option>").val("").text("请选择审核年级"));
                 }
 
@@ -243,21 +244,21 @@
     $("#audit_grade_btn").click(function () {
 
         $.ajax({
-            url:"admins/auditGrade/"+$(this).attr("edit-id"),
-            type:"PUT",
-            data:{
-                "auditGrade":$("#audit_grade").val()
+            url: "admins/auditGrade/" + $(this).attr("edit-id"),
+            type: "PUT",
+            data: {
+                "auditGrade": $("#audit_grade").val()
             },
-            success:function (result) {
+            success: function (result) {
 
-                if(result.code==100){
+                if (result.code == 100) {
                     //关闭模态框
                     $("#AuditGradeModal").modal("hide");
                     //回到本页面
                     to_page(currentPage);
                 }
             },
-            error:function () {
+            error: function () {
                 alert("服务器繁忙!");
             }
         })

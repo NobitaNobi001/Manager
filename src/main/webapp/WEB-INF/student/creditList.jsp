@@ -5,7 +5,7 @@
 <div class="main-right right">
     <!-- 学分列表 start -->
     <div class="credit">
-        <h4>我的学分</h4>
+        <h4>学分列表</h4>
         <div class="action" style="text-align: right;margin: 10px 0;padding: 10px 0;">
             <button id="seeSumCredit" class="btn btn-danger" title="点击显示各类明细">总学分:${sumCredit}</button>
         </div>
@@ -127,61 +127,61 @@
                     <div class="form-group">
                         <label class="col-md-6 control-label">大学生学科竞赛活动(含大学生创新创业训练项目):</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="大学生学科竞赛活动(含大学生创新创业训练项目)">
+                            <input type="text" class="form-control" name="sortValue" sort="大学生学科竞赛活动(含大学生创新创业训练项目)" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">大学生文体竞赛活动:</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="大学生文体竞赛活动">
+                            <input type="text" class="form-control" name="sortValue" sort="大学生文体竞赛活动" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">创新创业实践训练(课程):</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="创新创业实践训练(课程)">
+                            <input type="text" class="form-control" name="sortValue" sort="创新创业实践训练(课程)" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">论文、专利、作品发表:</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="论文、专利、作品发表">
+                            <input type="text" class="form-control" name="sortValue" sort="论文、专利、作品发表" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">职业(等级)证书:</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="职业(等级)证书">
+                            <input type="text" class="form-control" name="sortValue" sort="职业(等级)证书" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">参与教师科研(或实验室工作):</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="参与教师科研(或实验室工作)">
+                            <input type="text" class="form-control" name="sortValue" sort="参与教师科研(或实验室工作)" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">社会实践(调查):</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="社会实践(调查)">
+                            <input type="text" class="form-control" name="sortValue" sort="社会实践(调查)" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">读书活动:</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="读书活动">
+                            <input type="text" class="form-control" name="sortValue" sort="读书活动" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">学生工作与社团活动:</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="学生工作与社团活动">
+                            <input type="text" class="form-control" name="sortValue" sort="学生工作与社团活动" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-6 control-label">专业认定的其他创新实践活动:</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="专业认定的其他创新实践活动">
+                            <input type="text" class="form-control" name="sortValue" sort="专业认定的其他创新实践活动" readonly>
                         </div>
                     </div>
                 </form>

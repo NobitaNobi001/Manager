@@ -26,6 +26,7 @@
         <association javaType="com.bean.College" property="college">
             <id column="id" jdbcType="INTEGER" property="id"/>
             <result column="name" jdbcType="VARCHAR" property="name"/>
+            <result column="rule" jdbcType="VARCHAR" property="rule"/>
         </association>
     </resultMap>
     <sql id="Example_Where_Clause">
@@ -92,7 +93,7 @@
     id, admin_number, password, admin_name, college_id, gender, phone, email, is_super
   </sql>
     <sql id="WithCollege_Column_List">
-    a.id, admin_number, password, admin_name, a.college_id, gender,  phone, email,is_super,c.id,c.name
+    a.id, admin_number, password, admin_name, a.college_id, gender,  phone, email,is_super,c.id,c.name,c.rule
 </sql>
     <select id="selectByExample" parameterType="com.bean.AdminExample" resultMap="AdminWithCollege">
         select
@@ -100,13 +101,14 @@
             distinct
         </if>
         <include refid="WithCollege_Column_List"/>
-        from admin_info a left join college c on a.`college_id`=c.`id`
+        from admin_info a left join college c on a.`college_id`=c.`id` where is_super=0
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
         <if test="orderByClause != null">
             order by ${orderByClause}
         </if>
+
     </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
@@ -353,6 +355,7 @@
             <if test="keywords != null">
                 and admin_name like concat('%',#{keywords},'%')
             </if>
+            and is_super=0
         </where>
     </select>
 </mapper>

@@ -94,7 +94,7 @@
                 <h4 class="modal-title">申报帮助</h4>
             </div>
             <div class="modal-body">
-
+                <p id="applyContent"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
@@ -114,10 +114,35 @@
 
     // 点击问号弹出模态框
     $("#applyHelp").click(function () {
+
+        getRule();
+
         $("#applyHelpModal").modal({
             backdrop: "static"
         });
     });
+
+    //发送ajax请求获取申报
+    function getRule() {
+
+        $.ajax({
+            url: "college/rule",
+            type: "GET",
+            data: {
+                "collegeId":${student.collegeId }
+            },
+            success: function (result) {
+                if (result.extend.rule.rule == null) {
+                    $("#applyContent").text("暂无申报规则");
+                }else{
+                    $("#applyContent").text(result.extend.rule.rule);
+                }
+            },
+            error: function () {
+                alert("服务器繁忙!");
+            }
+        });
+    }
 
 
     let imgfile = null;
@@ -216,4 +241,6 @@
             return false;//阻止表单跳转
         });
     });
+
+
 </script>
