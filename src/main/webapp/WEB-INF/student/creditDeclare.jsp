@@ -108,7 +108,7 @@
 <script type="text/javascript">
     // 下拉列表选中
     var sortName = '${sessionScope.applySort }';
-    if (typeof sortName != "undefined" && sortName != null && sortName != "") {
+    if (sortName != "undefined" && sortName != null && sortName != "") {
         $("#applyForm select[name='sort']").val([sortName]);
     }
 

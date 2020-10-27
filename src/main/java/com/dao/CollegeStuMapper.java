@@ -53,7 +53,7 @@ public interface CollegeStuMapper {
     // 批量删除
     int deleteStuBatchByList(@Param("tableName") String tableName, @Param("list") List<Integer> list);
 
-    List<CollegeStu> selectInfo(@Param("tableName") String tableName, @Param("grade") String grade,@Param("major") String major, @Param("stuClass") String stuClass, @Param("order") Integer order);
+    List<CollegeStu> selectInfo(@Param("tableName") String tableName, @Param("grade") String grade, @Param("major") String major, @Param("stuClass") String stuClass, @Param("order") Integer order);
 
     // 如果学院名一样的话批量插入学生
     int insertBatchCollegeStu(@Param("tableName") String firstTableName, @Param("list") List<Student> students);
@@ -61,4 +61,6 @@ public interface CollegeStuMapper {
     List<String> getAllGrade(@Param("tableName") String tableName);
 
     List<Integer> selectStuNumberWithCollegeAndGrade(@Param("tableName") String firstTableName, @Param("grade") String Grade);
+
+    String selectStuGradeByCollegeNameAndStuNumber(@Param("tableName") String tableName, @Param("stuNumber") Integer stuNumber);
 }

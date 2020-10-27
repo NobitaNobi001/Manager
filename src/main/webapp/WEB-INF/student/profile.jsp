@@ -81,7 +81,7 @@
         } else {
             $("#female").prop("checked", "checked");
         }
-        $('#credit form').bootstrapValidator({
+        $('.credit form').bootstrapValidator({
             // 通用提示语
             message: 'This value is not valid',
             // 提示字体图标

@@ -56,6 +56,9 @@ public class AdminController {
     @Autowired
     private ExportAdminListener adminListener;
 
+    @Autowired
+    private CollegeStuService collegeStuService;
+
 
     /**
      * 跳转管理员首页
@@ -180,8 +183,7 @@ public class AdminController {
     @RequestMapping("/updateStu.html")
     public String updateStu(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, Student student) {
         adminService.updateStu(student);
-        Student student1 = studentService.selectStuByPrimaryKey(student.getId());
-        return "redirect:admin/get/student.html?keyword=" + keyword + "&college=" + student1.getCollege() + "&major=" + student1.getMajor() + "&stuClass=" + student1.getClass() + "&pageNum=" + pageNum;
+        return "redirect:/admin/get/student.html?keyword=" + keyword + "&college=" + student.getCollegeId() + "&stuClass=" + student.getClassName() + "&pageNum=" + pageNum;
     }
 
 
@@ -350,7 +352,8 @@ public class AdminController {
     @ResponseBody
     public Msg toQueryStuInfoById(@PathVariable("stuID") Integer stuId) {
         Student student = studentService.selectStuByPrimaryKey(stuId);
-        return Msg.success().add("student", student);
+        String grade = collegeStuService.selectStuGradeByCollegeNameAndStuNumber(student.getStuNumber(), student.getCollegeId());
+        return Msg.success().add("student", student).add("grade", grade);
     }
 
     /**

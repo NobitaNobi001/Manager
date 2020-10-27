@@ -176,6 +176,13 @@
                             </select>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="updateStuGrade">年级</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" name="stuGrade" id="updateStuGrade">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label" for="updateStuNumber">学生学号</label>
                         <div class="col-sm-8">
@@ -631,6 +638,7 @@
             dataType: "json"
         })
     };
+
     //获取学生信息的ajax显示在更新模态框中
     function getStu(id) {
         $.ajax({
@@ -638,6 +646,7 @@
             type: "GET",
             success: function (result) {
                 stuDate = result.extend.student;
+                stuGrade = result.extend.grade;
                 $("#StuUpdateModal input[name='id']").val(stuDate.id);
                 $("#StuUpdateModal select[name='collegeId']").val([stuDate.collegeId]);
                 getMajor(stuDate.collegeId, "#StuUpdateModal select[name='major']");
@@ -646,6 +655,7 @@
                 $("#StuUpdateModal select[name='className']").val([stuDate.className]);
                 $("#StuUpdateModal input[name='stuNumber']").val(stuDate.stuNumber);
                 $("#StuUpdateModal input[name='stuName']").val(stuDate.stuName);
+                $("#StuUpdateModal input[name='stuGrade']").val(stuGrade);
                 $("#StuUpdateModal input[name='password']").val(stuDate.password);
                 $("#StuUpdateModal input[name='gender']").val([stuDate.gender]);
             },
@@ -653,6 +663,7 @@
             dataType: "json"
         });
     }
+
     // 给编辑按钮绑定单击事件出现模态框
     $(document).on("click", ".edit_btn", function () {
         // 表单重置

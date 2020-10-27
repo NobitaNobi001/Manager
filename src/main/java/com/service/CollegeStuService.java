@@ -172,7 +172,6 @@ public class CollegeStuService {
     }
 
     /**
-     *
      * @param collegeId
      * @param grade
      * @param major
@@ -180,15 +179,22 @@ public class CollegeStuService {
      * @param order
      * @return
      */
-    public List<CollegeStu> getInfo(Integer collegeId, String grade,String major, String stuClass, Integer order) {
+    public List<CollegeStu> getInfo(Integer collegeId, String grade, String major, String stuClass, Integer order) {
 
         //获取数据库名
         String tableName = CollegeNameUtil.getTableName(collegeId);
 
         //查询出此学院所有满足要求的学生
-        List<CollegeStu> collegeStus = collegeStuMapper.selectInfo(tableName, grade,major, stuClass, order);
+        List<CollegeStu> collegeStus = collegeStuMapper.selectInfo(tableName, grade, major, stuClass, order);
 
         return collegeStus;
+    }
+
+    public String selectStuGradeByCollegeNameAndStuNumber(Integer stuNumber, Integer collegeId) {
+        //获取数据库名
+        String tableName = CollegeNameUtil.getTableName(collegeId);
+        return collegeStuMapper.selectStuGradeByCollegeNameAndStuNumber(tableName, stuNumber);
+
     }
 }
 

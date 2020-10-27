@@ -93,6 +93,11 @@
                         notEmpty: {
                             message: '新密码不能为空'
                         },
+                        stringLength: {
+                            min: 6,
+                            max: 18,
+                            message: '密码长度必须在6到18位之间'
+                        },
                         identical: {
                             field: 'confirmPassword',
                             message: '新密码和确认密码不相同'

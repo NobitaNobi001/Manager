@@ -258,4 +258,9 @@
             </if>
         </trim>
     </select>
+
+    <select id="selectStuGradeByCollegeNameAndStuNumber" resultType="java.lang.String">
+        select stu_grade from ${tableName}
+        where stu_number=#{stuNumber}
+    </select>
 </mapper>

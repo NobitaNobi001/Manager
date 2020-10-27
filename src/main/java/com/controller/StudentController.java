@@ -44,6 +44,10 @@ public class StudentController {
      */
     @RequestMapping("/updateStuNullInfo.html")
     public String updateStuNullInfo(Student student, HttpSession session) {
+        Student oldStu = (Student) session.getAttribute(StringConstant.STUDENT_TYPE);
+        if (student.getPhone().equals(oldStu.getPhone()) && student.getEmail().equals(oldStu.getEmail())) {
+            return "redirect:/student/index";
+        }
         studentService.updateStuInfoById(student);
         // 修改完信息之后重新存入session中
         Student stu = studentService.selectStuByPrimaryKey(student.getId());
@@ -51,7 +55,7 @@ public class StudentController {
         stu.getCollege().setName(collegeName);
         session.setAttribute(StringConstant.STUDENT_TYPE, stu);
         // 返回学生首页
-        return "student/index";
+        return "redirect:/student/index";
     }
 
     /**
