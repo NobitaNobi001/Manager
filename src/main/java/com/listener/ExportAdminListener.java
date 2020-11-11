@@ -51,18 +51,13 @@ public class ExportAdminListener extends AnalysisEventListener<AdminExcel> {
 
         admin.setGender(adminExcel.getGender());
 
-        if("超级管理员".equals(adminExcel.getIsSuper())){
-            admin.setIsSuper("1");
-        }else{
-            admin.setIsSuper("0");
-        }
+        admin.setIsSuper("0");
 
 
         admin.setPhone(adminExcel.getPhone());
 
         admin.setEmail(adminExcel.getEmail());
 
-        System.out.println("------"+admin.toString());
 
         admins.add(admin);
 

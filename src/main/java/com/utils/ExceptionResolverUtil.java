@@ -3,7 +3,7 @@ package com.utils;
 import com.bean.Msg;
 import com.constant.StringConstant;
 
-import com.exception.ImportExcelStuException;
+import com.exception.ImportExcelException;
 import com.exception.ExportStuException;
 import com.exception.OutMaxException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -40,8 +40,8 @@ public class ExceptionResolverUtil {
     }
 
     // 导入学生excel异常
-    @ExceptionHandler(value = ImportExcelStuException.class)
-    public ModelAndView ImportExcelStuException(ImportExcelStuException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @ExceptionHandler(value = ImportExcelException.class)
+    public ModelAndView ImportExcelStuException(ImportExcelException exception, HttpServletRequest request, HttpServletResponse response) throws IOException {
         String viewName = "admin/studentManager";
         return commonResolver(viewName, exception, request, response);
     }

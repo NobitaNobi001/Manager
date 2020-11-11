@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.builder.ExcelWriterSheetBuilder;
 import com.bean.CollegeStu;
+import com.bean.Msg;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.service.CollegeStuService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +71,14 @@ public class ExportController {
             response.reset();
             response.setContentType("application/json");
             response.setCharacterEncoding("utf-8");
-//            Map<String, String> map = new HashMap<String, String>();
-//            map.put("status", "failure");
-//            map.put("message", "下载文件失败" + e.getMessage());
-//            response.getWriter().println(objectMapper.writeValueAsString(map));
             e.printStackTrace();
         }
 
 
+    }
+
+    @RequestMapping("/exportPictureWithGrade")
+    public Msg exportPictureWithGrade(){
+        return Msg.success();
     }
 }

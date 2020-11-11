@@ -1,6 +1,6 @@
 package com.controller;
 
-import com.exception.ImportExcelStuException;
+import com.exception.ImportExcelException;
 import com.exception.ExportStuException;
 import com.github.pagehelper.PageHelper;
 import com.listener.ExportAdminListener;
@@ -15,7 +15,6 @@ import com.github.pagehelper.PageInfo;
 import com.service.*;
 import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
-import org.aspectj.weaver.ast.Var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -181,9 +180,9 @@ public class AdminController {
      * @return:
      */
     @RequestMapping("/updateStu.html")
-    public String updateStu(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, Student student) {
+    public String updateStu(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, Student student) {
         adminService.updateStu(student);
-        return "redirect:/admin/get/student.html?keyword=" + keyword + "&college=" + student.getCollegeId() + "&stuClass=" + student.getClassName() + "&pageNum=" + pageNum;
+        return "redirect:/admin/get/student.html?pageNum="+pageNum;
     }
 
 
@@ -328,26 +327,26 @@ public class AdminController {
             return JsonUtil.getJson(Msg.success().add("message", "导入成功"));
         } catch (Exception e) {
             stuListener.getStudents().clear();
-            e.printStackTrace();
-            int firstIndex = e.getMessage().indexOf("Duplicate entry");
-            int endIndex = e.getMessage().indexOf("for key");
-            String stuNumberIsUsed = e.getMessage().substring(firstIndex + "Duplicate entry".length(), endIndex);
             if (e instanceof DuplicateKeyException) {
-                throw new ImportExcelStuException("导入失败,Excel中学生学号" + stuNumberIsUsed + "已被使用");
+                int firstIndex = e.getMessage().indexOf("Duplicate entry");
+                int endIndex = e.getMessage().indexOf("for key");
+                String stuNumberIsUsed = e.getMessage().substring(firstIndex + "Duplicate entry".length(), endIndex);
+                throw new ImportExcelException("导入失败,Excel中学生学号" + stuNumberIsUsed + "已被使用");
+            } else {
+                throw new ImportExcelException("导入失败,请检查excel格式");
             }
-
         }
-        return null;
     }
 
-    /**
-     * 功能描述:根据id查询学生信息
-     *
-     * @Param:[stuId]
-     * @Return:com.bean.Msg
-     * @Author:h1656
-     * @Date:2020/9/8 16:09
-     */
+
+        /**
+         * 功能描述:根据id查询学生信息
+         *
+         * @Param:[stuId]
+         * @Return:com.bean.Msg
+         * @Author:h1656
+         * @Date:2020/9/8 16:09
+         */
     @RequestMapping("/toQueryStuInfoById/{stuID}")
     @ResponseBody
     public Msg toQueryStuInfoById(@PathVariable("stuID") Integer stuId) {
@@ -502,13 +501,19 @@ public class AdminController {
             // 读
             sheet.doRead();
 
+            return Msg.success().add("message", "导入成功");
+
         } catch (Exception e) {
             adminListener.getAdmins().clear();
-            e.printStackTrace();
-            return Msg.fail();
+            if (e instanceof DuplicateKeyException) {
+                int firstIndex = e.getMessage().indexOf("Duplicate entry");
+                int endIndex = e.getMessage().indexOf("for key");
+                String adminNumberIsUsed = e.getMessage().substring(firstIndex + "Duplicate entry".length(), endIndex);
+                throw new ImportExcelException("导入失败,Excel中管理员账号已存在" + adminNumberIsUsed + "已被使用");
+            } else {
+                throw new ImportExcelException("导入失败,请检查excel格式");
+            }
         }
-
-        return Msg.success().add("message", "导入成功");
     }
 
     /**

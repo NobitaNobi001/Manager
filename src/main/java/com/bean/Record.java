@@ -4,7 +4,6 @@ import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.*;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.hibernate.validator.constraints.Length;
 
 @ContentStyle(horizontalAlignment = HorizontalAlignment.CENTER)
 @HeadRowHeight(30)
@@ -30,29 +29,30 @@ public class Record {
     @ColumnWidth(50)
     private String sort;// 申请类别
 
-    @ExcelIgnore
+    @ExcelProperty(value = "申报图片",index = 4)
+    @ColumnWidth(50)
     private String picture;// 申请图片
 
-    @ExcelProperty(value = "申报名称", index = 4)
+    @ExcelProperty(value = "申报名称", index = 5)
     @ColumnWidth(20)
     private String applyName;// 申请活动名称
 
-    @ExcelProperty(value = "申报学分", index = 5)
+    @ExcelProperty(value = "申报学分", index = 6)
     @ColumnWidth(15)
     private Double applyCredit;// 申请学分
 
     @ExcelIgnore
     private String words;// 申请描述
 
-    @ExcelProperty(value = "审核学分", index = 6)
+    @ExcelProperty(value = "审核学分", index = 7)
     @ColumnWidth(15)
     private Double auditCredit;// 审核学分
 
-    @ExcelProperty(value = "审核教师", index = 7)
+    @ExcelProperty(value = "审核教师", index = 8)
     @ColumnWidth(15)
     private String auditTea;// 审核教师
 
-    @ExcelProperty(value = "审核状态", index = 8)
+    @ExcelProperty(value = "审核状态", index = 9)
     @ColumnWidth(15)
     private String auditState;// 审核状态
 

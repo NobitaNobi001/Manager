@@ -7,6 +7,15 @@ public class College {
 
     private String rule;
 
+    public College() {
+    }
+
+    public College(Integer id, String name, String rule) {
+        this.id = id;
+        this.name = name;
+        this.rule = rule;
+    }
+
     public Integer getId() {
         return id;
     }

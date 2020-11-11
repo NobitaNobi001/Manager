@@ -9,6 +9,9 @@
     <link rel="icon" href="static/images/logo.png" type="image/png">
     <link rel="stylesheet" type="text/css" href="static/css/common.css"/>
     <link rel="stylesheet" type="text/css" href="static/css/manager.css"/>
+
+    <script type="text/javascript" src="webjars/jquery/3.1.1/jquery.min.js"></script>
+
 </head>
 <body>
 <header>
@@ -73,6 +76,12 @@
                         <div class="number"><a href="admin/admManager">${admins }</a></div>
                         <div class="title">管理员</div>
                     </li>
+                    <li style="background: rgba(153,255,0, .1); color: #2e6da4">
+                        <a class=" btn btn-success" href="static/common/学生导入模板.xls">学生导入模板</a>
+                        <a class=" btn btn-success" href="static/common/教师导入模板.xls">教师导入模板</a>
+                        <a class=" btn btn-success" href="static/common/督察导入模板.xls">督察导入模板</a>
+                        <a class=" btn btn-success" href="static/common/管理员导入模板.xls">管理员导入模板</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -89,3 +98,18 @@
 </footer>
 </body>
 </html>
+<script type="text/javascript">
+
+    // function click() {
+    //     // $("<a></a>").href = "static/common/学生导入模板.xls";
+    //     // a.download = "dddd";
+    //     // a.click();
+    //     var a = document.createElement('a');
+    //     var file_name = "xxxx";
+    //     a.href = "http://localhost:8080/webSiteManager/static/common/学生导入模板.xls";
+    //     a.download = file_name;
+    //     a.click();
+    //     // window.location.href="http://localhost:8080/webSiteManager/static/common/学生导入模板.xls";
+    // }
+
+</script>

@@ -48,6 +48,7 @@ public class AdminService {
 
     /**
      * 查询出所有管理员
+     *
      * @return
      */
     public List<Admin> selectAdmins() {
@@ -56,28 +57,31 @@ public class AdminService {
 
     /**
      * 根据管理员id查询单个管理员
+     *
      * @param id
      * @return
      */
-    public Admin selectAdminById(Integer id){
+    public Admin selectAdminById(Integer id) {
         return adminMapper.selectByPrimaryKey(id);
     }
 
     /**
      * 条件查询
+     *
      * @param collegeId
      * @param keywords
      * @return
      */
-    public List<Admin> selectAdminWithCondition(Integer collegeId, String keywords){
-        return adminMapper.selectAdminWithCondition(collegeId,keywords);
+    public List<Admin> selectAdminWithCondition(Integer collegeId, String keywords) {
+        return adminMapper.selectAdminWithCondition(collegeId, keywords);
     }
 
     /**
      * 查询出管理员的数量
+     *
      * @return
      */
-    public Integer selectCountAdmin(){
+    public Integer selectCountAdmin() {
         return adminMapper.countByExample(null);
     }
 
@@ -245,9 +249,10 @@ public class AdminService {
 
     /**
      * 批量删除教师
+     *
      * @param ids
      */
-    public void deleteBatchAdmin(List<Integer> ids){
+    public void deleteBatchAdmin(List<Integer> ids) {
 
         AdminExample example = new AdminExample();
 
@@ -283,9 +288,10 @@ public class AdminService {
 
     /**
      * 新增单个管理员
+     *
      * @param admin
      */
-    public void insertAdmin(Admin admin){
+    public void insertAdmin(Admin admin) {
         adminMapper.insertSelective(admin);
     }
 
@@ -328,15 +334,12 @@ public class AdminService {
 
     /**
      * 通过Excel批量插入管理员
+     *
      * @param admins
      */
-    public void insertBatchAdmin(List<Admin> admins){
+    public void insertBatchAdmin(List<Admin> admins) {
 
-        try{
-            adminMapper.insertBatchAdminByExcel(admins);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        adminMapper.insertBatchAdminByExcel(admins);
 
     }
 

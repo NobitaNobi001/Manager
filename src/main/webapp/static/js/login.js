@@ -1,42 +1,57 @@
+function check() {
 
-$(function () {
-    $('.login-form form').bootstrapValidator({
-        // 通用提示语
-        message: 'This value is not valid',
-        // 提示字体图标
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        live: 'disabled',
-        fields: {
-            stuNumber: {
-                validators: {
-                    notEmpty: {
-                        message: '登录账号不能为空'
-                    },
-                    regexp: {
-                        regexp: /^\d{4,11}$/,
-                        message: '账号格式错误'
-                    }
-                }
-            },
-            password: {
-                validators: {
-                    notEmpty: {
-                        message: '登录密码不能为空'
-                    },
-                    stringLength: {
-                        min: 5,
-                        max: 18,
-                        message: '密码输入错误'
-                    }
-                }
-            }
-        }
-    });
-});
+    if (!validate_stuNumber()) {
+        return false;
+    }
+
+    if (!validate_password()) {
+        return false;
+    }
+
+    $('.login-form form').attr("action", "user/login");
+
+}
+
+
+//验证密码
+function validate_password() {
+
+    var password = $("input[name='password']").val();
+
+    if (password.trim() == "") {
+        alert("密码不能为空!");
+        return false;
+    }
+
+    if (password.trim().length < 5 || password.trim().length > 16) {
+        alert("密码格式输入错误!");
+        return false;
+    }
+
+    return true;
+
+}
+
+//验证学号
+function validate_stuNumber() {
+
+    var stuNumber = $("input[name='stuNumber']").val();
+
+    if (stuNumber.trim() == "") {
+        alert("账号不能为空!");
+        return false;
+    }
+
+    var reg = /^[0-9]{5,10}/;
+
+    if (!reg.test(stuNumber)) {
+        alert("账号格式不正确");
+        return false;
+    }
+
+    return true;
+
+}
 
 //显示密码
 $("#eye").click(function () {

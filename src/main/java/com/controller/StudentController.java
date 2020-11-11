@@ -1,13 +1,11 @@
 package com.controller;
 
-import com.bean.CreditDetail;
-import com.bean.Msg;
-import com.bean.Record;
-import com.bean.Student;
+import com.bean.*;
 import com.constant.StringConstant;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.service.CollegeStuService;
 import com.service.StudentService;
 import com.utils.CollegeNameUtil;
 import com.utils.DeclareSortUtil;
@@ -34,6 +32,7 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+
     /**
      * 功能描述:学生修改个人信息
      *
@@ -48,22 +47,30 @@ public class StudentController {
         if (student.getPhone().equals(oldStu.getPhone()) && student.getEmail().equals(oldStu.getEmail())) {
             return "redirect:/student/index";
         }
-        studentService.updateStuInfoById(student);
-        // 修改完信息之后重新存入session中
-        Student stu = studentService.selectStuByPrimaryKey(student.getId());
-        String collegeName = CollegeNameUtil.getCollegeName(stu.getCollegeId());
-        stu.getCollege().setName(collegeName);
-        session.setAttribute(StringConstant.STUDENT_TYPE, stu);
-        // 返回学生首页
+        try {
+            studentService.updateStuInfoById(student);
+            System.out.println("修改前:" + student);
+            // 修改完信息之后重新存入session中
+            Student stu = studentService.selectStuByPrimaryKey(student.getId());
+            System.out.println("修改后:" + stu);
+            String collegeName = CollegeNameUtil.getCollegeName(stu.getCollegeId());
+            stu.setCollege(new College(stu.getCollegeId(), collegeName, null));
+            session.setAttribute(StringConstant.STUDENT_TYPE, stu);
+            // 返回学生首页
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return "redirect:/student/index";
+
     }
 
     /**
-     *功能描述:学生修改个人密码
-     *@Param:[stuNumber, oldPassword, newPassword]
-     *@Return:com.bean.Msg
-     *@Author:h1656
-     *@Date:2020/9/8 16:08
+     * 功能描述:学生修改个人密码
+     *
+     * @Param:[stuNumber, oldPassword, newPassword]
+     * @Return:com.bean.Msg
+     * @Author:h1656
+     * @Date:2020/9/8 16:08
      */
     @PostMapping(value = "/updateStuPassword.html")
     @ResponseBody
@@ -93,13 +100,14 @@ public class StudentController {
 
 
     /**
-     *功能描述:学生申报创新学分记录
-     *@Param:[stuNumber, stuName, sort, applyName, applyCredit, words, file, request]
-     *@Return:java.lang.String
-     *@Author:h1656
-     *@Date:2020/9/8 16:07
+     * 功能描述:学生申报创新学分记录
+     *
+     * @Param:[stuNumber, stuName, sort, applyName, applyCredit, words, file, request]
+     * @Return:java.lang.String
+     * @Author:h1656
+     * @Date:2020/9/8 16:07
      */
-    @RequestMapping(value = "/apply.html",method = RequestMethod.POST)
+    @RequestMapping(value = "/apply.html", method = RequestMethod.POST)
     @ResponseBody
     public String apply(
             @RequestParam("stuNumber") Integer stuNumber,
@@ -110,12 +118,15 @@ public class StudentController {
             @RequestParam(value = "words", defaultValue = "") String words,
             @RequestParam("file") CommonsMultipartFile file,
             HttpServletRequest request
-    ){
+    ) {
+
+        Student student = (Student) request.getSession().getAttribute("student");
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        try{
+        try {
             // 项目路径
-            String BasePath=request.getServletContext().getRealPath("/applyImg");
-            if(!file.isEmpty()) {
+            String BasePath = request.getServletContext().getRealPath("/applyImg");
+            if (!file.isEmpty()) {
                 // 创建日期
                 Date d = new Date();
                 // 日期格式化
@@ -127,11 +138,11 @@ public class StudentController {
                 int month = now.get(Calendar.MONDAY) + 1;//0~11
                 int day = now.get(Calendar.DAY_OF_MONTH);
                 // 创建3级目录
-                String RealPath = BasePath + "/" + year + "/" + month + "/" + day; // 文件真实路径
+                String RealPath = BasePath + "/" + student.getStuGrade() + "/" + student.getCollege().getName() + "/" + year + "/" + month + "/" + day; // 文件真实路径
                 // 数据库中文件名
-                String fileName = UUID.randomUUID().toString() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
+                String fileName = student.getStuNumber() + "-" + UUID.randomUUID().toString() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
                 // 创建记录对象
-                Record record = new Record(null, stuNumber, stuName, date, sort, year + "/" + month + "/" + day + "/" + fileName, applyName, applyCredit, words, null, null, null);
+                Record record = new Record(null, stuNumber, stuName, date, sort, student.getStuNumber().toString().substring(0, 4) + "/" + student.getCollege().getName() + "/" + year + "/" + month + "/" + day + "/" + fileName, applyName, applyCredit, words, null, null, null);
                 // 保存在数据库中
                 studentService.addCreditRecord(record);
                 // 在系统中创建图片文件
@@ -152,11 +163,12 @@ public class StudentController {
     }
 
     /**
-     *功能描述:学生查看创新学分列表
-     *@Param:[page, model, request]
-     *@Return:java.lang.String
-     *@Author:h1656
-     *@Date:2020/9/8 16:07
+     * 功能描述:学生查看创新学分列表
+     *
+     * @Param:[page, model, request]
+     * @Return:java.lang.String
+     * @Author:h1656
+     * @Date:2020/9/8 16:07
      */
     @RequestMapping("/viewCredit.html")
     public String viewCredit(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpServletRequest request) throws Exception {

@@ -5,6 +5,7 @@ import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import com.bean.*;
 import com.constant.StringConstant;
+import com.exception.ImportExcelException;
 import com.exception.OutMaxException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -14,6 +15,7 @@ import com.service.TeacherService;
 import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
@@ -282,15 +284,22 @@ public class TeacherController {
             // 工作表
             ExcelReaderSheetBuilder sheet = readWorkBook.sheet();
 
-            System.out.println(sheet.toString());
             // 读
             sheet.doRead();
+
+            return Msg.success().add("message", "导入成功");
         } catch (Exception e) {
             teacherListener.getTeachers().clear();
-            e.printStackTrace();
+            if (e instanceof DuplicateKeyException) {
+                int firstIndex = e.getMessage().indexOf("Duplicate entry");
+                int endIndex = e.getMessage().indexOf("for key");
+                String teacherNumberIsUsed = e.getMessage().substring(firstIndex + "Duplicate entry".length(), endIndex);
+                throw new ImportExcelException("导入失败,ExceL中教师账号已存在" + teacherNumberIsUsed + "已被使用");
+            } else {
+                throw new ImportExcelException("导入失败,请检查excel格式");
+            }
         }
 
-        return Msg.success().add("message", "导入成功");
     }
 
     /**

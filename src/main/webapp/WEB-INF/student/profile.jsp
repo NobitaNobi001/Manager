@@ -95,6 +95,9 @@
             fields: {
                 phone: {
                     validators: {
+                        notEmpty: {
+                            message: '手机号不能为空'
+                        },
                         digits: {
                             message: '手机号码只能输入数字'
                         },

@@ -137,15 +137,13 @@ public class WatcherService {
 
     /**
      * 通过excel批量导入督察
+     *
      * @param watchers
      */
     public void insertBatchWatcherByExcel(List<Watcher> watchers) {
 
-        try {
-            watcherMapper.insertBatchWatcherByExcel(watchers);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        watcherMapper.insertBatchWatcherByExcel(watchers);
+
     }
 
     /**

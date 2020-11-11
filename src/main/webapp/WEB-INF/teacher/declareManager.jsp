@@ -191,7 +191,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div style=" height:74px;line-height:74px;margin: 0 auto; width: 800px">
+                <div style="height:74px;line-height:74px;margin: 0 auto; width: 800px">
                     <%--分页条信息--%>
                     <div id="page_nav_area" style="float:left;"></div>
                     <%--分页文字信息--%>

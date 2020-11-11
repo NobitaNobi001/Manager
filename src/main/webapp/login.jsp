@@ -31,7 +31,7 @@
             <div class="title">湖北文理学院创新实践学分管理系统</div>
         </div>
         <div class="login-form">
-            <form action="user/login" method="post" role="form" class="form-horizontal">
+            <form action="" method="post" role="form" class="form-horizontal">
                 <h4>用户登录</h4>
                 <div class="form-group">
                     <p><font color="red">${requestScope.exception.message }</font></p>
@@ -61,7 +61,7 @@
                     <label><input type="radio" name="type" value="4"/>管理员</label>
                 </div>
                 <div>
-                    <button type="submit">登录</button>
+                    <button type="submit" onclick="check()">登录</button>
                 </div>
                 <div class="forget form-group"><a href="forget/forgetIndex">忘记密码？</a></div>
             </form>
