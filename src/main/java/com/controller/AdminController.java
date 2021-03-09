@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import com.service.*;
 import com.utils.CollegeNameUtil;
 import com.utils.JsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.BadSqlGrammarException;
@@ -36,6 +37,7 @@ import java.util.Map;
 /**
  * 超级管理员控制器
  */
+@Slf4j
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
@@ -153,7 +155,7 @@ public class AdminController {
      * @return:
      */
     @RequestMapping("/toQuery/studentRecord.html")
-    public String getStudentRecordByFormSelect(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "college", required = false) Integer collegeId, @RequestParam(value = "major", required = false) String major, @RequestParam(value = "stuClass", required = false) Integer stuClass, Model model, HttpServletRequest request) {
+    public String getStudentRecordByFormSelect(@RequestParam(value = "page", defaultValue = "1") Integer page, @RequestParam(value = "college", required = false) Integer collegeId, @RequestParam(value = "major", required = false) String major, @RequestParam(value = "stuClass", required = false) String stuClass, Model model, HttpServletRequest request) {
         PageInfo<Record> info = recordService.getAllRecordByAdminQuery(page, 5, collegeId, major, stuClass);
         request.setAttribute("direction", "toQuery");
         request.setAttribute("college", collegeId);
@@ -169,7 +171,7 @@ public class AdminController {
      * @return:
      */
     @RequestMapping("/get/student.html")
-    public String getStuPageInfo(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "college", defaultValue = "-1") Integer collegeId, @RequestParam(value = "major", defaultValue = "-1") String major, @RequestParam(value = "stuClass", defaultValue = "-1") Integer stuClass, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize, Model model) {
+    public String getStuPageInfo(@RequestParam(value = "keyword", defaultValue = "") String keyword, @RequestParam(value = "college", defaultValue = "-1") Integer collegeId, @RequestParam(value = "major", defaultValue = "-1") String major, @RequestParam(value = "stuClass", defaultValue = "-1") String stuClass, @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum, @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize, Model model) {
         PageInfo<Student> pageInfo = recordService.selectStuBykeyword(pageNum, pageSize, collegeId, major, stuClass, keyword);
         model.addAttribute("pageInfo", pageInfo);
         return "admin/studentManager";
@@ -191,7 +193,7 @@ public class AdminController {
      * @return: void
      */
     @RequestMapping("/exportStuRecord")
-    public void exportStuRecord(HttpServletResponse response, @RequestParam(value = "college", required = false) Integer collegeId, @RequestParam(value = "major", required = false) String major, @RequestParam(value = "stuClass", required = false) Integer stuClass, @RequestParam(value = "auditState", required = false) String auditState) throws IOException {
+    public void exportStuRecord(HttpServletResponse response, @RequestParam(value = "college", required = false) Integer collegeId, @RequestParam(value = "major", required = false) String major, @RequestParam(value = "stuClass", required = false) String stuClass, @RequestParam(value = "auditState", required = false) String auditState) throws IOException {
         try {
             String collegeName = "";
             ExcelWriterSheetBuilder sheet = null;

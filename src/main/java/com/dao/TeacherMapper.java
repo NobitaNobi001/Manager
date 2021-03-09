@@ -4,8 +4,6 @@ import com.bean.Teacher;
 import com.bean.TeacherExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
-import org.omg.CORBA.INTERNAL;
-import sun.rmi.log.LogInputStream;
 
 public interface TeacherMapper {
 

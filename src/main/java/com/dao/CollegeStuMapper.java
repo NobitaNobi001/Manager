@@ -39,10 +39,10 @@ public interface CollegeStuMapper {
     List<Student> conditionSearch(@Param("tableName") String tableName,@Param("major") String major,@Param("stuClass") String stuClass);
 
     // 根据学院 专业  班级 查询学生学号
-    List<Integer> selectStuNumber(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") Integer stuClass);
+    List<Integer> selectStuNumber(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") String stuClass);
 
     // 根据学院 专业 班级 关键字来查询学生学号
-    List<Integer> selectStuNumberByKeyword(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") Integer stuClass, @Param("keyword") String keyword);
+    List<Integer> selectStuNumberByKeyword(@Param("tableName") String tableName, @Param("major") String major, @Param("stuClass") String stuClass, @Param("keyword") String keyword);
 
     // 根据学号删除当个学生
     int deleteStuByStuNumber(@Param("tableName") String tableName, @Param("stuNumber") Integer stuNumber);

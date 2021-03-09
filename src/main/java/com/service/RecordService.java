@@ -180,7 +180,7 @@ public class RecordService {
      * @param stuClass
      * @return
      */
-    public PageInfo<Record> getAllRecordByAdminQuery(Integer page, int size, Integer collegeId, String major, Integer stuClass) {
+    public PageInfo<Record> getAllRecordByAdminQuery(Integer page, int size, Integer collegeId, String major, String stuClass) {
         PageInfo<Record> pageInfo = null;
         if (collegeId != -1) {// 学院不为空
             String tableName = CollegeNameUtil.getTableName(collegeId);
@@ -210,7 +210,7 @@ public class RecordService {
      * @param auditState
      * @return
      */
-    public List<Record> getAllRecordToExport(Integer collegeId, String major, Integer stuClass, String auditState) {
+    public List<Record> getAllRecordToExport(Integer collegeId, String major, String stuClass, String auditState) {
         List<Record> records = null;
         if (collegeId != -1 && !("-1".equals(auditState))) {// 学院不为空 审核状态不为空
             String tableName = CollegeNameUtil.getTableName(collegeId);
@@ -252,7 +252,7 @@ public class RecordService {
      * @param keyword
      * @return
      */
-    public PageInfo<Student> selectStuBykeyword(Integer pageNum, Integer pageSize, Integer collegeId, String major, Integer stuClass, String keyword) {
+    public PageInfo<Student> selectStuBykeyword(Integer pageNum, Integer pageSize, Integer collegeId, String major, String stuClass, String keyword) {
         PageInfo<Student> pageInfo = null;
         if (collegeId == -1) {// 如果学院为空的话 默认从全部的学生列表进行关键字查询
             PageHelper.startPage(pageNum, pageSize);
