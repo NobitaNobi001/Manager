@@ -138,7 +138,7 @@ public class StudentController {
                 int month = now.get(Calendar.MONDAY) + 1;//0~11
                 int day = now.get(Calendar.DAY_OF_MONTH);
                 // 创建3级目录
-                String RealPath = BasePath + "/" + student.getStuGrade() + "/" + student.getCollege().getName() + "/" + year + "/" + month + "/" + day; // 文件真实路径
+                String RealPath = BasePath + "/" + student.getStuNumber().toString().substring(0, 4) + "/" + student.getCollege().getName() + "/" + year + "/" + month + "/" + day; // 文件真实路径
                 // 数据库中文件名
                 String fileName = student.getStuNumber() + "-" + UUID.randomUUID().toString() + file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."));
                 // 创建记录对象
