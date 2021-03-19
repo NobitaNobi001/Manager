@@ -24,7 +24,7 @@
             <tbody>
             <c:if test="${empty requestScope.info.list }">
                 <tr>
-                    <td colspan="6" align="center">暂无数据记录</td>
+                    <td colspan="7" align="center">暂无数据记录</td>
                 </tr>
             </c:if>
 
