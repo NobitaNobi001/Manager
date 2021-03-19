@@ -60,10 +60,7 @@
                     <div class="form-group">
                         <label for="picture_btn" class="col-sm-2 control-label">申报材料</label>
                         <div class="col-sm-10">
-                            <button type="button" class="btn btn-default" data-container="body" data-toggle="popover"
-                                    data-placement="right" name="picture_btn" id="picture_btn">查看图片
-                            </button>
-                            <%--<div class="btn-default"><a tabindex="0" role="button" data-toggle="popover" id="picture_btn">查看图片</a></div>--%>
+                            <a class="btn btn-default" id="picture_btn" target="_blank">查看图片</a>
                             <span class="help-block"></span>
                         </div>
                     </div>
@@ -284,7 +281,7 @@
             success: function (result) {
                 if (result.extend.rule.rule == null) {
                     $("#applyContent").text("暂无申报规则");
-                }else{
+                } else {
                     $("#applyContent").text(result.extend.rule.rule);
                 }
             },
@@ -464,16 +461,7 @@
         });
     }
 
-    //显示和关闭申报图片
-    $("#picture_btn").popover({
-        trigger: 'click',
-        html: true,
-        content: function () {
-            var $div = $("<div style='width: 700px; height:500px;'></div>");
-            var $img = $("<img style='width: 700px; height:500px;' id='picture_show'/>");
-            $img.attr("src", url);
-            $img.appendTo($div);
-            return $div;
-        }
+    $("#picture_btn").click(function () {
+        this.href = url;
     });
 </script>

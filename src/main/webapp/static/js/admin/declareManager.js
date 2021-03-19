@@ -78,19 +78,3 @@ $("#exportData").click(function () {
         backdrop: "static"
     });
 });
-
-//显示申报图片
-$(document).on("click", ".apply-btn", function () {
-    $(this).popover({
-        trigger: 'click',
-        html: true,
-        content: function () {
-            var url = $(this).attr("url");
-            var $div = $("<div style='width: 500px; height:300px;'></div>");
-            var $img = $("<img style='width: 500px; height:300px;'/>");
-            $img.attr("src", url);
-            $img.appendTo($div);
-            return $div;
-        }
-    });
-})

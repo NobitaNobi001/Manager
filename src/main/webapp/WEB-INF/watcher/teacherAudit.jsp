@@ -272,9 +272,8 @@
             //申报学分
             var applyCredit = $("<td></td>").append(item.applyCredit);
             //申报材料
-            var applyBtn = $("<td></td>").append($("<a></a>").addClass("btn btn-default apply-btn").attr("apply-id", item.id)
-                .attr("tabindex", 0).attr("role", "button").attr("data-toggle", "popover").attr("data-placement", "top")
-                .append("查看").attr("url", "applyImg/" + item.picture));
+            var applyBtn = $("<td></td>").append($("<a></a>").addClass("btn btn-default apply-btn").
+                            attr("apply-id", item.id).attr("target","_blank").append("查看").attr("href", "applyImg/" + item.picture));
             //审核学分
             var auditCredit = $("<td></td>").append(item.auditCredit);
             //审核教师

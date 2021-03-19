@@ -35,10 +35,8 @@
                         <td style="text-align: center;">${record.sort}</td>
                         <td>${record.applyName}</td>
                         <td>
-                            <button type="button" class="btn btn-default apply-btn" data-container="body"
-                                    data-toggle="popover"
-                                    data-placement="top" url="applyImg/${record.picture }">查看图片
-                            </button>
+                            <a class="btn btn-default" id="picture_btn" target="_blank"
+                               href="applyImg/${record.picture }">查看图片</a>
                         </td>
                         <td>${record.applyCredit}</td>
                         <td>${record.auditCredit}</td>
@@ -127,7 +125,8 @@
                     <div class="form-group">
                         <label class="col-md-6 control-label">大学生学科竞赛活动(含大学生创新创业训练项目):</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" name="sortValue" sort="大学生学科竞赛活动(含大学生创新创业训练项目)" readonly>
+                            <input type="text" class="form-control" name="sortValue" sort="大学生学科竞赛活动(含大学生创新创业训练项目)"
+                                   readonly>
                         </div>
                     </div>
                     <div class="form-group">
@@ -209,6 +208,7 @@
                 $(this).addClass("btn-warning");
             }
         });
+
         function sumCreditDetail(stuNumber) {
             // 发送ajax请求
             $.ajax({
@@ -236,6 +236,7 @@
                 }
             });
         }
+
         // 显示创新学分明细模态框
         $("#seeSumCredit").click(function () {
             // 发送请求查看明细
@@ -245,20 +246,5 @@
                 keyboard: true
             })
         });
-        //显示申报图片
-        $(document).on("click", ".apply-btn", function () {
-            $(this).popover({
-                trigger: 'click',
-                html: true,
-                content: function () {
-                    var url = $(this).attr("url");
-                    var $div = $("<div style='width: 500px; height:300px;'></div>");
-                    var $img = $("<img style='width: 500px; height:300px;'/>");
-                    $img.attr("src", url);
-                    $img.appendTo($div);
-                    return $div;
-                }
-            });
-        })
     })
 </script>

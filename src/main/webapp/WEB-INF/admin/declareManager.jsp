@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="zh-CN">
@@ -134,7 +133,8 @@
                 <div class="credit">
                     <h4>申报管理</h4>
                     <div class="action">
-                        <form class="form-inline" action="admin/toQuery/studentRecord.html" method="post" style="float: left;">
+                        <form class="form-inline" action="admin/toQuery/studentRecord.html" method="post"
+                              style="float: left;">
                             <div class="form-group">
                                 <select name="college" class="form-control">
                                     <option value="-1">请选择学院</option>
@@ -169,7 +169,8 @@
                         <tr>
                             <th>序号</th>
                             <th>学生学号</th>
-                            <th>学生姓名</td>
+                            <th>学生姓名
+                            </td>
                             <th>申报类别</th>
                             <th>申报名称</th>
                             <th>申报日期</th>
@@ -189,10 +190,9 @@
                                 <td>${record.applyName}</td>
                                 <td>${record.date}</td>
                                 <td>
-                                    <button type="button" class="btn btn-default apply-btn" data-container="body" url="applyImg/${record.picture }"
-                                            data-toggle="popover"
-                                            data-placement="top" name="picture_btn" >查看图片
-                                    </button>
+
+                                    <a class="btn btn-default" id="picture_btn" target="_blank"
+                                       href="applyImg/${record.picture }">查看图片</a>
                                 </td>
                                 <td>${record.applyCredit}</td>
                                 <c:choose>
@@ -251,7 +251,9 @@
                                                     <li class="active"><a href="#">${page}</a></li>
                                                 </c:if>
                                                 <c:if test="${page!=info.pageNum}">
-                                                    <li><a href="admin/toSee/studentRecord.html?page=${page}">${page}</a></li>
+                                                    <li>
+                                                        <a href="admin/toSee/studentRecord.html?page=${page}">${page}</a>
+                                                    </li>
                                                 </c:if>
                                             </c:forEach>
 
